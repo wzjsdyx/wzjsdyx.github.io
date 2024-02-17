@@ -162,6 +162,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/18/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%9B%BE%E7%89%87%E6%8F%92%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/02/18/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%9B%BE%E7%89%87%E6%8F%92%E5%85%A5/" class="post-title-link" itemprop="url">hexo博客撰写-图片插入</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-02-18 03:56:29 / 修改时间：03:56:43" itemprop="dateCreated datePublished" datetime="2024-02-18T03:56:29+08:00">2024-02-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>有篇博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/2301_77285173/article/details/130189857">在hexo博客中插入图片的方法</a>说的非常好，但是这里需要补充说明一下：</p>
+<p>在使用方法二：文章资源文件夹的时候：</p>
+<ul>
+<li><p><code>localhost:4000</code>以及<code>github网页</code>会在<code>name.md</code>的<code>同名文件夹</code>中查找插入的图片。因此，将要插入的图片存放到同名文件夹下面之后，markdown的图片插入语句中直接写图片名即可</p>
+<div>           <!--块级封装-->
+    <center>    <!--将图片和文字居中-->
+    <img src="路径设置.jpg"
+         alt="无法显示"
+         style="zoom:0"/>
+        <u>
+            路径设置
+        </u>    <!--标题-->
+    </center>
+</div>
+</li>
+<li><p>不要使用下面这样的图片插入markdown语句</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">无法显示</span>](<span class="link">img.jpg</span>)</span><br></pre></td></tr></table></figure>
+
+<p>因为这样的话，<code>localhost:4000</code>以及<code>github网页</code>就无法显示图片，博客根目录下通过hexo g生成的&#x2F;public&#x2F;index.html文件对图像的引用地址是乱码</p>
+<div>           <!--块级封装-->
+    <center>    <!--将图片和文字居中-->
+    <img src="图像引用路径乱码.jpg"
+         alt="无法显示"
+         style="zoom:0"/>
+        <u>
+            图像引用路径乱码
+        </u>    <!--标题-->
+    </center>
+</div>
+
+<p>可以直接通过如下的方式进行图片的插入：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span>			&lt;!--块级封装--&gt;</span><br><span class="line"><span class="code">    &lt;center&gt;	&lt;!--将图片和文字居中--&gt;</span></span><br><span class="line"><span class="code">    &lt;img src=&quot;图片全称&quot;</span></span><br><span class="line"><span class="code">         alt=&quot;无法显示&quot;</span></span><br><span class="line"><span class="code">         style=&quot;zoom:缩放数字&quot;/&gt;</span></span><br><span class="line"><span class="code">    	&lt;u&gt;</span></span><br><span class="line"><span class="code">            下标名</span></span><br><span class="line"><span class="code">        &lt;/u&gt;	&lt;!--标题--&gt;</span></span><br><span class="line"><span class="code">    &lt;/center&gt;</span></span><br><span class="line"><span class="code">&lt;/div&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果要在Typora中也能显示出图片，需要在<code>格式&gt;图像&gt;设置图片根目录</code>中指定到同名文件夹</p>
+</li>
+<li><div>           <!--块级封装-->
+    <center>    <!--将图片和文字居中-->
+    <img src="Typora图像根目录设置.jpg"
+         alt="无法显示"
+         style="zoom:0"/>
+        <u>
+            Typora图像根目录设置
+        </u>    <!--标题-->
+    </center>
+</div></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/16/DC-synthesis-Q-A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -437,7 +541,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-18 03:04:52" itemprop="dateModified" datetime="2024-02-18T03:04:52+08:00">2024-02-18</time>
+                <time title="修改时间：2024-02-18 03:38:07" itemprop="dateModified" datetime="2024-02-18T03:38:07+08:00">2024-02-18</time>
               </span>
 
           
@@ -480,7 +584,6 @@
         </u>	<!--标题-->
     </center>
 </div>
-
 
 
 
@@ -643,7 +746,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
