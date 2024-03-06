@@ -20,17 +20,23 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="show me bug">
-<meta property="og:type" content="website">
-<meta property="og:title" content="芯青年">
-<meta property="og:url" content="https://wzjsdyx.github.io/archives/2024/03/index.html">
+  <meta name="description" content="通常接触到的sram size的表述都是words x bits，例如1024 x 8bits。但是在物理上，这个形状是非常狭长，不利于物理版图的实现，所以foundry实际做的时候会做折叠，这个折叠的参数就是column multiplexer（直观上的理解就是调整SRAM Macro的长宽比例），来调整SRAM Macro layout版图的形状。接下来就是重点说明： column multi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sram compiler中的column multiplexer配置">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="show me bug">
+<meta property="og:description" content="通常接触到的sram size的表述都是words x bits，例如1024 x 8bits。但是在物理上，这个形状是非常狭长，不利于物理版图的实现，所以foundry实际做的时候会做折叠，这个折叠的参数就是column multiplexer（直观上的理解就是调整SRAM Macro的长宽比例），来调整SRAM Macro layout版图的形状。接下来就是重点说明： column multi">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/column_multiplexer%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6.jpg">
+<meta property="article:published_time" content="2024-03-05T12:02:02.000Z">
+<meta property="article:modified_time" content="2024-03-05T14:29:55.951Z">
 <meta property="article:author" content="zhijun">
+<meta property="article:tag" content="sram compiler">
+<meta property="article:tag" content="column multiplexer">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/column_multiplexer%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6.jpg">
 
-<link rel="canonical" href="https://wzjsdyx.github.io/archives/2024/03/">
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/">
 
 
 <script id="page-configurations">
@@ -38,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 芯青年</title>
+  <title>sram compiler中的column multiplexer配置 | 芯青年</title>
   
 
 
@@ -156,96 +162,145 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sram compiler中的column multiplexer配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-05 20:02:02 / 修改时间：22:29:55" itemprop="dateCreated datePublished" datetime="2024-03-05T20:02:02+08:00">2024-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SRAM/" itemprop="url" rel="index"><span itemprop="name">SRAM</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 13 篇日志。 继续努力。</span>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2024</span>
-    </div>
+        <p>通常接触到的sram size的表述都是words x bits，例如1024 x 8bits。但是在物理上，这个形状是非常狭长，不利于物理版图的实现，所以foundry实际做的时候会做<code>折叠</code>，这个折叠的参数就是column multiplexer（<code>直观上的理解就是调整SRAM Macro的长宽比例</code>），来调整SRAM Macro layout版图的形状。接下来就是重点说明：</p>
+<h2 id="column-multiplexer参数如何调整长宽比例的"><a href="#column-multiplexer参数如何调整长宽比例的" class="headerlink" title="column multiplexer参数如何调整长宽比例的"></a>column multiplexer参数如何调整长宽比例的</h2><blockquote>
+<p>假设需要的SRAM size是1024 x 8 bits，memory compiler中配置的column mux的参数是4 ,对应的型号就是(256x4x8 bits)–&gt;256行32列</p>
+<p>ADDR总位宽是10 bits，在这种column mux配置下，X地址是8bits，Y地址是2bits</p>
+<p>现在对地址10‘b00_0000_1100进行访问，经过X地址解码，会访问第3行，经过Y地址解码，会访问MUX&#x3D;0的列</p>
+<p>可以看到，如果将column mux设置为8，那么SRAM Macro会变宽，（128x8x8–&gt;128行64列）</p>
+</blockquote>
+<img src="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/column_multiplexer%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6.jpg" class="">
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<center><u>column_multiplexer工作机制</u> </center>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-03-05T22:14:55+08:00"
-              content="2024-03-05">
-          03-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/03/05/sram%E8%AF%84%E4%BC%B0/" itemprop="url">
-            <span itemprop="name">sram评估</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-03-05T20:02:02+08:00"
-              content="2024-03-05">
-          03-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/" itemprop="url">
-            <span itemprop="name">sram compiler中的column multiplexer配置</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-03-05T10:37:35+08:00"
-              content="2024-03-05">
-          03-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/03/05/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%A4%9A%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0/" itemprop="url">
-            <span itemprop="name">hexo博客撰写-多设备同步更新</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+<blockquote>
+<p>记住如下结论：<br>1)字长<em>字宽&#x3D;行数</em>列数<br>2)行数&#x3D;字长&#x2F;MUX<br>3)列数&#x3D;字宽*MUX<br>4)MUX越大，行数越少，列数越多，micro尺寸越矮、越宽</p>
+</blockquote>
+<h2 id="column-multiplexer还会影响时序和面积"><a href="#column-multiplexer还会影响时序和面积" class="headerlink" title="column multiplexer还会影响时序和面积"></a>column multiplexer还会影响时序和面积</h2><p>column multiplexer这个参数主要作用是调整SRAM Macro layout的形状，此外还会一定程度上影响时序和面积。</p>
+<p>很多情况下，column multiplexer这个参数越大，SRAM Macro layout的图形越宽，其面积越大，时序越好。</p>
+<p>有些时候，这个规律并不使用，还需要以memory compiler实际产生的数据为准。</p>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lyfwill/article/details/81330081">ARM的memory Compiler总结</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://bbs.eetop.cn/thread-955010-1-1.html"> Wordline与Bitline</a></p>
+</li>
+</ol>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sram-compiler/" rel="tag"># sram compiler</a>
+              <a href="/tags/column-multiplexer/" rel="tag"># column multiplexer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/05/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%A4%9A%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0/" rel="prev" title="hexo博客撰写-多设备同步更新">
+      <i class="fa fa-chevron-left"></i> hexo博客撰写-多设备同步更新
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/05/sram%E8%AF%84%E4%BC%B0/" rel="next" title="sram评估">
+      sram评估 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -292,6 +347,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#column-multiplexer%E5%8F%82%E6%95%B0%E5%A6%82%E4%BD%95%E8%B0%83%E6%95%B4%E9%95%BF%E5%AE%BD%E6%AF%94%E4%BE%8B%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">column multiplexer参数如何调整长宽比例的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#column-multiplexer%E8%BF%98%E4%BC%9A%E5%BD%B1%E5%93%8D%E6%97%B6%E5%BA%8F%E5%92%8C%E9%9D%A2%E7%A7%AF"><span class="nav-number">2.</span> <span class="nav-text">column multiplexer还会影响时序和面积</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
