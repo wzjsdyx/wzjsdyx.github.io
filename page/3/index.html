@@ -162,6 +162,267 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">cache_controller设计（1）-理论基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-19 23:27:52" itemprop="dateCreated datePublished" datetime="2024-02-19T23:27:52+08:00">2024-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-02-29 22:42:20" itemprop="dateModified" datetime="2024-02-29T22:42:20+08:00">2024-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cache%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">cache设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="存储层次"><a href="#存储层次" class="headerlink" title="存储层次"></a>存储层次</h1><p>由于物理实现上的差异，<code>CPU的速度和内存的速度差距越来越大</code>。例如DDR3内存的访问延时约为50ns，高端处理器的时钟周期都在1ns以下。</p>
+<p>处理器和内存再速度上的差距形成了<code>存储层次</code>：</p>
+<ul>
+<li>离处理器越近的地方，存储器的访问速度越快（使用存储密度小的电路结构，牺牲存储容量换取更快的访问速度）</li>
+<li>离处理器越远的地方，存储器的访问速度越慢（使用存储密度大的电路结构，牺牲访问速度换取更快的存储容量）</li>
+</ul>
+<img src="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1.png" class="">
+
+<center><u>存储层次</u></center>
+
+<h1 id="cache在流水线中的位置"><a href="#cache在流水线中的位置" class="headerlink" title="cache在流水线中的位置"></a>cache在流水线中的位置</h1><p><code>cache是微体系结构的概念，没有独立的编制空间，对程序来说是透明的</code>。<br>cache在流水线中的位置：</p>
+<img src="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/cacher%E5%9C%A8%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE.png" class="">
+
+<center><u>cacher在流水线中的位置</u></center>
+
+<p>当处理器访问cache时，首先会进行索引，找到对应的cache单元；然后会对tag进行对比：</p>
+<ul>
+<li>命中，则直接对cache的内容进行访问</li>
+<li>未命中，指令会阻塞在取指阶段或者访存阶段，然后通过cache失效逻辑处理后才能继续执行</li>
+</ul>
+<h1 id="cache需要保存的内容"><a href="#cache需要保存的内容" class="headerlink" title="cache需要保存的内容"></a>cache需要保存的内容</h1><p>cache中的存储的内存数据是不断变化的（不同时刻可能存储不同的内存单元内容），因此cache需要保存如下内容：</p>
+<ul>
+<li>数据</li>
+<li>数据对应的地址（称为cache标签，tag，让流水线知道存储的是内存中的哪一块内容）</li>
+<li>数据在cache中的状态（例如是否有效，是否改写等）</li>
+</ul>
+<h1 id="cache设计需要考虑的问题"><a href="#cache设计需要考虑的问题" class="headerlink" title="cache设计需要考虑的问题"></a>cache设计需要考虑的问题</h1><h2 id="cache块映射-索引的方式"><a href="#cache块映射-索引的方式" class="headerlink" title="cache块映射&#x2F;索引的方式"></a>cache块映射&#x2F;索引的方式</h2><p>cache的内存容量远小于内存容量，会涉及到多个内存单元映射到同一个cache单元；通常有如下3中映射方式:<br><code>将内存和 Cache 都分为大小一样的块, 假设内存有 32 项, Cache 有 8 项 </code></p>
+<h3 id="直接相连"><a href="#直接相连" class="headerlink" title="直接相连"></a>直接相连</h3><p>每个内存块只能映射到cache的固定位置</p>
+<blockquote>
+<p>在直接相联方式中, 每个内存块只能放到 Cache 的一个位置上, 假设要把内存的第 12 号块放<br>到 Cache 中, 因为 Cache 只有 8 项, 所以只能放在第 (12 mod 8 &#x3D; 4) 项上, 其他地方都不能<br>放; 由此可知第 4、 12、 20、 28 号内存块都对应到 Cache 的第 4 项上, 如果冲突了就只能替换。<br>这就是直接相联, <strong>硬件简单但利用率低</strong>, 如图 9. 24a 所示。  </p>
+</blockquote>
+<h3 id="全相连"><a href="#全相连" class="headerlink" title="全相连"></a>全相连</h3><p>每个内存块可以映射到cache的任意位置</p>
+<blockquote>
+<p>在全相联方式中, 每个内存块都可以放到 Cache 的任一位置上, 这样第 4、 12、 20、 28 号内存块可以同时放入 Cache 中。 这就是全<br>相联, <strong>硬件复杂但利用率高</strong>, 如图 9. 24b 所示  </p>
+</blockquote>
+<h3 id="组相连"><a href="#组相连" class="headerlink" title="组相连"></a>组相连</h3><p>每个内存块可以映射都任意组的固定位置</p>
+<blockquote>
+<p>组相联是直接相联和全相联的折中。 以两路组相<br>联为例, Cache 中第 0、 2、 4、 6 号位置为一路 (这里称为第 0 路), 第 1、 3、 5、 7 为另一路<br>(这里称为第 1 路), 每路 4 个 Cache 块。 对于内存的第 12 号块, 因为 12 除以 4 余数为 0, 所<br>以既可以把第 12 号块放到 Cache 第 0 路的第 0 号位置 (即 Cache 的第 0 号位置), 也可以放到<br>第 1 路的第 0 号位置 (即 Cache 的第 1 号位置), 如图 9. 24c 所示  </p>
+</blockquote>
+<img src="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/cache%E6%98%A0%E5%B0%84%E5%8E%9F%E7%90%86%E5%9B%BE.png" class="">
+
+<center><u>cache映射原理图</u></center>
+
+<h2 id="不同映射方式对应的cache结构"><a href="#不同映射方式对应的cache结构" class="headerlink" title="不同映射方式对应的cache结构"></a>不同映射方式对应的cache结构</h2><p>访问 Cache 时地址可分为 3 个部分: 偏移 (Offset)、 索引 (Index) 和标签 ( Tag)。   </p>
+<ul>
+<li>Offset 是块内地址, 在地址的低位。 因为 Cache 块一般比较大, 通常包含 32 字节或 64 字节, 而指令或数据访问往往没有<br>这么宽, 需要通过 Offset 来指定访问对象在块内的具体位置。 </li>
+<li>Index 是用来索引 Cache 块的, 将其作为地址来访问 Cache。 </li>
+<li>地址剩余的高位部分是访问 Cache 的 Tag, 用于和 Cache 中保存的 Tag 进行比较, 如果相等就给出命中信号 Hit。</li>
+</ul>
+<img src="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/%E4%B8%8D%E5%90%8C%E6%98%A0%E5%B0%84%E6%96%B9%E5%BC%8F%E5%AF%B9%E5%BA%94%E7%9A%84cache%E7%BB%93%E6%9E%84.png" class="">
+<center><u>不同映射方式对应的cache结构</u></center>
+
+
+<blockquote>
+<p>在直接相联结构中, 访问地址的 Tag 仅需要和 Index 索引的那个 Cache 块的 Tag 比较; </p>
+<p>在全相联结构中, Index 位数为 0, 访问地址的 Tag 需要和每个<br>Cache 块的 Tag 比较, 如果相等就给出命中信号 Hit, 同时将命中项的 Cache 块的 Data 通过 Mux<br>(多路选择器, Multiplexer) 选出; </p>
+<p>在组相联结构中, 访问地址的 Tag 需要和每一组中 Index 索<br>引的那个 Cache 块的 Tag 比较, 生成 Hit 信号并选出命中项的 Data。 </p>
+</blockquote>
+<p><code>注意 Offset 位数只和 Cache块大小相关, 但 Tag 和 Index 位数则和相联度相关</code>。<br>例如在 32 位处理器中, 如果 Cache 大小为16KB, 块大小为 32 字节, 则 Offset 为 5 位, 共有 512 个 Cache 块。 采用直接相联结构 Index 为9 位, Tag 为 18 位; 采用全相联结构 Index 为 0 位, Tag 为 27 位; 采用两路组相联结构 Index 为8 位, Tag 为 19 位。  </p>
+<h2 id="cache的读写策略"><a href="#cache的读写策略" class="headerlink" title="cache的读写策略"></a>cache的读写策略</h2><h3 id="cache读策略"><a href="#cache读策略" class="headerlink" title="cache读策略"></a>cache读策略</h3><p>cache的都策略比较简单。如果读命中，则直接访问cache中的内容；如果读未命中，则会进行读分配</p>
+<h3 id="cache写策略"><a href="#cache写策略" class="headerlink" title="cache写策略"></a>cache写策略</h3><img src="/2024/02/19/cache_controller%E8%AE%BE%E8%AE%A1%EF%BC%881%EF%BC%89-%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/cache%E7%9A%84%E5%86%99%E7%AD%96%E7%95%A5.png" class="">
+
+<center><u>cache的写策略</u></center>
+
+<p>思考一个问题：<code>为什么写直达要搭配写不分配，写回要搭配写分配？</code></p>
+<blockquote>
+<p>采用写不分配的结果就是，永远不会将数据加载到cache中。</p>
+<p>写分配的结果就是，会将数据加载到cache中。</p>
+<p><strong>如果写回+写不分配会出现什么什么情况？</strong></p>
+<p>初始情况下，cache中的数据都是invalid的。现在考虑对同一个地址进行写操作，那么写回+写不分配这种方式，永远都是不会命中，一直在操作内存。不如写回+写分配，第一次不命中之后，数据会加载到cache中，之后就会写命中，就会访问cache，效率更高</p>
+<p><strong>如果写直达+写分配会出现什么情况？</strong></p>
+<p>初始情况下，cache中的数据都是invalid的。现在考虑对同一个地址进行写操作，那么写直达+写分配这种方式，第一次未命中之后，数据会加载到cache，但是之后即使命中，仍然会一直访问内存，效率不会变高没实际意义，而且需要额外写cache（因为未命中的时候，先将数据搬运到cache，因为未下写成功，接下来还会发生一次写，此时命中，会直接写到内存）。不如直接写直达+写不分配，这样直接写内存就可以，避免写分配需要额外写一次cache！</p>
+</blockquote>
+<h2 id="cache的替换策略"><a href="#cache的替换策略" class="headerlink" title="cache的替换策略"></a>cache的替换策略</h2><p>当 发 生Cache 失效而需要取回想要的 Cache 行,此时如果 Cache 满了, 则需要进行替换。<br>进行 Cache 替换时, 如果有多个 Cache 行可供替换, 可以选择<code>随机进行替换</code>, 也可以<code>替换掉最先进入 Cache 的 Cache 行(FIFO 替换)</code>, 或者<code>替换掉最近最少使用 的 Cache 行 (LRU 替换)</code>。  </p>
+<hr>
+<p>参考书籍&amp;博客：</p>
+<ol>
+<li><p>《计算机体系结构基础》第3版.胡伟武</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/632189718">Cache的基础知识</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41587740/article/details/109104962">计算机组成原理-Cache写策略</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_47088143/article/details/125826983">关于Cache写直达搭配写不分配，写回搭配写分配的理解</a></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/02/19/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-Typora%E7%A0%B4%E8%A7%A3%E7%89%88%E4%B8%8B%E8%BD%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/02/19/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-Typora%E7%A0%B4%E8%A7%A3%E7%89%88%E4%B8%8B%E8%BD%BD/" class="post-title-link" itemprop="url">hexo博客撰写-Typora破解版下载</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-19 23:16:21" itemprop="dateCreated datePublished" datetime="2024-02-19T23:16:21+08:00">2024-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-05 10:43:58" itemprop="dateModified" datetime="2024-03-05T10:43:58+08:00">2024-03-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hexo-Typora%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99/" itemprop="url" rel="index"><span itemprop="name">hexo & Typora博客撰写</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/02/19/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-Typora%E7%A0%B4%E8%A7%A3%E7%89%88%E4%B8%8B%E8%BD%BD/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/02/19/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-Typora%E7%A0%B4%E8%A7%A3%E7%89%88%E4%B8%8B%E8%BD%BD/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>&#x3D;&#x3D;&gt;<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Simon-Wu/p/17976330">Typora下载安装于永久免费激活</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/02/19/Nor-Flash%E5%92%8CNand-Flash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -998,7 +1259,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1011,7 +1272,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
