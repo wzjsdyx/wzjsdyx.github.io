@@ -20,18 +20,20 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Q1：虚实地址的概念和用处Q2：小端和大端的概念和用处 参考博客：">
+  <meta name="description" content="Q1：虚实地址的概念和用处Q2：小端和大端的概念和用处Q3：补码加法器和减法器实现Q4：转移延迟槽指令转移延迟槽位于转移指令之后，无论转移指令跳转与否，这条指令都必须被执行 假设有一个PC为A的转移指令，跳转到B这个PC上，那么处理器的运行机制就是A，A+4，B….. 对于一条转移指令，PC真正跳转的时机是在执行转移延迟槽指令的时候 因此，对于MIPS指令中跳转指令的PC计算都是转移指令的延迟槽P">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CPU设计实战Q&amp;A">
 <meta property="og:url" content="https://wzjsdyx.github.io/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="Q1：虚实地址的概念和用处Q2：小端和大端的概念和用处 参考博客：">
+<meta property="og:description" content="Q1：虚实地址的概念和用处Q2：小端和大端的概念和用处Q3：补码加法器和减法器实现Q4：转移延迟槽指令转移延迟槽位于转移指令之后，无论转移指令跳转与否，这条指令都必须被执行 假设有一个PC为A的转移指令，跳转到B这个PC上，那么处理器的运行机制就是A，A+4，B….. 对于一条转移指令，PC真正跳转的时机是在执行转移延迟槽指令的时候 因此，对于MIPS指令中跳转指令的PC计算都是转移指令的延迟槽P">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/BEQ%E6%8C%87%E4%BB%A4.png">
 <meta property="article:published_time" content="2024-03-13T00:26:17.000Z">
-<meta property="article:modified_time" content="2024-03-13T01:50:05.484Z">
+<meta property="article:modified_time" content="2024-03-18T10:56:37.880Z">
 <meta property="article:author" content="zhijun">
 <meta property="article:tag" content="虚实地址转换">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/BEQ%E6%8C%87%E4%BB%A4.png">
 
 <link rel="canonical" href="https://wzjsdyx.github.io/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/">
 
@@ -188,10 +190,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-13 08:26:17 / 修改时间：09:50:05" itemprop="dateCreated datePublished" datetime="2024-03-13T08:26:17+08:00">2024-03-13</time>
+              <time title="创建时间：2024-03-13 08:26:17" itemprop="dateCreated datePublished" datetime="2024-03-13T08:26:17+08:00">2024-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-18 18:56:37" itemprop="dateModified" datetime="2024-03-18T18:56:37+08:00">2024-03-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -234,7 +242,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Q1：虚实地址的概念和用处"><a href="#Q1：虚实地址的概念和用处" class="headerlink" title="Q1：虚实地址的概念和用处"></a>Q1：虚实地址的概念和用处</h1><h1 id="Q2：小端和大端的概念和用处"><a href="#Q2：小端和大端的概念和用处" class="headerlink" title="Q2：小端和大端的概念和用处"></a>Q2：小端和大端的概念和用处</h1><hr>
+        <h1 id="Q1：虚实地址的概念和用处"><a href="#Q1：虚实地址的概念和用处" class="headerlink" title="Q1：虚实地址的概念和用处"></a>Q1：虚实地址的概念和用处</h1><h1 id="Q2：小端和大端的概念和用处"><a href="#Q2：小端和大端的概念和用处" class="headerlink" title="Q2：小端和大端的概念和用处"></a>Q2：小端和大端的概念和用处</h1><h1 id="Q3：补码加法器和减法器实现"><a href="#Q3：补码加法器和减法器实现" class="headerlink" title="Q3：补码加法器和减法器实现"></a>Q3：补码加法器和减法器实现</h1><h1 id="Q4：转移延迟槽指令"><a href="#Q4：转移延迟槽指令" class="headerlink" title="Q4：转移延迟槽指令"></a>Q4：转移延迟槽指令</h1><p><code>转移延迟槽位于转移指令之后，无论转移指令跳转与否，这条指令都必须被执行</code></p>
+<p>假设有一个PC为A的转移指令，跳转到B这个PC上，那么处理器的运行机制就是A，A+4，B…..</p>
+<p><code>对于一条转移指令，PC真正跳转的时机是在执行转移延迟槽指令的时候</code></p>
+<p>因此，对于MIPS指令中跳转指令的PC计算都是转移指令的延迟槽PC + offset</p>
+<img src="/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/BEQ%E6%8C%87%E4%BB%A4.png" class="">
+
+
+
+<h1 id="Q5：有符号数的比较"><a href="#Q5：有符号数的比较" class="headerlink" title="Q5：有符号数的比较"></a>Q5：有符号数的比较</h1><p>有符号数相加减的溢出情况</p>
+<p>无符号数相加减的溢出情况</p>
+<hr>
 <p>参考博客：</p>
 
     </div>
@@ -320,7 +338,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Q1%EF%BC%9A%E8%99%9A%E5%AE%9E%E5%9C%B0%E5%9D%80%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%94%A8%E5%A4%84"><span class="nav-number">1.</span> <span class="nav-text">Q1：虚实地址的概念和用处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q2%EF%BC%9A%E5%B0%8F%E7%AB%AF%E5%92%8C%E5%A4%A7%E7%AB%AF%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%94%A8%E5%A4%84"><span class="nav-number">2.</span> <span class="nav-text">Q2：小端和大端的概念和用处</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Q1%EF%BC%9A%E8%99%9A%E5%AE%9E%E5%9C%B0%E5%9D%80%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%94%A8%E5%A4%84"><span class="nav-number">1.</span> <span class="nav-text">Q1：虚实地址的概念和用处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q2%EF%BC%9A%E5%B0%8F%E7%AB%AF%E5%92%8C%E5%A4%A7%E7%AB%AF%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%94%A8%E5%A4%84"><span class="nav-number">2.</span> <span class="nav-text">Q2：小端和大端的概念和用处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q3%EF%BC%9A%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E5%92%8C%E5%87%8F%E6%B3%95%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Q3：补码加法器和减法器实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q4%EF%BC%9A%E8%BD%AC%E7%A7%BB%E5%BB%B6%E8%BF%9F%E6%A7%BD%E6%8C%87%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">Q4：转移延迟槽指令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q5%EF%BC%9A%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">5.</span> <span class="nav-text">Q5：有符号数的比较</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -336,20 +354,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -20,20 +20,23 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="show me bug">
+  <meta name="description" content="design设计需求：  pclk和fclk是同步时钟，但pclk&#x3D;200Mhz，fclk&#x3D;100Mhz 现有pclk到fclk的path，也有fclk到pclk的path，需要做时序约束   12# 时序约束">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ip开发环境搭建（4）lec环境">
-<meta property="og:url" content="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:title" content="项目实践-多周期路径约束">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="show me bug">
+<meta property="og:description" content="design设计需求：  pclk和fclk是同步时钟，但pclk&#x3D;200Mhz，fclk&#x3D;100Mhz 现有pclk到fclk的path，也有fclk到pclk的path，需要做时序约束   12# 时序约束">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-03-11T07:04:50.000Z">
-<meta property="article:modified_time" content="2024-03-12T01:04:25.183Z">
+<meta property="og:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-03-18-%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F\design.png">
+<meta property="article:published_time" content="2024-03-18T10:58:56.000Z">
+<meta property="article:modified_time" content="2024-03-19T01:22:22.892Z">
 <meta property="article:author" content="zhijun">
-<meta property="article:tag" content="lec环境">
+<meta property="article:tag" content="时序约束">
+<meta property="article:tag" content="多周期路径">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-03-18-%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F\design.png">
 
-<link rel="canonical" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/">
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/">
 
 
 <script id="page-configurations">
@@ -46,7 +49,7 @@
   };
 </script>
 
-  <title>ip开发环境搭建（4）lec环境 | 芯青年</title>
+  <title>项目实践-多周期路径约束 | 芯青年</title>
   
 
 
@@ -166,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -179,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ip开发环境搭建（4）lec环境
+          项目实践-多周期路径约束
         </h1>
 
         <div class="post-meta">
@@ -189,14 +192,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-11 15:04:50" itemprop="dateCreated datePublished" datetime="2024-03-11T15:04:50+08:00">2024-03-11</time>
+              <time title="创建时间：2024-03-18 18:58:56" itemprop="dateCreated datePublished" datetime="2024-03-18T18:58:56+08:00">2024-03-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-12 09:04:25" itemprop="dateModified" datetime="2024-03-12T09:04:25+08:00">2024-03-12</time>
+                <time title="修改时间：2024-03-19 09:22:22" itemprop="dateModified" datetime="2024-03-19T09:22:22+08:00">2024-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -204,7 +207,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
                 </span>
             </span>
 
@@ -224,8 +227,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -240,7 +243,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <blockquote>
+<p>design设计需求： </p>
+<p>pclk和fclk是同步时钟，但pclk&#x3D;200Mhz，fclk&#x3D;100Mhz</p>
+<p>现有pclk到fclk的path，也有fclk到pclk的path，需要做时序约束</p>
+</blockquote>
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-03-18-项目实践-多周期路径约束\design.png" alt="image-20240319092108551"></p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 时序约束</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -249,7 +260,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/lec%E7%8E%AF%E5%A2%83/" rel="tag"># lec环境</a>
+              <a href="/tags/%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" rel="tag"># 时序约束</a>
+              <a href="/tags/%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84/" rel="tag"># 多周期路径</a>
           </div>
 
         
@@ -258,13 +270,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%883%EF%BC%89synthesis%E7%8E%AF%E5%A2%83/" rel="prev" title="ip开发环境搭建（3）synthesis环境">
-      <i class="fa fa-chevron-left"></i> ip开发环境搭建（3）synthesis环境
+    <a href="/2024/03/14/python%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C/" rel="prev" title="python脚本执行">
+      <i class="fa fa-chevron-left"></i> python脚本执行
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/" rel="next" title="ip开发环境搭建（5）cdc环境">
-      ip开发环境搭建（5）cdc环境 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
