@@ -162,6 +162,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/" class="post-title-link" itemprop="url">IC设计经验-模块门控时钟</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-21 08:59:13 / 修改时间：09:19:40" itemprop="dateCreated datePublished" datetime="2024-03-21T08:59:13+08:00">2024-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">IC设计经验</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>MCU对功耗要求比较严格，对模块的时钟做门控可以有效的降低功耗</p>
+</blockquote>
+<p>一种值得借鉴的APB接口门控读写寄存器的做法：<br><code>写操作：使用reg_wr做门控</code><br><code>读操作：可以不用时钟</code></p>
+<p>需要注意，如果有些寄存器除了apb写，还有其他写操作的话，就不能用门控时钟，要用常开时钟;</p>
+<p>如果<code>想进一步节省功耗，还有一种操作是，对32位宽的寄存器，将bit 分开，有些用门口时钟，有些不用门控时钟</code></p>
+<h1 id="时钟门控规划"><a href="#时钟门控规划" class="headerlink" title="时钟门控规划"></a>时钟门控规划</h1><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091822748.png" class="">
+
+
+
+<h1 id="具体设计方法"><a href="#具体设计方法" class="headerlink" title="具体设计方法"></a>具体设计方法</h1><h2 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h2><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321090928394-1710983373028-34.png" class="">
+
+<h3 id="全部做门控"><a href="#全部做门控" class="headerlink" title="全部做门控"></a>全部做门控</h3><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091130304.png" class="">
+
+<h3 id="部分bit做门控，部分bit不做门控"><a href="#部分bit做门控，部分bit不做门控" class="headerlink" title="部分bit做门控，部分bit不做门控"></a>部分bit做门控，部分bit不做门控</h3><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091238384.png" class="">
+
+<img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091342033.png" class="">
+
+
+
+<h2 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h2><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091523871.png" class="">
+
+<img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091430227.png" class="">
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,10 +292,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-20 00:11:37 / 修改时间：00:28:18" itemprop="dateCreated datePublished" datetime="2024-03-20T00:11:37+08:00">2024-03-20</time>
+              <time title="创建时间：2024-03-20 00:11:37" itemprop="dateCreated datePublished" datetime="2024-03-20T00:11:37+08:00">2024-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-21 08:59:26" itemprop="dateModified" datetime="2024-03-21T08:59:26+08:00">2024-03-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1034,93 +1147,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">ip开发环境搭建（4）lec环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-11 15:04:50" itemprop="dateCreated datePublished" datetime="2024-03-11T15:04:50+08:00">2024-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-12 09:04:25" itemprop="dateModified" datetime="2024-03-12T09:04:25+08:00">2024-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1192,20 +1218,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
