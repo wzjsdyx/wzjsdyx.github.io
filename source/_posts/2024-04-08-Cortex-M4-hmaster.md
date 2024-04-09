@@ -32,6 +32,16 @@ Cortex-M4处理器的总线接口，hmaster[1:0]信号可以区分：
 
 `中断向量的读取有些特殊，虽然是为了抓取指令，但是总线层面上是数据访问，即HPROT[0]标记为数据访问`
 
+从下图中可以看出是`通过DBUS读取中断向量表里面的中断向量`
+
+{% asset_img image-20240409161637006.png %}
+
+{% asset_img image-20240409161753066.png %}
+
+{% asset_img image-20240409161707697.png %}
+
+
+
 `DBUS不能进行指令访问，因此hmasterd[1:0] value不可能是2`
 
 # SBUS的hmaster信号
