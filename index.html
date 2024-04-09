@@ -410,7 +410,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-09 09:22:16" itemprop="dateModified" datetime="2024-04-09T09:22:16+08:00">2024-04-09</time>
+                <time title="修改时间：2024-04-09 17:19:32" itemprop="dateModified" datetime="2024-04-09T17:19:32+08:00">2024-04-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -462,6 +462,15 @@
 <li>core指令访问</li>
 </ul>
 <p><code>中断向量的读取有些特殊，虽然是为了抓取指令，但是总线层面上是数据访问，即HPROT[0]标记为数据访问</code></p>
+<p>从下图中可以看出是<code>通过DBUS读取中断向量表里面的中断向量</code></p>
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161637006.png" class="">
+
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161753066.png" class="">
+
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161707697.png" class="">
+
+
+
 <p><code>DBUS不能进行指令访问，因此hmasterd[1:0] value不可能是2</code></p>
 <h1 id="SBUS的hmaster信号"><a href="#SBUS的hmaster信号" class="headerlink" title="SBUS的hmaster信号"></a>SBUS的hmaster信号</h1><img src="/2024/04/08/Cortex-M4-hmaster/image-20240408223015766.png" class="">
 
