@@ -162,6 +162,374 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/" class="post-title-link" itemprop="url">CPU设计实战Q&A</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-13 08:26:17" itemprop="dateCreated datePublished" datetime="2024-03-13T08:26:17+08:00">2024-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-18 18:56:37" itemprop="dateModified" datetime="2024-03-18T18:56:37+08:00">2024-03-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Q1：虚实地址的概念和用处"><a href="#Q1：虚实地址的概念和用处" class="headerlink" title="Q1：虚实地址的概念和用处"></a>Q1：虚实地址的概念和用处</h1><h1 id="Q2：小端和大端的概念和用处"><a href="#Q2：小端和大端的概念和用处" class="headerlink" title="Q2：小端和大端的概念和用处"></a>Q2：小端和大端的概念和用处</h1><h1 id="Q3：补码加法器和减法器实现"><a href="#Q3：补码加法器和减法器实现" class="headerlink" title="Q3：补码加法器和减法器实现"></a>Q3：补码加法器和减法器实现</h1><h1 id="Q4：转移延迟槽指令"><a href="#Q4：转移延迟槽指令" class="headerlink" title="Q4：转移延迟槽指令"></a>Q4：转移延迟槽指令</h1><p><code>转移延迟槽位于转移指令之后，无论转移指令跳转与否，这条指令都必须被执行</code></p>
+<p>假设有一个PC为A的转移指令，跳转到B这个PC上，那么处理器的运行机制就是A，A+4，B…..</p>
+<p><code>对于一条转移指令，PC真正跳转的时机是在执行转移延迟槽指令的时候</code></p>
+<p>因此，对于MIPS指令中跳转指令的PC计算都是转移指令的延迟槽PC + offset</p>
+<img src="/2024/03/13/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98Q-A/BEQ%E6%8C%87%E4%BB%A4.png" class="">
+
+
+
+<h1 id="Q5：有符号数的比较"><a href="#Q5：有符号数的比较" class="headerlink" title="Q5：有符号数的比较"></a>Q5：有符号数的比较</h1><p>有符号数相加减的溢出情况</p>
+<p>无符号数相加减的溢出情况</p>
+<hr>
+<p>参考博客：</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/12/SRAM-self-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/12/SRAM-self-test/" class="post-title-link" itemprop="url">SRAM self test</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-12 09:31:26 / 修改时间：09:35:35" itemprop="dateCreated datePublished" datetime="2024-03-12T09:31:26+08:00">2024-03-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/12/SRAM-self-test/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/12/SRAM-self-test/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>了解SRAM的self test的机制</p>
+</blockquote>
+<p>SRAM一般会配有MBIST电路进行自测，通常可以有两种方式就行调用：</p>
+<ul>
+<li>第一种就是CP测试阶段，机台通过JTAG调用MBIST进行测试</li>
+<li>第二种就是通过IST ROM调用MBIST进行测试（可以通过CPU下指令进行测试）</li>
+</ul>
+<img src="/2024/03/12/SRAM-self-test/img_v3_028t_8bab661a-141b-453a-8a44-78b05b2a8f9g.jpg" class="">
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/12/sram%E7%9A%84%E4%BD%8E%E5%8A%9F%E8%80%97%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/12/sram%E7%9A%84%E4%BD%8E%E5%8A%9F%E8%80%97%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">sram的低功耗模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-12 09:09:50 / 修改时间：09:38:21" itemprop="dateCreated datePublished" datetime="2024-03-12T09:09:50+08:00">2024-03-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/12/sram%E7%9A%84%E4%BD%8E%E5%8A%9F%E8%80%97%E6%A8%A1%E5%BC%8F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/12/sram%E7%9A%84%E4%BD%8E%E5%8A%9F%E8%80%97%E6%A8%A1%E5%BC%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Here's something encrypted, password is required to continue reading.
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/03/12/sram%E7%9A%84%E4%BD%8E%E5%8A%9F%E8%80%97%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">ip开发环境搭建（5）cdc环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-11 15:06:23" itemprop="dateCreated datePublished" datetime="2024-03-11T15:06:23+08:00">2024-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-12 09:04:25" itemprop="dateModified" datetime="2024-03-12T09:04:25+08:00">2024-03-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -716,443 +1084,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/06/keil%E8%B0%83%E6%95%B4%E5%A0%86%E6%A0%88%E4%BB%A5%E5%8F%8ASRAM%E5%9C%B0%E5%9D%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/06/keil%E8%B0%83%E6%95%B4%E5%A0%86%E6%A0%88%E4%BB%A5%E5%8F%8ASRAM%E5%9C%B0%E5%9D%80/" class="post-title-link" itemprop="url">keil调整堆栈以及SRAM地址</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-06 09:13:58" itemprop="dateCreated datePublished" datetime="2024-03-06T09:13:58+08:00">2024-03-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-11 14:58:44" itemprop="dateModified" datetime="2024-03-11T14:58:44+08:00">2024-03-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5/" itemprop="url" rel="index"><span itemprop="name">编译链接</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/06/keil%E8%B0%83%E6%95%B4%E5%A0%86%E6%A0%88%E4%BB%A5%E5%8F%8ASRAM%E5%9C%B0%E5%9D%80/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/06/keil%E8%B0%83%E6%95%B4%E5%A0%86%E6%A0%88%E4%BB%A5%E5%8F%8ASRAM%E5%9C%B0%E5%9D%80/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>需求：针对基于Cortex-M4处理器的MCU，系统SRAM分配的地址空间是在:<br>SRAM1：0x1FFC_0000-0x1FFF_FFFF（256KB），<br>SRAM2：0x2000_0000-0x2003_FFFF（256KB），</p>
-<p>原来的连接脚本定义的SRAM空间以及堆栈地址都是基于SRAM2，通过SBUS访问。<br>现在打算在CPU的DBUS接口处添加一个Cache，希望使用SRAM1，通过DBUS访问，来验证cache功能是否正确。</p>
-</blockquote>
-<img src="/2024/03/06/keil%E8%B0%83%E6%95%B4%E5%A0%86%E6%A0%88%E4%BB%A5%E5%8F%8ASRAM%E5%9C%B0%E5%9D%80/keil%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE%E9%80%89%E9%A1%B9.jpg" class="">
-
-<center><u>keil链接脚本修改及其配置选项</u> </center>
-
-<p>主要就是指定，startup.S启动文件中的<code>initial_sp</code>和<code>heap_base</code>位置</p>
-<p>keil工具可以直接配置SRAM的地址，然后根据SRAM的地址计算出堆栈地址。所以上述图片中的startup.S中的文件，并没有直接设置这两个变量</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/kebidaixu/article/details/127384904">IAR和KEIL配置ROM、RAM、堆、栈</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_47061967/article/details/135885046">关于Keil下如何自定义Stack和Heap内存位置</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/05/sram%E8%AF%84%E4%BC%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/05/sram%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">sram评估</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-05 22:14:55 / 修改时间：22:34:52" itemprop="dateCreated datePublished" datetime="2024-03-05T22:14:55+08:00">2024-03-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SRAM/" itemprop="url" rel="index"><span itemprop="name">SRAM</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/05/sram%E8%AF%84%E4%BC%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/05/sram%E8%AF%84%E4%BC%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一般SRAM从如下几方面评估：</p>
-<p>1）接口</p>
-<p>2）频率</p>
-<p>3）面积</p>
-<p>4）功耗</p>
-<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><p>读写信号：</p>
-<p>低功耗信号：</p>
-<p>repaire信号：IO repaire &#x2F; array repaire</p>
-<p>读写margin信号：</p>
-<p>读写assist信号：</p>
-<h1 id="频率"><a href="#频率" class="headerlink" title="频率"></a>频率</h1><p>需要看一个SRAM能跑多快，read和write timing</p>
-<img src="/2024/03/05/sram%E8%AF%84%E4%BC%B0/write_cycle_timing.jpg" class="">
-
-<center><u> write_cycle_timing</u> </center>
-
-<p>一般write cycle timing主要是满足建立时间和保持时间，和频率的关系不大。</p>
-<img src="/2024/03/05/sram%E8%AF%84%E4%BC%B0/read_cycle_timing.jpg" class="">
-
-<center><u> read_cycle_timing</u> </center>
-
-<p>需要看Tcyc和Ta的具体数值。</p>
-<img src="/2024/03/05/sram%E8%AF%84%E4%BC%B0/timing_parameter.jpg" class="">
-
-<center><u>timing parameter</u> </center>
-
-<p>Tcyc影响时钟频率；Ta影响是否<code>能当T给地址之后，下T可以采样有效数据</code></p>
-<hr>
-<p>参考博客：</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">sram compiler中的column multiplexer配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-05 20:02:02" itemprop="dateCreated datePublished" datetime="2024-03-05T20:02:02+08:00">2024-03-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-06 09:25:17" itemprop="dateModified" datetime="2024-03-06T09:25:17+08:00">2024-03-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SRAM/" itemprop="url" rel="index"><span itemprop="name">SRAM</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>通常接触到的sram size的表述都是words x bits，例如1024 x 8bits。但是在物理上，这个形状是非常狭长，不利于物理版图的实现，所以foundry实际做的时候会做<code>折叠</code>，这个折叠的参数就是column multiplexer（<code>直观上的理解就是调整SRAM Macro的长宽比例</code>），来调整SRAM Macro layout版图的形状。接下来就是重点说明：</p>
-<h2 id="column-multiplexer参数如何调整长宽比例的"><a href="#column-multiplexer参数如何调整长宽比例的" class="headerlink" title="column multiplexer参数如何调整长宽比例的"></a>column multiplexer参数如何调整长宽比例的</h2><blockquote>
-<p>假设需要的SRAM size是1024 x 8 bits，memory compiler中配置的column mux的参数是4 ,对应的型号就是(256x4x8 bits)–&gt;256行32列</p>
-<p>ADDR总位宽是10 bits，在这种column mux配置下，X地址是8bits，Y地址是2bits</p>
-<p>现在对地址10‘b00_0000_1100进行访问，经过X地址解码，会访问第3行，经过Y地址解码，会访问MUX&#x3D;0的列</p>
-<p>可以看到，如果将column mux设置为8，那么SRAM Macro会变宽，（128x8x8–&gt;128行64列）</p>
-</blockquote>
-<img src="/2024/03/05/sram-compiler%E4%B8%AD%E7%9A%84column-multiplexer%E9%85%8D%E7%BD%AE/column_multiplexer%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6.jpg" class="">
-
-<center><u>column_multiplexer工作机制</u> </center>
-
-<blockquote>
-<p>记住如下结论：<br>1)字长<em>字宽&#x3D;行数</em>列数<br>2)行数&#x3D;字长&#x2F;MUX<br>3)列数&#x3D;字宽*MUX<br>4)MUX越大，行数越少，列数越多，micro尺寸越矮、越宽</p>
-</blockquote>
-<h2 id="column-multiplexer还会影响时序和面积"><a href="#column-multiplexer还会影响时序和面积" class="headerlink" title="column multiplexer还会影响时序和面积"></a>column multiplexer还会影响时序和面积</h2><p>column multiplexer这个参数主要作用是调整SRAM Macro layout的形状，此外还会一定程度上影响时序和面积。</p>
-<p>很多情况下，column multiplexer这个参数越大，SRAM Macro layout的图形越宽，其面积越大，时序越好。</p>
-<p>有些时候，这个规律并不使用，还需要以memory compiler实际产生的数据为准。</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lyfwill/article/details/81330081">ARM的memory Compiler总结</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://bbs.eetop.cn/thread-955010-1-1.html"> Wordline与Bitline</a></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/05/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%A4%9A%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/05/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%A4%9A%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0/" class="post-title-link" itemprop="url">hexo博客撰写-多设备同步更新</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-05 10:37:35 / 修改时间：11:09:29" itemprop="dateCreated datePublished" datetime="2024-03-05T10:37:35+08:00">2024-03-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo-Typora%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99/" itemprop="url" rel="index"><span itemprop="name">hexo & Typora博客撰写</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/05/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%A4%9A%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/05/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%A4%9A%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="多设备hexo博客同步更新"><a href="#多设备hexo博客同步更新" class="headerlink" title="多设备hexo博客同步更新"></a>多设备hexo博客同步更新</h1><blockquote>
-<ul>
-<li><p>需求：在个人PC新建了一个hexo博客环境，但是想在公司PC更新自己的hexo博客并更新到远程github站点。公司PC不能使用远程登录个人PC，而且也觉着这样比较麻烦，因此寻找解决方法。</p>
-</li>
-<li><p>解决思路：<br>1）在远程xxxxx.github.io仓库建立hex分支</p>
-<p>2）hexo的静态博客文件存放在master分支</p>
-<p>3）hexo的源文件（部署文件）存放在hex分支</p>
-<p>4）个人PC和公司PC共同维护hex分支的仓库，并远程部署到master分支 –&gt;完成多设备hexo博客的更新</p>
-</li>
-</ul>
-</blockquote>
-<h2 id="维护hex分支仓库，并部署到master分支"><a href="#维护hex分支仓库，并部署到master分支" class="headerlink" title="维护hex分支仓库，并部署到master分支"></a>维护hex分支仓库，并部署到master分支</h2><p>不管是在个人PC还是在公司PC撰写博客时，首先更新，然后撰写博客，最后上传</p>
-<h3 id="pull更新"><a href="#pull更新" class="headerlink" title="pull更新"></a>pull更新</h3><p><code>get pull</code></p>
-<h3 id="master分支部署"><a href="#master分支部署" class="headerlink" title="master分支部署"></a>master分支部署</h3><p><code>hexo g</code></p>
-<p><code>hexo d</code></p>
-<h3 id="push上传"><a href="#push上传" class="headerlink" title="push上传"></a>push上传</h3><p><code>git add .</code></p>
-<p><code>git commit -m &#39;message&#39;</code></p>
-<p><code>git push</code></p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903590474022925#heading-7">Hexo博客多台电脑设备同步管理</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/K1052176873/article/details/122879462">Hexo在多台电脑上提交和更新</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0b1fccce74e0">利用Hexo在多台电脑上提交和更新github pages博客</a></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1220,20 +1155,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">82</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
