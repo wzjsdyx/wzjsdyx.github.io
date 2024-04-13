@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CPU内部状态信号PCrf_pc_ex     通用寄存器    debug信号  cpu halt  DHCSR: C_DEBUGENC_DEBUGEN信号只能由debugger写   DHCSR: C_HALTC_DEBUGEN信号使能之后，配置C_HALT,CPU进入debug状态     DHCSR: S_HALT      复位捕获      DEMCR: VC_CORERESET">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cortex-M4内部关键信号">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="CPU内部状态信号PCrf_pc_ex     通用寄存器    debug信号  cpu halt  DHCSR: C_DEBUGENC_DEBUGEN信号只能由debugger写   DHCSR: C_HALTC_DEBUGEN信号使能之后，配置C_HALT,CPU进入debug状态     DHCSR: S_HALT      复位捕获      DEMCR: VC_CORERESET">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203730596.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203931848.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200553804.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200735486.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200841675.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201008580.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201048263.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201118756.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411202225743.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201617888.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201718635.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201916512.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203450200.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411193741518.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411193833231.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411204209957.png">
+<meta property="article:published_time" content="2024-04-11T11:27:08.000Z">
+<meta property="article:modified_time" content="2024-04-11T12:46:38.390Z">
+<meta property="article:author" content="zhijun">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="中断信号">
+<meta property="article:tag" content="debug信号">
+<meta property="article:tag" content="trace信号">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203730596.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Cortex-M4内部关键信号 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="zhijun">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cortex-M4内部关键信号
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-11 19:27:08 / 修改时间：20:46:38" itemprop="dateCreated datePublished" datetime="2024-04-11T19:27:08+08:00">2024-04-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CPU内部状态信号"><a href="#CPU内部状态信号" class="headerlink" title="CPU内部状态信号"></a>CPU内部状态信号</h1><h2 id="PC"><a href="#PC" class="headerlink" title="PC"></a>PC</h2><p><code>rf_pc_ex</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203730596.png" class="">
+
+
+
+<h2 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h2><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203931848.png" class="">
+
+
+
+<h1 id="debug信号"><a href="#debug信号" class="headerlink" title="debug信号"></a>debug信号</h1><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200553804.png" class="">
+
+<h2 id="cpu-halt"><a href="#cpu-halt" class="headerlink" title="cpu halt"></a>cpu halt</h2><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200735486.png" class="">
+
+<h3 id="DHCSR-C-DEBUGEN"><a href="#DHCSR-C-DEBUGEN" class="headerlink" title="DHCSR: C_DEBUGEN"></a>DHCSR: C_DEBUGEN</h3><p>C_DEBUGEN信号只能由debugger写</p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200841675.png" class="">
+
+<h3 id="DHCSR-C-HALT"><a href="#DHCSR-C-HALT" class="headerlink" title="DHCSR: C_HALT"></a>DHCSR: C_HALT</h3><p>C_DEBUGEN信号使能之后，配置C_HALT,CPU进入debug状态</p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201008580.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201048263.png" class="">
+
+<h3 id="DHCSR-S-HALT"><a href="#DHCSR-S-HALT" class="headerlink" title="DHCSR: S_HALT"></a>DHCSR: S_HALT</h3><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201118756.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411202225743.png" class="">
+
+
+
+<h2 id="复位捕获"><a href="#复位捕获" class="headerlink" title="复位捕获"></a>复位捕获</h2><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201617888.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201718635.png" class="">
+
+
+
+<h3 id="DEMCR-VC-CORERESET"><a href="#DEMCR-VC-CORERESET" class="headerlink" title="DEMCR: VC_CORERESET"></a>DEMCR: VC_CORERESET</h3><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201916512.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203450200.png" class="">
+
+<h1 id="trace信号"><a href="#trace信号" class="headerlink" title="trace信号"></a>trace信号</h1><h1 id="中断信号"><a href="#中断信号" class="headerlink" title="中断信号"></a>中断信号</h1><blockquote>
+<p>  &#x2F;&#x2F;—————————————————————————-<br>  &#x2F;&#x2F; Parameters<br>  &#x2F;&#x2F;—————————————————————————-<br>  parameter MPU_PRESENT     &#x3D; 0;  &#x2F;&#x2F; MPU present if 1<br>  parameter NUM_IRQ         &#x3D; 16; &#x2F;&#x2F; Number of interrupts. Between 1 and 240<br>  parameter LVL_WIDTH       &#x3D; 3;  &#x2F;&#x2F; Interrupt priority width. Between 3 and 8<br>  parameter TRACE_LVL       &#x3D; 1;  &#x2F;&#x2F; Trace support level. Between 0 and 3<br>  parameter DEBUG_LVL       &#x3D; 3;  &#x2F;&#x2F; Debug support level. Between 0 and 3<br>  parameter CLKGATE_PRESENT &#x3D; 0;  &#x2F;&#x2F; Architectural clock gating present if 1<br>  parameter RESET_ALL_REGS  &#x3D; 0;  &#x2F;&#x2F; Reset all registers if 1<br>  parameter WIC_PRESENT     &#x3D; 0;  &#x2F;&#x2F; WIC present if 1<br>  parameter WIC_LINES       &#x3D; 3;  &#x2F;&#x2F; Number of WIC lines. Between 3 and 243<br>  parameter BB_PRESENT      &#x3D; 1;  &#x2F;&#x2F; Bit banding present if 1<br>  parameter CONST_AHB_CTRL  &#x3D; 0;  &#x2F;&#x2F; Constant AHB control info if 1<br>  parameter FPU_PRESENT     &#x3D; 0;  &#x2F;&#x2F; FPU present if 1</p>
+</blockquote>
+<p><code>首先需要注意看NUM_IRQ参数</code></p>
+<h2 id="外部中断使能"><a href="#外部中断使能" class="headerlink" title="外部中断使能"></a>外部中断使能</h2><p><code>irq_en</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411193741518.png" class="">
+
+
+
+<h2 id="外部中断"><a href="#外部中断" class="headerlink" title="外部中断"></a>外部中断</h2><p><code>ext_irq_i</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411193833231.png" class="">
+
+
+
+<h2 id="hardfault"><a href="#hardfault" class="headerlink" title="hardfault"></a>hardfault</h2><p><code>int_fault</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411204209957.png" class="">
+
+
+
+<hr>
+<p>参考博客：</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/%E4%B8%AD%E6%96%AD%E4%BF%A1%E5%8F%B7/" rel="tag"># 中断信号</a>
+              <a href="/tags/debug%E4%BF%A1%E5%8F%B7/" rel="tag"># debug信号</a>
+              <a href="/tags/trace%E4%BF%A1%E5%8F%B7/" rel="tag"># trace信号</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/10/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C%E5%92%8C%E6%BD%9C%E4%BC%8F%E6%95%85%E9%9A%9C/" rel="prev" title="单点故障和潜伏故障">
+      <i class="fa fa-chevron-left"></i> 单点故障和潜伏故障
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/04/12/DFT%E7%94%B5%E8%B7%AF/" rel="next" title="DFT电路">
+      DFT电路 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E5%86%85%E9%83%A8%E7%8A%B6%E6%80%81%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.</span> <span class="nav-text">CPU内部状态信号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PC"><span class="nav-number">1.1.</span> <span class="nav-text">PC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">通用寄存器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#debug%E4%BF%A1%E5%8F%B7"><span class="nav-number">2.</span> <span class="nav-text">debug信号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cpu-halt"><span class="nav-number">2.1.</span> <span class="nav-text">cpu halt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCSR-C-DEBUGEN"><span class="nav-number">2.1.1.</span> <span class="nav-text">DHCSR: C_DEBUGEN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCSR-C-HALT"><span class="nav-number">2.1.2.</span> <span class="nav-text">DHCSR: C_HALT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCSR-S-HALT"><span class="nav-number">2.1.3.</span> <span class="nav-text">DHCSR: S_HALT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E4%BD%8D%E6%8D%95%E8%8E%B7"><span class="nav-number">2.2.</span> <span class="nav-text">复位捕获</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DEMCR-VC-CORERESET"><span class="nav-number">2.2.1.</span> <span class="nav-text">DEMCR: VC_CORERESET</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#trace%E4%BF%A1%E5%8F%B7"><span class="nav-number">3.</span> <span class="nav-text">trace信号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E4%BF%A1%E5%8F%B7"><span class="nav-number">4.</span> <span class="nav-text">中断信号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD%E4%BD%BF%E8%83%BD"><span class="nav-number">4.1.</span> <span class="nav-text">外部中断使能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="nav-number">4.2.</span> <span class="nav-text">外部中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hardfault"><span class="nav-number">4.3.</span> <span class="nav-text">hardfault</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhijun"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">zhijun</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">96</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhijun</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
