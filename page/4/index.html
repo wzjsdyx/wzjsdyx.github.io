@@ -27,7 +27,7 @@
 <meta property="og:site_name" content="芯青年">
 <meta property="og:description" content="show me bug">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="zhijun">
+<meta property="article:author" content="Youngster">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://wzjsdyx.github.io/page/4/">
@@ -162,11 +162,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
+      <meta itemprop="name" content="Youngster">
       <meta itemprop="description" content="show me bug">
     </span>
 
@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/" class="post-title-link" itemprop="url">Cortex-M4 debug寄存器</a>
+            <a href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">PTPX功耗评估</a>
         </h2>
 
         <div class="post-meta">
@@ -185,23 +185,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-03-25 15:14:00" itemprop="dateCreated datePublished" datetime="2024-03-25T15:14:00+08:00">2024-03-25</time>
+              <time title="创建时间：2024-04-02 19:03:50 / 修改时间：19:26:03" itemprop="dateCreated datePublished" datetime="2024-04-02T19:03:50+08:00">2024-04-02</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-29 10:12:22" itemprop="dateModified" datetime="2024-03-29T10:12:22+08:00">2024-03-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
                 </span>
             </span>
 
@@ -214,8 +208,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -230,10 +224,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>介绍Cortex-M4内部的debug寄存器</p>
-</blockquote>
-<p><font color=red>TBD：待补充</font></p>
+          <h1 id="结果确认"><a href="#结果确认" class="headerlink" title="结果确认"></a>结果确认</h1><ol>
+<li>跑完PTPX之后，需要确认结果是否正确，看下log</li>
+</ol>
+<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402190614115.png" class="">
+
+<p>最前面一列的百分比表示反标率</p>
+<p>我是core的波形对 whole chip design的反标，因此反标率很低，但是是正常的。</p>
+<ol start="2">
+<li>可以进一步在log中确认看fsdb2vcd是否错误</li>
+</ol>
+<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402192537542.png" class="">
+
+
+
+
+
+
+
 
       
     </div>
@@ -253,11 +261,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/24/%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E5%87%8F%E6%B3%95%E8%BF%90%E7%AE%97/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
+      <meta itemprop="name" content="Youngster">
       <meta itemprop="description" content="show me bug">
     </span>
 
@@ -267,7 +275,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/24/%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E5%87%8F%E6%B3%95%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">基础知识-补码运算</a>
+            <a href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">gvim实用技巧</a>
         </h2>
 
         <div class="post-meta">
@@ -276,23 +284,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-03-24 22:13:44" itemprop="dateCreated datePublished" datetime="2024-03-24T22:13:44+08:00">2024-03-24</time>
+              <time title="创建时间：2024-04-02 18:41:09 / 修改时间：18:48:21" itemprop="dateCreated datePublished" datetime="2024-04-02T18:41:09+08:00">2024-04-02</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 12:05:12" itemprop="dateModified" datetime="2024-04-08T12:05:12+08:00">2024-04-08</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
                 </span>
             </span>
 
@@ -305,8 +307,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/24/%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E5%87%8F%E6%B3%95%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/24/%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%8A%A0%E5%87%8F%E6%B3%95%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -321,27 +323,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>在设计CPU时，会有加法器，因此补充下基础知识</p>
-<p>计算机中都是用补码表示整数（有符号数、无符号数）</p>
-</blockquote>
-<h1 id="有符号和无符号整数表示"><a href="#有符号和无符号整数表示" class="headerlink" title="有符号和无符号整数表示"></a>有符号和无符号整数表示</h1><h2 id="原码"><a href="#原码" class="headerlink" title="原码"></a>原码</h2><p>含义：表示方式，数值表示范围等</p>
-<p>优点</p>
-<p>缺点</p>
-<h2 id="反码"><a href="#反码" class="headerlink" title="反码"></a>反码</h2><p>含义：表示方式，数值表示范围等</p>
-<p>符号位不变，其余位置按位取反</p>
-<p>优点</p>
-<p>缺点</p>
-<h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>含义：表示方式，数值表示范围等</p>
-<p>符号位不变，其余位置按位取反，末尾+1</p>
-<p>优点</p>
-<p>缺点</p>
-<h1 id="整数补码运算"><a href="#整数补码运算" class="headerlink" title="整数补码运算"></a>整数补码运算</h1><p>补码加法：<code>[x]补 + [y]补</code></p>
-<p>补码减法：<code>[x]补 - [y]补 = [x]补 + [-y]补</code></p>
-<h1 id="整数补码运算的溢出问题"><a href="#整数补码运算的溢出问题" class="headerlink" title="整数补码运算的溢出问题"></a>整数补码运算的溢出问题</h1><hr>
-<p>参考博客：</p>
+          <h1 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h1><h2 id="某个字符开头搜索"><a href="#某个字符开头搜索" class="headerlink" title="某个字符开头搜索"></a>某个字符开头搜索</h2><p><code>:</code>进入命令行</p>
+<p><code>/</code>开启搜索功能</p>
+<p><code>^</code>表示行的开头，正则表达式中表示一行的开始位置</p>
+<p><code>Err</code>搜索的文本字符</p>
+<p>结合起来<code>:/^Err</code>表示从当前位置向下搜索所有以Err开头的行</p>
+<h2 id="打开光标下的文件"><a href="#打开光标下的文件" class="headerlink" title="打开光标下的文件"></a>打开光标下的文件</h2><p>gvim中，<code>gf</code>命令会打开光标下的文件名，</p>
+<p>使用gf跳转之后，返回原来的文件可以使用如下两种方式：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_51760209/article/details/124065520">加减法运算及其溢出处理</a></li>
+<li><code>ctrl+o</code></li>
+<li><code>:bp</code></li>
 </ol>
 
       
@@ -362,11 +353,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/24/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E8%AE%BE%E8%AE%A1/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
+      <meta itemprop="name" content="Youngster">
       <meta itemprop="description" content="show me bug">
     </span>
 
@@ -376,7 +367,181 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/24/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">单周期CPU数据通路设计</a>
+            <a href="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">工艺库-基本概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-02 13:13:46 / 修改时间：13:37:57" itemprop="dateCreated datePublished" datetime="2024-04-02T13:13:46+08:00">2024-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E8%89%BA%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">工艺库</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/QJ3MPH5XhH.jpg" class="">
+
+
+
+<p><code>HDC50和HDC40</code></p>
+<p>数字表示channel length沟道长度</p>
+<p>沟道长度越短，速度越快，功耗越高</p>
+<p><code>PMK</code></p>
+<p>是低功耗相关的库，例如ISO&#x2F;power switch，level shift等</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/XRUN%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/02/XRUN%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">XRUN仿真工具</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-02 10:26:30 / 修改时间：10:29:32" itemprop="dateCreated datePublished" datetime="2024-04-02T10:26:30+08:00">2024-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/02/XRUN%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/XRUN%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>VHDL需要使用XRUN工具进行仿真</p>
+<p>VHDL仿真</p>
+<p><font color=red>VHDL和verilog混合仿真</font></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">基础知识-移位器的实现</a>
         </h2>
 
         <div class="post-meta">
@@ -386,14 +551,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-24 21:37:56" itemprop="dateCreated datePublished" datetime="2024-03-24T21:37:56+08:00">2024-03-24</time>
+              <time title="创建时间：2024-04-01 09:32:51" itemprop="dateCreated datePublished" datetime="2024-04-01T09:32:51+08:00">2024-04-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 09:09:33" itemprop="dateModified" datetime="2024-04-08T09:09:33+08:00">2024-04-08</time>
+                <time title="修改时间：2024-04-08 09:45:17" itemprop="dateModified" datetime="2024-04-08T09:45:17+08:00">2024-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -414,209 +579,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/24/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/24/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="添加BEQ和BNE数据通路"><a href="#添加BEQ和BNE数据通路" class="headerlink" title="添加BEQ和BNE数据通路"></a>添加BEQ和BNE数据通路</h1><h1 id="添加JAL数据通路"><a href="#添加JAL数据通路" class="headerlink" title="添加JAL数据通路"></a>添加JAL数据通路</h1><h1 id="添加SLT和SLTU数据通路"><a href="#添加SLT和SLTU数据通路" class="headerlink" title="添加SLT和SLTU数据通路"></a>添加SLT和SLTU数据通路</h1><ul>
-<li>SLT（set on less than），<code>有符号比较</code></li>
-<li>SLTU（set on less than），<code>无符号比较</code></li>
-</ul>
-<img src="/2024/03/24/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E8%AE%BE%E8%AE%A1/image-20240324215129196.png" class="">
-
-<p>和之前的数据通路相比，不一致的地方</p>
-<p><code>加法器的两个要点：</code></p>
-<ul>
-<li><p>减法运算和加法运算</p>
-</li>
-<li><p>有符号运算和无符号运算</p>
-</li>
-</ul>
-<p><font color=red>TBD：两数相加会有溢出，两数相减会有符号溢出吗？</font></p>
-<ul>
-<li><p>有符号加减法溢出？都会有溢出情况</p>
-</li>
-<li><p>无符号加减法溢出？都会有溢出情况</p>
-</li>
-</ul>
-<h1 id="添加SLL、SRL、SRA数据通路"><a href="#添加SLL、SRL、SRA数据通路" class="headerlink" title="添加SLL、SRL、SRA数据通路"></a>添加SLL、SRL、SRA数据通路</h1><blockquote>
-<p>说明：<br>关于MIPS指令的移位操作，有左移和右移两种：</p>
-<ul>
-<li>右移，有逻辑右移和算术右移</li>
-<li>左移，只有逻辑左移，因为本质上逻辑左移和算数左移都是相同的运算<br>有些指令集有算数左移，是为了指令集的一致性和完整性，<br>MIPS指令集并未做区分</li>
-</ul>
-<p>分析：<br>1、源操作数：三条指令的源操作数均有两个，两个来自寄存器堆的rt，一个来自指令码中的sa域<br>2、目的操作数：结果写入寄存器堆的rd项<br>3、运算方式：从rt取数据，然后完成移位运算，最后写入rd；<br>读取寄存器堆的rt项和写入寄存器堆的rd项的通路都是存在的，可以复用；<br>需要添加移位运算数据通路</p>
-</blockquote>
-<img src="/2024/03/24/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E8%AE%BE%E8%AE%A1/%E6%B7%BB%E5%8A%A0SLL_SRL_SRA%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF.png" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-hsel%E5%92%8Chtrans/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-hsel%E5%92%8Chtrans/" class="post-title-link" itemprop="url">项目实践 AHB-Lite hsel和htrans</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-24 17:10:50 / 修改时间：17:16:51" itemprop="dateCreated datePublished" datetime="2024-03-24T17:10:50+08:00">2024-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AHB-Lite%E6%80%BB%E7%BA%BF/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite总线</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-hsel%E5%92%8Chtrans/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-hsel%E5%92%8Chtrans/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>只说明一点，HSEL信号和HTRANS的行为并不一致</p>
-<p>纯粹的AHB-Lite Master，例如CPU IBUS，可以将HTRANS[1]连接到Slave的HSEL信号</p>
-<p>但是针对BUS Matrix的HTRANS[1]信号和HSEL信号并不相同</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-hsel%E5%92%8Chtrans/image.png" class="">
-
-<p>连接错误可能会导致数据出错</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-hsel%E5%92%8Chtrans/12yMGCLiuk.jpg" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/" class="post-title-link" itemprop="url">项目实践 AHB-Lite ready信号</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-24 16:08:11 / 修改时间：17:09:30" itemprop="dateCreated datePublished" datetime="2024-03-24T16:08:11+08:00">2024-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AHB-Lite%E6%80%BB%E7%BA%BF/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite总线</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -632,54 +596,38 @@
 
       
           <blockquote>
-<p>前言：</p>
-<p>input看hready_in</p>
-<p>output看hready_out</p>
-<p>•hready_in： When HIGH, the HREADY signal indicates to the master and all slaves, that the previous transfer is complete.</p>
-<p>•主要用于多个slave的情况，防止协议发生错误</p>
-<p>•hready_out： When HIGH, the HREADYOUT signal indicates that a transfer has finished on the bus. </p>
-<p>•表示slave的transfer已经传输完成，可以进行下一次transfer</p>
+<p>CPU的设计中需要移位器，因此这里补充下移位器的实现方法</p>
 </blockquote>
-<h1 id="单master和单slave"><a href="#单master和单slave" class="headerlink" title="单master和单slave"></a>单master和单slave</h1><p>针对单master和单slave的情况，AHB-Lite slave侧的hready_in可以直接连接到hready_out。</p>
-<p>如下图是Cortex-M4的IBUS和DBUS的连接原理图</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324163320779.png" class="">
+<h1 id="移位运算的实现原理"><a href="#移位运算的实现原理" class="headerlink" title="移位运算的实现原理"></a>移位运算的实现原理</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 举例说明：</span></span><br><span class="line">a[<span class="number">3</span>:<span class="number">0</span>],b[<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">c[<span class="number">3</span>:<span class="number">0</span>] = a &gt;&gt;  b;</span><br><span class="line"></span><br><span class="line">c[<span class="number">0</span>] = a[<span class="number">0</span>]/a[<span class="number">1</span>]/a[<span class="number">2</span>]/a[<span class="number">3</span>]</span><br><span class="line">c[<span class="number">1</span>] = a[<span class="number">1</span>]/a[<span class="number">2</span>]/a[<span class="number">3</span>]/   <span class="number">0</span></span><br><span class="line">c[<span class="number">2</span>] = a[<span class="number">2</span>]/a[<span class="number">3</span>]/   <span class="number">0</span>/   <span class="number">0</span></span><br><span class="line">c[<span class="number">3</span>] = a[<span class="number">3</span>]/   <span class="number">0</span>/   <span class="number">0</span>/   <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// c[x]都是b[1:0]进行译码然后MUX输出</span></span><br></pre></td></tr></table></figure>
 
+<h1 id="移位运算的硬件原理图"><a href="#移位运算的硬件原理图" class="headerlink" title="移位运算的硬件原理图"></a>移位运算的硬件原理图</h1><p> 如下所示是上述运算的FPGA综合原理图，其中<code>LUT是不同的逻辑函数：实现的是译码器+多路选择器</code></p>
+<img src="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/image-20240406212002986.png" class="">
 
+<p><code>移位逻辑本质上是译码逻辑和多路选择逻辑</code></p>
+<h1 id="CPU内部的移位操作实现方式"><a href="#CPU内部的移位操作实现方式" class="headerlink" title="CPU内部的移位操作实现方式"></a>CPU内部的移位操作实现方式</h1><p>CPU内部存在逻辑左移，逻辑右移，算数右移三种移位操作，最直观的方式是直接使用<code>&lt;&lt; &gt;&gt; &gt;&gt;&gt;</code>，最后三个结果根据运算符进行三选一mux操作输出。</p>
+<p>但是通过上面的移位运算的实现原理知道，这样实现的方式面积大消耗比较大</p>
+<p>这里采用面积优化的移位逻辑实现。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assign</span> shft_src = op_sll ? &#123;</span><br><span class="line">                            src[ <span class="number">0</span>], src[ <span class="number">1</span>], src[ <span class="number">2</span>], src[ <span class="number">3</span>],</span><br><span class="line">                            src[ <span class="number">4</span>], src[ <span class="number">5</span>], src[ <span class="number">6</span>], src[ <span class="number">7</span>],</span><br><span class="line">                            src[ <span class="number">8</span>], src[ <span class="number">9</span>], src[<span class="number">10</span>], src[<span class="number">11</span>],</span><br><span class="line">                            src[<span class="number">12</span>], src[<span class="number">13</span>], src[<span class="number">14</span>], src[<span class="number">15</span>],</span><br><span class="line">                            src[<span class="number">16</span>], src[<span class="number">17</span>], src[<span class="number">18</span>], src[<span class="number">19</span>],</span><br><span class="line">                            src[<span class="number">20</span>], src[<span class="number">21</span>], src[<span class="number">22</span>], src[<span class="number">23</span>],</span><br><span class="line">                            src[<span class="number">24</span>], src[<span class="number">25</span>], src[<span class="number">26</span>], src[<span class="number">27</span>],</span><br><span class="line">                            src[<span class="number">28</span>], src[<span class="number">29</span>], src[<span class="number">30</span>], src[<span class="number">31</span>]</span><br><span class="line">                            &#125;</span><br><span class="line">                         : src[<span class="number">31</span>:<span class="number">0</span>];</span><br><span class="line">                         </span><br><span class="line"><span class="keyword">assign</span> shft_res = shft_src[<span class="number">31</span>:<span class="number">0</span>] &gt;&gt; shft_amt [<span class="number">4</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> sra_mask = ~(<span class="number">32&#x27;hFFFF_FFFF</span> &gt;&gt; shft_amt[<span class="number">4</span>:<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> srl_res = shft_res; <span class="comment">// 逻辑右移</span></span><br><span class="line"><span class="keyword">assign</span> sra_res = (&#123;<span class="number">32</span>&#123;src[<span class="number">31</span>]&#125;&#125; &amp; sra_mask) | shft_res;<span class="comment">// 算术右移</span></span><br><span class="line"><span class="keyword">assign</span> sll_res =    &#123;</span><br><span class="line">                            shft_res[ <span class="number">0</span>], shft_res[ <span class="number">1</span>], shft_res[ <span class="number">2</span>], shft_res[ <span class="number">3</span>],</span><br><span class="line">                            shft_res[ <span class="number">4</span>], shft_res[ <span class="number">5</span>], shft_res[ <span class="number">6</span>], shft_res[ <span class="number">7</span>],</span><br><span class="line">                            shft_res[ <span class="number">8</span>], shft_res[ <span class="number">9</span>], shft_res[<span class="number">10</span>], shft_res[<span class="number">11</span>],</span><br><span class="line">                            shft_res[<span class="number">12</span>], shft_res[<span class="number">13</span>], shft_res[<span class="number">14</span>], shft_res[<span class="number">15</span>],</span><br><span class="line">                            shft_res[<span class="number">16</span>], shft_res[<span class="number">17</span>], shft_res[<span class="number">18</span>], shft_res[<span class="number">19</span>],</span><br><span class="line">                            shft_res[<span class="number">20</span>], shft_res[<span class="number">21</span>], shft_res[<span class="number">22</span>], shft_res[<span class="number">23</span>],</span><br><span class="line">                            shft_res[<span class="number">24</span>], shft_res[<span class="number">25</span>], shft_res[<span class="number">26</span>], shft_res[<span class="number">27</span>],</span><br><span class="line">                            shft_res[<span class="number">28</span>], shft_res[<span class="number">29</span>], shft_res[<span class="number">30</span>], shft_res[<span class="number">31</span>]</span><br><span class="line">					&#125;;<span class="comment">// 逻辑左移</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h1 id="单master和多slave"><a href="#单master和多slave" class="headerlink" title="单master和多slave"></a>单master和多slave</h1><p>针对单master和多slave的情况，需要<code>将所有的slave hready_out相与</code>然后送给master和各个slave。如下是连接原理图</p>
-<p><font color=red>TBD：从bus mastrix代码中验证这一点</font></p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324165100671.png" class="">
-
-<h2 id="实例说明"><a href="#实例说明" class="headerlink" title="实例说明"></a>实例说明</h2><p>下图红色的ready信号是相与之后的结果</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324164813564.png" class="">
-
-
-
-
-
-<h1 id="AHB-Lite组件ready接口说明"><a href="#AHB-Lite组件ready接口说明" class="headerlink" title="AHB-Lite组件ready接口说明"></a>AHB-Lite组件ready接口说明</h1><p><code>基于CMSDK</code></p>
-<p>纯粹的AHB-Lite Master只有一个hready_in信号，例如CPU的DBUS接口；</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324170333211.png" class="">
-
-
-
-<p>AHB-Lite Slave都会有hready_in和hready_out信号，例如sram-bridge；</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324170337137.png" class="">
-
-
-
-<p>CMSDK中<code>BUS_mastrix</code>的Master port和Slave port都会有hready_in和hready_out信号。</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324170234848.png" class="">
-
-
-
-<p>CMSDK中<code>sync_birdge</code>的Master Port就类似于CPU的DBUS接口，只有hready_in信号；Slave port会有hready_in和hready_out信号</p>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324170227485.png" class="">
-
-
-
-<h1 id="AHB-Lite组件连接示意"><a href="#AHB-Lite组件连接示意" class="headerlink" title="AHB-Lite组件连接示意"></a>AHB-Lite组件连接示意</h1><img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-AHB-Lite-ready%E4%BF%A1%E5%8F%B7/image-20240324170428088.png" class="">
-
+<ul>
+<li>逻辑左移实现<ul>
+<li>逆序排列</li>
+<li>左移即可变成右移</li>
+<li>再逆序得到结果</li>
+</ul>
+</li>
+<li>逻辑右移<ul>
+<li>直接右移得到结果</li>
+</ul>
+</li>
+<li>算数右移<ul>
+<li>先右移</li>
+<li>高位补充符号位</li>
+</ul>
+</li>
+</ul>
+<p>思路是，所以的移位操作只使用一个移位运算符。</p>
+<p>上面的实现方式只有一个shft_res逻辑是一个完整的32位移位操作（被移位的数值和移位量都是变量）；sra_mask的逻辑被移位的数值是常量，综合工具会做优化，因此实际消耗的逻辑资源远远少于一个完整的32位移位操作。缺点是时序延迟会有所增加。</p>
 
       
     </div>
@@ -699,11 +647,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
+      <meta itemprop="name" content="Youngster">
       <meta itemprop="description" content="show me bug">
     </span>
 
@@ -713,203 +661,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">项目实践-CortexM4 Halt信号约束</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-24 15:58:15 / 修改时间：16:04:12" itemprop="dateCreated datePublished" datetime="2024-03-24T15:58:15+08:00">2024-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>设计需求：CPU HALTED信号，是通过外部Debugger控制</p>
-<p>外设模块也会引用这个信号进行halt，进而让外部调试器进行读取模块内部状态</p>
-</blockquote>
-<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/image-20240324160122407.png" class="">
-
-<p>RTL上：外设需要将此信号作为一部信号处理，进行同步；</p>
-<p>时序约束上：直接设置false path即可</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/" class="post-title-link" itemprop="url">IC设计经验-模块门控时钟</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-21 08:59:13 / 修改时间：09:19:40" itemprop="dateCreated datePublished" datetime="2024-03-21T08:59:13+08:00">2024-03-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">IC设计经验</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>MCU对功耗要求比较严格，对模块的时钟做门控可以有效的降低功耗</p>
-</blockquote>
-<p>一种值得借鉴的APB接口门控读写寄存器的做法：<br><code>写操作：使用reg_wr做门控</code><br><code>读操作：可以不用时钟</code></p>
-<p>需要注意，如果有些寄存器除了apb写，还有其他写操作的话，就不能用门控时钟，要用常开时钟;</p>
-<p>如果<code>想进一步节省功耗，还有一种操作是，对32位宽的寄存器，将bit 分开，有些用门口时钟，有些不用门控时钟</code></p>
-<h1 id="时钟门控规划"><a href="#时钟门控规划" class="headerlink" title="时钟门控规划"></a>时钟门控规划</h1><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091822748.png" class="">
-
-
-
-<h1 id="具体设计方法"><a href="#具体设计方法" class="headerlink" title="具体设计方法"></a>具体设计方法</h1><h2 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h2><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321090928394-1710983373028-34.png" class="">
-
-<h3 id="全部做门控"><a href="#全部做门控" class="headerlink" title="全部做门控"></a>全部做门控</h3><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091130304.png" class="">
-
-<h3 id="部分bit做门控，部分bit不做门控"><a href="#部分bit做门控，部分bit不做门控" class="headerlink" title="部分bit做门控，部分bit不做门控"></a>部分bit做门控，部分bit不做门控</h3><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091238384.png" class="">
-
-<img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091342033.png" class="">
-
-
-
-<h2 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h2><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091523871.png" class="">
-
-<img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091430227.png" class="">
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/" class="post-title-link" itemprop="url">项目实践-约束中的坑</a>
+            <a href="/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/" class="post-title-link" itemprop="url">基础知识-有符号移位和无符号移位</a>
         </h2>
 
         <div class="post-meta">
@@ -919,14 +671,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-20 00:11:37" itemprop="dateCreated datePublished" datetime="2024-03-20T00:11:37+08:00">2024-03-20</time>
+              <time title="创建时间：2024-04-01 09:27:35" itemprop="dateCreated datePublished" datetime="2024-04-01T09:27:35+08:00">2024-04-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-21 08:59:26" itemprop="dateModified" datetime="2024-03-21T08:59:26+08:00">2024-03-21</time>
+                <time title="修改时间：2024-04-08 10:19:21" itemprop="dateModified" datetime="2024-04-08T10:19:21+08:00">2024-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -934,7 +686,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
                 </span>
             </span>
 
@@ -947,8 +699,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -963,21 +715,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="APB同步过程中的特殊约束"><a href="#APB同步过程中的特殊约束" class="headerlink" title="APB同步过程中的特殊约束"></a>APB同步过程中的特殊约束</h2><blockquote>
-<p>APB同步：根据同步之后的psel信号，去抓address phase的控制信号。</p>
-<p>如果时钟频率很快，T&#x3D;2ns，假设psel经过2拍同步，那么会经过4ns的时间，从clock domain1 到clock domain 2,；</p>
-<p>假设psel sync之后，其他的控制信号例如pwrite，padd等，还没有到达clock domain2（绕线之后，可能有多达到10ns的delay）。那么就会出现错误状态！！！</p>
+          <blockquote>
+<p>实际的移位运算中，不区分是有符号数移位和无符号移位，而是通过算术移位和逻辑移位来表示移位运算</p>
+<p>–》有符号数和无符号数都可以使用算术移位和逻辑移位</p>
 </blockquote>
-<img src="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/image-20240320001146334-1710864715940-24.png" class="">
-
-<img src="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/image-20240320002402668-1710865444367-26.png" class="">
-
-
-
-
-
-<p>可能出现在高制程，频率很快的设计中；例如BUS内部的信号可能走线会很远，导致这种情况的发生！</p>
-<h2 id="异步fifo中的格雷码时序约束"><a href="#异步fifo中的格雷码时序约束" class="headerlink" title="异步fifo中的格雷码时序约束"></a>异步fifo中的格雷码时序约束</h2><p><font color=red>TBD：这是什么case？没弄清楚</font></p>
+<h1 id="逻辑左移和算术左移"><a href="#逻辑左移和算术左移" class="headerlink" title="逻辑左移和算术左移"></a>逻辑左移和算术左移</h1><p>作用是相同的，都是在最低位置补充0；</p>
+<p>MIPS指令集没有算术左移，因为没对逻辑左移和算术左移做特殊区分</p>
+<p>其他指令集有算术左移，是考虑了指令的一致性和完整性</p>
 
       
     </div>
@@ -997,11 +741,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/31/python%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
+      <meta itemprop="name" content="Youngster">
       <meta itemprop="description" content="show me bug">
     </span>
 
@@ -1011,7 +755,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">项目实践-CortexM4 WIC约束</a>
+            <a href="/2024/03/31/python%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">python脚本</a>
         </h2>
 
         <div class="post-meta">
@@ -1020,23 +764,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-03-19 23:46:58" itemprop="dateCreated datePublished" datetime="2024-03-19T23:46:58+08:00">2024-03-19</time>
+              <time title="创建时间：2024-03-31 12:06:01 / 修改时间：16:25:41" itemprop="dateCreated datePublished" datetime="2024-03-31T12:06:01+08:00">2024-03-31</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-20 00:01:37" itemprop="dateModified" datetime="2024-03-20T00:01:37+08:00">2024-03-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
                 </span>
             </span>
 
@@ -1049,8 +787,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/03/31/python%E8%84%9A%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/31/python%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1065,160 +803,332 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>设计需求</p>
-</blockquote>
-<blockquote>
-<p>WIC模块，其clock信号是reg输出产生，需要create clock</p>
-<p>在创建时钟的时候，遇到一个困惑的问题，clk mux会切换function clock以及scan clk；</p>
-<ul>
-<li><p>scan clock是core clock（200Mhz）</p>
-</li>
-<li><p>wic clock是需要约束的clock，之前的sdc是约束到90Mhz</p>
-<p>这样约束会不会有问题，怎样写才会更好？</p>
-</li>
-</ul>
-</blockquote>
-<img src="/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/p2.png" class="">
-
-<img src="/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/p1.png" class="">
-
-<p>交流之后，答案是将wic 的时钟约束到200Mhz，和core clock一致；因为只按照function clock约束的话，scan以200Mhz进行，会有timing问题</p>
-<p>之前约束到90Mhz，也不会有问题，因为DC先根据function clock的约束修timing，然后会自动根据scan clock的约束修timing</p>
-<p><font color=red>TBD：为什么会自动根据scan clock进行约束，机制是什么？</font></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="zhijun">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">项目实践-多周期路径约束</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-18 18:58:56" itemprop="dateCreated datePublished" datetime="2024-03-18T18:58:56+08:00">2024-03-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-22 09:12:13" itemprop="dateModified" datetime="2024-03-22T09:12:13+08:00">2024-03-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>design设计需求： </p>
-<p>pclk和fclk是<strong>同步时钟</strong>，但pclk&#x3D;200Mhz，fclk&#x3D;100Mhz</p>
-<p>现有pclk到fclk的path，也有fclk到pclk的path，需要做时序约束</p>
-<p>假设如下模块名是apb_sync_unit</p>
-</blockquote>
-<img src="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/design.png" class="">
-
-<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 时序约束</span></span><br><span class="line"><span class="comment"># 慢到快</span></span><br><span class="line">set_multicycle_path -from ptrans_sync2_reg* -to ptrans_sync_pclk0_reg* -setup -end <span class="number">2</span></span><br><span class="line">set_multicycle_path -from ptrans_sync2_reg* -to ptrans_sync_pclk0_reg* -hold  -end <span class="number">1</span></span><br><span class="line"><span class="comment"># 快到慢</span></span><br><span class="line">set_multicycle_path -from ptrans_reg*       -to ptrans_sync0_reg*      -setup -start <span class="number">2</span></span><br><span class="line">set_multicycle_path -from ptrans_reg*       -to ptrans_sync0_reg*      -hold  -start <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>NOTE:</p>
-<ol>
-<li><p><code>DC会将顶层apb_sync_unit当做current design，因此获得object时，不用添加apb_sync_unit这一层</code></p>
-</li>
-<li><p><code>DC综合的时候，会对寄存器重新命名；因此要用这个重新命名的cell，否则会找不到object</code></p>
-</li>
-<li><p>针对此模块的设计，可以有两种处理方式：</p>
-<ul>
-<li><p>当做异步处理（有异步处理电路），set_false_path（从异步的角度，进行约束）；</p>
-</li>
-<li><p>可以当做同步处理，set_multicycle_path（从同步的角度，进行约束）；也可以先不设置set_multicycle_path，如果出现violation，再set_multicycle_path。<font color=red>TBD：DC工具怎么做优化？分别从（快到慢）和（慢到快）的角度进行分析？</font></p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="set-multicycle-path指令"><a href="#set-multicycle-path指令" class="headerlink" title="set_multicycle_path指令"></a>set_multicycle_path指令</h2><img src="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/set_multicycle_path.png" class="">
-
-<h2 id="应用场景：慢到快"><a href="#应用场景：慢到快" class="headerlink" title="应用场景：慢到快"></a>应用场景：慢到快</h2><img src="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/%E6%85%A2%E5%88%B0%E5%BF%AB.png" class="">
-
-
-
-<h2 id="应用场景：快到慢"><a href="#应用场景：快到慢" class="headerlink" title="应用场景：快到慢"></a>应用场景：快到慢</h2><img src="/2024/03/18/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E5%A4%9A%E5%91%A8%E6%9C%9F%E8%B7%AF%E5%BE%84%E7%BA%A6%E6%9D%9F/%E5%BF%AB%E5%88%B0%E6%85%A2.png" class="">
-
-
-
-
-
-<p><font color="red"> TBD：上面几张图，没理解……</font></p>
-<p>记录技巧：</p>
-<p>多周期是以快时钟来算：</p>
-<p>-start选项，快时钟再上，慢时钟在下：快-》慢</p>
-<p>-end选项， 快时钟在下，慢时钟在上：慢-》快</p>
+          <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><h2 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h2><h3 id="空白字符"><a href="#空白字符" class="headerlink" title="空白字符"></a>空白字符</h3><p><code>\s</code></p>
+<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code></p>
+<h2 id="字符数量"><a href="#字符数量" class="headerlink" title="字符数量"></a>字符数量</h2><h3 id="0个或1个"><a href="#0个或1个" class="headerlink" title="0个或1个"></a>0个或1个</h3><p><code>?</code>匹配0或1个正好在它之前的那个字符</p>
+<h3 id="0个或者多个"><a href="#0个或者多个" class="headerlink" title="0个或者多个"></a>0个或者多个</h3><p><code>*</code>匹配0或多个正好在它之前的那个字符</p>
+<p><code>.*</code>是指任何字符0个或多个，<code>.?</code>是指任何字符0个或1个。</p>
 <hr>
 <p>参考博客：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Xr4y1N76t?p=2&vd_source=c76cab13994e90aef30da628f94d99e8">约束虚拟时钟、多周期路径和伪路径</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/maohuidong/p/16352492.html">[正则表达式 (.*?) 含义]</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">presim环境搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-29 16:21:43" itemprop="dateCreated datePublished" datetime="2024-03-29T16:21:43+08:00">2024-03-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-31 16:38:00" itemprop="dateModified" datetime="2024-03-31T16:38:00+08:00">2024-03-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>针对综合后的网表（无delay），需要bulid 动态仿真环境</p>
+</blockquote>
+<h1 id="常见问题及其解决方法"><a href="#常见问题及其解决方法" class="headerlink" title="常见问题及其解决方法"></a>常见问题及其解决方法</h1><p>一般会遇到</p>
+<ul>
+<li><p>PAD未pull值</p>
+</li>
+<li><p>sram未初始化</p>
+</li>
+<li><p>ROM未初始化</p>
+</li>
+<li><p>Flash未初始化</p>
+</li>
+<li><p>ro环形振荡电路</p>
+</li>
+</ul>
+<h2 id="ro环形振荡电路"><a href="#ro环形振荡电路" class="headerlink" title="ro环形振荡电路"></a>ro环形振荡电路</h2><p>特殊的设计中，可能还会有组合逻辑回环（例如TRNG的环形振荡器电路）</p>
+<img src="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/v2-6fa48d65ac3a1a40c30824cdbdb3d90d_720w.webp" class="">
+
+<img src="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/v2-a09600fa58984739e659694d81711a78_720w.webp" class="">
+
+<img src="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20240331160158291.png" class="">
+
+
+
+<blockquote>
+<p><strong>仿真惊奇地停滞在：200ns(参考testbench延时)</strong></p>
+<p>在环形振荡器原理图中，假设第一级反相器的输入端为低电平，经过5级反相之后，第5级反相器输出端必为高电平。在t&#x3D;0时刻，此时电源(VDD)通过第5级反相器输出端对第1级反相器的输入电容充电，第一级反相器经过一级平均延迟时间Tdelay1之后，其输出状态发生转换。经过(Tdelay1+ Tdelay2+ Tdelay3+ Tdelay4+ Tdelay5)之后，第5级反相器输出端由高电平转换为低电平。接着第一级的输入电容将通过第5级的输出端放电，经过(Tdelay1+ Tdelay2+ Tdelay3+ Tdelay4+ Tdelay5)之后状态再次发生转换，完成一个振荡周期输出，如下图的方波信号。如果反相器各级的平均延迟时间相等，为Tdelay，</p>
+<p>即：多个反相器组成环形振荡器的一个脉冲周期为T&#x3D;10 Tdelay</p>
+<p>如果想要不停滞，可以在任何一级加一个delay，例如u1和u2之间delay 5ns</p>
+</blockquote>
+<h1 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h1><p>出现问题时的debug方法，首先看模块的端口有无X态</p>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/619644287">什么是真随机数发生器（TRNG）</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56259957">环形振荡器：数字IC和软件思维的天壤之别</a></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">linux实用技巧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-29 09:36:02 / 修改时间：10:41:48" itemprop="dateCreated datePublished" datetime="2024-03-29T09:36:02+08:00">2024-03-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><font color=red>TBD：待补充</font></p>
+<h1 id="加解压"><a href="#加解压" class="headerlink" title="加解压"></a>加解压</h1><h1 id="diff文件"><a href="#diff文件" class="headerlink" title="diff文件"></a>diff文件</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">verdi实用技巧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-29 09:24:15 / 修改时间：10:09:37" itemprop="dateCreated datePublished" datetime="2024-03-29T09:24:15+08:00">2024-03-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>IC设计人员目前最常用的一款调试工具是Synopsys公司的Verdi，下面介绍一下使用技巧</p>
+</blockquote>
+<h1 id="reload操作"><a href="#reload操作" class="headerlink" title="reload操作"></a>reload操作</h1><p><code>Shift + L</code></p>
+<h1 id="信号列表"><a href="#信号列表" class="headerlink" title="信号列表"></a>信号列表</h1><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329092849873.png" class="">
+
+<h1 id="参数以及信号value标注"><a href="#参数以及信号value标注" class="headerlink" title="参数以及信号value标注"></a>参数以及信号value标注</h1><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329093035289.png" class="">
+
+<h1 id="波形记录文件保存"><a href="#波形记录文件保存" class="headerlink" title="波形记录文件保存"></a>波形记录文件保存</h1><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329093221427.png" class="">
+
+<h1 id="显示信号完整路径"><a href="#显示信号完整路径" class="headerlink" title="显示信号完整路径"></a>显示信号完整路径</h1><p><code>h</code></p>
+<h1 id="Bus-Operation"><a href="#Bus-Operation" class="headerlink" title="Bus Operation"></a>Bus Operation</h1><h2 id="Adjust-Bus"><a href="#Adjust-Bus" class="headerlink" title="Adjust Bus"></a>Adjust Bus</h2><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100018553.png" class="">
+
+<h3 id="Shift"><a href="#Shift" class="headerlink" title="Shift"></a>Shift</h3><p>从<code>direction</code> shift <code>value</code></p>
+<p>如下的配置表示，从右侧shift滑入一个0</p>
+<img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329095938642.png" class="">
+
+<img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100425460.png" class="">
+
+
+
+<p><font color=red>TBD：待补充</font></p>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TybD2VdqyMxLS6LI7t8D6w">Verdi实用技巧</a></li>
 </ol>
 
       
@@ -1238,7 +1148,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1296,9 +1206,9 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="zhijun"
+    <img class="site-author-image" itemprop="image" alt="Youngster"
       src="/images/animal_toy_cute_doll_teddy_256.png">
-  <p class="site-author-name" itemprop="name">zhijun</p>
+  <p class="site-author-name" itemprop="name">Youngster</p>
   <div class="site-description" itemprop="description">show me bug</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1306,20 +1216,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">96</span>
+        <span class="site-state-item-count">111</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1350,7 +1260,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">zhijun</span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
