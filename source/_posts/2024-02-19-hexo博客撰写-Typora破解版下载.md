@@ -8,3 +8,5 @@ tags:
 ---
 
 ==>[Typora下载安装于永久免费激活](https://www.cnblogs.com/Simon-Wu/p/17976330)
+
+==>[typora下载和破解（仅供学习）](https://developer.aliyun.com/article/944676)
