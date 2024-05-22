@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Slave transfer responses&#x3D;&#x3D;》Master发起一次transfer之后就不能主动取消，接下来的传输过程由Slave控制； &#x3D;&#x3D;》Master需要知道transfer的传输状态（chenggong&#x2F;不成功），因此Slave需要返回response   &#x3D;&#x3D;》完整的transfer response是HRES">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ahb-lite slave response">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="Slave transfer responses&#x3D;&#x3D;》Master发起一次transfer之后就不能主动取消，接下来的传输过程由Slave控制； &#x3D;&#x3D;》Master需要知道transfer的传输状态（chenggong&#x2F;不成功），因此Slave需要返回response   &#x3D;&#x3D;》完整的transfer response是HRES">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/image-20240508090512509.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/image-20240508090625149.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/image-20240324164813564.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/image-20240508085623441.png">
+<meta property="article:published_time" content="2024-05-07T12:48:32.000Z">
+<meta property="article:modified_time" content="2024-05-08T01:55:23.456Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="response">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/image-20240508090512509.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ahb-lite slave response | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ahb-lite slave response
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-07 20:48:32" itemprop="dateCreated datePublished" datetime="2024-05-07T20:48:32+08:00">2024-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-08 09:55:23" itemprop="dateModified" datetime="2024-05-08T09:55:23+08:00">2024-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AHB-Lite%E6%80%BB%E7%BA%BF/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite总线</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/07/ahb-lite-slave-response/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/07/ahb-lite-slave-response/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Slave-transfer-responses"><a href="#Slave-transfer-responses" class="headerlink" title="Slave transfer responses"></a>Slave transfer responses</h1><p>&#x3D;&#x3D;》Master发起一次transfer之后就不能主动取消，接下来的传输过程由Slave控制；</p>
+<p>&#x3D;&#x3D;》Master需要知道transfer的传输状态（chenggong&#x2F;不成功），因此Slave需要返回response</p>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240508090512509.png" class="">
+
+<p>&#x3D;&#x3D;》<font color=blue>完整的transfer response是HRESP和HREADY的组合</font></p>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240508090625149.png" class="">
+
+<h2 id="Transfer-done"><a href="#Transfer-done" class="headerlink" title="Transfer done"></a>Transfer done</h2><p><font color=blue>HRESP OK+ HREADY HIGH</font></p>
+<h2 id="Transfer-pending"><a href="#Transfer-pending" class="headerlink" title="Transfer pending"></a>Transfer pending</h2><p>Slave可以在data phase插入wait states；</p>
+<p>在真正response前插入wait states时，<font color=blue>HRESP OK+ HREADY LOW</font>;</p>
+<ol>
+<li><p>每个从设备在释放总线<code>back off the bus</code>前可以插入一定数量的等待周期，（但是必须要定义一个<code>最大的插入数量</code>）：</p>
+<ul>
+<li><p>这是为了处理总线上的竞争和冲突</p>
+</li>
+<li><p>而且也可以计算最大的laterncy</p>
+</li>
+</ul>
+</li>
+<li><p>建议每个从设备最多插入16个等待周期，以避免某个访问锁定总线导致大量时钟周期的延迟。然而，对于某些设备，比如串行启动ROM，这个建议可能不适用。因为这类设备通常只在系统启动期间访问，并且如果使用超过16个等待周期，对系统性能的影响可以忽略不计。</p>
+</li>
+</ol>
+<blockquote>
+<p>我的理解：</p>
+<p>假设处理器先访问传感器和再访问存储器，</p>
+<p>处理器访问传感器的时候，传感器数据可能没有ready，这个时候就需要插入等待周期；</p>
+<p>在这期间，存储器不应该再占用总线资源，否则会出现竞争；</p>
+</blockquote>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240324164813564.png" class="">
+
+
+
+<h2 id="ERROR-response"><a href="#ERROR-response" class="headerlink" title="ERROR response"></a>ERROR response</h2><p>&#x3D;&#x3D;》”ERROR” 响应在AHB-Lite协议中用于指示某种错误条件。通常，这表示一种保护错误，比如尝试向只读内存位置写入数据。</p>
+<p>&#x3D;&#x3D;》对于 “OKAY” 响应，从设备可以在单个时钟周期内发送。对于 “ERROR” 响应，需要两个时钟周期。</p>
+<ol>
+<li><font color=blue>第一个周期：HRESP HIGH + HREADY LOW</font></li>
+<li><font color=blue>第二个周期：HRESP HIGH + HREADY HIGH</font></li>
+</ol>
+<p>&#x3D;&#x3D;》因为总线的pipeline特性，才需要两个周期response error。</p>
+<p>假设有这样一个情景：</p>
+<ol>
+<li>主设备向从设备发送一个读取请求（例如从存储器中读取数据）。</li>
+<li>在第一个时钟周期内，主设备已经向总线广播了读取请求的地址。</li>
+<li>然后，从设备（假设是一个只读存储器）检测到发生了错误，需要发送一个错误响应。</li>
+</ol>
+<p>现在，<code>问题在于，在从设备开始发送错误响应之时，主设备已经广播了下一个传输的地址。这意味着，主设备已经准备好进行下一个传输，而且总线上已经开始了新的传输流程</code>。在这种情况下，<code>如果从设备只发送一个时钟周期的错误响应，主设备可能无法及时取消下一个传输的执行。因为主设备需要一定的时间来检测到错误响应并采取相应的措施。如果主设备无法及时取消下一个传输，可能会导致错误的传输继续进行，从而造成系统错误或数据错误。</code></p>
+<p><font color=blue>核心就是：发生错误的时候，协议不希望Master再继续发送transfer，而是变为IDLE状态，防止错误传输的继续进行，造成系统错误</font></p>
+<p>如果Slave需要超过两个cycle来完成error response的传输，也可以在最开始插入Transfer pending，也就是wait状态。</p>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240508085623441.png" class="">
+
+<p><font color=blue>（Master可以利用第一个周期：HRESP HIGH + HREADY LOW进行处理，取消之后的transfer；第二个周期：HRESP HIGH + HREADY HIGH的时候，传输类型就可以变为IDLE）</font></p>
+<blockquote>
+<p> 注意：</p>
+<p>如果master进行的是burst类型的传输，当slave error response的时候：</p>
+<ul>
+<li>master可以选择取消接下来的burst传输，（这不是严格的限制）</li>
+<li>master也可以选择继续接下来的burst传输，（从协议上看，也是可以接受的）</li>
+</ul>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/response/" rel="tag"># response</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/" rel="prev" title="Cortex-M4端口信号">
+      <i class="fa fa-chevron-left"></i> Cortex-M4端口信号
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/05/11/ARM%E5%A4%84%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/" rel="next" title="ARM处理器简介">
+      ARM处理器简介 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Slave-transfer-responses"><span class="nav-number">1.</span> <span class="nav-text">Slave transfer responses</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transfer-done"><span class="nav-number">1.1.</span> <span class="nav-text">Transfer done</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transfer-pending"><span class="nav-number">1.2.</span> <span class="nav-text">Transfer pending</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ERROR-response"><span class="nav-number">1.3.</span> <span class="nav-text">ERROR response</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">108</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

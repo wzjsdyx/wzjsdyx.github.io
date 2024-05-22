@@ -162,6 +162,304 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">项目实践-CortexM4 Halt信号约束</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-24 15:58:15 / 修改时间：16:04:12" itemprop="dateCreated datePublished" datetime="2024-03-24T15:58:15+08:00">2024-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>设计需求：CPU HALTED信号，是通过外部Debugger控制</p>
+<p>外设模块也会引用这个信号进行halt，进而让外部调试器进行读取模块内部状态</p>
+</blockquote>
+<img src="/2024/03/24/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-Halt%E4%BF%A1%E5%8F%B7%E7%BA%A6%E6%9D%9F/image-20240324160122407.png" class="">
+
+<p>RTL上：外设需要将此信号作为一部信号处理，进行同步；</p>
+<p>时序约束上：直接设置false path即可</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/" class="post-title-link" itemprop="url">IC设计经验-模块门控时钟</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-21 08:59:13 / 修改时间：09:19:40" itemprop="dateCreated datePublished" datetime="2024-03-21T08:59:13+08:00">2024-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">IC设计经验</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>MCU对功耗要求比较严格，对模块的时钟做门控可以有效的降低功耗</p>
+</blockquote>
+<p>一种值得借鉴的APB接口门控读写寄存器的做法：<br><code>写操作：使用reg_wr做门控</code><br><code>读操作：可以不用时钟</code></p>
+<p>需要注意，如果有些寄存器除了apb写，还有其他写操作的话，就不能用门控时钟，要用常开时钟;</p>
+<p>如果<code>想进一步节省功耗，还有一种操作是，对32位宽的寄存器，将bit 分开，有些用门口时钟，有些不用门控时钟</code></p>
+<h1 id="时钟门控规划"><a href="#时钟门控规划" class="headerlink" title="时钟门控规划"></a>时钟门控规划</h1><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091822748.png" class="">
+
+
+
+<h1 id="具体设计方法"><a href="#具体设计方法" class="headerlink" title="具体设计方法"></a>具体设计方法</h1><h2 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h2><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321090928394-1710983373028-34.png" class="">
+
+<h3 id="全部做门控"><a href="#全部做门控" class="headerlink" title="全部做门控"></a>全部做门控</h3><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091130304.png" class="">
+
+<h3 id="部分bit做门控，部分bit不做门控"><a href="#部分bit做门控，部分bit不做门控" class="headerlink" title="部分bit做门控，部分bit不做门控"></a>部分bit做门控，部分bit不做门控</h3><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091238384.png" class="">
+
+<img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091342033.png" class="">
+
+
+
+<h2 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h2><img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091523871.png" class="">
+
+<img src="/2024/03/21/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-%E6%A8%A1%E5%9D%97%E9%97%A8%E6%8E%A7%E6%97%B6%E9%92%9F/image-20240321091430227.png" class="">
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/" class="post-title-link" itemprop="url">项目实践-约束中的坑</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-20 00:11:37" itemprop="dateCreated datePublished" datetime="2024-03-20T00:11:37+08:00">2024-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-21 08:59:26" itemprop="dateModified" datetime="2024-03-21T08:59:26+08:00">2024-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="APB同步过程中的特殊约束"><a href="#APB同步过程中的特殊约束" class="headerlink" title="APB同步过程中的特殊约束"></a>APB同步过程中的特殊约束</h2><blockquote>
+<p>APB同步：根据同步之后的psel信号，去抓address phase的控制信号。</p>
+<p>如果时钟频率很快，T&#x3D;2ns，假设psel经过2拍同步，那么会经过4ns的时间，从clock domain1 到clock domain 2,；</p>
+<p>假设psel sync之后，其他的控制信号例如pwrite，padd等，还没有到达clock domain2（绕线之后，可能有多达到10ns的delay）。那么就会出现错误状态！！！</p>
+</blockquote>
+<img src="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/image-20240320001146334-1710864715940-24.png" class="">
+
+<img src="/2024/03/20/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E7%BA%A6%E6%9D%9F%E4%B8%AD%E7%9A%84%E5%9D%91/image-20240320002402668-1710865444367-26.png" class="">
+
+
+
+
+
+<p>可能出现在高制程，频率很快的设计中；例如BUS内部的信号可能走线会很远，导致这种情况的发生！</p>
+<h2 id="异步fifo中的格雷码时序约束"><a href="#异步fifo中的格雷码时序约束" class="headerlink" title="异步fifo中的格雷码时序约束"></a>异步fifo中的格雷码时序约束</h2><p><font color=red>TBD：这是什么case？没弄清楚</font></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/19/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-CortexM4-WIC%E7%BA%A6%E6%9D%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -872,271 +1170,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">ip开发环境搭建（5）cdc环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-11 15:06:23" itemprop="dateCreated datePublished" datetime="2024-03-11T15:06:23+08:00">2024-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-12 09:04:25" itemprop="dateModified" datetime="2024-03-12T09:04:25+08:00">2024-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%885%EF%BC%89cdc%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">ip开发环境搭建（4）lec环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-11 15:04:50" itemprop="dateCreated datePublished" datetime="2024-03-11T15:04:50+08:00">2024-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-12 09:04:25" itemprop="dateModified" datetime="2024-03-12T09:04:25+08:00">2024-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%884%EF%BC%89lec%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%883%EF%BC%89synthesis%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%883%EF%BC%89synthesis%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">ip开发环境搭建（3）synthesis环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-11 15:04:08" itemprop="dateCreated datePublished" datetime="2024-03-11T15:04:08+08:00">2024-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-12 09:03:16" itemprop="dateModified" datetime="2024-03-12T09:03:16+08:00">2024-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%883%EF%BC%89synthesis%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/11/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%883%EF%BC%89synthesis%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1204,20 +1241,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">108</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
