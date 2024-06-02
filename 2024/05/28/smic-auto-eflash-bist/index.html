@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="相关文档学习 DOC–&gt;SMIC Serial Testing BusIntroductionThe Serial Testing Bus(STB) module 用于测试如下两个eflash Macro：  pfm_340sa128kx150_v1Flash Macro  pfm_340sa8kx150_v1Flash Macro.  设计初衷是为了使用JTAG接口(4PIN)在CP阶段对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="smic auto eflash bist">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="相关文档学习 DOC–&gt;SMIC Serial Testing BusIntroductionThe Serial Testing Bus(STB) module 用于测试如下两个eflash Macro：  pfm_340sa128kx150_v1Flash Macro  pfm_340sa8kx150_v1Flash Macro.  设计初衷是为了使用JTAG接口(4PIN)在CP阶段对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528134454779.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528135925055.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528140950126.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528141012829.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528141033520.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528142039255.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528142048774.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528143303435.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528143447615.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528143512853.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528143604662.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528144541432.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528144548764.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240602112715254.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240602112747642.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240602112850662.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240602112919497.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240602113148104.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528204543207.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528211323214.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528211417759.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528211441687.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529090046913.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529090244081.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529090349066.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240602144959234.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528205914524.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528210021298.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528210008315.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529104657371.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529104819187.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529104843799.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240529104433588.png">
+<meta property="article:published_time" content="2024-05-28T05:36:38.000Z">
+<meta property="article:modified_time" content="2024-06-02T06:50:15.158Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="smic auto eflash bist">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/image-20240528134454779.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>smic auto eflash bist | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          smic auto eflash bist
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-28 13:36:38" itemprop="dateCreated datePublished" datetime="2024-05-28T13:36:38+08:00">2024-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-02 14:50:15" itemprop="dateModified" datetime="2024-06-02T14:50:15+08:00">2024-06-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/eflash-bist/" itemprop="url" rel="index"><span itemprop="name">eflash bist</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/28/smic-auto-eflash-bist/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/28/smic-auto-eflash-bist/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font color=blue>相关文档学习</font></p>
+<h1 id="DOC–-SMIC-Serial-Testing-Bus"><a href="#DOC–-SMIC-Serial-Testing-Bus" class="headerlink" title="DOC–&gt;SMIC Serial Testing Bus"></a>DOC–&gt;SMIC Serial Testing Bus</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The Serial Testing Bus(STB) module 用于测试如下两个eflash Macro：</p>
+<ul>
+<li>pfm_340sa128kx150_v1Flash Macro </li>
+<li>pfm_340sa8kx150_v1Flash Macro.</li>
+</ul>
+<p>设计初衷是为了使用<code>JTAG接口(4PIN)</code>在<code>CP阶段</code>对Flash进行测试。</p>
+<p>一个STB模块最多可以携带8个Eflash macro, SMIC能够提供测试向量和STB的netlist.</p>
+<h2 id="Block-Diagram"><a href="#Block-Diagram" class="headerlink" title="Block Diagram"></a>Block Diagram</h2><h3 id="STB-in-System"><a href="#STB-in-System" class="headerlink" title="STB in System"></a>STB in System</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528134454779.png" class="">
+
+
+
+<blockquote>
+<p>Note:</p>
+<p>1.Dut_Num field selects flash macros,Dut_Num[7:0]  &#x3D; 8’h01 means one Flash Macrois selected, Dut_Num[7:0]  &#x3D; 8’hff means eight Flash Macros are selected;</p>
+<p>2.N: The NthFlash.</p>
+</blockquote>
+<h3 id="STB-Block-Diagram"><a href="#STB-Block-Diagram" class="headerlink" title="STB Block Diagram"></a>STB Block Diagram</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528135925055.png" class="">
+
+
+
+<blockquote>
+<p>Note:</p>
+<p>1.JTAGController: Access all data registers (DR) and instruction registers (IR).</p>
+<p>2.Register &amp; Counter: Configure timing and create the proper timing for Function Controller.</p>
+<p>3.Function Controller: Exports the proper waveform for flash to execute theerase&#x2F;program&#x2F;read&#x2F;configure.</p>
+<p>4.BIST Controller: Algorithmically  generates address&#x2F;data, and create pass&#x2F;fail log. </p>
+<p>5.Read NVR_CFG &amp; Config:Auto configure Flash.</p>
+<p>6.Erase Retry &amp; Vread:Automatically  completes Erase Retry function  and Vread.</p>
+<p> 7.Cycling: Erase, program and read operation are cyclingexecuted.</p>
+</blockquote>
+<h3 id="Pin-Description"><a href="#Pin-Description" class="headerlink" title="Pin Description"></a>Pin Description</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528140950126.png" class="">
+
+
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528141012829.png" class="">
+
+
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528141033520.png" class="">
+
+
+
+
+
+<h2 id="Block-Function-Description-of-JTAG-interface"><a href="#Block-Function-Description-of-JTAG-interface" class="headerlink" title="Block Function  Description of JTAG interface"></a>Block Function  Description of JTAG interface</h2><p>TAG interface consists of four parts: test access port (TAP), TAP controller  (state machine), an instruction register and a group of data registers.</p>
+<h3 id="Test-access-port-TAP"><a href="#Test-access-port-TAP" class="headerlink" title="Test access port (TAP)"></a>Test access port (TAP)</h3><h3 id="TAP-controller-state-machine"><a href="#TAP-controller-state-machine" class="headerlink" title="TAP controller  (state machine)"></a>TAP controller  (state machine)</h3><h3 id="Signal-interface-Settings"><a href="#Signal-interface-Settings" class="headerlink" title="Signal interface Settings"></a>Signal interface Settings</h3><p><font color=red>TBD</font></p>
+<h2 id="Operation-Description"><a href="#Operation-Description" class="headerlink" title="Operation  Description"></a>Operation  Description</h2><h3 id="Instruction-Group"><a href="#Instruction-Group" class="headerlink" title="Instruction Group"></a>Instruction Group</h3><p>There are sevenkindsof instructions: Setup  Instruction, FunctionInstruction, Erase Retry  Instruction, Cycling  Instruction,  Register Instruction,BISTInstruction,  Test  Mode Instruction.</p>
+<h3 id="Internal-Register"><a href="#Internal-Register" class="headerlink" title="Internal Register"></a>Internal Register</h3><h4 id="STB-Register"><a href="#STB-Register" class="headerlink" title="STB Register"></a>STB Register</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528142039255.png" class="">
+
+
+
+<h4 id="BIST-REG-SOC"><a href="#BIST-REG-SOC" class="headerlink" title="BIST_REG_SOC"></a>BIST_REG_SOC</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528142048774.png" class="">
+
+
+
+
+
+<h3 id="Setup-Instruction"><a href="#Setup-Instruction" class="headerlink" title="Setup Instruction"></a>Setup Instruction</h3><p>The setup instruction is set the STB output pin high or low. The setup instruction may use together with other instruction for certain operation. </p>
+<p>The setup instruction is consist of 8 bits, 7 bits setup ID and 1 bits instruction parameter.</p>
+<p><code>All pins controlled by setup instruction  will not change until next setup instruction except “CEb”. If the chip is enable the “CEb” will change accordingly whiletest mode exit.</code></p>
+<h4 id="MBIST-Mux-Setup"><a href="#MBIST-Mux-Setup" class="headerlink" title="MBIST Mux Setup"></a>MBIST Mux Setup</h4><p>The MBIST mux setup instruction  will control the <code>BIST_SEL</code>pin. </p>
+<h4 id="Flash-Control-Pin-Setup"><a href="#Flash-Control-Pin-Setup" class="headerlink" title="Flash Control Pin Setup"></a>Flash Control Pin Setup</h4><p>The flash control pin setup instruction include :</p>
+<p><code>PORb setup, standby setup, deep power down setup, recall setup, CFG lock setup, Vread0 setup, Vread1setup,Sread0 setup and Sread1 setup.</code> These instructions are used to<code> give the flash input a solid state</code>. Only  CEb will change while exiting the test mode. The other pins will remain constant until next setup instruction received.</p>
+<h4 id="STB-Counter-Setup"><a href="#STB-Counter-Setup" class="headerlink" title="STB Counter Setup"></a>STB Counter Setup</h4><p>The STB counter setup instruction is used to switch on and off the STB counter. The execution for erase and program time is controlled by STB counter.  <code>By switching off the STB counter,  user can extend the time of erase and program, especially in test mode.</code> Please be noted that switching off the counter could only extend thetime but not shorten the time.</p>
+<p><font color=red>啥意思？不懂</font></p>
+<h3 id="Function-Instruction"><a href="#Function-Instruction" class="headerlink" title="Function Instruction"></a>Function Instruction</h3><p>The function instruction is used to execute certain operation, like erase, program, read and etc.</p>
+<p> It can also use together with setup instruction,  test mode instruction  and BIST instruction. The function instructions consist of instruction  ID and instruction  parameter.</p>
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143303435.png" class="">
+
+
+
+
+
+<h3 id="Erase-Retry-Instruction"><a href="#Erase-Retry-Instruction" class="headerlink" title="Erase Retry Instruction"></a>Erase Retry Instruction</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143447615.png" class="">
+
+
+
+<h3 id="Cycling-Instruction"><a href="#Cycling-Instruction" class="headerlink" title="Cycling Instruction"></a>Cycling Instruction</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143512853.png" class="">
+
+
+
+<h3 id="Register-Instruction"><a href="#Register-Instruction" class="headerlink" title="Register Instruction"></a>Register Instruction</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143604662.png" class="">
+
+
+
+<p><font color=red>啥意思？不懂</font></p>
+<h3 id="BIST-Instruction"><a href="#BIST-Instruction" class="headerlink" title="BIST Instruction"></a>BIST Instruction</h3><p>There are four kindsof BISTinstructions:  Chip BIST, Column BIST,SectorBIST and Row BIST. They can reador write all addressof the selected area. The Chip BIST andColumn BIST can only access the NVR&#x2F;MAIN array. There are three patternsfor Chip BIST(Normal, CKBD and Diagonal).</p>
+<blockquote>
+<ul>
+<li>芯片BIST提供了三种模式来执行自测试：正常模式、CKBD模式（Checkerboard，棋盘格模式）和对角线模式。</li>
+<li>这三种模式可能会应用不同的测试算法或测试模式，但它们的目标都是对selected area进行操作，并检查读取的结果是否与预期一致</li>
+</ul>
+</blockquote>
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528144541432.png" class="">
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528144548764.png" class="">
+
+
+
+<h3 id="Test-Mode-Instruction"><a href="#Test-Mode-Instruction" class="headerlink" title="Test Mode Instruction"></a>Test Mode Instruction</h3><p>Test mode instruction  is for flash going into the relative basic test mode. The test mode instruction can be set one by one and normal operation can be followed. When normal operation finished, the “TM Exit” instruction  should be followed.</p>
+<blockquote>
+<ul>
+<li>这句话表明测试模式指令用于将flash置于一种基本的测试模式中，以执行测试操作。</li>
+<li>测试模式指令可以逐个设置，然后可以继续进行正常的操作</li>
+</ul>
+</blockquote>
+<p><font color=red>啥意思？不懂</font></p>
+<h1 id="DOC–-BIST-TEST-BENCH-USER-GUIDE"><a href="#DOC–-BIST-TEST-BENCH-USER-GUIDE" class="headerlink" title="DOC–&gt;BIST TEST BENCH USER GUIDE"></a>DOC–&gt;BIST TEST BENCH USER GUIDE</h1><h2 id="List-of-files-required-for-the-simulation"><a href="#List-of-files-required-for-the-simulation" class="headerlink" title="List of files required for the simulation"></a>List of files required for the simulation</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112715254.png" class="">
+
+<p><font color=blue>rtl sim和port sim使用的testbench文件不一样，需要注意</font></p>
+<h2 id="Testbenchnaming-rules"><a href="#Testbenchnaming-rules" class="headerlink" title="Testbenchnaming rules"></a>Testbenchnaming rules</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112747642.png" class="">
+
+
+
+<h2 id="Waived-errors"><a href="#Waived-errors" class="headerlink" title="Waived errors"></a>Waived errors</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112850662.png" class="">
+
+
+
+<h2 id="Waived-warnings"><a href="#Waived-warnings" class="headerlink" title="Waived warnings"></a>Waived warnings</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112919497.png" class="">
+
+
+
+<h2 id="Necessary-modifyfor-interfacefile"><a href="#Necessary-modifyfor-interfacefile" class="headerlink" title="Necessary modifyfor interfacefile"></a>Necessary modifyfor interfacefile</h2><blockquote>
+<p>Reason: As the synthesis netlist use ideal clock network, there will be hold violation in <code>netlist simulation</code>. In order to solve this violation, the delay should be added to all flash ADDRports and RDEN ports.If do not modify in interfacefile, verilog model will report “ERRORX-010! Timing Violation@XXns:Tah,target&#x3D;1.00ns;” and BIST read fail.</p>
+</blockquote>
+<p><font color=blue>netlist级别的仿真需要加上delay</font></p>
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240602113148104.png" class="">
+
+
+
+<h1 id="DOC–-eFlash-Macro-Datasheet"><a href="#DOC–-eFlash-Macro-Datasheet" class="headerlink" title="DOC–&gt;eFlash Macro Datasheet"></a>DOC–&gt;eFlash Macro Datasheet</h1><h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528204543207.png" class="">
+
+
+
+<h2 id="Product-Description"><a href="#Product-Description" class="headerlink" title="Product Description"></a>Product Description</h2><h3 id="Function-Block-Diagram"><a href="#Function-Block-Diagram" class="headerlink" title="Function Block Diagram"></a>Function Block Diagram</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528211323214.png" class="">
+
+<h3 id="Pin-Description-1"><a href="#Pin-Description-1" class="headerlink" title="Pin Description"></a>Pin Description</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528211417759.png" class="">
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528211441687.png" class="">
+
+<h3 id="Operation-Modes-Selection"><a href="#Operation-Modes-Selection" class="headerlink" title="Operation Modes Selection"></a>Operation Modes Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090046913.png" class="">
+
+<h3 id="NVR-Redundancy-Sector-Selection"><a href="#NVR-Redundancy-Sector-Selection" class="headerlink" title="NVR,Redundancy Sector Selection"></a>NVR,Redundancy Sector Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090244081.png" class="">
+
+<h3 id="Memory-Array-Configuraton"><a href="#Memory-Array-Configuraton" class="headerlink" title="Memory Array Configuraton"></a>Memory Array Configuraton</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090349066.png" class="">
+
+<h3 id="Connection-between-multiple-Flash-IP-and-Pump-IP"><a href="#Connection-between-multiple-Flash-IP-and-Pump-IP" class="headerlink" title="Connection between multiple Flash IP and Pump IP"></a>Connection between multiple Flash IP and Pump IP</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602144959234.png" class="">
+
+
+
+<h3 id="ECC"><a href="#ECC" class="headerlink" title="ECC"></a>ECC</h3><h3 id="Chip-Erase"><a href="#Chip-Erase" class="headerlink" title="Chip Erase"></a>Chip Erase</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528205914524.png" class="">
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210021298.png" class="">
+
+
+
+<h3 id="Sector-Block-Erase"><a href="#Sector-Block-Erase" class="headerlink" title="Sector&#x2F;Block Erase"></a>Sector&#x2F;Block Erase</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210008315.png" class="">
+
+
+
+<h3 id="Program"><a href="#Program" class="headerlink" title="Program"></a>Program</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104657371.png" class="">
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104819187.png" class="">
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104843799.png" class="">
+
+
+
+
+
+<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104433588.png" class="">
+
+
+
+<p><font color=blue>testbench学习理解</font></p>
+<h1 id="Testbench–-STB-operation-simulaiton"><a href="#Testbench–-STB-operation-simulaiton" class="headerlink" title="Testbench–&gt;STB operation simulaiton"></a>Testbench–&gt;STB operation simulaiton</h1><h2 id="chip-erase"><a href="#chip-erase" class="headerlink" title="chip erase"></a>chip erase</h2><blockquote>
+<p>含义：erase entire main arrary, redundancy sectors and NVR sectors all together or seprately</p>
+</blockquote>
+<p><font color=red>TBD</font></p>
+<p>观察STB输出的控制信号即可，不用太过关注testbench 指令</p>
+<h2 id="sector-erase"><a href="#sector-erase" class="headerlink" title="sector erase"></a>sector erase</h2><h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="STB-in-System-章节中，SoC-REG的作用？"><a href="#STB-in-System-章节中，SoC-REG的作用？" class="headerlink" title="STB in System 章节中，SoC REG的作用？"></a>STB in System 章节中，SoC REG的作用？</h2><p>首先这是一个输出端口，是SoC控制寄存器，用于在flash test mode下，输出信息，让外部调节电压</p>
+<p>7843项目中，将此信号连接到Standby 模块；</p>
+<p><font color=red>TBD</font></p>
+<h2 id="仿真地址问题"><a href="#仿真地址问题" class="headerlink" title="仿真地址问题"></a>仿真地址问题</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/smic-auto-eflash-bist/" rel="tag"># smic auto eflash bist</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/05/27/makefile%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="makefile脚本基础知识">
+      <i class="fa fa-chevron-left"></i> makefile脚本基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" rel="next" title="2024年度计划">
+      2024年度计划 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DOC%E2%80%93-SMIC-Serial-Testing-Bus"><span class="nav-number">1.</span> <span class="nav-text">DOC–&gt;SMIC Serial Testing Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block-Diagram"><span class="nav-number">1.2.</span> <span class="nav-text">Block Diagram</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#STB-in-System"><span class="nav-number">1.2.1.</span> <span class="nav-text">STB in System</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STB-Block-Diagram"><span class="nav-number">1.2.2.</span> <span class="nav-text">STB Block Diagram</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pin-Description"><span class="nav-number">1.2.3.</span> <span class="nav-text">Pin Description</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block-Function-Description-of-JTAG-interface"><span class="nav-number">1.3.</span> <span class="nav-text">Block Function  Description of JTAG interface</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-access-port-TAP"><span class="nav-number">1.3.1.</span> <span class="nav-text">Test access port (TAP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TAP-controller-state-machine"><span class="nav-number">1.3.2.</span> <span class="nav-text">TAP controller  (state machine)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Signal-interface-Settings"><span class="nav-number">1.3.3.</span> <span class="nav-text">Signal interface Settings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operation-Description"><span class="nav-number">1.4.</span> <span class="nav-text">Operation  Description</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Instruction-Group"><span class="nav-number">1.4.1.</span> <span class="nav-text">Instruction Group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Internal-Register"><span class="nav-number">1.4.2.</span> <span class="nav-text">Internal Register</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#STB-Register"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">STB Register</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BIST-REG-SOC"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">BIST_REG_SOC</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setup-Instruction"><span class="nav-number">1.4.3.</span> <span class="nav-text">Setup Instruction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MBIST-Mux-Setup"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">MBIST Mux Setup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flash-Control-Pin-Setup"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">Flash Control Pin Setup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STB-Counter-Setup"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">STB Counter Setup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Function-Instruction"><span class="nav-number">1.4.4.</span> <span class="nav-text">Function Instruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Erase-Retry-Instruction"><span class="nav-number">1.4.5.</span> <span class="nav-text">Erase Retry Instruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cycling-Instruction"><span class="nav-number">1.4.6.</span> <span class="nav-text">Cycling Instruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Register-Instruction"><span class="nav-number">1.4.7.</span> <span class="nav-text">Register Instruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BIST-Instruction"><span class="nav-number">1.4.8.</span> <span class="nav-text">BIST Instruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-Mode-Instruction"><span class="nav-number">1.4.9.</span> <span class="nav-text">Test Mode Instruction</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOC%E2%80%93-BIST-TEST-BENCH-USER-GUIDE"><span class="nav-number">2.</span> <span class="nav-text">DOC–&gt;BIST TEST BENCH USER GUIDE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List-of-files-required-for-the-simulation"><span class="nav-number">2.1.</span> <span class="nav-text">List of files required for the simulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testbenchnaming-rules"><span class="nav-number">2.2.</span> <span class="nav-text">Testbenchnaming rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Waived-errors"><span class="nav-number">2.3.</span> <span class="nav-text">Waived errors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Waived-warnings"><span class="nav-number">2.4.</span> <span class="nav-text">Waived warnings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Necessary-modifyfor-interfacefile"><span class="nav-number">2.5.</span> <span class="nav-text">Necessary modifyfor interfacefile</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOC%E2%80%93-eFlash-Macro-Datasheet"><span class="nav-number">3.</span> <span class="nav-text">DOC–&gt;eFlash Macro Datasheet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Features"><span class="nav-number">3.1.</span> <span class="nav-text">Features</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Product-Description"><span class="nav-number">3.2.</span> <span class="nav-text">Product Description</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Function-Block-Diagram"><span class="nav-number">3.2.1.</span> <span class="nav-text">Function Block Diagram</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pin-Description-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">Pin Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Operation-Modes-Selection"><span class="nav-number">3.2.3.</span> <span class="nav-text">Operation Modes Selection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVR-Redundancy-Sector-Selection"><span class="nav-number">3.2.4.</span> <span class="nav-text">NVR,Redundancy Sector Selection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory-Array-Configuraton"><span class="nav-number">3.2.5.</span> <span class="nav-text">Memory Array Configuraton</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connection-between-multiple-Flash-IP-and-Pump-IP"><span class="nav-number">3.2.6.</span> <span class="nav-text">Connection between multiple Flash IP and Pump IP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECC"><span class="nav-number">3.2.7.</span> <span class="nav-text">ECC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chip-Erase"><span class="nav-number">3.2.8.</span> <span class="nav-text">Chip Erase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sector-Block-Erase"><span class="nav-number">3.2.9.</span> <span class="nav-text">Sector&#x2F;Block Erase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Program"><span class="nav-number">3.2.10.</span> <span class="nav-text">Program</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#read"><span class="nav-number">3.2.11.</span> <span class="nav-text">read</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Testbench%E2%80%93-STB-operation-simulaiton"><span class="nav-number">4.</span> <span class="nav-text">Testbench–&gt;STB operation simulaiton</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#chip-erase"><span class="nav-number">4.1.</span> <span class="nav-text">chip erase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sector-erase"><span class="nav-number">4.2.</span> <span class="nav-text">sector erase</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-A"><span class="nav-number">5.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#STB-in-System-%E7%AB%A0%E8%8A%82%E4%B8%AD%EF%BC%8CSoC-REG%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-number">5.1.</span> <span class="nav-text">STB in System 章节中，SoC REG的作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E5%9C%B0%E5%9D%80%E9%97%AE%E9%A2%98"><span class="nav-number">5.2.</span> <span class="nav-text">仿真地址问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
