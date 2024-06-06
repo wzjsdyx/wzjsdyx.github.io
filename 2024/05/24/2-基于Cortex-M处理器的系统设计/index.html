@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="11 时钟12 复位需要同步复位异步释放：    &#x2F;&#x2F; PORESET synchroniser  always @ (posedge FCLK or negedge PORESETn)    if (!PORESETn)      begin        poreset_n_q  &lt;&#x3D; 1’b0;        poreset_n_qq &lt;&#x3D;">
+  <meta name="description" content="11 时钟12 复位Cortex-M处理器有多个复位信号，通常包括：  System reset Debug reset Debug interface reset(例如nTRST) for JTAG&#x2F;SWD接口 Power-on reset  Note：System reset和Debug reset是分开的，使用场景是为了让core logic复位的时候，不影响debug syste">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2 基于Cortex-M处理器的系统设计">
 <meta property="og:url" content="https://wzjsdyx.github.io/2024/05/24/2-%E5%9F%BA%E4%BA%8ECortex-M%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="11 时钟12 复位需要同步复位异步释放：    &#x2F;&#x2F; PORESET synchroniser  always @ (posedge FCLK or negedge PORESETn)    if (!PORESETn)      begin        poreset_n_q  &lt;&#x3D; 1’b0;        poreset_n_qq &lt;&#x3D;">
+<meta property="og:description" content="11 时钟12 复位Cortex-M处理器有多个复位信号，通常包括：  System reset Debug reset Debug interface reset(例如nTRST) for JTAG&#x2F;SWD接口 Power-on reset  Note：System reset和Debug reset是分开的，使用场景是为了让core logic复位的时候，不影响debug syste">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-24T01:10:39.000Z">
-<meta property="article:modified_time" content="2024-05-24T01:37:34.761Z">
+<meta property="article:modified_time" content="2024-06-06T19:26:13.565Z">
 <meta property="article:author" content="Youngster">
 <meta property="article:tag" content="TBD">
 <meta name="twitter:card" content="summary">
@@ -188,10 +188,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-24 09:10:39 / 修改时间：09:37:34" itemprop="dateCreated datePublished" datetime="2024-05-24T09:10:39+08:00">2024-05-24</time>
+              <time title="创建时间：2024-05-24 09:10:39" itemprop="dateCreated datePublished" datetime="2024-05-24T09:10:39+08:00">2024-05-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-07 03:26:13" itemprop="dateModified" datetime="2024-06-07T03:26:13+08:00">2024-06-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -234,12 +240,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="11-时钟"><a href="#11-时钟" class="headerlink" title="11 时钟"></a>11 时钟</h2><h2 id="12-复位"><a href="#12-复位" class="headerlink" title="12 复位"></a>12 复位</h2><p>需要同步复位异步释放：</p>
-<blockquote>
-<p>  &#x2F;&#x2F; PORESET synchroniser<br>  always @ (posedge FCLK or negedge PORESETn)<br>    if (!PORESETn)<br>      begin<br>        poreset_n_q  &lt;&#x3D; 1’b0;<br>        poreset_n_qq &lt;&#x3D; 1’b0;<br>      end<br>    else<br>      begin<br>        poreset_n_q  &lt;&#x3D; 1’b1;<br>        poreset_n_qq &lt;&#x3D; poreset_n_q;<br>      end</p>
-<p>  &#x2F;&#x2F; SYSRESET synchroniser<br>  always @ (posedge FCLK or negedge SYSRESETn)<br>    if (!SYSRESETn)<br>      begin<br>        sysreset_n_q  &lt;&#x3D; 1’b0;<br>        sysreset_n_qq &lt;&#x3D; 1’b0;<br>      end<br>    else<br>      begin<br>        sysreset_n_q  &lt;&#x3D; 1’b1;<br>        sysreset_n_qq &lt;&#x3D; sysreset_n_q;<br>      end</p>
-<p>  &#x2F;&#x2F; nPOTRST synchroniser<br>  always @ (posedge SWCLKTCK or negedge PORESETn)<br>    if (!PORESETn)<br>      begin<br>        po_trst_n_q  &lt;&#x3D; 1’b0;<br>        po_trst_n_qq &lt;&#x3D; 1’b0;<br>      end<br>    else<br>      begin<br>        po_trst_n_q  &lt;&#x3D; 1’b1;<br>        po_trst_n_qq &lt;&#x3D; po_trst_n_q;<br>      end</p>
-</blockquote>
+        <h2 id="11-时钟"><a href="#11-时钟" class="headerlink" title="11 时钟"></a>11 时钟</h2><h2 id="12-复位"><a href="#12-复位" class="headerlink" title="12 复位"></a>12 复位</h2><p>Cortex-M处理器有多个复位信号，通常包括：</p>
+<ul>
+<li>System reset</li>
+<li>Debug reset</li>
+<li>Debug interface reset(例如nTRST) for JTAG&#x2F;SWD接口</li>
+<li>Power-on reset</li>
+</ul>
+<p>Note：System reset和Debug reset是分开的，使用场景是为了让core logic复位的时候，不影响debug system的逻辑。如果system reset也会将debug system logic复位，那么就需要重新连接debugger以及设置breakpoints, watchpoints  ，使用就会非常麻烦</p>
+<hr>
+<p>处理器也会输出复位请求信号<code>SYSRESETREQ</code>  ,通过SCS的Application Interrupt and Reset Control Register (AIRCR)   寄存器控制。其使用场景是</p>
+<ul>
+<li>软件可以请求系统复位，例如在故障错误处理的中断函数主动进行软件中断；</li>
+<li>调试器可以请求系统复位。这对于调试器请求目标处理器的复位是必不可少的。</li>
+</ul>
+<p>设计人员在使用此信号时需要保证：</p>
+<ul>
+<li>SYSRESETREQ只会是system reset的source，而不会是debugger以及power-on reset的source</li>
+<li>使用SYSRESETREQ产生system reset的逻辑</li>
+</ul>
+<p>需要同步复位异步释放</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PORESET synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> PORESETn)</span><br><span class="line"> <span class="keyword">if</span> (!PORESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     poreset_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     poreset_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     poreset_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     poreset_n_qq &lt;= poreset_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// SYSRESET synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> SYSRESETn)</span><br><span class="line"> <span class="keyword">if</span> (!SYSRESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     sysreset_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     sysreset_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     sysreset_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     sysreset_n_qq &lt;= sysreset_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// nPOTRST synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> SWCLKTCK <span class="keyword">or</span> <span class="keyword">negedge</span> PORESETn)</span><br><span class="line"> <span class="keyword">if</span> (!PORESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     po_trst_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     po_trst_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     po_trst_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     po_trst_n_qq &lt;= po_trst_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -340,20 +362,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

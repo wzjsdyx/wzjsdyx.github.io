@@ -162,6 +162,223 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/07/ahb-lite-slave-response/" class="post-title-link" itemprop="url">ahb-lite slave response</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-07 20:48:32" itemprop="dateCreated datePublished" datetime="2024-05-07T20:48:32+08:00">2024-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-08 09:55:23" itemprop="dateModified" datetime="2024-05-08T09:55:23+08:00">2024-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AHB-Lite%E6%80%BB%E7%BA%BF/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite总线</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/07/ahb-lite-slave-response/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/07/ahb-lite-slave-response/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Slave-transfer-responses"><a href="#Slave-transfer-responses" class="headerlink" title="Slave transfer responses"></a>Slave transfer responses</h1><p>&#x3D;&#x3D;》Master发起一次transfer之后就不能主动取消，接下来的传输过程由Slave控制；</p>
+<p>&#x3D;&#x3D;》Master需要知道transfer的传输状态（chenggong&#x2F;不成功），因此Slave需要返回response</p>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240508090512509.png" class="">
+
+<p>&#x3D;&#x3D;》<font color=blue>完整的transfer response是HRESP和HREADY的组合</font></p>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240508090625149.png" class="">
+
+<h2 id="Transfer-done"><a href="#Transfer-done" class="headerlink" title="Transfer done"></a>Transfer done</h2><p><font color=blue>HRESP OK+ HREADY HIGH</font></p>
+<h2 id="Transfer-pending"><a href="#Transfer-pending" class="headerlink" title="Transfer pending"></a>Transfer pending</h2><p>Slave可以在data phase插入wait states；</p>
+<p>在真正response前插入wait states时，<font color=blue>HRESP OK+ HREADY LOW</font>;</p>
+<ol>
+<li><p>每个从设备在释放总线<code>back off the bus</code>前可以插入一定数量的等待周期，（但是必须要定义一个<code>最大的插入数量</code>）：</p>
+<ul>
+<li><p>这是为了处理总线上的竞争和冲突</p>
+</li>
+<li><p>而且也可以计算最大的laterncy</p>
+</li>
+</ul>
+</li>
+<li><p>建议每个从设备最多插入16个等待周期，以避免某个访问锁定总线导致大量时钟周期的延迟。然而，对于某些设备，比如串行启动ROM，这个建议可能不适用。因为这类设备通常只在系统启动期间访问，并且如果使用超过16个等待周期，对系统性能的影响可以忽略不计。</p>
+</li>
+</ol>
+<blockquote>
+<p>我的理解：</p>
+<p>假设处理器先访问传感器和再访问存储器，</p>
+<p>处理器访问传感器的时候，传感器数据可能没有ready，这个时候就需要插入等待周期；</p>
+<p>在这期间，存储器不应该再占用总线资源，否则会出现竞争；</p>
+</blockquote>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240324164813564.png" class="">
+
+
+
+<h2 id="ERROR-response"><a href="#ERROR-response" class="headerlink" title="ERROR response"></a>ERROR response</h2><p>&#x3D;&#x3D;》”ERROR” 响应在AHB-Lite协议中用于指示某种错误条件。通常，这表示一种保护错误，比如尝试向只读内存位置写入数据。</p>
+<p>&#x3D;&#x3D;》对于 “OKAY” 响应，从设备可以在单个时钟周期内发送。对于 “ERROR” 响应，需要两个时钟周期。</p>
+<ol>
+<li><font color=blue>第一个周期：HRESP HIGH + HREADY LOW</font></li>
+<li><font color=blue>第二个周期：HRESP HIGH + HREADY HIGH</font></li>
+</ol>
+<p>&#x3D;&#x3D;》因为总线的pipeline特性，才需要两个周期response error。</p>
+<p>假设有这样一个情景：</p>
+<ol>
+<li>主设备向从设备发送一个读取请求（例如从存储器中读取数据）。</li>
+<li>在第一个时钟周期内，主设备已经向总线广播了读取请求的地址。</li>
+<li>然后，从设备（假设是一个只读存储器）检测到发生了错误，需要发送一个错误响应。</li>
+</ol>
+<p>现在，<code>问题在于，在从设备开始发送错误响应之时，主设备已经广播了下一个传输的地址。这意味着，主设备已经准备好进行下一个传输，而且总线上已经开始了新的传输流程</code>。在这种情况下，<code>如果从设备只发送一个时钟周期的错误响应，主设备可能无法及时取消下一个传输的执行。因为主设备需要一定的时间来检测到错误响应并采取相应的措施。如果主设备无法及时取消下一个传输，可能会导致错误的传输继续进行，从而造成系统错误或数据错误。</code></p>
+<p><font color=blue>核心就是：发生错误的时候，协议不希望Master再继续发送transfer，而是变为IDLE状态，防止错误传输的继续进行，造成系统错误</font></p>
+<p>如果Slave需要超过两个cycle来完成error response的传输，也可以在最开始插入Transfer pending，也就是wait状态。</p>
+<img src="/2024/05/07/ahb-lite-slave-response/image-20240508085623441.png" class="">
+
+<p><font color=blue>（Master可以利用第一个周期：HRESP HIGH + HREADY LOW进行处理，取消之后的transfer；第二个周期：HRESP HIGH + HREADY HIGH的时候，传输类型就可以变为IDLE）</font></p>
+<blockquote>
+<p> 注意：</p>
+<p>如果master进行的是burst类型的传输，当slave error response的时候：</p>
+<ul>
+<li>master可以选择取消接下来的burst传输，（这不是严格的限制）</li>
+<li>master也可以选择继续接下来的burst传输，（从协议上看，也是可以接受的）</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/" class="post-title-link" itemprop="url">Cortex-M4端口信号</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-29 21:49:22" itemprop="dateCreated datePublished" datetime="2024-04-29T21:49:22+08:00">2024-04-29</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/17/B1-5-6-Exception-entry-behavior/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -954,198 +1171,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E6%8E%A7%E5%88%B6%E4%BF%A1%E5%8F%B7%E8%AE%BE%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E6%8E%A7%E5%88%B6%E4%BF%A1%E5%8F%B7%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">单周期CPU的控制信号设计</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-15 11:18:44" itemprop="dateCreated datePublished" datetime="2024-04-15T11:18:44+08:00">2024-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-16 08:51:38" itemprop="dateModified" datetime="2024-04-16T08:51:38+08:00">2024-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E6%8E%A7%E5%88%B6%E4%BF%A1%E5%8F%B7%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E6%8E%A7%E5%88%B6%E4%BF%A1%E5%8F%B7%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/14/Cortex-M4-%E4%B8%AD%E6%96%AD%E6%8E%A7%E5%88%B6%E5%92%8C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/14/Cortex-M4-%E4%B8%AD%E6%96%AD%E6%8E%A7%E5%88%B6%E5%92%8C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8/" class="post-title-link" itemprop="url">Cortex-M4 中断控制和状态寄存器</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-14 22:28:19" itemprop="dateCreated datePublished" datetime="2024-04-14T22:28:19+08:00">2024-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-15 08:58:45" itemprop="dateModified" datetime="2024-04-15T08:58:45+08:00">2024-04-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/14/Cortex-M4-%E4%B8%AD%E6%96%AD%E6%8E%A7%E5%88%B6%E5%92%8C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/14/Cortex-M4-%E4%B8%AD%E6%96%AD%E6%8E%A7%E5%88%B6%E5%92%8C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>ruanjiaj测试中断能否正常触发</p>
-</blockquote>
-<blockquote>
-<p>试中断能否正常触发</p>
-</blockquote>
-<blockquote>
-<p>r中断能否正常触发</p>
-</blockquote>
-<blockquote>
-<p>软件触发中断，可以用来测试中断能否正常触发</p>
-</blockquote>
-<h1 id="Interrupt-Control-and-State-Register-ICSR"><a href="#Interrupt-Control-and-State-Register-ICSR" class="headerlink" title="Interrupt Control and State Register, ICSR"></a>Interrupt Control and State Register, ICSR</h1><p>提供对 <code>NMI, PendSV, and SysTick异常</code>的软件控制, 以及提供一些中断状态信息</p>
-<img src="/2024/04/14/Cortex-M4-%E4%B8%AD%E6%96%AD%E6%8E%A7%E5%88%B6%E5%92%8C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8/image-20240414224620441.png" class="">
-
-<h2 id="NMI控制"><a href="#NMI控制" class="headerlink" title="NMI控制"></a>NMI控制</h2><img src="/2024/04/14/Cortex-M4-%E4%B8%AD%E6%96%AD%E6%8E%A7%E5%88%B6%E5%92%8C%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8/image-20240414225447940.png" class="">
-
-<h2 id="PendSV控制"><a href="#PendSV控制" class="headerlink" title="PendSV控制"></a>PendSV控制</h2><h2 id="SysTick控制"><a href="#SysTick控制" class="headerlink" title="SysTick控制"></a>SysTick控制</h2><p><font color=red>TBD补充测试案例以及RTL工作原理</font></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1217,20 +1242,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

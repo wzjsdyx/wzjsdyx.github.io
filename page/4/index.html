@@ -162,6 +162,300 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/" class="post-title-link" itemprop="url">Cortex-M4 IBUS/DBUS/SBUS的使用限制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-09 08:24:54 / 修改时间：09:21:47" itemprop="dateCreated datePublished" datetime="2024-04-09T08:24:54+08:00">2024-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Cortex-M4 处理器中，有三个AHB-Lite总线接口，分别是IBUS，DBUS，SBUS。对其使用限制做描述</p>
+</blockquote>
+<h1 id="IBUS"><a href="#IBUS" class="headerlink" title="IBUS"></a>IBUS</h1><img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409082630403.png" class="">
+
+<ul>
+<li>IBUS只能发出core指令访问（外部调试器不能通过IBUS发出transatcion）</li>
+<li>访问空间是0x0000_0000 - 0x1FFF_FFFF</li>
+<li>Word对齐的访问，每次访问可能取出多条指令（Thumb-2指令集，支持16bit和32bit指令的混合使用）</li>
+</ul>
+<h1 id="DBUS"><a href="#DBUS" class="headerlink" title="DBUS"></a>DBUS</h1><img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409083158653.png" class="">
+
+<img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409083651092.png" class="">
+
+
+
+<ul>
+<li>DBUS能发出core数据访问和调试器访问</li>
+<li>访问优先级：core数据访问 &gt; debugger访问</li>
+<li>访问空间是0x0000_0000 - 0x1FFF_FFFF</li>
+<li>DBUS控制逻辑会将<code>非对齐的数据访问以及debugger访问转化为对齐的访问</code></li>
+<li>如果外部对DBUS和IBUS做仲裁，ARM强烈建议DBUS优先级高于IBUS优先级<font color=red>为什么要这样建议？有什么考量？发个mail，问问ARM</font></li>
+</ul>
+<img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409084132148.png" class="">
+
+
+
+<h1 id="SBUS"><a href="#SBUS" class="headerlink" title="SBUS"></a>SBUS</h1><img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409084948169.png" class="">
+
+<ul>
+<li><p>SBUS能发出core的指令&#x2F;数据访问，以及debugger访问</p>
+</li>
+<li><p>访问地址空间0x2000_0000  - 0xDFFFFFFF 以及 0xE010_0000 - 0xFFFF_FFFF  (之间空缺的空间是私有外设空间，通过PPB访问)</p>
+</li>
+<li><p>访问优先级：core数据访问&gt; core指令访问以及vector fetches访问 &gt; debugger访问</p>
+</li>
+</ul>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li>Cortex®-M4 Technical Reference Manual</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/Cortex-M4-hmaster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/08/Cortex-M4-hmaster/" class="post-title-link" itemprop="url">Cortex-M4 hmaster</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-08 22:15:17" itemprop="dateCreated datePublished" datetime="2024-04-08T22:15:17+08:00">2024-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-09 17:19:32" itemprop="dateModified" datetime="2024-04-09T17:19:32+08:00">2024-04-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/08/Cortex-M4-hmaster/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/Cortex-M4-hmaster/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Cortex-M4 处理器中，有三个AHB-Lite总线接口，分别是IBUS，DBUS，SBUS。</p>
+<p>其中DBUS和SBUS接口有hmaster信号，对其可能的一个使用场景进行分析</p>
+</blockquote>
+<h1 id="IBUS的hmaster信号"><a href="#IBUS的hmaster信号" class="headerlink" title="IBUS的hmaster信号"></a>IBUS的hmaster信号</h1><p>无</p>
+<p><code>IBUS之所以没有hmaster信号，是因为IBUS只能发出core的指令访问</code></p>
+<h1 id="DBUS的hmaster信号"><a href="#DBUS的hmaster信号" class="headerlink" title="DBUS的hmaster信号"></a>DBUS的hmaster信号</h1><img src="/2024/04/08/Cortex-M4-hmaster/image-20240408222327461.png" class="">
+
+<p>Cortex-M4处理器的总线接口，hmaster[1:0]信号可以区分：</p>
+<ul>
+<li>core数据访问</li>
+<li>DAP访问</li>
+<li>core指令访问</li>
+</ul>
+<p><code>中断向量的读取有些特殊，虽然是为了抓取指令，但是总线层面上是数据访问，即HPROT[0]标记为数据访问</code></p>
+<p>从下图中可以看出是<code>通过DBUS读取中断向量表里面的中断向量</code></p>
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161637006.png" class="">
+
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161753066.png" class="">
+
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161707697.png" class="">
+
+
+
+<p><code>DBUS不能进行指令访问，因此hmasterd[1:0] value不可能是2</code></p>
+<h1 id="SBUS的hmaster信号"><a href="#SBUS的hmaster信号" class="headerlink" title="SBUS的hmaster信号"></a>SBUS的hmaster信号</h1><img src="/2024/04/08/Cortex-M4-hmaster/image-20240408223015766.png" class="">
+
+<p>Cortex-M4处理器的总线接口，hmaster[1:0]信号可以区分：</p>
+<ul>
+<li>core数据访问</li>
+<li>DAP访问</li>
+<li>core指令访问</li>
+</ul>
+<p><code>中断向量的读取有些特殊，虽然是为了抓取指令，但是总线层面上是数据访问，即HPROT[0]标记为数据访问</code></p>
+<p><font color=red>These include vector fetches that  are marked as data by HPROTS[0]. 这是什么意思？发个mail问问ARM</font></p>
+<blockquote>
+<p>&#x3D;&#x3D;&gt;chatgpt</p>
+<p>这里提到的“vector”指的是中断向量，它是在处理器的向量表中的条目，包含了中断服务例程（Interrupt Service Routine, ISR）的入口地址。当中断发生时，处理器会使用这些向量来快速定位到对应的中断服务例程并跳转到那里执行。</p>
+<p><font color=blue>在 ARM Cortex-M4 处理器的文档中，提到了“这些包括被 HPROT[0] 标记为数据的向量抓取”，</font></p>
+<p><font color=blue>这意味着这些访问虽然是为了抓取指令，但在总线层面上它们被标记为数据访问。</font></p>
+<p><font color=blue>这通常涉及到对于系统中断向量表的读取，因为它们不是普通的指令抓取，而是需要特别的处理。</font></p>
+<p>HMASTERS信号的作用是指示当前的系统总线主控单元。其中：</p>
+<ul>
+<li>0 表示核心的数据侧访问。</li>
+<li>1 表示调试访问端口（Debug Access Port, DAP）访问。</li>
+<li>2 表示核心的指令侧访问，包括被标记为数据的中断向量抓取。</li>
+<li>3 是保留值，不应出现在 HMASTERS 上。</li>
+</ul>
+<p>在设计中确保DCode（数据访问）比ICode（指令抓取）有更高的优先级，特别是当涉及到中断处理时，是为了保证中断处理的及时性和数据访问的高效性。中断向量的抓取是关键的一步，因为它指向中断服务例程的开始，必须快速且可靠地完成以确保系统能及时响应中断</p>
+</blockquote>
+<h1 id="使用场景-MPU"><a href="#使用场景-MPU" class="headerlink" title="使用场景-MPU"></a>使用场景-MPU</h1><p>系统MPU（不是Cortex-M4内部的MPU）可以根据hmaster做访问权限的管控</p>
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240408223606948.png" class="">
+
+<p>例如：</p>
+<ul>
+<li><p>hmaster &#x3D; 3’h0作为core访问（此处不区分是指令访问还是数据访问）</p>
+</li>
+<li><p>hmaster &#x3D; 3’h1作为debugger访问</p>
+</li>
+<li><p>hmaster &#x3D; 3’h2作为DMA访问</p>
+</li>
+<li><p>hmaster &#x3D; 3’h3作为HSM（包括hsm-host和hsm-dma）访问</p>
+</li>
+</ul>
+<p>针对上面的要求：</p>
+<p>hmaster的处理方式是</p>
+<ul>
+<li>总线连接IBUS端口的hmaster信号直接tie 4’h0(此处视情况而定，实践中BUS的hmaster位宽是4bits)</li>
+<li>总线连接DBUS端口的hmaster信号{hmasterd[1],2’b0,hmasterd[0]};</li>
+<li>总线连接SBUS端口的hmaster信号{hmasters[1],2’b0,hmasters[0]};</li>
+<li>总线连接DMA端口的hmaster信号tie 4’h2；</li>
+<li>总线连接hsm_host和hsm_dma端口的hmaster信号tie 4’h4；</li>
+</ul>
+<p>这样的话，MPU看低3bits:</p>
+<ul>
+<li>core访问的话，MPU看到的是3’h0；debugger访问的话，MPU看到的是3’h1；</li>
+<li>dma访问，MPU看到的是3’h2；</li>
+<li>hsm_host和hsm_dma访问，MPU看到的是3’h4；</li>
+</ul>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li>Cortex®-M4  Integration and Implementation Manual</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-Verilog%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -968,192 +1262,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/CoreSight-DAP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/02/CoreSight-DAP/" class="post-title-link" itemprop="url">CoreSight-DAP</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-02 23:13:24" itemprop="dateCreated datePublished" datetime="2024-04-02T23:13:24+08:00">2024-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 09:09:33" itemprop="dateModified" datetime="2024-04-08T09:09:33+08:00">2024-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CoreSight/" itemprop="url" rel="index"><span itemprop="name">CoreSight</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/02/CoreSight-DAP/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/CoreSight-DAP/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">PTPX功耗评估</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-02 19:03:50 / 修改时间：19:26:03" itemprop="dateCreated datePublished" datetime="2024-04-02T19:03:50+08:00">2024-04-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="结果确认"><a href="#结果确认" class="headerlink" title="结果确认"></a>结果确认</h1><ol>
-<li>跑完PTPX之后，需要确认结果是否正确，看下log</li>
-</ol>
-<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402190614115.png" class="">
-
-<p>最前面一列的百分比表示反标率</p>
-<p>我是core的波形对 whole chip design的反标，因此反标率很低，但是是正常的。</p>
-<ol start="2">
-<li>可以进一步在log中确认看fsdb2vcd是否错误</li>
-</ol>
-<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402192537542.png" class="">
-
-
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1225,20 +1333,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

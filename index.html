@@ -162,6 +162,191 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">MCU关电上电流程及其时序分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-05 12:17:32 / 修改时间：17:27:23" itemprop="dateCreated datePublished" datetime="2024-06-05T12:17:32+08:00">2024-06-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">低功耗设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="关电和上电顺序"><a href="#关电和上电顺序" class="headerlink" title="关电和上电顺序"></a>关电和上电顺序</h1><p>关电的顺序：<br>1、关闭时钟–》PWR_CLKEN<br>2、拉住reset<br>3、打开ISO–》PWR_ISOON<br>4、关闭Power–》PWR_ON<br>上电的顺序：<br>反过来</p>
+<hr>
+<p>1、PMU&#x2F;SPM模块enable WIC</p>
+<p>2、core执行WFI进入deepsleep mode，此时会自动gating core clock</p>
+<p>3、spm wait cache idle（7843 特殊flow）</p>
+<p>4、spm走休眠，发出sleep request，wait ACK（就是cache idle以及外设sleep ACK）</p>
+<p>5、关闭时钟–》PWR_CLKEN（spm CORE_CLK_EN）</p>
+<p>6、<font color=red>拉住reset–》STDBY_PWR_RSTON</font></p>
+<p>7、打开ISO–》PWR_ISOON<br>8、关闭Power–》PWR_ON</p>
+<p>sleepdeep_gatclk ？ 1’b1 :  (~cm4_sleepdeep) ;</p>
+<hr>
+<p>正确的case(保存波形，_s1)</p>
+<p>复现spm问题(保存波形，_s2)1’吧</p>
+<p>修改代码</p>
+<p>重新运行</p>
+<blockquote>
+<p>问题：进不去standby mode，spm 发出sleep request ，等待ACK超时，进入standby失败，CPU自动退出低功耗模式；</p>
+</blockquote>
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-06-05-MCU关电上电流程及其时序分析\image-20240605172723153.png" alt="image-20240605172723153"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">项目实践-debugger无法连接</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-05 12:16:16 / 修改时间：12:35:09" itemprop="dateCreated datePublished" datetime="2024-06-05T12:16:16+08:00">2024-06-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CoreSight/" itemprop="url" rel="index"><span itemprop="name">CoreSight</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>问题：外部调试器无法连接芯片</p>
+<p>现象：debugger read id之后，power up状态不对</p>
+</blockquote>
+<h1 id="外部debugger和芯片的连接顺序"><a href="#外部debugger和芯片的连接顺序" class="headerlink" title="外部debugger和芯片的连接顺序"></a>外部debugger和芯片的连接顺序</h1><h2 id="SWJ-DP-TAP-reset"><a href="#SWJ-DP-TAP-reset" class="headerlink" title="SWJ-DP TAP reset"></a>SWJ-DP TAP reset</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -282,7 +467,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-02 14:50:15" itemprop="dateModified" datetime="2024-06-02T14:50:15+08:00">2024-06-02</time>
+                <time title="修改时间：2024-06-06 16:56:15" itemprop="dateModified" datetime="2024-06-06T16:56:15+08:00">2024-06-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -466,27 +651,50 @@
 
 <h3 id="Operation-Modes-Selection"><a href="#Operation-Modes-Selection" class="headerlink" title="Operation Modes Selection"></a>Operation Modes Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090046913.png" class="">
 
-<h3 id="NVR-Redundancy-Sector-Selection"><a href="#NVR-Redundancy-Sector-Selection" class="headerlink" title="NVR,Redundancy Sector Selection"></a>NVR,Redundancy Sector Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090244081.png" class="">
-
-<h3 id="Memory-Array-Configuraton"><a href="#Memory-Array-Configuraton" class="headerlink" title="Memory Array Configuraton"></a>Memory Array Configuraton</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090349066.png" class="">
-
-<h3 id="Connection-between-multiple-Flash-IP-and-Pump-IP"><a href="#Connection-between-multiple-Flash-IP-and-Pump-IP" class="headerlink" title="Connection between multiple Flash IP and Pump IP"></a>Connection between multiple Flash IP and Pump IP</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602144959234.png" class="">
 
 
 
-<h3 id="ECC"><a href="#ECC" class="headerlink" title="ECC"></a>ECC</h3><h3 id="Chip-Erase"><a href="#Chip-Erase" class="headerlink" title="Chip Erase"></a>Chip Erase</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528205914524.png" class="">
 
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210021298.png" class="">
-
-
-
-<h3 id="Sector-Block-Erase"><a href="#Sector-Block-Erase" class="headerlink" title="Sector&#x2F;Block Erase"></a>Sector&#x2F;Block Erase</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210008315.png" class="">
+<h2 id="ECC"><a href="#ECC" class="headerlink" title="ECC"></a>ECC</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240604213629620.png" class="">
 
 
 
-<h3 id="Program"><a href="#Program" class="headerlink" title="Program"></a>Program</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104657371.png" class="">
+<h2 id="power-mode"><a href="#power-mode" class="headerlink" title="power mode"></a>power mode</h2><h3 id="Standby-mode"><a href="#Standby-mode" class="headerlink" title="Standby mode"></a>Standby mode</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240604213701983.png" class="">
 
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104819187.png" class="">
+
+
+<h3 id="Deep-Power-Down-Mode"><a href="#Deep-Power-Down-Mode" class="headerlink" title="Deep Power Down Mode"></a>Deep Power Down Mode</h3><blockquote>
+<p> The device enters the Deep Power Down Mode when both DPD pin and CEb pin are high.<br>Power consumption could be further reduced. However, a tDPD recovery time is needed to<br>return the device back to <code>active mode</code> from deep power down mode.  </p>
+</blockquote>
+<p><font color=red>TBD:</font>active mode是指进入一些read&#x2F;program的operation mode吗？</p>
+<p>从deep power mode到其他operation mode，需要先进入Standby吗？还是直接可以进入？应该需要看时序图确认！！！</p>
+<h3 id="Auto-Low-Power-Mode"><a href="#Auto-Low-Power-Mode" class="headerlink" title="Auto Low Power Mode"></a>Auto Low Power Mode</h3><blockquote>
+<p>The device has the Auto Lower Power mode which puts it in a near standby mode <code>after data has been accessed with a valid Read operation</code>. This reduces the active Read current to the<br>standby current.<br>While CEb is low, the device exits Auto Low Power mode with CLOCK rising edge when<br>RDEN&#x3D;1 to initiate another Read cycle, <code>with no access time penalty</code>.  </p>
+</blockquote>
+<p><font color=red>TBD:</font>应该是read 操作之后自动进入low power mode，此时的功耗类似于standby mode。</p>
+<h2 id="eflash-operation"><a href="#eflash-operation" class="headerlink" title="eflash operation"></a>eflash operation</h2><h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><blockquote>
+<p>The Read operation of the device is triggered by CLOCK rising edge during RDEN&#x3D;1.  Output data width is 150 Bits.  </p>
+<p><code>All non-Read operations do not care the status of CLOCK.  </code></p>
+<p>CEb must be low for the system to obtain data from the device. When CEb is high, the device<br>is de-selected and only standby power is consumed.（这里说的应该就是Auto Low Power Mode）<br><code>The data output is reset to be all zero by Power on Reset, or CEb high  </code></p>
+</blockquote>
+<p><font color=red>所以我理解在实现的时候，read操作之后不需要进入主动进入standby mode；这样连续读写可以节省进入和退出standby mode的时间；</font></p>
+<h3 id="Recall-Read"><a href="#Recall-Read" class="headerlink" title="Recall Read"></a>Recall Read</h3><p>Recall Read is a special slow read mode to obtain the configuration bits from the NVR and<br>NVR_CFG sectors before VREF can be accurately configured.  </p>
+<p><font color=red>TBD:应该只有NVF_CFG也就是NVR_1需要用recall read吧？</font></p>
+<h4 id="Read-Cycle-Timing-Parameters-Cload-0-15pF"><a href="#Read-Cycle-Timing-Parameters-Cload-0-15pF" class="headerlink" title="Read Cycle Timing Parameters (Cload&#x3D;0.15pF)"></a>Read Cycle Timing Parameters (Cload&#x3D;0.15pF)</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240605092527921.png" class="">
+
+
+
+<h4 id="Read-Cycle-Timing-Diagram"><a href="#Read-Cycle-Timing-Diagram" class="headerlink" title="Read Cycle Timing Diagram"></a>Read Cycle Timing Diagram</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104433588.png" class="">
+
+
+
+<h3 id="Program"><a href="#Program" class="headerlink" title="Program"></a>Program</h3><blockquote>
+<p>The device is programmed on 75 bits basis. DINSEL selects one of 75 bits out of 150 bits<br>word.  </p>
+</blockquote>
+<p>program的最小单位是75bits；</p>
+<h4 id="Program-Erase-Cycle-Timing-Parameters"><a href="#Program-Erase-Cycle-Timing-Parameters" class="headerlink" title="Program&#x2F;Erase Cycle Timing Parameters"></a>Program&#x2F;Erase Cycle Timing Parameters</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240605094745072.png" class="">
+
+<h4 id="Program-Cycle-Timing-Diagram"><a href="#Program-Cycle-Timing-Diagram" class="headerlink" title="Program Cycle Timing Diagram"></a>Program Cycle Timing Diagram</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104819187.png" class="">
 
 <img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104843799.png" class="">
 
@@ -494,7 +702,74 @@
 
 
 
-<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104433588.png" class="">
+<h3 id="Sector-Erase"><a href="#Sector-Erase" class="headerlink" title="Sector Erase"></a>Sector Erase</h3><blockquote>
+<p>The sector erase operation erases the device on a sector-by-sector basis.  </p>
+</blockquote>
+<h3 id="Block-Erase"><a href="#Block-Erase" class="headerlink" title="Block Erase"></a>Block Erase</h3><blockquote>
+<p> Block erase operation could erase total 16 sectors organized as block for main array.   </p>
+<p>During a block erase, users could also specify a combination of multiple redundancy sectors<br>to be erased with main array sectors.   </p>
+</blockquote>
+<p>7843项目中flash controller没有实现这个操作；</p>
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210008315.png" class="">
+
+<h3 id="Chip-Erase"><a href="#Chip-Erase" class="headerlink" title="Chip Erase"></a>Chip Erase</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528205914524.png" class="">
+
+<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210021298.png" class="">
+
+
+
+<h3 id="Charge-Pump-Sharing"><a href="#Charge-Pump-Sharing" class="headerlink" title="Charge Pump Sharing"></a>Charge Pump Sharing</h3><blockquote>
+<p>Its charge pump block (macro name: bias_340sa128kx150_v1) can be shared among up to 2<br>Flash macros. Before the signals connecting to the pump, the logic signals from different<br>devices should be <code>multiplexed</code>, whereas the analog signals from different devices must be<br>wire-connected.<br>The read while write and the read while read operations can be done in two different<br>instances with a shared charge pump simultaneously, but <code>the concurrent writes cannot be allowed</code>.<br><code>Bias IP must be in power off mode when any shared flash IP enter power off mode.  </code></p>
+</blockquote>
+<p><font color=blue>design上是对多个Macro信号或操作连接到bias；只使用一种bias IP，能够对不同size的Flash macro进行操作</font></p>
+<h3 id="Power-On-Reset-PORb"><a href="#Power-On-Reset-PORb" class="headerlink" title="Power On Reset (PORb)"></a>Power On Reset (PORb)</h3><blockquote>
+<p>The Power On Reset pin (PORb) is used to reset the device during power-on. When the<br>PORb pin is held low, any in-progress operation will be terminated, and all internal registers<br>are cleared.  </p>
+</blockquote>
+<h3 id="NVR-Sectors"><a href="#NVR-Sectors" class="headerlink" title="NVR Sectors"></a>NVR Sectors</h3><blockquote>
+<p>NVR array is a group of special sectors outside the main array memory space. NVR array has<br>32 sectors which can be selected by the NVR pin.  </p>
+</blockquote>
+<h3 id="NVR-CFG-Sector"><a href="#NVR-CFG-Sector" class="headerlink" title="NVR_CFG Sector"></a>NVR_CFG Sector</h3><blockquote>
+<p>The device’s configuration information is written into a special NVR_CFG sector during wafer<br>testing. User can access its contents with NVR_CFG&#x3D;1 and RECALL&#x3D;1.<br>To prevent configuration information being inadvertently damaged, a pin LCK_CFG&#x3D;1 is used<br>to protect this NVR_CFG sector.<br>NVR_CFG sector can be programmed or erased for testing purpose only.  </p>
+<p>In NVR_CFG sector, every even and odd row pair (row 0&#x2F;1, row 2&#x2F;3 …) should be<br>programmed with same data pattern. In read mode, the data of even&#x2F;odd pair is read out  simultaneously as one word, so its sector size is only a half of 128 x 150 bits.   </p>
+</blockquote>
+<h3 id="Pre-Program"><a href="#Pre-Program" class="headerlink" title="Pre-Program"></a>Pre-Program</h3><blockquote>
+<p>Before a program operation, same data should be programmed onto the target address with a<br>shorter program pulse. A program operation with PREPG high indicates a Pre-Program<br>operation.<br>Pre-Program multiple words in the same row before the program operations can reduce the<br>Pre-program time overhead.  </p>
+</blockquote>
+<h3 id="Erase-Retry"><a href="#Erase-Retry" class="headerlink" title="Erase Retry"></a>Erase Retry</h3><blockquote>
+<p>Erase Retry uses a step-up voltage scheme with a maximum of 20 retry pulses. The<br>RETRY[1:0] pins specify the retry voltage level for each retry pulse. RETRY[1:0] should be<br>’11 for single pulse sector&#x2F;block erase and chip erase.<br>The Verify Read (VREAD1&#x3D;1) is used to check whether a sector&#x2F;block has been successfully<br>erased after each pulse. An extra retry operation is needed if the sector&#x2F;block is not erased<br>successfully.<br>No verify Read is needed for the last pulse as the cumulative erase time is already sufficient.<br>Erase retry scheme should be used for sector&#x2F;block erase only, not chip erase.  </p>
+</blockquote>
+<h3 id="Verify-Read"><a href="#Verify-Read" class="headerlink" title="Verify Read"></a>Verify Read</h3><blockquote>
+<p>Verify read is a special read mode to guarantee a successful write operation. Verify read is<br>controlled by the pin VREAD1 and VREAD0. The access time is slower than normal read.  </p>
+</blockquote>
+<h3 id="Safety-Read"><a href="#Safety-Read" class="headerlink" title="Safety Read"></a>Safety Read</h3><blockquote>
+<p>Safety read 0&#x2F;1 is a special read mode to detect whether any flash bit has experienced<br>unusual reduction in read margin. Safety read 0 is controlled by the pin SREAD0, and safety<br>read 1 is controlled by the pin SREAD1. Their access time is the same as a normal read.  </p>
+</blockquote>
+<h3 id="Row-Redundancy"><a href="#Row-Redundancy" class="headerlink" title="Row Redundancy"></a>Row Redundancy</h3><blockquote>
+<p>There are 4 redundancy sectors: These 4 redundancy sectors can be used to replace the bad<br>sectors of main array. See Table: NVR, Redundancy Sector Selection.<br>The redundancy information is stored at several locations of NVR_CFG sector.   </p>
+</blockquote>
+<h3 id="Set-Configuration-Register"><a href="#Set-Configuration-Register" class="headerlink" title="Set Configuration Register"></a>Set Configuration Register</h3><blockquote>
+<p>For obtain required performance, it is necessary to set configuration bits into the registers of<br>the device.<br>Before normal read&#x2F;program&#x2F;erase operation, eight groups of configuration data must be read<br>from the device while RECALL and NVR_CFG are high and written to eight groups of<br>configuration registers (16 bits for each group) in the device. These configuration registers are<br>selected by A[2:0] when CONFEN is high. Only 16 LSB bits of each word are effective  configuration bits. </p>
+<p>Word 0 maps to address 000, Word1 maps to address 001, etc.   </p>
+<p>After power on reset, all configuration registers are reset and need to be rewritten before any<br>other operations  </p>
+<p>To set RECALL pin high during Set Configuration Registers operation, performing Recall<br>Read and Set Configuration Registers sequentially can help reduce time overhead.  </p>
+</blockquote>
+<h3 id="Configuration-Register-Read"><a href="#Configuration-Register-Read" class="headerlink" title="Configuration Register Read"></a>Configuration Register Read</h3><blockquote>
+<p>After all configuration registers are written, the contents of the configuration registers can be<br>read out to device pins by configuration register read.<br>Those configuration registers are selected by A[2:0] when CONFEN&#x3D;1 and RDEN&#x3D;1 at the<br>rising edge of CLOCK. Only 16 LSB bits of each word are read out to DOUT[15:0].  </p>
+</blockquote>
+<h3 id="Power-Off"><a href="#Power-Off" class="headerlink" title="Power Off"></a>Power Off</h3><blockquote>
+<p>The device can be completely turned off by an internal power switch when SUPPLYON&#x3D;0.<br>This power switch should be turned on (SUPPLYON&#x3D;1) after power up and constantly<br>remained for any operations. Flash IPs and their shared Bias IP must go to power off mode<br>together.<br>Power on reset should be activated during supply switching off, therefore all configuration<br>registers will lose the current value and they must be reloaded again before the next<br>read&#x2F;write operation.<br>When the device is switched off, all output pins from pfm are floated.  </p>
+</blockquote>
+<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="NVR-Redundancy-Sector-Selection"><a href="#NVR-Redundancy-Sector-Selection" class="headerlink" title="NVR,Redundancy Sector Selection"></a>NVR,Redundancy Sector Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090244081.png" class="">
+
+<h3 id="Memory-Array-Configuraton"><a href="#Memory-Array-Configuraton" class="headerlink" title="Memory Array Configuraton"></a>Memory Array Configuraton</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090349066.png" class="">
+
+<h3 id="Configuration-Data-and-Redundancy-Storage-in-NVR-CFG"><a href="#Configuration-Data-and-Redundancy-Storage-in-NVR-CFG" class="headerlink" title="Configuration Data and Redundancy Storage in NVR_CFG"></a>Configuration Data and Redundancy Storage in NVR_CFG</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240606142930577.png" class="">
+
+<h3 id="Configuration-Data-Mapping-Table"><a href="#Configuration-Data-Mapping-Table" class="headerlink" title="Configuration Data Mapping Table"></a>Configuration Data Mapping Table</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240606144800615.png" class="">
+
+<h3 id="Connection-between-multiple-Flash-IP-and-Pump-IP"><a href="#Connection-between-multiple-Flash-IP-and-Pump-IP" class="headerlink" title="Connection between multiple Flash IP and Pump IP"></a>Connection between multiple Flash IP and Pump IP</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602144959234.png" class="">
+
+
 
 
 
@@ -647,10 +922,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-24 09:23:38 / 修改时间：09:30:38" itemprop="dateCreated datePublished" datetime="2024-05-24T09:23:38+08:00">2024-05-24</time>
+              <time title="创建时间：2024-05-24 09:23:38" itemprop="dateCreated datePublished" datetime="2024-05-24T09:23:38+08:00">2024-05-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-06 17:45:35" itemprop="dateModified" datetime="2024-06-06T17:45:35+08:00">2024-06-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -687,7 +968,14 @@
 
       
           <p>使用ARM交付包 搭建一个demo的SoC</p>
-<h1 id="使用的文件"><a href="#使用的文件" class="headerlink" title="使用的文件"></a>使用的文件</h1><h1 id="搭建的过程"><a href="#搭建的过程" class="headerlink" title="搭建的过程"></a>搭建的过程</h1>
+<blockquote>
+<p>AT521 –&gt; Cortex-M4</p>
+<p>TM925 –&gt; ETM</p>
+<p>创建的仿真环境在 merge_work_dir1</p>
+</blockquote>
+<h1 id="demo-SoC-testbench"><a href="#demo-SoC-testbench" class="headerlink" title="demo SoC testbench"></a>demo SoC testbench</h1><img src="/2024/05/24/Cortex-M4-demo-SoC%E6%90%AD%E5%BB%BA/image-20240606173034184.png" class="">
+
+
       
     </div>
 
@@ -729,10 +1017,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-24 09:10:39 / 修改时间：09:37:34" itemprop="dateCreated datePublished" datetime="2024-05-24T09:10:39+08:00">2024-05-24</time>
+              <time title="创建时间：2024-05-24 09:10:39" itemprop="dateCreated datePublished" datetime="2024-05-24T09:10:39+08:00">2024-05-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-07 03:26:13" itemprop="dateModified" datetime="2024-06-07T03:26:13+08:00">2024-06-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -768,12 +1062,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="11-时钟"><a href="#11-时钟" class="headerlink" title="11 时钟"></a>11 时钟</h2><h2 id="12-复位"><a href="#12-复位" class="headerlink" title="12 复位"></a>12 复位</h2><p>需要同步复位异步释放：</p>
-<blockquote>
-<p>  &#x2F;&#x2F; PORESET synchroniser<br>  always @ (posedge FCLK or negedge PORESETn)<br>    if (!PORESETn)<br>      begin<br>        poreset_n_q  &lt;&#x3D; 1’b0;<br>        poreset_n_qq &lt;&#x3D; 1’b0;<br>      end<br>    else<br>      begin<br>        poreset_n_q  &lt;&#x3D; 1’b1;<br>        poreset_n_qq &lt;&#x3D; poreset_n_q;<br>      end</p>
-<p>  &#x2F;&#x2F; SYSRESET synchroniser<br>  always @ (posedge FCLK or negedge SYSRESETn)<br>    if (!SYSRESETn)<br>      begin<br>        sysreset_n_q  &lt;&#x3D; 1’b0;<br>        sysreset_n_qq &lt;&#x3D; 1’b0;<br>      end<br>    else<br>      begin<br>        sysreset_n_q  &lt;&#x3D; 1’b1;<br>        sysreset_n_qq &lt;&#x3D; sysreset_n_q;<br>      end</p>
-<p>  &#x2F;&#x2F; nPOTRST synchroniser<br>  always @ (posedge SWCLKTCK or negedge PORESETn)<br>    if (!PORESETn)<br>      begin<br>        po_trst_n_q  &lt;&#x3D; 1’b0;<br>        po_trst_n_qq &lt;&#x3D; 1’b0;<br>      end<br>    else<br>      begin<br>        po_trst_n_q  &lt;&#x3D; 1’b1;<br>        po_trst_n_qq &lt;&#x3D; po_trst_n_q;<br>      end</p>
-</blockquote>
+          <h2 id="11-时钟"><a href="#11-时钟" class="headerlink" title="11 时钟"></a>11 时钟</h2><h2 id="12-复位"><a href="#12-复位" class="headerlink" title="12 复位"></a>12 复位</h2><p>Cortex-M处理器有多个复位信号，通常包括：</p>
+<ul>
+<li>System reset</li>
+<li>Debug reset</li>
+<li>Debug interface reset(例如nTRST) for JTAG&#x2F;SWD接口</li>
+<li>Power-on reset</li>
+</ul>
+<p>Note：System reset和Debug reset是分开的，使用场景是为了让core logic复位的时候，不影响debug system的逻辑。如果system reset也会将debug system logic复位，那么就需要重新连接debugger以及设置breakpoints, watchpoints  ，使用就会非常麻烦</p>
+<hr>
+<p>处理器也会输出复位请求信号<code>SYSRESETREQ</code>  ,通过SCS的Application Interrupt and Reset Control Register (AIRCR)   寄存器控制。其使用场景是</p>
+<ul>
+<li>软件可以请求系统复位，例如在故障错误处理的中断函数主动进行软件中断；</li>
+<li>调试器可以请求系统复位。这对于调试器请求目标处理器的复位是必不可少的。</li>
+</ul>
+<p>设计人员在使用此信号时需要保证：</p>
+<ul>
+<li>SYSRESETREQ只会是system reset的source，而不会是debugger以及power-on reset的source</li>
+<li>使用SYSRESETREQ产生system reset的逻辑</li>
+</ul>
+<p>需要同步复位异步释放</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PORESET synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> PORESETn)</span><br><span class="line"> <span class="keyword">if</span> (!PORESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     poreset_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     poreset_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     poreset_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     poreset_n_qq &lt;= poreset_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// SYSRESET synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> SYSRESETn)</span><br><span class="line"> <span class="keyword">if</span> (!SYSRESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     sysreset_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     sysreset_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     sysreset_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     sysreset_n_qq &lt;= sysreset_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// nPOTRST synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> SWCLKTCK <span class="keyword">or</span> <span class="keyword">negedge</span> PORESETn)</span><br><span class="line"> <span class="keyword">if</span> (!PORESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     po_trst_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     po_trst_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     po_trst_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     po_trst_n_qq &lt;= po_trst_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -1094,223 +1404,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/07/ahb-lite-slave-response/" class="post-title-link" itemprop="url">ahb-lite slave response</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-05-07 20:48:32" itemprop="dateCreated datePublished" datetime="2024-05-07T20:48:32+08:00">2024-05-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-08 09:55:23" itemprop="dateModified" datetime="2024-05-08T09:55:23+08:00">2024-05-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AHB-Lite%E6%80%BB%E7%BA%BF/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite总线</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/05/07/ahb-lite-slave-response/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/07/ahb-lite-slave-response/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Slave-transfer-responses"><a href="#Slave-transfer-responses" class="headerlink" title="Slave transfer responses"></a>Slave transfer responses</h1><p>&#x3D;&#x3D;》Master发起一次transfer之后就不能主动取消，接下来的传输过程由Slave控制；</p>
-<p>&#x3D;&#x3D;》Master需要知道transfer的传输状态（chenggong&#x2F;不成功），因此Slave需要返回response</p>
-<img src="/2024/05/07/ahb-lite-slave-response/image-20240508090512509.png" class="">
-
-<p>&#x3D;&#x3D;》<font color=blue>完整的transfer response是HRESP和HREADY的组合</font></p>
-<img src="/2024/05/07/ahb-lite-slave-response/image-20240508090625149.png" class="">
-
-<h2 id="Transfer-done"><a href="#Transfer-done" class="headerlink" title="Transfer done"></a>Transfer done</h2><p><font color=blue>HRESP OK+ HREADY HIGH</font></p>
-<h2 id="Transfer-pending"><a href="#Transfer-pending" class="headerlink" title="Transfer pending"></a>Transfer pending</h2><p>Slave可以在data phase插入wait states；</p>
-<p>在真正response前插入wait states时，<font color=blue>HRESP OK+ HREADY LOW</font>;</p>
-<ol>
-<li><p>每个从设备在释放总线<code>back off the bus</code>前可以插入一定数量的等待周期，（但是必须要定义一个<code>最大的插入数量</code>）：</p>
-<ul>
-<li><p>这是为了处理总线上的竞争和冲突</p>
-</li>
-<li><p>而且也可以计算最大的laterncy</p>
-</li>
-</ul>
-</li>
-<li><p>建议每个从设备最多插入16个等待周期，以避免某个访问锁定总线导致大量时钟周期的延迟。然而，对于某些设备，比如串行启动ROM，这个建议可能不适用。因为这类设备通常只在系统启动期间访问，并且如果使用超过16个等待周期，对系统性能的影响可以忽略不计。</p>
-</li>
-</ol>
-<blockquote>
-<p>我的理解：</p>
-<p>假设处理器先访问传感器和再访问存储器，</p>
-<p>处理器访问传感器的时候，传感器数据可能没有ready，这个时候就需要插入等待周期；</p>
-<p>在这期间，存储器不应该再占用总线资源，否则会出现竞争；</p>
-</blockquote>
-<img src="/2024/05/07/ahb-lite-slave-response/image-20240324164813564.png" class="">
-
-
-
-<h2 id="ERROR-response"><a href="#ERROR-response" class="headerlink" title="ERROR response"></a>ERROR response</h2><p>&#x3D;&#x3D;》”ERROR” 响应在AHB-Lite协议中用于指示某种错误条件。通常，这表示一种保护错误，比如尝试向只读内存位置写入数据。</p>
-<p>&#x3D;&#x3D;》对于 “OKAY” 响应，从设备可以在单个时钟周期内发送。对于 “ERROR” 响应，需要两个时钟周期。</p>
-<ol>
-<li><font color=blue>第一个周期：HRESP HIGH + HREADY LOW</font></li>
-<li><font color=blue>第二个周期：HRESP HIGH + HREADY HIGH</font></li>
-</ol>
-<p>&#x3D;&#x3D;》因为总线的pipeline特性，才需要两个周期response error。</p>
-<p>假设有这样一个情景：</p>
-<ol>
-<li>主设备向从设备发送一个读取请求（例如从存储器中读取数据）。</li>
-<li>在第一个时钟周期内，主设备已经向总线广播了读取请求的地址。</li>
-<li>然后，从设备（假设是一个只读存储器）检测到发生了错误，需要发送一个错误响应。</li>
-</ol>
-<p>现在，<code>问题在于，在从设备开始发送错误响应之时，主设备已经广播了下一个传输的地址。这意味着，主设备已经准备好进行下一个传输，而且总线上已经开始了新的传输流程</code>。在这种情况下，<code>如果从设备只发送一个时钟周期的错误响应，主设备可能无法及时取消下一个传输的执行。因为主设备需要一定的时间来检测到错误响应并采取相应的措施。如果主设备无法及时取消下一个传输，可能会导致错误的传输继续进行，从而造成系统错误或数据错误。</code></p>
-<p><font color=blue>核心就是：发生错误的时候，协议不希望Master再继续发送transfer，而是变为IDLE状态，防止错误传输的继续进行，造成系统错误</font></p>
-<p>如果Slave需要超过两个cycle来完成error response的传输，也可以在最开始插入Transfer pending，也就是wait状态。</p>
-<img src="/2024/05/07/ahb-lite-slave-response/image-20240508085623441.png" class="">
-
-<p><font color=blue>（Master可以利用第一个周期：HRESP HIGH + HREADY LOW进行处理，取消之后的transfer；第二个周期：HRESP HIGH + HREADY HIGH的时候，传输类型就可以变为IDLE）</font></p>
-<blockquote>
-<p> 注意：</p>
-<p>如果master进行的是burst类型的传输，当slave error response的时候：</p>
-<ul>
-<li>master可以选择取消接下来的burst传输，（这不是严格的限制）</li>
-<li>master也可以选择继续接下来的burst传输，（从协议上看，也是可以接受的）</li>
-</ul>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/" class="post-title-link" itemprop="url">Cortex-M4端口信号</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-29 21:49:22" itemprop="dateCreated datePublished" datetime="2024-04-29T21:49:22+08:00">2024-04-29</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/29/Cortex-M4%E7%AB%AF%E5%8F%A3%E4%BF%A1%E5%8F%B7/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1382,20 +1475,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
