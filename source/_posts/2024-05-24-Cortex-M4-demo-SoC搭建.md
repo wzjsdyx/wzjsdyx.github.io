@@ -11,13 +11,13 @@ tags:
 
 
 
-# 使用的文件
+> AT521 --> Cortex-M4
+>
+> TM925 --> ETM
+>
+> 创建的仿真环境在 merge_work_dir1
 
+# demo SoC testbench
 
-
-
-
-# 搭建的过程
-
-
+{% asset_img image-20240606173034184.png %}
 

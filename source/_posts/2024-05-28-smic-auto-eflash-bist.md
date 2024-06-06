@@ -261,39 +261,97 @@ Test mode instruction  is for flash going into the relative basic test mode. The
 
 {% asset_img image-20240529090046913.png %}
 
-### NVR,Redundancy Sector Selection
-
-{% asset_img image-20240529090244081.png %}
-
-### Memory Array Configuraton
-
-{% asset_img image-20240529090349066.png %}
-
-### Connection between multiple Flash IP and Pump IP
-
-{% asset_img image-20240602144959234.png %}
 
 
 
-### ECC
 
-### Chip Erase
+## ECC
 
-{% asset_img image-20240528205914524.png %}
-
-{% asset_img image-20240528210021298.png %}
+{% asset_img image-20240604213629620.png %}
 
 
 
-### Sector/Block Erase
+## power mode
 
-{% asset_img image-20240528210008315.png %}
+### Standby mode
+
+{% asset_img image-20240604213701983.png %}
+
+
+
+### Deep Power Down Mode
+
+>  The device enters the Deep Power Down Mode when both DPD pin and CEb pin are high.
+> Power consumption could be further reduced. However, a tDPD recovery time is needed to
+> return the device back to `active mode` from deep power down mode.  
+
+
+
+<font color=red>TBD:</font>active mode是指进入一些read/program的operation mode吗？
+
+从deep power mode到其他operation mode，需要先进入Standby吗？还是直接可以进入？应该需要看时序图确认！！！
+
+
+
+### Auto Low Power Mode  
+
+> The device has the Auto Lower Power mode which puts it in a near standby mode `after data
+> has been accessed with a valid Read operation`. This reduces the active Read current to the
+> standby current.
+> While CEb is low, the device exits Auto Low Power mode with CLOCK rising edge when
+> RDEN=1 to initiate another Read cycle, `with no access time penalty`.  
+
+<font color=red>TBD:</font>应该是read 操作之后自动进入low power mode，此时的功耗类似于standby mode。
+
+
+
+## eflash operation
+
+### read
+
+> The Read operation of the device is triggered by CLOCK rising edge during RDEN=1.  Output data width is 150 Bits.  
+>
+> `All non-Read operations do not care the status of CLOCK.  `
+>
+> CEb must be low for the system to obtain data from the device. When CEb is high, the device
+> is de-selected and only standby power is consumed.（这里说的应该就是Auto Low Power Mode）
+> `The data output is reset to be all zero by Power on Reset, or CEb high  `
+
+<font color=red>所以我理解在实现的时候，read操作之后不需要进入主动进入standby mode；这样连续读写可以节省进入和退出standby mode的时间；</font>
+
+### Recall Read
+
+Recall Read is a special slow read mode to obtain the configuration bits from the NVR and
+NVR_CFG sectors before VREF can be accurately configured.  
+
+<font color=red>TBD:应该只有NVF_CFG也就是NVR_1需要用recall read吧？</font>
+
+
+
+#### Read Cycle Timing Parameters (Cload=0.15pF)
+
+{% asset_img image-20240605092527921.png %}
+
+
+
+#### Read Cycle Timing Diagram
+
+{% asset_img image-20240529104433588.png %}
 
 
 
 ### Program
 
-{% asset_img image-20240529104657371.png %}
+> The device is programmed on 75 bits basis. DINSEL selects one of 75 bits out of 150 bits
+> word.  
+
+program的最小单位是75bits；
+
+#### Program/Erase Cycle Timing Parameters
+
+{% asset_img image-20240605094745072.png %}
+
+#### Program Cycle Timing Diagram  
 
 {% asset_img image-20240529104819187.png %}
 
@@ -303,9 +361,182 @@ Test mode instruction  is for flash going into the relative basic test mode. The
 
 
 
-### read
+### Sector Erase
 
-{% asset_img image-20240529104433588.png %}
+> The sector erase operation erases the device on a sector-by-sector basis.  
+
+
+
+### Block Erase
+
+>  Block erase operation could erase total 16 sectors organized as block for main array.   
+>
+> During a block erase, users could also specify a combination of multiple redundancy sectors
+> to be erased with main array sectors.   
+
+7843项目中flash controller没有实现这个操作；
+
+{% asset_img image-20240528210008315.png %}
+
+### Chip Erase
+
+{% asset_img image-20240528205914524.png %}
+
+{% asset_img image-20240528210021298.png %}
+
+
+
+### Charge Pump Sharing
+
+> Its charge pump block (macro name: bias_340sa128kx150_v1) can be shared among up to 2
+> Flash macros. Before the signals connecting to the pump, the logic signals from different
+> devices should be `multiplexed`, whereas the analog signals from different devices must be
+> wire-connected.
+> The read while write and the read while read operations can be done in two different
+> instances with a shared charge pump simultaneously, but `the concurrent writes cannot be
+> allowed`.
+> `Bias IP must be in power off mode when any shared flash IP enter power off mode.  `
+
+<font color=blue>design上是对多个Macro信号或操作连接到bias；只使用一种bias IP，能够对不同size的Flash macro进行操作</font>
+
+
+
+
+
+### Power On Reset (PORb)
+
+> The Power On Reset pin (PORb) is used to reset the device during power-on. When the
+> PORb pin is held low, any in-progress operation will be terminated, and all internal registers
+> are cleared.  
+
+
+
+### NVR Sectors
+
+> NVR array is a group of special sectors outside the main array memory space. NVR array has
+> 32 sectors which can be selected by the NVR pin.  
+
+
+
+### NVR_CFG Sector
+
+> The device’s configuration information is written into a special NVR_CFG sector during wafer
+> testing. User can access its contents with NVR_CFG=1 and RECALL=1.
+> To prevent configuration information being inadvertently damaged, a pin LCK_CFG=1 is used
+> to protect this NVR_CFG sector.
+> NVR_CFG sector can be programmed or erased for testing purpose only.  
+>
+> In NVR_CFG sector, every even and odd row pair (row 0/1, row 2/3 …) should be
+> programmed with same data pattern. In read mode, the data of even/odd pair is read out  simultaneously as one word, so its sector size is only a half of 128 x 150 bits.   
+
+
+
+
+
+### Pre-Program  
+
+> Before a program operation, same data should be programmed onto the target address with a
+> shorter program pulse. A program operation with PREPG high indicates a Pre-Program
+> operation.
+> Pre-Program multiple words in the same row before the program operations can reduce the
+> Pre-program time overhead.  
+
+
+
+### Erase Retry  
+
+> Erase Retry uses a step-up voltage scheme with a maximum of 20 retry pulses. The
+> RETRY[1:0] pins specify the retry voltage level for each retry pulse. RETRY[1:0] should be
+> ’11 for single pulse sector/block erase and chip erase.
+> The Verify Read (VREAD1=1) is used to check whether a sector/block has been successfully
+> erased after each pulse. An extra retry operation is needed if the sector/block is not erased
+> successfully.
+> No verify Read is needed for the last pulse as the cumulative erase time is already sufficient.
+> Erase retry scheme should be used for sector/block erase only, not chip erase.  
+
+### Verify Read
+
+> Verify read is a special read mode to guarantee a successful write operation. Verify read is
+> controlled by the pin VREAD1 and VREAD0. The access time is slower than normal read.  
+
+### Safety Read
+
+> Safety read 0/1 is a special read mode to detect whether any flash bit has experienced
+> unusual reduction in read margin. Safety read 0 is controlled by the pin SREAD0, and safety
+> read 1 is controlled by the pin SREAD1. Their access time is the same as a normal read.  
+
+### Row Redundancy
+
+> There are 4 redundancy sectors: These 4 redundancy sectors can be used to replace the bad
+> sectors of main array. See Table: NVR, Redundancy Sector Selection.
+> The redundancy information is stored at several locations of NVR_CFG sector.   
+
+### Set Configuration Register
+
+> For obtain required performance, it is necessary to set configuration bits into the registers of
+> the device.
+> Before normal read/program/erase operation, eight groups of configuration data must be read
+> from the device while RECALL and NVR_CFG are high and written to eight groups of
+> configuration registers (16 bits for each group) in the device. These configuration registers are
+> selected by A[2:0] when CONFEN is high. Only 16 LSB bits of each word are effective  configuration bits. 
+>
+> Word 0 maps to address 000, Word1 maps to address 001, etc.   
+>
+> After power on reset, all configuration registers are reset and need to be rewritten before any
+> other operations  
+>
+> To set RECALL pin high during Set Configuration Registers operation, performing Recall
+> Read and Set Configuration Registers sequentially can help reduce time overhead.  
+
+
+
+### Configuration Register Read
+
+> After all configuration registers are written, the contents of the configuration registers can be
+> read out to device pins by configuration register read.
+> Those configuration registers are selected by A[2:0] when CONFEN=1 and RDEN=1 at the
+> rising edge of CLOCK. Only 16 LSB bits of each word are read out to DOUT[15:0].  
+
+
+
+### Power Off  
+
+> The device can be completely turned off by an internal power switch when SUPPLYON=0.
+> This power switch should be turned on (SUPPLYON=1) after power up and constantly
+> remained for any operations. Flash IPs and their shared Bias IP must go to power off mode
+> together.
+> Power on reset should be activated during supply switching off, therefore all configuration
+> registers will lose the current value and they must be reloaded again before the next
+> read/write operation.
+> When the device is switched off, all output pins from pfm are floated.  
+
+
+
+## 其他说明
+
+
+
+### NVR,Redundancy Sector Selection
+
+{% asset_img image-20240529090244081.png %}
+
+### Memory Array Configuraton
+
+{% asset_img image-20240529090349066.png %}
+
+### Configuration Data and Redundancy Storage in NVR_CFG
+
+{% asset_img image-20240606142930577.png %}
+
+### Configuration Data Mapping Table
+
+{% asset_img image-20240606144800615.png %}
+
+### Connection between multiple Flash IP and Pump IP
+
+{% asset_img image-20240602144959234.png %}
+
+
 
 
 
