@@ -351,7 +351,7 @@ program的最小单位是75bits；
 
 {% asset_img image-20240605094745072.png %}
 
-#### Program Cycle Timing Diagram  
+#### Program Cycle Timing Diagram
 
 {% asset_img image-20240529104819187.png %}
 
