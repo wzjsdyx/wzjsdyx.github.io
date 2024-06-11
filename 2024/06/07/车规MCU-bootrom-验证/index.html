@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="车规MCU需要HSM信息安全，其实现方式有可能会利用到host bootrom 一个不懂的东西，怎么去快速了解上手？ 1、需要自己看看已有的资料有一定的认知； 2、私下问下同事，询问不懂的问题； 2、开会和其他同事同步，进一步加深理解； 3、总结思考实践–&gt;有自己的认知；  host bootrom功能描述主要提供normal boot和secure boot的功能 BootRom需要使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="车规MCU bootrom 验证">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="车规MCU需要HSM信息安全，其实现方式有可能会利用到host bootrom 一个不懂的东西，怎么去快速了解上手？ 1、需要自己看看已有的资料有一定的认知； 2、私下问下同事，询问不懂的问题； 2、开会和其他同事同步，进一步加深理解； 3、总结思考实践–&gt;有自己的认知；  host bootrom功能描述主要提供normal boot和secure boot的功能 BootRom需要使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/image-20240611113255222.png">
+<meta property="article:published_time" content="2024-06-07T02:36:27.000Z">
+<meta property="article:modified_time" content="2024-06-11T06:41:04.850Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="host bootrom">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/image-20240611113255222.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>车规MCU bootrom 验证 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          车规MCU bootrom 验证
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-07 10:36:27" itemprop="dateCreated datePublished" datetime="2024-06-07T10:36:27+08:00">2024-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-11 14:41:04" itemprop="dateModified" datetime="2024-06-11T14:41:04+08:00">2024-06-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>车规MCU需要HSM信息安全，其实现方式有可能会利用到host bootrom</p>
+<p>一个不懂的东西，怎么去快速了解上手？</p>
+<p>1、需要自己看看已有的资料有一定的认知；</p>
+<p>2、私下问下同事，询问不懂的问题；</p>
+<p>2、开会和其他同事同步，进一步加深理解；</p>
+<p>3、总结思考实践–&gt;有自己的认知；</p>
+</blockquote>
+<h1 id="host-bootrom功能描述"><a href="#host-bootrom功能描述" class="headerlink" title="host bootrom功能描述"></a>host bootrom功能描述</h1><p>主要提供normal boot和secure boot的功能</p>
+<p>BootRom需要使用GPIO，Uart，HSM message box等模块。</p>
+<h1 id="测试流程"><a href="#测试流程" class="headerlink" title="测试流程"></a>测试流程</h1><p>&#x3D;&#x3D;》load config只是从flash info区域读取数据，不care OTP区域；</p>
+<p><font color=blue>hsm enable以及secure boot是通过读取寄存器</font>？也不用care OTP区域；</p>
+<p><font color=red>读取寄存器？读取什么寄存器？</font></p>
+<p>&#x3D;&#x3D;》init debug表明是否需要打印log（optional，默认disable）</p>
+<p>要打印log就初始化UART串口；不需要打印log就不初始化UART串口；</p>
+<p>&#x3D;&#x3D;》rom code的执行是否需要切换成系统时钟（optional，默认enable）</p>
+<p>切换成PLL提供的系统时钟，处理速度就比较快，加速启动时间</p>
+<p>启动PLL也就是初始化PLL大概需要100us的时间</p>
+<p><font color=red>系统时钟：从什么时钟切换到PLL时钟？？？</font></p>
+<h2 id="non-security-boot"><a href="#non-security-boot" class="headerlink" title="non-security boot"></a>non-security boot</h2><p>&#x3D;&#x3D;》两个secure boot check？</p>
+<p>security boot分成两部分：一个是启动校验，一个是等待校验结果</p>
+<p>所以流程图上有两个security boot check框</p>
+<p>&#x3D;&#x3D;》Restore debug and clock(Optional)</p>
+<p>关闭UART以及将系统时钟切回去</p>
+<p>&#x3D;&#x3D;》jump to user code</p>
+<p>跳转到pflash的user code（default是0x20_0000）</p>
+<ul>
+<li><p>user code可以配置从pflash的info区域执行；</p>
+</li>
+<li><p>user code可以配置从pflash的main区域执行；</p>
+</li>
+</ul>
+<p>执行user code</p>
+<h2 id="security-boot"><a href="#security-boot" class="headerlink" title="security boot"></a>security boot</h2><p>&#x3D;&#x3D;》 security boot需要很多的配置信息，首先需要确认配置信息是否正确（主要是对地址以及size的有效性进行检查）</p>
+<p>&#x3D;&#x3D;》等待HSM ready</p>
+<p>&#x3D;&#x3D;》执行check code（<font color=blue>校验用户代码的代码</font>），通过发命令到HSM，（主要是校验地址，校验size以及校验算法），让其开始校验<font color=blue>用户代码</font></p>
+<p>&#x3D;&#x3D;》等待check结果（done，pass&#x2F;fail）</p>
+<p>正确就继续执行下面的流程，即走启动用户代码的流程；</p>
+<p>错误就执行while 1 （default的行为），也可配置成system reset，通过watch dog进行复位；</p>
+<p>吴奎那边有现成的工具可以做对应的测试；</p>
+<h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><p>&#x3D;&#x3D;》什么时候出现check error</p>
+<p>将需要校验的代码，手动修改成错误数据</p>
+<blockquote>
+<p>校验算法是通过OTP配置好的</p>
+<p>校验的地址和size都是在info区域配置的</p>
+</blockquote>
+<p>&#x3D;&#x3D;》standby boot</p>
+<p>pflash user code进入standby模式之后，默认还会执行security boot校验（optional可配置）</p>
+<p>&#x3D;&#x3D;》用户代码和被校验的代码</p>
+<p>安全启动的时候就是被校验的代码</p>
+<p>没有安全启动的时候就是未被校验的代码，即用户代码</p>
+<p>&#x3D;&#x3D;》默认是不swap的</p>
+<p>swap之后，如下图这些配置起始地址就会从0x01004800–&gt;0x01005000，offset不变</p>
+<img src="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/image-20240611113255222.png" class="">
+
+
+
+<p>&#x3D;&#x3D;》security boot的参数比较多</p>
+<p>hsm security boot的各个参数是绑定到一起的，通常来说错一个都会导致HSM check error</p>
+<p>&#x3D;&#x3D;》SOTA功能测试</p>
+<p>有两个配置区域，一个是正确的配置，一个是错误的配置；</p>
+<p>通过配置SOTA enable还是disable可以进行不同的测试；</p>
+<p>&#x3D;&#x3D;》HSM安全启动测试</p>
+<p>不同的校验算法都校验成功；</p>
+<p>根据hsm的算法，去校验什么东西，然后做对应的配置；</p>
+<p>询问HSM的人，怎么把算法用起来；</p>
+<p>例如：key需要配置什么东西，验签signature需要设置什么东西和算法相关，使用什么算法，就需要根据对应的算法做相应的配置</p>
+<h2 id="pflash-info-HSM-security-boot各项配置参数的含义"><a href="#pflash-info-HSM-security-boot各项配置参数的含义" class="headerlink" title="pflash info:HSM security boot各项配置参数的含义"></a>pflash info:HSM security boot各项配置参数的含义</h2><h2 id="dflash-info-OTP各项配置参数的含义"><a href="#dflash-info-OTP各项配置参数的含义" class="headerlink" title="dflash info:OTP各项配置参数的含义"></a>dflash info:OTP各项配置参数的含义</h2><h2 id="SOTA机制"><a href="#SOTA机制" class="headerlink" title="SOTA机制"></a>SOTA机制</h2><h2 id="boot-flow-数据流"><a href="#boot-flow-数据流" class="headerlink" title="boot flow&#x2F;数据流"></a>boot flow&#x2F;数据流</h2><p>例如，host core先动起来，执行host romcode代码，然后加载pflash info区域的值；</p>
+<p>然后判断是否为security boot，如果是的话，发送command，去调动hsm做校验；</p>
+<p><font color=red>hsm根据OTP的value去使用相应的算法做校验？？？具体的流程是什么样？</font></p>
+<h2 id="测试item"><a href="#测试item" class="headerlink" title="测试item"></a>测试item</h2><p>配置选项&#x2F;输入条件</p>
+<p>check point？</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/host-bootrom/" rel="tag"># host bootrom</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/07/apb-sync-unit/" rel="prev" title="apb_sync_unit">
+      <i class="fa fa-chevron-left"></i> apb_sync_unit
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/07/verilog%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/" rel="next" title="verilog条件编译">
+      verilog条件编译 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#host-bootrom%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">host bootrom功能描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">测试流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#non-security-boot"><span class="nav-number">2.1.</span> <span class="nav-text">non-security boot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#security-boot"><span class="nav-number">2.2.</span> <span class="nav-text">security boot</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-A"><span class="nav-number">3.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pflash-info-HSM-security-boot%E5%90%84%E9%A1%B9%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text">pflash info:HSM security boot各项配置参数的含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dflash-info-OTP%E5%90%84%E9%A1%B9%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">3.2.</span> <span class="nav-text">dflash info:OTP各项配置参数的含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SOTA%E6%9C%BA%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text">SOTA机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#boot-flow-%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="nav-number">3.4.</span> <span class="nav-text">boot flow&#x2F;数据流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95item"><span class="nav-number">3.5.</span> <span class="nav-text">测试item</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">115</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

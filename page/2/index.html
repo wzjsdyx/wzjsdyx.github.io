@@ -162,6 +162,434 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/24/2-%E5%9F%BA%E4%BA%8ECortex-M%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/24/2-%E5%9F%BA%E4%BA%8ECortex-M%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">2 基于Cortex-M处理器的系统设计</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-24 09:10:39" itemprop="dateCreated datePublished" datetime="2024-05-24T09:10:39+08:00">2024-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-11 09:16:46" itemprop="dateModified" datetime="2024-06-11T09:16:46+08:00">2024-06-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/24/2-%E5%9F%BA%E4%BA%8ECortex-M%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/24/2-%E5%9F%BA%E4%BA%8ECortex-M%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="11-时钟"><a href="#11-时钟" class="headerlink" title="11 时钟"></a>11 时钟</h2><h2 id="12-复位"><a href="#12-复位" class="headerlink" title="12 复位"></a>12 复位</h2><p>Cortex-M处理器有多个复位信号，通常包括：</p>
+<ul>
+<li>System reset</li>
+<li>Debug reset</li>
+<li>Debug interface reset(例如nTRST) for JTAG&#x2F;SWD接口</li>
+<li>Power-on reset</li>
+</ul>
+<p>Note：System reset和Debug reset是分开的，使用场景是为了让core logic复位的时候，不影响debug system的逻辑。如果system reset也会将debug system logic复位，那么就需要重新连接debugger以及设置breakpoints, watchpoints  ，使用就会非常麻烦</p>
+<hr>
+<p>处理器也会输出复位请求信号<code>SYSRESETREQ</code>  ,通过SCS的Application Interrupt and Reset Control Register (AIRCR)   寄存器控制。其使用场景是</p>
+<ul>
+<li>软件可以请求系统复位，例如在故障错误处理的中断函数主动进行软件中断；</li>
+<li>调试器可以请求系统复位。这对于调试器请求目标处理器的复位是必不可少的。</li>
+</ul>
+<p>设计人员在使用此信号时需要保证：</p>
+<ul>
+<li>SYSRESETREQ只会是system reset的source，而不会是debugger以及power-on reset的source</li>
+<li>使用SYSRESETREQ产生system reset的逻辑时，不能是组合逻辑，也不能经过使用system reset的寄存器，否则的话会产生一个system reset的glitch</li>
+</ul>
+<img src="/2024/05/24/2-%E5%9F%BA%E4%BA%8ECortex-M%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/image-20240607171941754.png" class="">
+
+
+
+<p>所有的Cortex-M处理器使用异步复位（低电平有效）同步释放（sync到system clock和debug clock）</p>
+<blockquote>
+<p>大多数Cortex-M处理器要求复位至少持续两个时钟周期，好处是：</p>
+<p>即使复位发生了亚稳态，持续两个周期也能确保亚稳态得到清除</p>
+</blockquote>
+<p>需要同步复位异步释放</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PORESET synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> PORESETn)</span><br><span class="line"> <span class="keyword">if</span> (!PORESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     poreset_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     poreset_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     poreset_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     poreset_n_qq &lt;= poreset_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// SYSRESET synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> SYSRESETn)</span><br><span class="line"> <span class="keyword">if</span> (!SYSRESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     sysreset_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     sysreset_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     sysreset_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     sysreset_n_qq &lt;= sysreset_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// nPOTRST synchroniser</span></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> SWCLKTCK <span class="keyword">or</span> <span class="keyword">negedge</span> PORESETn)</span><br><span class="line"> <span class="keyword">if</span> (!PORESETn)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     po_trst_n_q  &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     po_trst_n_qq &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     po_trst_n_q  &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     po_trst_n_qq &lt;= po_trst_n_q;</span><br><span class="line">   <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>如下是针对SYSRESETREQ以及lockup</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/23/%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF%E7%9B%B8%E5%85%B3%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/23/%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF%E7%9B%B8%E5%85%B3%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">布局布线相关的问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-23 11:31:29 / 修改时间：11:40:13" itemprop="dateCreated datePublished" datetime="2024-05-23T11:31:29+08:00">2024-05-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">IC设计流程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/23/%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF%E7%9B%B8%E5%85%B3%E7%9A%84%E9%97%AE%E9%A2%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/23/%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF%E7%9B%B8%E5%85%B3%E7%9A%84%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>协助后端解决走线问题</p>
+</blockquote>
+<p>芯片上某一块区域的<code>走线资源（可以理解为走线的总长度）</code>是固定的，</p>
+<p>如果floorplan不合理，导致某一块区域的走线过多，超过了限制，就会出现走线走不下去的情况；</p>
+<p>因此需要根据数据流动，合理的规划floorplan！</p>
+<p>如下图所示，不合理的走线会浪费走线资源：</p>
+<p>在走线资源不紧张的情况下没关系，但是走线资源紧张的时候，走线就会进行不下去</p>
+<img src="/2024/05/23/%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF%E7%9B%B8%E5%85%B3%E7%9A%84%E9%97%AE%E9%A2%98/image-20240523113753107.png" class="">
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">PAD上的时序约束</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-21 17:57:55" itemprop="dateCreated datePublished" datetime="2024-05-21T17:57:55+08:00">2024-05-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-22 11:08:46" itemprop="dateModified" datetime="2024-05-22T11:08:46+08:00">2024-05-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>在PAD上创建时钟并做时序约束</p>
+</blockquote>
+<p>有些情况下，某个PAD上的信号除了当做数据，还需要当做时钟用；如果直接在PAD上create clock，和其相关联的逻辑，都会被当做clock进行处理；</p>
+<p>例如按照如下方式设置时序约束：</p>
+<img src="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240522103236418.png" class="">
+
+
+
+<p>本质上只想要对cpum0_clk以及cpum1_clk设置时钟（cpum0_sys_clk&#x2F;cpum1_sys_clk不用管，原理一样），但是和PAD相关联的逻辑都会被设置成clock进行综合，显然不合理</p>
+<img src="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240522103421691.png" class="">
+
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>首先有两种处理方式：<code>这涉及到PAD结构、stdcell以及DC综合命令的使用</code></p>
+<h2 id="PAD结构"><a href="#PAD结构" class="headerlink" title="PAD结构"></a>PAD结构</h2><img src="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240522104033383.png" class="">
+
+
+
+<h2 id="stdcell以及DC综合命令"><a href="#stdcell以及DC综合命令" class="headerlink" title="stdcell以及DC综合命令"></a>stdcell以及DC综合命令</h2><p>首先项目会从std cell库中挑选一些cell单元，例如buf，mux等，做一个有特殊例化名的module</p>
+<img src="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240522102522941.png" class="">
+
+<p>如上图所示：</p>
+<p>1、<code>CKMUX2V4_8TH50 </code>是一个standard cell，</p>
+<p>2、对其<code>使用一个dtc开头的例化名字</code>，</p>
+<p>3、做wrap，形成公司内部使用的common cell</p>
+<p>这样做的目的是，DC综合的时候，可以使用统一的脚本抓取dtc开头的例化名，对其设置set_dont_touch属性（本质上是针对这个cell不做处理）</p>
+<h1 id="第一种处理方式"><a href="#第一种处理方式" class="headerlink" title="第一种处理方式"></a>第一种处理方式</h1><p><font color=blue>不在PAD上创建时钟，是在某一个std cell上创建时钟</font></p>
+<img src="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240522105933180.png" class="">
+
+
+
+<h1 id="第二种处理方式"><a href="#第二种处理方式" class="headerlink" title="第二种处理方式"></a>第二种处理方式</h1><p><font color=blue>在PAD上创建时钟，在其他PATH上打断clock</font></p>
+<img src="/2024/05/21/PAD%E4%B8%8A%E7%9A%84%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240522110522740.png" class="">
+
+<p><code>找到红色框的dtc_cell，然后使用DC命令，将时钟属性断开</code></p>
+<p>TBD：</p>
+<p><font color=red>PAD上什么时候做filter？什么时候不做filter</font></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/11/ARM%E5%A4%84%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/11/ARM%E5%A4%84%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">1 ARM处理器简介</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-11 09:35:54" itemprop="dateCreated datePublished" datetime="2024-05-11T09:35:54+08:00">2024-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-24 09:23:53" itemprop="dateModified" datetime="2024-05-24T09:23:53+08:00">2024-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/11/ARM%E5%A4%84%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/11/ARM%E5%A4%84%E7%90%86%E5%99%A8%E7%AE%80%E4%BB%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>不同系列处理器的关键特征</p>
+<p>不同架构的M系列处理器</p>
+<p>DSP？FPU?</p>
+<p>DSP做什么内容？SIMD？浮点运算？</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/07/ahb-lite-slave-response/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -743,438 +1171,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/15/Cortex-M4%E7%9A%84%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%AD%E6%96%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/15/Cortex-M4%E7%9A%84%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%AD%E6%96%AD/" class="post-title-link" itemprop="url">Cortex-M4的系统异常和外部中断</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-15 20:33:10" itemprop="dateCreated datePublished" datetime="2024-04-15T20:33:10+08:00">2024-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-16 09:06:14" itemprop="dateModified" datetime="2024-04-16T09:06:14+08:00">2024-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/15/Cortex-M4%E7%9A%84%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%AD%E6%96%AD/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/15/Cortex-M4%E7%9A%84%E5%BC%82%E5%B8%B8%E5%92%8C%E4%B8%AD%E6%96%AD/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>exception &#x3D; 16个系统异常 + 240个外部中断</p>
-<p>英文版的描述统称为exception</p>
-<p><font color=red>可以结合软硬件探索下具体工作机制</font></p>
-</blockquote>
-<h1 id="Reset"><a href="#Reset" class="headerlink" title="Reset"></a>Reset</h1><blockquote>
-<p>ARMv7-M架构支持两种级别的复位，这些复位级别决定了在复位信号取消<code>deassertion of reset</code>（停止复位信号，使系统开始正常运行）时，哪些寄存器位字段会被强制恢复到它们的默认值。</p>
-<ul>
-<li>Power-on Reset，更全面的复位方式，通常在系统通电时自动触发，resets the processor, System Control Space and debug logic</li>
-<li>Local Reset，较为局部的复位，不如电源开启复位那样全面，except for some fault and debug related resources<font color=red>这里面提到的fault信息是什么？？</font><code>For more details, see Debug and reset on page C1-693</code></li>
-<li><font color=blue><code>reset</code> 异常在系统中是永久启用的，并且具有最高的优先级 <code>-3</code></font></li>
-</ul>
-</blockquote>
-<h1 id="NMI"><a href="#NMI" class="headerlink" title="NMI"></a>NMI</h1><blockquote>
-<ul>
-<li><p>NMI是除了reset之外，最高优先级的exception</p>
-</li>
-<li><p><font color=blue><code>NMI</code><br> 异常在系统中是永久启用的，并且具有优先级 <code>-2</code></font></p>
-</li>
-<li><p>硬件外设能产生NMI中断，软甲也可以<font color=red>设置NMI exception到pending状态.</font><code>Interrupt Control and State Register, ICSR on page B3-599  </code></p>
-</li>
-</ul>
-</blockquote>
-<h1 id="HardFault"><a href="#HardFault" class="headerlink" title="HardFault"></a>HardFault</h1><blockquote>
-<ul>
-<li><p>在 ARM 架构中，<code>HardFault</code> 是一种特殊的异常处理机制，主要用于处理那些其他异常机制无法处理的错误。</p>
-</li>
-<li><p>通常情况下，<code>HardFault</code> 被用来处理那些不可恢复的系统故障。这意味着，一旦发生 <code>HardFault</code>，系统很可能无法继续正常运行，可能需要重启或其他紧急措施。然而，根据具体的系统设计和错误处理策略，有些 <code>HardFault</code> 是可以恢复的。</p>
-</li>
-<li><p><font color=blue><code>HardFault</code> 异常在系统中是永久启用的，并且具有固定的优先级 <code>-1</code></font></p>
-</li>
-<li><p><font color=red>Hardfault也被用于错误升级<code>fault escalation</code></font>。在计算机和技术领域，特别是在描述异常处理或系统响应时，”escalation” 通常用来描述一个问题从一个较低的处理级别向更高、更严重的级别转移的过程。<code>see Priority escalation on page B1-529  </code></p>
-</li>
-</ul>
-</blockquote>
-<h1 id="MemManage"><a href="#MemManage" class="headerlink" title="MemManage"></a>MemManage</h1><blockquote>
-<ul>
-<li><p><code>MemManage</code> 故障是 ARM 处理器中的一种异常机制，<font color=blue>用于处理与memory protection相关的错误</font>。这些错误可能由内存保护单元<code>（Memory Protection Unit, MPU）</code>，或者<code>fixed memory protection constraints</code>确定。</p>
-</li>
-<li><p><code>MemManage</code> 故障涵盖的场景包括<code>指令和数据memory transactions</code>。这意味着，无论是在执行指令过程中还是在数据访问过程中，一旦访问了不应该访问的内存区域，或者以不正确的方式访问内存，都可能触发此故障。<font color=red>Debugger访问的时候，Core 内部的MPU是否起作用?</font></p>
-</li>
-<li><p><font color=blue>软件可以禁用 <code>MemManage</code> 故障</font>。这是通过修改相应的控制寄存器来实现的。<font color=blue>如果软件选择禁用这个故障，当实际发生内存保护错误时，错误处理机制会升级，即这种故障会变成 <code>HardFault</code></font>。<code>HardFault</code> 是一种更严重的故障，通常用于处理那些无法被其他较低级别异常处理机制处理的错误。</p>
-</li>
-<li><p><font color=blue><code>MemManage</code> 的优先级是可配置的</font>。这意味着系统设计者或软件开发者可以根据系统的需求调整 <code>MemManage</code> 故障的处理优先级，以适应不同的应用场景和安全需求。这种灵活性允许在多种异常情况下进行优先级的合理分配。</p>
-</li>
-</ul>
-</blockquote>
-<h1 id="BusFault"><a href="#BusFault" class="headerlink" title="BusFault"></a>BusFault</h1><blockquote>
-<ul>
-<li><code>BusFault</code> 是 ARM 架构中的一种异常，它专门<font color=blue>用来处理与内存相关的故障（这些故障不属于 <code>MemManage</code> 异常所处理的范围）</font>，包括指令和数据memory transaction发生的故障</li>
-<li>通常这些故障源于系统总线上检测到的错误</li>
-<li>ARM 架构允许根据触发异常的具体情况，以同步或异步的方式报告 <code>BusFault</code>：<ul>
-<li><font color=red>同步 BusFault</font>通常发生在<font color=blue>引发故障的指令执行期间</font>，使得故障检测和处理可以立即执行。</li>
-<li><font color=red>异步 BusFault</font>可能发生在<font color=blue>故障指令之后的任何时刻</font>，这通常涉及到处理器与外部设备的交互，如 DMA（直接内存访问）操作。</li>
-</ul>
-</li>
-<li><font color=blue>软件可以配置系统以禁用 <code>BusFault</code></font>。如果 <code>BusFault</code> 被禁用，当它被触发时，处理机制会升级到 <code>HardFault</code>，这是一种更严重的故障处理机制，用于处理不能通过其他异常处理的错误。</li>
-<li><font color=blue><code>BusFault</code> 的优先级是可配置的</font>。这意味着系统设计者或软件开发者可以根据不同的需求和系统稳定性的考虑，调整 <code>BusFault</code> 的处理优先级。这样的灵活性允许在发生多种异常时，可以根据实际情况优化系统的响应策略。</li>
-</ul>
-</blockquote>
-<h1 id="UsageFault"><a href="#UsageFault" class="headerlink" title="UsageFault"></a>UsageFault</h1><blockquote>
-<ul>
-<li><code>UsageFault</code> 是 ARM 架构中的一种异常处理机制，专门<font color=blue>用于处理非内存相关的因指令执行导致的故障</font>。这些故障通常不涉及对内存的直接错误访问（这类访问由 <code>MemManage</code> 和 <code>BusFault</code> 处理），而是与执行指令的方式或指令本身的有效性有关。</li>
-<li><code>UsageFault</code> 可以由多种不同的情况触发，包括但不限于：<ul>
-<li><font color=blue>未定义的指令</font>：尝试执行处理器不认识的指令时。</li>
-<li><font color=red>指令执行的无效状态</font>：如处理器状态不允许某些操作时仍尝试执行。</li>
-<li><font color=blue>异常返回时的错误</font>：从异常处理返回正常执行时发生错误。</li>
-<li><font color=blue>尝试访问禁用的或不可用的协处理器</font>：当软件尝试使用未启用或不存在的协处理器资源时。</li>
-</ul>
-</li>
-<li>当处理器配置为报告以下情况时，它们也会导致 <code>UsageFault</code>：<ul>
-<li>对未对齐地址的字或半字内存访问：例如，尝试从一个不是按照适当字节对齐的地址读取数据。<font color=red>DBUS可以自动将非对其访问转换为对其访问，SBUS是否会？参考手册中BUS接口的描述，只有DBUS会转换</font></li>
-<li><strong>除零操作</strong>：执行除法操作时，除数为零。</li>
-</ul>
-</li>
-<li><font color=blue>软件可以选择禁用 <code>UsageFault</code></font>。如果禁用了 <code>UsageFault</code>，并且在其被禁用的情况下触发了 <code>UsageFault</code>，则会升级到 <code>HardFault</code>。<code>HardFault</code> 是用于处理那些无法通过更具体的异常处理机制解决的更严重的错误情况。</li>
-<li><font color=blue><code>UsageFault</code> 的优先级是可配置的</font>。这意味着系统设计者或开发者可以根据系统的特定需求和优先级策略，调整 <code>UsageFault</code> 的处理优先级。这样的配置使得系统可以更灵活地处理不同类型的故障，并优化异常处理的响应时间和资源分配。</li>
-</ul>
-</blockquote>
-<h1 id="DebugMonitor"><a href="#DebugMonitor" class="headerlink" title="DebugMonitor"></a>DebugMonitor</h1><p>TBD</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/15/%E7%A8%8B%E5%BA%8F%E4%B8%80%E7%9B%B4%E6%89%A7%E8%A1%8Chardfault-vs-%E5%8F%AA%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1hardfault/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/15/%E7%A8%8B%E5%BA%8F%E4%B8%80%E7%9B%B4%E6%89%A7%E8%A1%8Chardfault-vs-%E5%8F%AA%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1hardfault/" class="post-title-link" itemprop="url">程序一直执行hardfault vs 只执行一次hardfault</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-15 16:36:25" itemprop="dateCreated datePublished" datetime="2024-04-15T16:36:25+08:00">2024-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-16 08:51:38" itemprop="dateModified" datetime="2024-04-16T08:51:38+08:00">2024-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/15/%E7%A8%8B%E5%BA%8F%E4%B8%80%E7%9B%B4%E6%89%A7%E8%A1%8Chardfault-vs-%E5%8F%AA%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1hardfault/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/15/%E7%A8%8B%E5%BA%8F%E4%B8%80%E7%9B%B4%E6%89%A7%E8%A1%8Chardfault-vs-%E5%8F%AA%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1hardfault/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/15/MIPS%E6%8C%87%E4%BB%A4%E9%9B%86%E8%A7%A3%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/15/MIPS%E6%8C%87%E4%BB%A4%E9%9B%86%E8%A7%A3%E6%9E%90/" class="post-title-link" itemprop="url">MIPS指令集解析</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-15 11:20:37" itemprop="dateCreated datePublished" datetime="2024-04-15T11:20:37+08:00">2024-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-16 08:51:38" itemprop="dateModified" datetime="2024-04-16T08:51:38+08:00">2024-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/15/MIPS%E6%8C%87%E4%BB%A4%E9%9B%86%E8%A7%A3%E6%9E%90/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/15/MIPS%E6%8C%87%E4%BB%A4%E9%9B%86%E8%A7%A3%E6%9E%90/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E5%A4%8D%E4%BD%8D%E5%A4%84%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E5%A4%8D%E4%BD%8D%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">单周期CPU的复位处理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-15 11:19:20" itemprop="dateCreated datePublished" datetime="2024-04-15T11:19:20+08:00">2024-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-16 08:51:38" itemprop="dateModified" datetime="2024-04-16T08:51:38+08:00">2024-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E5%A4%8D%E4%BD%8D%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/15/%E5%8D%95%E5%91%A8%E6%9C%9FCPU%E7%9A%84%E5%A4%8D%E4%BD%8D%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1242,20 +1242,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-count">115</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
