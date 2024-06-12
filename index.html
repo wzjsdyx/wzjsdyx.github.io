@@ -162,6 +162,514 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/secure-debug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/12/secure-debug/" class="post-title-link" itemprop="url">secure debug</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-12 10:35:31 / 修改时间：10:36:11" itemprop="dateCreated datePublished" datetime="2024-06-12T10:35:31+08:00">2024-06-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/12/secure-debug/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/secure-debug/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">SOTA + secure boot方案</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-12 09:53:14 / 修改时间：10:36:39" itemprop="dateCreated datePublished" datetime="2024-06-12T09:53:14+08:00">2024-06-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>主要有如下几个部分：</p>
+<ul>
+<li><p>bank0 《&#x3D;&#x3D;》bank0校验参数页</p>
+</li>
+<li><p>bank1 《&#x3D;&#x3D;》bank1校验参数页</p>
+</li>
+<li><p>SOTA swap配置页</p>
+</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li>bank0，bank1会做硬件swap；</li>
+<li>bank0校验参数页，bank1校验参数页没做硬件swap，由romcode根据SOTA swap配置去读取相应的校验参数页</li>
+</ul>
+<img src="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/image-20240612102802897.png" class="">
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/secure-boot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/12/secure-boot/" class="post-title-link" itemprop="url">secure boot</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-12 09:52:42 / 修改时间：10:18:37" itemprop="dateCreated datePublished" datetime="2024-06-12T09:52:42+08:00">2024-06-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/12/secure-boot/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/secure-boot/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>车规芯片中，有secure boot的选项，即对Flash中的user code进行校验，防止非法修改</p>
+</blockquote>
+<p>大致的工作流程如下:</p>
+<p>1、host romcode执行，此时的romcode会读取（dflash info&#x2F;OTP区域）<code>secure boot配置</code>（hsm enable，secure boot enable等）；</p>
+<p>2、如果secure boot enable，则读取（pflash info区域）<code>secure boot的校验参数</code>（verify size，boot address， HSM public key addr，HSM code signature addr等）与HSM交互，然后对Flash的特定区域进行校验；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">flash SOTA设计</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-12 09:11:03 / 修改时间：10:25:30" itemprop="dateCreated datePublished" datetime="2024-06-12T09:11:03+08:00">2024-06-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>flash的SOTA设计是一种在线升级方案，这里简述下其工作机制。</p>
+<p>SOTA即软件在线升级（Software updates Over The Air），是指在不连接烧写器的情况下，通过CAN、UART或其它通讯方式，实现应用程序的更新。</p>
+</blockquote>
+<h1 id="SOTA实现机制"><a href="#SOTA实现机制" class="headerlink" title="SOTA实现机制"></a>SOTA实现机制</h1><h2 id="常规实现方法"><a href="#常规实现方法" class="headerlink" title="常规实现方法"></a>常规实现方法</h2><p>在进行SOTA时，需要把旧的应用程序擦除，把新的应用程序写入。</p>
+<p>常规的实现方式需要分别开发BootLoader程序和APP程序，MCU上电先运行BootLoader，BootLoader根据情况选择是否跳转到APP和是否进行程序更新。</p>
+<p>具体来说有以下几种方式：</p>
+<ul>
+<li><p>方案一：更新程序时，由APP接收更新数据并暂存于Flash，再更改APP更新标志位；MCU重启时，BootLoader检查更新标志位，如有效，则擦除旧的APP，再将暂存于Flash的新APP数据写入APP运行地址处。<br>该方案的优点是更新数据的接收由APP完成，BootLoader不需要通讯协议栈，代码量更小，且数据传输中断时，原有APP不损坏。<br>缺点是需要额外的Flash空间暂存更新数据。</p>
+</li>
+<li><p>方案二：BootLoader中内置通讯协议栈，更新时，先向MCU发送指令使其跳转到BootLoader，之后先擦除旧APP，在接收新APP的同时直接将其写入Flash的APP运行地址处。<br>该方案的优点是不需要额外的Flash暂存数据。<br>缺点是BootLoader代码更复杂，且如果数据传输发生中断，旧的APP将不能被恢复。该方案更适合Flash容量较小的MCU。</p>
+</li>
+<li><p>方案三：将方案一和方案二相结合，即在BootLoader程序中内置通讯协议栈，更新时，先向MCU发送指令使其跳转到BootLoader，之后接收更新数据的时候，采用方案一的方法，先将数据暂存于Flash，待数据全部接收完成后再擦除旧的APP，写入新的APP。<br>该方案结合了方案一和方案二的优点，且能在没有APP或APP损坏的状态下实现程序更新。<br>缺点是BootLoader代码量更大，Flash空间占用更大。</p>
+</li>
+<li><p>方案四：在Flash中划分出两块相同大小的区域，分为A区和B区，都用来存放APP，但同一时间下只有一个区的APP是有效的，分别设置一个标志位标识其有效性。初始状态下先将APP写入A区，更新的时候，将新的APP写入B区，再把A区的APP擦除，同时更新两个区的有效性标志位状态。BootLoader中判断哪个区的APP有效，就跳转到哪个区运行。<br>这种方法优点不需要重复拷贝APP数据，但最大的一个缺点是AB区的APP程序运行地址不同，需要分别编译，从而使得可应用性大大降低。</p>
+</li>
+</ul>
+<p>经过上面的分析，可以看出来每种方案都有其优缺点，对于Flash容量较小的MCU，通常采用方案二，因为没有过多的空间暂存APP更新数据。但对于MCU的Flash容量很大的，通常要先把APP暂存下来再进行更新，防止数据传输中断导致APP不可用。上面的方案一、三、四都能实现，但并不完美。</p>
+<p><font color=blue>如果实现的SOTA机制更类似于方案四，且Flash支持两种地址映射方式，从而使得APP编译时不需要区分AB区，使用相同的地址即可，从而避免了方案四的硬伤，就可以提供一种最佳的SOTA方案，下面描述的就是此种实现方法</font></p>
+<h2 id="项目实现方法"><a href="#项目实现方法" class="headerlink" title="项目实现方法"></a>项目实现方法</h2><p>程序上不用对地址做改动，硬件做地址映射</p>
+<img src="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/image-20240612095815405.png" class="">
+
+<p>在升级的时候（假设当前程序运行在bank0，<code>bank0处于0x0020_000,bank1处于0x0040_0000</code>）：</p>
+<p>1、先擦除bank1的内容</p>
+<p>2、更新新的APP到bank1</p>
+<p>3、更新SOTA swap参数</p>
+<p>4、复位，对SOTA swap参数解析，rom code跳转到bank1（<code>bank1处于0x0020_0000,bank0处于0x0040_0000</code>）执行</p>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014157109/article/details/121006232">SOTA机制详解</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/11/3-AMBA-AHB-APB/" class="post-title-link" itemprop="url">3 AMBA/AHB/APB</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-11 21:26:50" itemprop="dateCreated datePublished" datetime="2024-06-11T21:26:50+08:00">2024-06-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-12 08:35:29" itemprop="dateModified" datetime="2024-06-12T08:35:29+08:00">2024-06-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/11/3-AMBA-AHB-APB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/11/3-AMBA-AHB-APB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AHB概述"><a href="#AHB概述" class="headerlink" title="AHB概述"></a>AHB概述</h1><h2 id="AHB版本"><a href="#AHB版本" class="headerlink" title="AHB版本"></a>AHB版本</h2><h2 id="AHB信号"><a href="#AHB信号" class="headerlink" title="AHB信号"></a>AHB信号</h2><h2 id="AHB基本操作"><a href="#AHB基本操作" class="headerlink" title="AHB基本操作"></a>AHB基本操作</h2><p>在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611215804055.png" class="">
+
+<p><font color=red>data phase mux control?什么意思？怎么实现？</font></p>
+<p>如果遵循<code>AMBA 5 AHB</code>规范，可以按照如下方式连接：</p>
+<ul>
+<li>多个<code>AHB Master</code>共享一个bus，需要使用<code>Master Multiplexer</code>和<code>Master arbiter</code></li>
+<li>多个<code>AHB Slave</code>返回的data和response信号需要使用<code>Slave Multiplexer</code> feedback to <code>AHB Master</code></li>
+</ul>
+<hr>
+<p>信号可以被划分为<code>address phase </code>信号和<code>data phase </code>信号：</p>
+<p><code>address phase</code> signals include:</p>
+<ul>
+<li>HADDR, HTRANS, HSEL, HWRITE, HSIZE.</li>
+<li>Optional: HPROT, HBURST, HMASTLOCK, HEXCL, HAUSER</li>
+</ul>
+<p><code>data phase</code> signals include:</p>
+<ul>
+<li><p>HWDATA, HRDATA, HRESP, HREADY (and HREADYOUT).</p>
+</li>
+<li><p>Optional: HEXOKAY, HWUSER, HRUSER.</p>
+</li>
+</ul>
+<p><font color=blue>每一个transfer都是有address phase和data phase</font></p>
+<p><font color=blue>transfer是pipelined，意味着当前transfer的address phase可以和上一次transfer的data phase overlap</font></p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611221656976.png" class="">
+
+<hr>
+<p><font color=blue>每个phase的都是由<code>当前activated AHB Slave data phase的hreadyout assert</code>而结束;</font></p>
+<p><font color=red>这一块不是很明白他的描述，还需要再理解一下</font></p>
+<p>来自<code>AHB Slave的HREADYOUT信号</code>经过<code>Slave Multiplexer</code>，形成了<code>system-wide HREADY</code>信号；</p>
+<p>此Slave Multiplexer在transfer的数据阶段工作，其控制信号可以通过AHB decoder&#x2F;HSEL以及HREADY信号生成；</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611223909464.png" class="">
+
+<p><font color=red>这一块电路对应的时序是什么样子？</font></p>
+<p>如果某一个AHB Slave当前没有被select，其HREADYOUT应该是h</p>
+<p>igh，表明其状态是ready的。</p>
+<p>该从机仅仅只能在上一次transfer完成的时候（由system-wide的HREADY high表示），再进行新的transfer</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611230046424.png" class="">
+
+
+
+<p><font color=red>没太懂这两段想要表达什么意思？需要结合具体的代码实现看</font></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/11/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -736,738 +1244,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">项目实践-debugger无法连接</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-06-05 12:16:16 / 修改时间：12:35:09" itemprop="dateCreated datePublished" datetime="2024-06-05T12:16:16+08:00">2024-06-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CoreSight/" itemprop="url" rel="index"><span itemprop="name">CoreSight</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>问题：外部调试器无法连接芯片</p>
-<p>现象：debugger read id之后，power up状态不对</p>
-</blockquote>
-<h1 id="外部debugger和芯片的连接顺序"><a href="#外部debugger和芯片的连接顺序" class="headerlink" title="外部debugger和芯片的连接顺序"></a>外部debugger和芯片的连接顺序</h1><h2 id="SWJ-DP-TAP-reset"><a href="#SWJ-DP-TAP-reset" class="headerlink" title="SWJ-DP TAP reset"></a>SWJ-DP TAP reset</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" class="post-title-link" itemprop="url">2024年度计划</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-06-02 10:40:32 / 修改时间：11:08:10" itemprop="dateCreated datePublished" datetime="2024-06-02T10:40:32+08:00">2024-06-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">年度计划</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          Here's something encrypted, password is required to continue reading.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/28/smic-auto-eflash-bist/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/28/smic-auto-eflash-bist/" class="post-title-link" itemprop="url">smic auto eflash bist</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-05-28 13:36:38" itemprop="dateCreated datePublished" datetime="2024-05-28T13:36:38+08:00">2024-05-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-07 09:24:43" itemprop="dateModified" datetime="2024-06-07T09:24:43+08:00">2024-06-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/eflash/eflash-bist/" itemprop="url" rel="index"><span itemprop="name">eflash bist</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/05/28/smic-auto-eflash-bist/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/28/smic-auto-eflash-bist/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><font color=blue>相关文档学习</font></p>
-<h1 id="DOC–-SMIC-Serial-Testing-Bus"><a href="#DOC–-SMIC-Serial-Testing-Bus" class="headerlink" title="DOC–&gt;SMIC Serial Testing Bus"></a>DOC–&gt;SMIC Serial Testing Bus</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The Serial Testing Bus(STB) module 用于测试如下两个eflash Macro：</p>
-<ul>
-<li>pfm_340sa128kx150_v1Flash Macro </li>
-<li>pfm_340sa8kx150_v1Flash Macro.</li>
-</ul>
-<p>设计初衷是为了使用<code>JTAG接口(4PIN)</code>在<code>CP阶段</code>对Flash进行测试。</p>
-<p>一个STB模块最多可以携带8个Eflash macro, SMIC能够提供测试向量和STB的netlist.</p>
-<h2 id="Block-Diagram"><a href="#Block-Diagram" class="headerlink" title="Block Diagram"></a>Block Diagram</h2><h3 id="STB-in-System"><a href="#STB-in-System" class="headerlink" title="STB in System"></a>STB in System</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528134454779.png" class="">
-
-
-
-<blockquote>
-<p>Note:</p>
-<p>1.Dut_Num field selects flash macros,Dut_Num[7:0]  &#x3D; 8’h01 means one Flash Macrois selected, Dut_Num[7:0]  &#x3D; 8’hff means eight Flash Macros are selected;</p>
-<p>2.N: The NthFlash.</p>
-</blockquote>
-<h3 id="STB-Block-Diagram"><a href="#STB-Block-Diagram" class="headerlink" title="STB Block Diagram"></a>STB Block Diagram</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528135925055.png" class="">
-
-
-
-<blockquote>
-<p>Note:</p>
-<p>1.JTAGController: Access all data registers (DR) and instruction registers (IR).</p>
-<p>2.Register &amp; Counter: Configure timing and create the proper timing for Function Controller.</p>
-<p>3.Function Controller: Exports the proper waveform for flash to execute theerase&#x2F;program&#x2F;read&#x2F;configure.</p>
-<p>4.BIST Controller: Algorithmically  generates address&#x2F;data, and create pass&#x2F;fail log. </p>
-<p>5.Read NVR_CFG &amp; Config:Auto configure Flash.</p>
-<p>6.Erase Retry &amp; Vread:Automatically  completes Erase Retry function  and Vread.</p>
-<p> 7.Cycling: Erase, program and read operation are cyclingexecuted.</p>
-</blockquote>
-<h3 id="Pin-Description"><a href="#Pin-Description" class="headerlink" title="Pin Description"></a>Pin Description</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528140950126.png" class="">
-
-
-
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528141012829.png" class="">
-
-
-
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528141033520.png" class="">
-
-
-
-
-
-<h2 id="Block-Function-Description-of-JTAG-interface"><a href="#Block-Function-Description-of-JTAG-interface" class="headerlink" title="Block Function  Description of JTAG interface"></a>Block Function  Description of JTAG interface</h2><p>TAG interface consists of four parts: test access port (TAP), TAP controller  (state machine), an instruction register and a group of data registers.</p>
-<h3 id="Test-access-port-TAP"><a href="#Test-access-port-TAP" class="headerlink" title="Test access port (TAP)"></a>Test access port (TAP)</h3><h3 id="TAP-controller-state-machine"><a href="#TAP-controller-state-machine" class="headerlink" title="TAP controller  (state machine)"></a>TAP controller  (state machine)</h3><h3 id="Signal-interface-Settings"><a href="#Signal-interface-Settings" class="headerlink" title="Signal interface Settings"></a>Signal interface Settings</h3><p><font color=red>TBD</font></p>
-<h2 id="Operation-Description"><a href="#Operation-Description" class="headerlink" title="Operation  Description"></a>Operation  Description</h2><h3 id="Instruction-Group"><a href="#Instruction-Group" class="headerlink" title="Instruction Group"></a>Instruction Group</h3><p>There are sevenkindsof instructions: Setup  Instruction, FunctionInstruction, Erase Retry  Instruction, Cycling  Instruction,  Register Instruction,BISTInstruction,  Test  Mode Instruction.</p>
-<h3 id="Internal-Register"><a href="#Internal-Register" class="headerlink" title="Internal Register"></a>Internal Register</h3><h4 id="STB-Register"><a href="#STB-Register" class="headerlink" title="STB Register"></a>STB Register</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528142039255.png" class="">
-
-
-
-<h4 id="BIST-REG-SOC"><a href="#BIST-REG-SOC" class="headerlink" title="BIST_REG_SOC"></a>BIST_REG_SOC</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528142048774.png" class="">
-
-
-
-
-
-<h3 id="Setup-Instruction"><a href="#Setup-Instruction" class="headerlink" title="Setup Instruction"></a>Setup Instruction</h3><p>The setup instruction is set the STB output pin high or low. The setup instruction may use together with other instruction for certain operation. </p>
-<p>The setup instruction is consist of 8 bits, 7 bits setup ID and 1 bits instruction parameter.</p>
-<p><code>All pins controlled by setup instruction  will not change until next setup instruction except “CEb”. If the chip is enable the “CEb” will change accordingly whiletest mode exit.</code></p>
-<h4 id="MBIST-Mux-Setup"><a href="#MBIST-Mux-Setup" class="headerlink" title="MBIST Mux Setup"></a>MBIST Mux Setup</h4><p>The MBIST mux setup instruction  will control the <code>BIST_SEL</code>pin. </p>
-<h4 id="Flash-Control-Pin-Setup"><a href="#Flash-Control-Pin-Setup" class="headerlink" title="Flash Control Pin Setup"></a>Flash Control Pin Setup</h4><p>The flash control pin setup instruction include :</p>
-<p><code>PORb setup, standby setup, deep power down setup, recall setup, CFG lock setup, Vread0 setup, Vread1setup,Sread0 setup and Sread1 setup.</code> These instructions are used to<code> give the flash input a solid state</code>. Only  CEb will change while exiting the test mode. The other pins will remain constant until next setup instruction received.</p>
-<h4 id="STB-Counter-Setup"><a href="#STB-Counter-Setup" class="headerlink" title="STB Counter Setup"></a>STB Counter Setup</h4><p>The STB counter setup instruction is used to switch on and off the STB counter. The execution for erase and program time is controlled by STB counter.  <code>By switching off the STB counter,  user can extend the time of erase and program, especially in test mode.</code> Please be noted that switching off the counter could only extend thetime but not shorten the time.</p>
-<p><font color=red>啥意思？不懂</font></p>
-<h3 id="Function-Instruction"><a href="#Function-Instruction" class="headerlink" title="Function Instruction"></a>Function Instruction</h3><p>The function instruction is used to execute certain operation, like erase, program, read and etc.</p>
-<p> It can also use together with setup instruction,  test mode instruction  and BIST instruction. The function instructions consist of instruction  ID and instruction  parameter.</p>
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143303435.png" class="">
-
-
-
-
-
-<h3 id="Erase-Retry-Instruction"><a href="#Erase-Retry-Instruction" class="headerlink" title="Erase Retry Instruction"></a>Erase Retry Instruction</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143447615.png" class="">
-
-
-
-<h3 id="Cycling-Instruction"><a href="#Cycling-Instruction" class="headerlink" title="Cycling Instruction"></a>Cycling Instruction</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143512853.png" class="">
-
-
-
-<h3 id="Register-Instruction"><a href="#Register-Instruction" class="headerlink" title="Register Instruction"></a>Register Instruction</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528143604662.png" class="">
-
-
-
-<p><font color=red>啥意思？不懂</font></p>
-<h3 id="BIST-Instruction"><a href="#BIST-Instruction" class="headerlink" title="BIST Instruction"></a>BIST Instruction</h3><p>There are four kindsof BISTinstructions:  Chip BIST, Column BIST,SectorBIST and Row BIST. They can reador write all addressof the selected area. The Chip BIST andColumn BIST can only access the NVR&#x2F;MAIN array. There are three patternsfor Chip BIST(Normal, CKBD and Diagonal).</p>
-<blockquote>
-<ul>
-<li>芯片BIST提供了三种模式来执行自测试：正常模式、CKBD模式（Checkerboard，棋盘格模式）和对角线模式。</li>
-<li>这三种模式可能会应用不同的测试算法或测试模式，但它们的目标都是对selected area进行操作，并检查读取的结果是否与预期一致</li>
-</ul>
-</blockquote>
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528144541432.png" class="">
-
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528144548764.png" class="">
-
-
-
-<h3 id="Test-Mode-Instruction"><a href="#Test-Mode-Instruction" class="headerlink" title="Test Mode Instruction"></a>Test Mode Instruction</h3><p>Test mode instruction  is for flash going into the relative basic test mode. The test mode instruction can be set one by one and normal operation can be followed. When normal operation finished, the “TM Exit” instruction  should be followed.</p>
-<blockquote>
-<ul>
-<li>这句话表明测试模式指令用于将flash置于一种基本的测试模式中，以执行测试操作。</li>
-<li>测试模式指令可以逐个设置，然后可以继续进行正常的操作</li>
-</ul>
-</blockquote>
-<p><font color=red>啥意思？不懂</font></p>
-<h1 id="DOC–-BIST-TEST-BENCH-USER-GUIDE"><a href="#DOC–-BIST-TEST-BENCH-USER-GUIDE" class="headerlink" title="DOC–&gt;BIST TEST BENCH USER GUIDE"></a>DOC–&gt;BIST TEST BENCH USER GUIDE</h1><h2 id="List-of-files-required-for-the-simulation"><a href="#List-of-files-required-for-the-simulation" class="headerlink" title="List of files required for the simulation"></a>List of files required for the simulation</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112715254.png" class="">
-
-<p><font color=blue>rtl sim和port sim使用的testbench文件不一样，需要注意</font></p>
-<h2 id="Testbenchnaming-rules"><a href="#Testbenchnaming-rules" class="headerlink" title="Testbenchnaming rules"></a>Testbenchnaming rules</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112747642.png" class="">
-
-
-
-<h2 id="Waived-errors"><a href="#Waived-errors" class="headerlink" title="Waived errors"></a>Waived errors</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112850662.png" class="">
-
-
-
-<h2 id="Waived-warnings"><a href="#Waived-warnings" class="headerlink" title="Waived warnings"></a>Waived warnings</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602112919497.png" class="">
-
-
-
-<h2 id="Necessary-modifyfor-interfacefile"><a href="#Necessary-modifyfor-interfacefile" class="headerlink" title="Necessary modifyfor interfacefile"></a>Necessary modifyfor interfacefile</h2><blockquote>
-<p>Reason: As the synthesis netlist use ideal clock network, there will be hold violation in <code>netlist simulation</code>. In order to solve this violation, the delay should be added to all flash ADDRports and RDEN ports.If do not modify in interfacefile, verilog model will report “ERRORX-010! Timing Violation@XXns:Tah,target&#x3D;1.00ns;” and BIST read fail.</p>
-</blockquote>
-<p><font color=blue>netlist级别的仿真需要加上delay</font></p>
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240602113148104.png" class="">
-
-
-
-<h1 id="DOC–-eFlash-Macro-Datasheet"><a href="#DOC–-eFlash-Macro-Datasheet" class="headerlink" title="DOC–&gt;eFlash Macro Datasheet"></a>DOC–&gt;eFlash Macro Datasheet</h1><h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528204543207.png" class="">
-
-
-
-<h2 id="Product-Description"><a href="#Product-Description" class="headerlink" title="Product Description"></a>Product Description</h2><h3 id="Function-Block-Diagram"><a href="#Function-Block-Diagram" class="headerlink" title="Function Block Diagram"></a>Function Block Diagram</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528211323214.png" class="">
-
-<h3 id="Pin-Description-1"><a href="#Pin-Description-1" class="headerlink" title="Pin Description"></a>Pin Description</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528211417759.png" class="">
-
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528211441687.png" class="">
-
-<h3 id="Operation-Modes-Selection"><a href="#Operation-Modes-Selection" class="headerlink" title="Operation Modes Selection"></a>Operation Modes Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090046913.png" class="">
-
-
-
-
-
-<h2 id="ECC"><a href="#ECC" class="headerlink" title="ECC"></a>ECC</h2><img src="/2024/05/28/smic-auto-eflash-bist/image-20240604213629620.png" class="">
-
-
-
-<h2 id="power-mode"><a href="#power-mode" class="headerlink" title="power mode"></a>power mode</h2><h3 id="Standby-mode"><a href="#Standby-mode" class="headerlink" title="Standby mode"></a>Standby mode</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240604213701983.png" class="">
-
-
-
-<h3 id="Deep-Power-Down-Mode"><a href="#Deep-Power-Down-Mode" class="headerlink" title="Deep Power Down Mode"></a>Deep Power Down Mode</h3><blockquote>
-<p> The device enters the Deep Power Down Mode when both DPD pin and CEb pin are high.<br>Power consumption could be further reduced. However, a tDPD recovery time is needed to<br>return the device back to <code>active mode</code> from deep power down mode.  </p>
-</blockquote>
-<p><font color=red>TBD:</font>active mode是指进入一些read&#x2F;program的operation mode吗？</p>
-<p>从deep power mode到其他operation mode，需要先进入Standby吗？还是直接可以进入？应该需要看时序图确认！！！</p>
-<h3 id="Auto-Low-Power-Mode"><a href="#Auto-Low-Power-Mode" class="headerlink" title="Auto Low Power Mode"></a>Auto Low Power Mode</h3><blockquote>
-<p>The device has the Auto Lower Power mode which puts it in a near standby mode <code>after data has been accessed with a valid Read operation</code>. This reduces the active Read current to the<br>standby current.<br>While CEb is low, the device exits Auto Low Power mode with CLOCK rising edge when<br>RDEN&#x3D;1 to initiate another Read cycle, <code>with no access time penalty</code>.  </p>
-</blockquote>
-<p><font color=red>TBD:</font>应该是read 操作之后自动进入low power mode，此时的功耗类似于standby mode。</p>
-<h2 id="eflash-operation"><a href="#eflash-operation" class="headerlink" title="eflash operation"></a>eflash operation</h2><h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><blockquote>
-<p>The Read operation of the device is triggered by CLOCK rising edge during RDEN&#x3D;1.  Output data width is 150 Bits.  </p>
-<p><code>All non-Read operations do not care the status of CLOCK.  </code></p>
-<p>CEb must be low for the system to obtain data from the device. When CEb is high, the device<br>is de-selected and only standby power is consumed.（这里说的应该就是Auto Low Power Mode）<br><code>The data output is reset to be all zero by Power on Reset, or CEb high  </code></p>
-</blockquote>
-<p><font color=red>所以我理解在实现的时候，read操作之后不需要进入主动进入standby mode；这样连续读写可以节省进入和退出standby mode的时间；</font></p>
-<h3 id="Recall-Read"><a href="#Recall-Read" class="headerlink" title="Recall Read"></a>Recall Read</h3><p>Recall Read is a special slow read mode to obtain the configuration bits from the NVR and<br>NVR_CFG sectors before VREF can be accurately configured.  </p>
-<p><font color=red>TBD:应该只有NVF_CFG也就是NVR_1需要用recall read吧？</font></p>
-<h4 id="Read-Cycle-Timing-Parameters-Cload-0-15pF"><a href="#Read-Cycle-Timing-Parameters-Cload-0-15pF" class="headerlink" title="Read Cycle Timing Parameters (Cload&#x3D;0.15pF)"></a>Read Cycle Timing Parameters (Cload&#x3D;0.15pF)</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240605092527921.png" class="">
-
-
-
-<h4 id="Read-Cycle-Timing-Diagram"><a href="#Read-Cycle-Timing-Diagram" class="headerlink" title="Read Cycle Timing Diagram"></a>Read Cycle Timing Diagram</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104433588.png" class="">
-
-
-
-<h3 id="Program"><a href="#Program" class="headerlink" title="Program"></a>Program</h3><blockquote>
-<p>The device is programmed on 75 bits basis. DINSEL selects one of 75 bits out of 150 bits<br>word.  </p>
-</blockquote>
-<p>program的最小单位是75bits；</p>
-<h4 id="Program-Erase-Cycle-Timing-Parameters"><a href="#Program-Erase-Cycle-Timing-Parameters" class="headerlink" title="Program&#x2F;Erase Cycle Timing Parameters"></a>Program&#x2F;Erase Cycle Timing Parameters</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240605094745072.png" class="">
-
-<h4 id="Program-Cycle-Timing-Diagram"><a href="#Program-Cycle-Timing-Diagram" class="headerlink" title="Program Cycle Timing Diagram"></a>Program Cycle Timing Diagram</h4><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104819187.png" class="">
-
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240529104843799.png" class="">
-
-
-
-
-
-<h3 id="Sector-Erase"><a href="#Sector-Erase" class="headerlink" title="Sector Erase"></a>Sector Erase</h3><blockquote>
-<p>The sector erase operation erases the device on a sector-by-sector basis.  </p>
-</blockquote>
-<h3 id="Block-Erase"><a href="#Block-Erase" class="headerlink" title="Block Erase"></a>Block Erase</h3><blockquote>
-<p> Block erase operation could erase total 16 sectors organized as block for main array.   </p>
-<p>During a block erase, users could also specify a combination of multiple redundancy sectors<br>to be erased with main array sectors.   </p>
-</blockquote>
-<p>7843项目中flash controller没有实现这个操作；</p>
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210008315.png" class="">
-
-<h3 id="Chip-Erase"><a href="#Chip-Erase" class="headerlink" title="Chip Erase"></a>Chip Erase</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240528205914524.png" class="">
-
-<img src="/2024/05/28/smic-auto-eflash-bist/image-20240528210021298.png" class="">
-
-
-
-<h3 id="Charge-Pump-Sharing"><a href="#Charge-Pump-Sharing" class="headerlink" title="Charge Pump Sharing"></a>Charge Pump Sharing</h3><blockquote>
-<p>Its charge pump block (macro name: bias_340sa128kx150_v1) can be shared among up to 2<br>Flash macros. Before the signals connecting to the pump, the logic signals from different<br>devices should be <code>multiplexed</code>, whereas the analog signals from different devices must be<br>wire-connected.<br>The read while write and the read while read operations can be done in two different<br>instances with a shared charge pump simultaneously, but <code>the concurrent writes cannot be allowed</code>.<br><code>Bias IP must be in power off mode when any shared flash IP enter power off mode.  </code></p>
-</blockquote>
-<p><font color=blue>design上是对多个Macro信号或操作连接到bias；只使用一种bias IP，能够对不同size的Flash macro进行操作</font></p>
-<h3 id="Power-On-Reset-PORb"><a href="#Power-On-Reset-PORb" class="headerlink" title="Power On Reset (PORb)"></a>Power On Reset (PORb)</h3><blockquote>
-<p>The Power On Reset pin (PORb) is used to reset the device during power-on. When the<br>PORb pin is held low, any in-progress operation will be terminated, and all internal registers<br>are cleared.  </p>
-</blockquote>
-<h3 id="NVR-Sectors"><a href="#NVR-Sectors" class="headerlink" title="NVR Sectors"></a>NVR Sectors</h3><blockquote>
-<p>NVR array is a group of special sectors outside the main array memory space. NVR array has<br>32 sectors which can be selected by the NVR pin.  </p>
-</blockquote>
-<h3 id="NVR-CFG-Sector"><a href="#NVR-CFG-Sector" class="headerlink" title="NVR_CFG Sector"></a>NVR_CFG Sector</h3><blockquote>
-<p>The device’s configuration information is written into a special NVR_CFG sector during wafer<br>testing. User can access its contents with NVR_CFG&#x3D;1 and RECALL&#x3D;1.<br>To prevent configuration information being inadvertently damaged, a pin LCK_CFG&#x3D;1 is used<br>to protect this NVR_CFG sector.<br>NVR_CFG sector can be programmed or erased for testing purpose only.  </p>
-<p>In NVR_CFG sector, every even and odd row pair (row 0&#x2F;1, row 2&#x2F;3 …) should be<br>programmed with same data pattern. In read mode, the data of even&#x2F;odd pair is read out  simultaneously as one word, so its sector size is only a half of 128 x 150 bits.   </p>
-</blockquote>
-<h3 id="Pre-Program"><a href="#Pre-Program" class="headerlink" title="Pre-Program"></a>Pre-Program</h3><blockquote>
-<p>Before a program operation, same data should be programmed onto the target address with a<br>shorter program pulse. A program operation with PREPG high indicates a Pre-Program<br>operation.<br>Pre-Program multiple words in the same row before the program operations can reduce the<br>Pre-program time overhead.  </p>
-</blockquote>
-<h3 id="Erase-Retry"><a href="#Erase-Retry" class="headerlink" title="Erase Retry"></a>Erase Retry</h3><blockquote>
-<p>Erase Retry uses a step-up voltage scheme with a maximum of 20 retry pulses. The<br>RETRY[1:0] pins specify the retry voltage level for each retry pulse. RETRY[1:0] should be<br>’11 for single pulse sector&#x2F;block erase and chip erase.<br>The Verify Read (VREAD1&#x3D;1) is used to check whether a sector&#x2F;block has been successfully<br>erased after each pulse. An extra retry operation is needed if the sector&#x2F;block is not erased<br>successfully.<br>No verify Read is needed for the last pulse as the cumulative erase time is already sufficient.<br>Erase retry scheme should be used for sector&#x2F;block erase only, not chip erase.  </p>
-</blockquote>
-<h3 id="Verify-Read"><a href="#Verify-Read" class="headerlink" title="Verify Read"></a>Verify Read</h3><blockquote>
-<p>Verify read is a special read mode to guarantee a successful write operation. Verify read is<br>controlled by the pin VREAD1 and VREAD0. The access time is slower than normal read.  </p>
-</blockquote>
-<h3 id="Safety-Read"><a href="#Safety-Read" class="headerlink" title="Safety Read"></a>Safety Read</h3><blockquote>
-<p>Safety read 0&#x2F;1 is a special read mode to detect whether any flash bit has experienced<br>unusual reduction in read margin. Safety read 0 is controlled by the pin SREAD0, and safety<br>read 1 is controlled by the pin SREAD1. Their access time is the same as a normal read.  </p>
-</blockquote>
-<h3 id="Row-Redundancy"><a href="#Row-Redundancy" class="headerlink" title="Row Redundancy"></a>Row Redundancy</h3><blockquote>
-<p>There are 4 redundancy sectors: These 4 redundancy sectors can be used to replace the bad<br>sectors of main array. See Table: NVR, Redundancy Sector Selection.<br>The redundancy information is stored at several locations of NVR_CFG sector.   </p>
-</blockquote>
-<h3 id="Set-Configuration-Register"><a href="#Set-Configuration-Register" class="headerlink" title="Set Configuration Register"></a>Set Configuration Register</h3><blockquote>
-<p>For obtain required performance, it is necessary to set configuration bits into the registers of<br>the device.<br>Before normal read&#x2F;program&#x2F;erase operation, eight groups of configuration data must be read<br>from the device while RECALL and NVR_CFG are high and written to eight groups of<br>configuration registers (16 bits for each group) in the device. These configuration registers are<br>selected by A[2:0] when CONFEN is high. Only 16 LSB bits of each word are effective  configuration bits. </p>
-<p>Word 0 maps to address 000, Word1 maps to address 001, etc.   </p>
-<p>After power on reset, all configuration registers are reset and need to be rewritten before any<br>other operations  </p>
-<p>To set RECALL pin high during Set Configuration Registers operation, performing Recall<br>Read and Set Configuration Registers sequentially can help reduce time overhead.  </p>
-</blockquote>
-<h3 id="Configuration-Register-Read"><a href="#Configuration-Register-Read" class="headerlink" title="Configuration Register Read"></a>Configuration Register Read</h3><blockquote>
-<p>After all configuration registers are written, the contents of the configuration registers can be<br>read out to device pins by configuration register read.<br>Those configuration registers are selected by A[2:0] when CONFEN&#x3D;1 and RDEN&#x3D;1 at the<br>rising edge of CLOCK. Only 16 LSB bits of each word are read out to DOUT[15:0].  </p>
-</blockquote>
-<h3 id="Power-Off"><a href="#Power-Off" class="headerlink" title="Power Off"></a>Power Off</h3><blockquote>
-<p>The device can be completely turned off by an internal power switch when SUPPLYON&#x3D;0.<br>This power switch should be turned on (SUPPLYON&#x3D;1) after power up and constantly<br>remained for any operations. Flash IPs and their shared Bias IP must go to power off mode<br>together.<br>Power on reset should be activated during supply switching off, therefore all configuration<br>registers will lose the current value and they must be reloaded again before the next<br>read&#x2F;write operation.<br>When the device is switched off, all output pins from pfm are floated.  </p>
-</blockquote>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="NVR-Redundancy-Sector-Selection"><a href="#NVR-Redundancy-Sector-Selection" class="headerlink" title="NVR,Redundancy Sector Selection"></a>NVR,Redundancy Sector Selection</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090244081.png" class="">
-
-<h3 id="Memory-Array-Configuraton"><a href="#Memory-Array-Configuraton" class="headerlink" title="Memory Array Configuraton"></a>Memory Array Configuraton</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240529090349066.png" class="">
-
-<h3 id="Configuration-Data-and-Redundancy-Storage-in-NVR-CFG"><a href="#Configuration-Data-and-Redundancy-Storage-in-NVR-CFG" class="headerlink" title="Configuration Data and Redundancy Storage in NVR_CFG"></a>Configuration Data and Redundancy Storage in NVR_CFG</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240606142930577.png" class="">
-
-<h3 id="Configuration-Data-Mapping-Table"><a href="#Configuration-Data-Mapping-Table" class="headerlink" title="Configuration Data Mapping Table"></a>Configuration Data Mapping Table</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240606144800615.png" class="">
-
-<h3 id="Connection-between-multiple-Flash-IP-and-Pump-IP"><a href="#Connection-between-multiple-Flash-IP-and-Pump-IP" class="headerlink" title="Connection between multiple Flash IP and Pump IP"></a>Connection between multiple Flash IP and Pump IP</h3><img src="/2024/05/28/smic-auto-eflash-bist/image-20240602144959234.png" class="">
-
-
-
-
-
-<p><font color=blue>testbench学习理解</font></p>
-<h1 id="Testbench–-STB-operation-simulaiton"><a href="#Testbench–-STB-operation-simulaiton" class="headerlink" title="Testbench–&gt;STB operation simulaiton"></a>Testbench–&gt;STB operation simulaiton</h1><h2 id="chip-erase"><a href="#chip-erase" class="headerlink" title="chip erase"></a>chip erase</h2><blockquote>
-<p>含义：erase entire main arrary, redundancy sectors and NVR sectors all together or seprately</p>
-</blockquote>
-<p><font color=red>TBD</font></p>
-<p>观察STB输出的控制信号即可，不用太过关注testbench 指令</p>
-<h2 id="sector-erase"><a href="#sector-erase" class="headerlink" title="sector erase"></a>sector erase</h2><h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="STB-in-System-章节中，SoC-REG的作用？"><a href="#STB-in-System-章节中，SoC-REG的作用？" class="headerlink" title="STB in System 章节中，SoC REG的作用？"></a>STB in System 章节中，SoC REG的作用？</h2><p>首先这是一个输出端口，是SoC控制寄存器，用于在flash test mode下，输出信息，让外部调节电压</p>
-<p>7843项目中，将此信号连接到Standby 模块；</p>
-<p><font color=red>TBD</font></p>
-<h2 id="仿真地址问题"><a href="#仿真地址问题" class="headerlink" title="仿真地址问题"></a>仿真地址问题</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/27/makefile%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/27/makefile%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">makefile脚本基础知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-05-27 10:31:01 / 修改时间：10:47:27" itemprop="dateCreated datePublished" datetime="2024-05-27T10:31:01+08:00">2024-05-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">脚本</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%84%9A%E6%9C%AC/makefile%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">makefile脚本</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/05/27/makefile%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/27/makefile%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="目标和伪目标"><a href="#目标和伪目标" class="headerlink" title="目标和伪目标"></a>目标和伪目标</h1><h1 id="makefile执行顺序"><a href="#makefile执行顺序" class="headerlink" title="makefile执行顺序"></a>makefile执行顺序</h1><p>在Makefile中，当执行某个伪目标（.PHONY target）时，伪目标中的每条指令都会按顺序执行。每条指令都需要等待上一条指令执行完毕才能执行下一条指令，包括执行长时间运行的命令。</p>
-<p>例如，考虑以下Makefile示例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">makefile复制代码.PHONY: my_target</span><br><span class="line"></span><br><span class="line">my_target:</span><br><span class="line">    @<span class="built_in">echo</span> <span class="string">&quot;Starting process A...&quot;</span></span><br><span class="line">    @<span class="built_in">sleep</span> 5</span><br><span class="line">    @<span class="built_in">echo</span> <span class="string">&quot;Process A completed.&quot;</span></span><br><span class="line">    @<span class="built_in">echo</span> <span class="string">&quot;Starting process B...&quot;</span></span><br><span class="line">    @<span class="built_in">sleep</span> 10</span><br><span class="line">    @<span class="built_in">echo</span> <span class="string">&quot;Process B completed.&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>在这个示例中，当执行<code>make my_target</code>时，会依次执行两个进程A和B。进程B会在进程A完成后才开始执行，因为Makefile会按顺序执行每个命令行中的命令。</p>
-<p>因此，如果某个命令需要执行很长时间，后续的命令会等待它执行完成后再继续执行。</p>
-<h1 id="makefile传递参数"><a href="#makefile传递参数" class="headerlink" title="makefile传递参数"></a>makefile传递参数</h1><p>要在Makefile中传递参数，你可以使用命令行参数（Makefile变量）和make命令后面的参数。下面是一个示例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">makefile复制代码.PHONY: run</span><br><span class="line"></span><br><span class="line">run:</span><br><span class="line">    @<span class="built_in">mkdir</span> $(DIR)</span><br></pre></td></tr></table></figure>
-
-<p>在这个示例中，<code>DIR</code>是一个Makefile变量，它将在make命令后面通过参数传递。你可以像这样运行make命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arduino</span><br><span class="line">复制代码</span><br><span class="line">make run DIR=my_directory</span><br></pre></td></tr></table></figure>
-
-<p>这样，Makefile中的<code>run</code>目标会创建一个名为<code>my_directory</code>的目录。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/05/24/Cortex-M4-demo-SoC%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/24/Cortex-M4-demo-SoC%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">Cortex-M4 demo SoC搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-05-24 09:23:38" itemprop="dateCreated datePublished" datetime="2024-05-24T09:23:38+08:00">2024-05-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-06 17:45:35" itemprop="dateModified" datetime="2024-06-06T17:45:35+08:00">2024-06-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/05/24/Cortex-M4-demo-SoC%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/24/Cortex-M4-demo-SoC%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>使用ARM交付包 搭建一个demo的SoC</p>
-<blockquote>
-<p>AT521 –&gt; Cortex-M4</p>
-<p>TM925 –&gt; ETM</p>
-<p>创建的仿真环境在 merge_work_dir1</p>
-</blockquote>
-<h1 id="demo-SoC-testbench"><a href="#demo-SoC-testbench" class="headerlink" title="demo SoC testbench"></a>demo SoC testbench</h1><img src="/2024/05/24/Cortex-M4-demo-SoC%E6%90%AD%E5%BB%BA/image-20240606173034184.png" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1539,7 +1315,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1552,7 +1328,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">115</span>
+        <span class="site-state-item-count">123</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
