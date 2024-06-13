@@ -20,20 +20,28 @@ tags:
 
 ## AHB基本操作
 
+### 组件的连接
+
 在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：
 
 {% asset_img image-20240611215804055.png %}
 
-<font color=red>data phase mux control?什么意思？怎么实现？</font>
+<font color=red>1、data phase mux control?什么意思？怎么实现？</font>
+
+<font color=red>2、一般接触到的hready应该是将所有的hreadyout信号进行与操作实现</font>
+
+<font color=red>这两种方式均可</font>
 
 如果遵循`AMBA 5 AHB`规范，可以按照如下方式连接：
 
-- 多个`AHB Master`共享一个bus，需要使用`Master Multiplexer`和`Master arbiter`
-- 多个`AHB Slave`返回的data和response信号需要使用`Slave Multiplexer` feedback to `AHB Master`
+- 多个`AHB Master`共享一个bus，需要使用`Master Multiplexer`和`Master arbiter`，arbiter仲裁之后产生选通信号，通过Multiplexer选通，占用总线
+- 多个`AHB Slave`返回的data和response信号需要使用`Slave Multiplexer` feedback to `AHB Master`，其中Slave Multiplexer通过Decoder产生的信号进行选通
 
 ---
 
-信号可以被划分为`address phase `信号和`data phase `信号：
+### 信号基本时序
+
+信号可以被划分为`address phase singals `和`data phase singals  `：
 
 `address phase` signals include:
 
@@ -54,26 +62,66 @@ tags:
 
 ---
 
-<font color=blue>每个phase的都是由`当前activated AHB Slave data phase的hreadyout assert`而结束;</font>
+### data phase select control生成
 
-<font color=red>这一块不是很明白他的描述，还需要再理解一下</font>
+> Each phase is terminated by the assertion of HREADYOUT (HREADY) from `the currently activated AHB slave in the data phase`. 
+>
+> The HREADYOUT from the AHB slaves are multiplexed by the slave multiplexer, forming the system-wide HREADY signal.
+>
+>  The multiplexer is operating at the data phase of each transfer. Control of the multiplexer can be generated from the AHB decoder, or the HSEL
+> signals and the HREADY signal.  
 
-来自`AHB Slave的HREADYOUT信号`经过`Slave Multiplexer`，形成了`system-wide HREADY`信号；
+结合上面的波形图，来理解这段话：
 
-此Slave Multiplexer在transfer的数据阶段工作，其控制信号可以通过AHB decoder/HSEL以及HREADY信号生成；
+> 如果当前看的是Address Phase N，则当前有效的ahb slave data phase 就是上图的data phase(N-1)；
+>
+> hreadyout通过slave multiplexer形成了系统范围的HREADY信号；
+>
+> slave multiplexer在一个transfer的data phase进行mux，现在问题就是如何生成slave multiplexer的控制信号data phase select？
+>
+> ==》通过HSEL以及HREADY信号
 
 {% asset_img image-20240611223909464.png %}
 
-<font color=red>这一块电路对应的时序是什么样子？</font>
-
-如果某一个AHB Slave当前没有被select，其HREADYOUT应该是h
-
-igh，表明其状态是ready的。
-
-该从机仅仅只能在上一次transfer完成的时候（由system-wide的HREADY high表示），再进行新的transfer
-
-{% asset_img image-20240611230046424.png %}
 
 
 
-<font color=red>没太懂这两段想要表达什么意思？需要结合具体的代码实现看</font>
+
+> If an AHB slave is not currently selected, its HREADYOUT should be high to indicate it is ready.
+> However, it can only accept a transfer from the bus master when the previous transfer is completed,
+> indicated by a high level in the system-wide HREADY.   
+>
+> 注意两个词语，结合下面的波形图理解：
+>
+> (Address  phase)  AHB Slave A selected
+>
+> (Data pahse       )  AHB Slave A active
+>
+> 以Slave B为例，如果开始时，Slave B未被选中进行transfer，那么下次Slave B的transfer需要等到系统范围的HREADY HIGH才可以进行；
+
+{% asset_img image-20240612222936437.png %}
+
+
+
+## Minimal AHB systems  
+
+最小的AHB system有一个bus master，多个bus slave以及接下来的AHB 组件：
+
+{% asset_img image-20240612225507780.png %}
+
+
+
+address decoder应根据系统的memory map进行设计，HSEL是一个地址阶段的信号，由HADDR通过组合逻辑产生，其不应该有复杂的decode逻辑，否则综合的时候timing会受到影响；
+
+
+
+AHB slave multiplexer会更加通用一点，而且能够在各种ARM AHB IP bundles中找到。不同的AHB Slave有着不同的read data outputs和response outputs，因此需要一个Slave Multiplexer 在current active slave阶段返回data和response；
+
+
+
+
+
+
+
+
+
