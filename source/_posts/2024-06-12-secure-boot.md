@@ -131,9 +131,11 @@ tags:
 
 2. 更新HSM的秘钥
 
-
-
 <font color=red>这个秘钥是指？作用是什么？</font>我理解是OTP的KEY区域
+
+作用是让hsm romcode对hsm的firmware进行校验
+
+
 
 
 
@@ -162,9 +164,293 @@ tags:
 
 
 
+# doc->eHSM secure boot TRM
+
+## Secure Boot, Install and Upgrade
+
+The eHSM supports firmware stored in ROM, internal NVM or external NVM, 
+
+and also supports the firmware excuted in IROM, internal IRAM or internal NVM.  
+
+<font color=blue>This section describs one of the combinations that eHSM firmware is stored and excuted in internal NVM.</font>
 
 
-# secure boot仿真
+
+### eHSM Secure Boot, Install and Upgrade
+
+<font color=blue>eHSM Secure Boot: Verify eHSM firmware in NVM before excuting</font>
+
+•Verify the eHSM firmware image w/ ”eHSM FW Verify Key”
+
+•Excute the code in NVM
+
+<font color=blue>eHSM Secure Install: Install eHSM firmware to NVM</font>
+
+•Decrypt and verify the eHSM firmware upgrade image w/ ”eHSM Upgrade Encrypt Key” and”eHSM Upgrade Verify Key”
+
+•Sign the eHSM firmware code w/ ”eHSM FW Verify Key”
+
+•Save the plaintext code image to NVM
+
+<font color=blue>eHSM Secure Upgrade: Upgrade eHSM firmware to NVM</font>
+
+•Similar flow as secure install
+
+> 一些思考：
+>
+> <font color=red>或者说install和upgrade的区别是什么?</font>
+
+{% asset_img image-20240614134053043.png %}
+
+
+
+#### eHSM Code Location
+
+{% asset_img image-20240614134651421.png %}
+
+
+
+#### Encryption Algorithm
+
+{% asset_img image-20240614134840559.png %}
+
+
+
+#### Encryption OTP Keys
+
+{% asset_img image-20240614135113981.png %}
+
+
+
+#### OTP Algorithm Selection Field
+
+{% asset_img image-20240614135258415.png %}
+
+
+
+### eHSM Image Format
+
+#### eHSM Image Format
+
+The eHSM image includes code image and upgrade image
+
+{% asset_img image-20240614135539302.png %}
+
+
+
+#### eHSM Image Fields Definition
+
+- Code Image Fields Definition
+
+{% asset_img image-20240614161410855.png %}
+
+> Note:
+>
+> •The ”Code_Signature” covers 432+254K bytes, from ”Code_Valid_Flag” to the end of the ”Code"
+
+- Upgrade Image Fields Definition
+
+{% asset_img image-20240614161506218.png %}
+
+> Note:
+>
+> •The ”Upgrade_Signature” covers 448+255K bytes data, including the whole upgrade imagefields except ”Upgrade_Signature” and ”Upgrade_Public_Key”.
+>
+> •The whole 255K bytes code image is encrypted with ”eHSM_UPGRADE_ENC_KEY”
+
+
+
+### eHSM Secure Boot
+
+#### Secure Boot Flow
+
+1. HW loads OTP information, decrypts OTP keys(Optional) and initializes system before releasingeHSM’s CPU reset
+
+2. FW decryption and verification can be skipped in lifecycle ”TEST_MODE” and ”DEVELOP_MODE”,controlled by OTP control fields
+
+3. eHSM will report error if there is no available FW code to info host and wait host to burn FW code through mailbox
+
+4. eHSM will reports error if secure boot fails to info host and wait for host to debug through mailboxor UART port, including:
+   1. (a)Crypto IP self-test fail
+   2. (b)Key (eHSM FW Verify Key) slot is not available
+   3. (c)Program (NVM code) verification fail
+   4. (d)Version number mismatch (OTP is newer than NVM)
+
+{% asset_img image-20240614162500741.png %}
+
+{% asset_img image-20240614163102775.png %}
+
+{% asset_img image-20240614163132301.png %}
+
+
+
+> Note:
+>
+> - Program verification flow depends on the algorithm, it’s CMAC for symmetric algorithm and Hash & RSA (or SM3 & SM2) for asymmetric algorithm.
+>
+> - BOOTDONE_SUCCESS and BOOTDONE_FAIL means:
+>
+>   - BOOTDONE_SUCCESS: 
+>
+>     - BOOTDONE=1 and BOOTERR=0
+>
+>     - BOOTDONE_FAIL: BOOTDONE=1 and BOOTERR=1
+>
+>       Both BOOTDONE and BOOTERR are register fields in ”SYS_BOOT_STA”, and is routedto eHSM top output pin ”o_ehsm_status”The ”Report Error” is defined in EMU registers, and will be monitored through the eHSM’soutput pin ”o_ehsm_fw_err” by host
+>
+> 一些思考&说明：
+>
+> <font color=red>crypto IP self test是什么意思？</font>
+>
+> 
+
+
+
+#### Secure Boot Related OTP Fields
+
+{% asset_img image-20240614163634621.png %}
+
+
+
+### eHSM Secure Install
+
+#### Secure Install Related Keys
+
+{% asset_img image-20240614135113981.png %}
+
+
+
+#### Secure Install Flow
+
+
+
+The secure install only contains following three steps:
+
+##### step1: Burn install FW image to NVM
+
+1.Burn `install FW image` to NVM
+
+(a)Host prepares the FW install image and sends an INSTALL command to eHSM to start the FW install
+
+(b)Once eHSM bootloader receives the INSTALL command, it starts following steps 
+
+​	i.Check the version with version counter in OTP
+
+​	ii.Verify and decrypt the install image
+
+​		(a) Verify the image with ”eHSM_UPGRADE_VERIFY_KEY”
+
+​		(b)- For asymmetric algorithm
+
+​				(i) Calculate the Hash of the image
+
+​				(ii) Verify the signature of the image Hash value
+
+​			- For symmetric algorithm
+
+​				(i) Verify the signature of the image
+
+​		(c)Decrypt the image with ”eHSM_UPGRADE_ENC_KEY”
+
+​	iii.Compare the version counter between code image and upgrade image, report error if they are different
+
+​	iv.(Optional) If Boot_Alg is symmetric algorithm: Calculate the code image MAC with”eHSM_VERIFY_KEY” and update the ”Code_Signature” field with the 		calculated MAC
+
+> Note: This step is only needed when each part has its own ”eHSM_VERIFY_KEY”which is different from others’
+
+​	v.Write image to internal NVM
+
+​	vi.Return command response with ”UPGRADE_DONE” (or corresponding error code)
+
+##### step2: Verify installed Program in NVM
+
+2.Verify installed Program in NVM
+
+(a)Host sends VERIFY_PROGRAM command to start the program verification
+
+(b)Once eHSM receives the VERIFY_PROGRAM command, it starts to verify the program inNVM, including
+
+​	i.Compare the program version with OTP version counter
+
+​	ii.Verify the program with ”eHSM_VERIFY_KEY”
+
+​	iii.Return command response with ”REV_MATCH” or expected warning code ”REV_NEW”(Verification pass, but NVM program is newer than or same as OTP version counter)
+
+##### step3: Update OTP version counter
+
+3.Update OTP version counter
+
+(a)Host resets the eHSM
+
+(b)Bootloader jumps to the internal NVM after verification
+
+(c)eHSM runs the new FW.
+
+(d)eHSM’s new FW always compare the image version with version counter in OTP, and burn the new version to OTP version counter bit filed if image version is newer than OTP versioncounter.
+
+{% asset_img image-20240614172128526.png %}
+
+{% asset_img image-20240614172219853.png %}
+
+
+
+
+
+> Note:
+>
+> •Upgrade algorithm field in OTP and image will be compared in ”Is Upgrade_Alg asymmetric?”step
+
+
+
+{% asset_img image-20240614172334022.png %}
+
+{% asset_img image-20240614172349477.png %}
+
+
+
+### eHSM Secure Upgrade
+
+#### Secure Upgrade Related Keys
+
+{% asset_img image-20240614135113981.png %}
+
+
+
+#### Secure Upgrade Flow
+
+In order to avoid stopping eHSM secure service during upgrade, the upgrade image will be split into several segments, e.g., 4KB for each segment, and eHSM will verify, decrypt and encrypt eachsegment individually with Crypto IPs in interleave mode. The secure upgrade contains following three steps
+
+##### step1:Burn Upgrade FW image to NVM
+
+{% asset_img image-20240614173335395.png %}
+
+{% asset_img image-20240614173459441.png %}
+
+
+
+##### step2:Verify Upgrade Program in NVM
+
+{% asset_img image-20240614174827334.png %}
+
+{% asset_img image-20240614174907336.png %}
+
+
+
+##### step3:Update OTP version counter
+
+Same as secure install
+
+{% asset_img image-20240614172349477.png %}
+
+
+
+
+
+
+
+
+
+# secure boot仿真build
 
 更新OTP和FW
 
