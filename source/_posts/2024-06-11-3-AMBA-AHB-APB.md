@@ -10,17 +10,25 @@ tags:
 - TBD
 ---
 
+# What is AMBA?  
 
+## Introduction to Advanced Microcontroller Bus Architecture  
 
-# AHB概述
+## History of AMBA
 
-## AHB版本
+## Various versions of AMBA specification  
 
-## AHB信号
+# Overview of AHB
 
-## AHB基本操作
+## Various versions of AHB  
 
-### 组件的连接
+## AHB signals
+
+## Basic operations
+
+---
+
+==》 组件的连接
 
 在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：
 
@@ -39,7 +47,7 @@ tags:
 
 ---
 
-### 信号基本时序
+==》信号基本时序
 
 信号可以被划分为`address phase singals `和`data phase singals  `：
 
@@ -62,7 +70,7 @@ tags:
 
 ---
 
-### data phase select control生成
+==》data phase select control生成
 
 > Each phase is terminated by the assertion of HREADYOUT (HREADY) from `the currently activated AHB slave in the data phase`. 
 >
@@ -127,7 +135,9 @@ AHB system中可能由多个decoder和AHB Slave Multiplexer。AHB system有多�
 
 ## Handling of multiple bus masters  
 
-如果是基于AMBA2规范的AHB协议，多个AHB Master和AHB Slave之间的连接关系如下图所示：
+---
+
+==》如果是基于AMBA2规范的AHB协议，多个AHB Master和AHB Slave之间的连接关系如下图所示：
 
 {% asset_img image-20240613230916059.png %}
 
@@ -142,7 +152,9 @@ AHB system中可能由多个decoder和AHB Slave Multiplexer。AHB system有多�
 > 3. The bus master can then generate transfers on the bus.
 > 4. If the HGRANT signal is de-asserted, the bus master must stop issuing new transfers.  
 
-<font color=blue>简单的AHB系统可以根据这种规则进行工作，但是如果是复杂的场景，BUS带宽就会受到限制，因为BUS上同时只能有一个Master和一个Slave进行通信；</font>
+---
+
+==》<font color=blue>简单的AHB系统可以根据这种规则进行工作，但是如果是复杂的场景，BUS带宽就会受到限制，因为BUS上同时只能有一个Master和一个Slave进行通信；</font>
 
 <font color=blue>`AMBA Design Kit (ADK) `产品有了一种新的技术（`multi-layer AHB`）去支持多个AHB Master同时使用总线的场景；</font>
 
@@ -166,17 +178,15 @@ ADK的`BusMatrix IP`是一个`AHB interconnect`组件（使用的是multi-layer 
 >
 > 3，如果bus masterA的transfer的被缓存到input stage中，此时slave port（connect to bus masterA）hreadyout应该是拉低的，此时bus masterA会hold<font color=red>这一步transfer吗?如果会的话，为什么要缓存？直接返回hreadyout，然bus MasterA一直hold不可以吗？</font>
 
+<font color=blue>bus matrix的这种设计允许不同的master同时访问不同的slave，增强了系统带宽的处理能力</font>
 
+bus matrix IP可以在`AMBA Design Kit(ADK)`以及`Cortex-M System Design Kit(CMSDK)`中配置使用；AHB BusMatrix IP是`Corstone foundation IP` / `CoreLink SDK (System Design Kit)  `的一部分。
 
+---
 
+针对系统带宽要求不高的场景，可以使用类似于AMBA 2 AHB的架构，如下图所示，其利用了一个重新设计的AHB Master Multiplexer, 内部包括了`internal input state以及internal arbiter(可以看成是Bus Matrix，只不过只有一个slave，因此不需要internel address decoder)`
 
-
-
-
-
-
-
-
+{% asset_img image-20240615234302205.png %}
 
 
 
