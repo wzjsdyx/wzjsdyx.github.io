@@ -446,6 +446,82 @@ Same as secure install
 
 
 
+### SoC Secure Boot, Install & Upgrade
+
+#### SoC Secure Boot, Install & Upgrade Keys
+
+Similar to eHSM secure boot, image installation and upgrade, corresponding keys are needed forSoC secure boot, image installation and upgrade, including：
+
+- SOC_ENC_KEY
+- SOC_VERIFY_KEY
+- SOC_UPGRADE_ENC_KEY
+- SOC_UPGRADE_VERIFY_KEY
+
+
+
+#### SoC Sequential & Parallel Secure Boot
+
+There are two secure boot Strategies for SoC’s secure boot:
+
+1.Sequential secure boot
+
+- eHSM bootloader (ROM) verifies eHSM firmware
+- eHSM firmware verifies SoC bootloader
+- SoC bootloader calls eHSM’s secure service (e.g. by a specify command) to verify SoCfirmware
+
+2.Parallel secure boot
+
+- eHSM bootloader (ROM) verifies eHSM firmware
+- SoC bootloader (ROM) calls eHSM’s secure service to verify SoC firmware
+
+> 区别在于SoC的bootloader是否需要验证
+
+{% asset_img image-20240617133007752.png %}
+
+
+
+
+
+The SoC boot strategy (sequential or parallel boot) is defined by the OTP field ”SocBootType”. 
+
+The boot and upgrade algorithms are also defined in OTP control fields.
+
+eHSM first reads the configuration in OTP. If in sequential boot, eHSM firmware will verify the host directly. Otherwise, it waits for host to call interface to verify.
+
+eHSM first reads the configuration in OTP. If in sequential boot, eHSM firmware will verify the hostdirectly. Otherwise, it waits for host to call interface to verify. No matter the verification is passed ornot, eHSM firmware just runs and offers the services. <font color=blue>The only difference is that soc_boot_erris setor not.</font>
+
+
+
+#### SoC Secure Install & Upgrade
+
+The secure install & upgrade for SoC bootloader or firmware could be very similar to the secureupgrade for eHSM firmware. The SoC’s bootloader or firmware image will be splinted into severalpieces and each will call corresponding eHSM mailbox commands (reuse eHSM upgrade commandsor new commands) to <font color=blue>decrypt, verify and encrypt</font> these image pieces to combine as the final encrypted code image for SoC.
+
+> 思考：
+>
+> image为什么需要加密解密？
+>
+> 开发者如果想要开发程序，然后在SOTA升级的时候，为防止别人截获程序，需要使用密文传输，然后再进行解密，最后写到flash中。
+
+### eHsm Single Bank Upgrade
+
+Single Bank Upgrade Flow
+
+{% asset_img image-20240617151247080.png %}
+
+
+
+
+
+# Q&A
+
+<font color=blue>Secure Boot install & update有什么区别？</font>
+
+没什么太多的区别，install主要是一开始flash中没有数据；update主要是，flash中有数据之后，再进行更新
+
+
+
+
+
 
 
 
