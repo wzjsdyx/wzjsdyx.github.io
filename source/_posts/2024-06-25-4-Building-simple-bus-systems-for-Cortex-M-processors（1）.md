@@ -163,31 +163,77 @@ Cortex-M3/Cortex-M4处理器采用哈佛架构，而且有3个AHB总线接口以
 
 {% asset_img image-20240625210426184.png %}
 
+## I-CODE和D-CODE的处理方式1：无系统cache
 
+<font color=blue>将I-CODE和D-CODE分开的目的，添加一个常量数据cache，当指令访问flash，由于wait state而等待的时候，常量数据仍然可以从cache中read；</font>
 
-<font color=blue>将I-CODE和D-CODE分开的目的：添加一个常量数据cache，当指令访问flash，由于wait state而等待的时候，常量数据仍然可以从cache中read；</font>
+<font color=blue>解释如下：</font>
+
+<font color=blue>==》首先只有一个总线的方案</font>
 
 - 一般来说，flash的速度为30MHz-50MHz，远小于处理器的速度(超过100MHz)。
-
 - 通常会选择位宽更大以及有prefetch buffer的flash，<font color=blue>顺序执行的指令会被prefetch</font>，处理器更多时候会从prefetch buffer中读取指令，从而提供性能；
 
 {% asset_img image-20240626201216548.png%}
 
+但是程序中还有很多常量，这些常量的访问往往是非顺序的，因此prefetch的性能会大大降低；
+
+往极端的方向思考：如果在prefetch刚开始的时候，发生了读常量的操作，需要等待的时间很更久；
+
+{% asset_img image-20240626223223336.png %}
+
+<font color=blue>==》过渡到两个总线的方案</font>
+
+<font color=blue>为了解决上述的问题，一种解决方案是，将数据访问和指令访问分开，然后在数据访问总线上添加一个小的data cache；</font>
+
+> 数据访问一开始的时候会将变量搬运到SRAM中；
+>
+> 之后程序的运行，即访问常量的时候，会通过D-CODE访问；
+
+{% asset_img image-20240626224644608.png %}
+
+> 这是将一条程序总线分成I-CODE和D-CODE两条总线的初衷；
+
+## I-CODE和D-CODE的处理方式2：有系统cache
+
+<font color=blue>上述方案没有考虑系统级别的cache，如果有系统级别的cache，指令访问就不会因为flash的速度低而等待很久，因此可以不需要上述flash访问加速的机制，</font>
+
+- flash的prefetch机制
+- 常量cache机制
+
+<font color=blue>可以考虑直接将I-CODE和D-CODE总线进行merge</font>
 
 
 
+为了进行merge，Cortex-M3和Cortex-M4的产品交付包中包含两个组件：
+
+### Code mux component  
+
+门数量非常少，为了使用这个组件，I-CODE和D-CODE只能同时有一个active，通过配置DNOTITRANS  输入端口需要为1
+
+（防止在D-CODE进行transfer的时候，I-CODE再生成transfer）；
+
+{% asset_img image-20240626231517758.png %}
+
+### Flash mux component
+
+这个组件内部有仲裁机制；这个组件在CODE region还有其他slave组件的时候，非常有用，因为I-CODE和D-CODE可以同时发出访问；
+
+{% asset_img image-20240626233511046.png %}
 
 
 
+<font color=blue>有系统cache和上述组件的时候，<font color=green>如果CODE区域没有其他组件</font>，架构可以考虑如下：</font>
 
+{% asset_img image-20240626234311838.png %}
 
-
-
-
-
-
-
-
+> 对于上述系统架构，I-CODE和D-CODE都是访问flash，在有系统cache的情况下，将I-CODE和D-CODE分开之后的收益不是很大了；
+>
+> 假设CODE区域没有其他Slave组件，其将I-CODE和D-CODE分开的初衷是，防止指令访问的wait state也阻碍了数据访问，大大降低系统性能；
+>
+> 但是现在有cache的情况下，指令访问不会有太多的wait state，因此就可以不用分开；
+>
+> 新一代的处理器，例如M33和M35P，I-CODE和D-CODE已经merge了，用于降低系统集成的复杂度以及low power。
 
 
 
