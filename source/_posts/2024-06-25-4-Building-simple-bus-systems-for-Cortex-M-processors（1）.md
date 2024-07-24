@@ -2,7 +2,7 @@
 title: 4 Building simple bus systems for Cortex-M processors（1）
 date: 2024-06-25 17:44:15
 categories:
-- SoC设计
+- 基于Cortex-M的SoC设计
 tags:
 - bus system
 - TBD
@@ -223,7 +223,7 @@ Cortex-M3/Cortex-M4处理器采用哈佛架构，而且有3个AHB总线接口以
 
 
 
-<font color=blue>有系统cache和上述组件的时候，<font color=green>如果CODE区域没有其他组件</font>，架构可以考虑如下：</font>
+<font color=blue>有系统cache和上述组件的时候，如果CODE区域没有其他组件，架构可以考虑如下：</font>
 
 {% asset_img image-20240626234311838.png %}
 
@@ -234,6 +234,270 @@ Cortex-M3/Cortex-M4处理器采用哈佛架构，而且有3个AHB总线接口以
 > 但是现在有cache的情况下，指令访问不会有太多的wait state，因此就可以不用分开；
 >
 > 新一代的处理器，例如M33和M35P，I-CODE和D-CODE已经merge了，用于降低系统集成的复杂度以及low power。
+
+
+
+<font color=blue>cpu cache VS flash cache：</font>
+
+- cache如果放在cpu门口，那么只能CPU使用，其他master无法使用；
+- cache放在flash附近，其和flash的接口可以使用更大的数据位宽；
+- cache放在flash附近，cpu访问的时候就需要经过总线；
+
+
+
+
+
+<font color=blue>NOTE：</font>
+
+- 在Cortex-M3/M4处理器中，通过S-BUS取指令，需要寄存一拍才能送到instruction fetch interface  ；通过I-BUS获取指令，不需要寄存，可以直接送到instruction fetch interface ，因此如果使用S-BUS执行指令的时候，性能会下降；
+
+- 系统外设一般系统通过S-BUS访问，而不是PPB；
+
+  - PPB只能特权级别访问；
+  - 永远是小端模式；
+  - 访问行为是Strongly Ordered (no other data memory access can start until the current data access finished);  
+  - 没有bit-band特性；
+  - 只支持32bits访问，非对齐访问会出现未知结果；
+  - 仅仅只有Core能访问；
+
+  
+
+
+
+> 思考：
+>
+> <font color=red>什么是Strongly Ordered？难道AHB不是strongly Ordered？</font>
+>
+> Strongly Ordered是一种存储器的访问模型；
+>
+> 
+
+
+
+# Handling multiple bus masters  
+
+==》在很多的微处理器中，其实会有多个Master，例如：
+
+- DMA
+- 高速外设：USB controller，Ethernet interface等等
+
+这些模块有master interface，能主动发起transfer；也有slave interface，为了配置其工作参数；
+
+==》为了处理器多个Master的情况，ARM提供了不同的IP
+
+- Simple AHB master multiplexers  ，多个Master只能有一个占用总线，考虑到带宽的问题，通常只能支持2-3个master
+- Configurable AHB Bus Matrix components（ 支持多个Master并发访问）
+
+{% asset_img image-20240627212730972.png%}
+
+> 这种设计适合对系统带宽要求不高的场景；
+>
+> 如果对系统带宽有着严格的要求，可以采用如下的设计；
+
+{% asset_img image-20240627212849347.png%}
+
+<font color=blue>Bus Matrix支持稀疏的配置，内部有default slave，灵活性很高，但是在进行Master间切换的时候，会引入latency。</font>
+
+可以通过 减少arbiter切换master 来对latency进行优化：
+
+- 定制化逻辑，例如定义默认选择的master
+- 当bus idle的时候，强制将地址设置为特定的值
+
+> NOTE:
+>
+> <font color=red>上面说的两种优化方式都不太懂，BusMatrix组件需要好好的研究下！！！</font>
+>
+> 
+
+==》从安全的角度来考虑，例如DMA这种Master的Slave 接口，通常要保证特权级别访问；
+
+不然非特权级别的程序可能会利用DMA，bypass memory protect
+
+
+
+# Exclusive access support  
+
+Armv7-M 和 Armv8-M  架构的处理器都支持互斥访问操作。
+
+---
+
+==》多核系统
+
+<font color=blue>如果多核系统要支持互斥访问操作，需要集成global exclusive access monitors ；</font>
+
+global exclusive access monitors需要放在bus matrix或者AHB master multiplexer 的下游；
+
+总线组件也需要提供HMASTER，让global exclusive access monitor  知道是哪一个Master产生了transfer；
+
+{% asset_img image-20240627220026567.png%}
+
+<font color=blue>符合如下情况，需要添加global exclusive access monitors：</font>
+
+1、可能存放信号量数据；
+
+2、可能被多核互斥访问；
+
+只有在多核系统中才需要global exclusive access monitors；
+
+---
+
+==》单核系统
+
+单核系统中，即使有多个Master，软件也可以控制不会同时发生多个Master访问信号量数据的情况，因此不需要global exclusive access monitors
+
+<font color=blue>单核系统中，如果使用的是M3/M4/M7，其会有专有的互斥访问handshake信号(EXREQ and EXRESP)  ：</font>
+
+- 总线上如果有SRAM，就需要将EXRESP tie low，不然OS系统的信号量功能会一直返回fail
+- 总线上如果只有NVM，或者外设，此时可以将EXRESP tie high ，表示不支持互斥访问；
+
+<font color=blue>单核系统中，如果使用的是M23/M33/M35P，使用的是标准AMBA5 AHB互斥访问信号，(HEXCL and HEXOKAY)  ：</font>
+
+- 如果总线包含SRAM，需要对HEXOKAY做简单的glue逻辑；
+- 如果总线上如果只有NVM，或者外设，可以将HEXOKAY tie low，表示不支持互斥访问；
+
+
+
+# Address remap
+
+Address remap是基于Cortex-M的MCU中一种常见的system design technique  ；一般用来支持多个boot阶段或者多种boot mode；
+
+举例说明：
+
+假设一个基于Cortex-M0的MCU可能需要支持boot loader；
+
+==》address remap需要完成如下动作：
+
+1、startup阶段将boot loader ROM放到0x0000_0000处；
+
+2、之后将embedded flash映射到0x0000_0000，用于执行用户程序；
+
+==》为了支持address remap，需要寄存器去控制系统address decoder的行为
+
+{% asset_img image-20240628105739745.png%}
+
+0、在boot的时候，REMAP是出于active的状态，即ROM会映射到0x0000_0000地址处；
+
+1、处理器读取的是ROM的中断向量表（按照存放位置是0x0010_0000进行编译），执行的是ROM的reset handler（在0x0010_0000地址处执行）
+
+2、ROM的reset handler执行结束之后：
+
+- 将REMAP disable，（0x0000_0000映射的就是Flash usercode的中断向量表）；
+- 读取Flash usercode vector table中的MSP并进行配置；
+- 读取Flash usercode vector table中的reset handler的地址，并进行跳转；
+
+有如下几点说明：
+
+- Flash在boot阶段的时候，也可以REMAP，这样romcode是可以对Flash中的程序做一些操作的；否则，REMAP之后，Flash的code就不可见；
+- remap控制寄存器：
+  - 仅支持特权级别访问；
+  - 通过power on reset控制，这样在boot的时候，仅执行一次；（例如，debugger在使用SYSRESETREQ field in AIRCR  进行复位的时候，不会再次执行；）
+  - 有些系统中，REMAP只能软件被deactive而不能被active，或者说，bootrom仅仅在boot阶段可见，在REMAP关闭之后，rom就不可见，为了功能安全；
+
+
+
+AHB BusMatrix IP是支持REMAP操作的；
+
+- 但是如果处理器支持VTOR，那么就不需要使用REMAP，因为其可以通过将VTOR指向某块区域；
+
+- Cortex-M7/M23/M33处理器支持启动时，中断向量表的位置是可配置的；
+
+> 思考：
+>
+> 1、VTOR寄存器的作用？
+>
+> 指定中断向量表的位置；
+>
+> 2、<font color=red>一般在什么场景中会利用VTOR寄存器？</font>
+>
+> 
+
+# AHB-based memory connection versus TCM  
+
+<font color=blue>有些处理器可能会使用TCM；如果没有TCM接口，就需要使用AHB去访问系统SRAM；</font>
+
+就性能而言（且不考虑AHB访问时的wait state），TCM接口和AHB接口访问SRAM，在read access上，latency是相同的；
+
+写访问时间可能会有所不同，如下图所示：
+
+{% asset_img image-20240628133549414.png %}
+
+但是因为处理器的pipeline以及write buffer等技术，write access也可能被优化成一个Cycle完成；
+
+
+
+<font color=blue>使用TCM的最大的优点是，不用担心总线的wait states；最大的缺点是只有Core能访问；SRAM资源利用不充分</font>
+
+
+
+<font color=blue>在有些设计场景中，需要使用TCM去获得一个确定的中断响应时间；</font>
+
+
+
+# Handling of embedded flash memories  
+
+## IP requirements
+
+嵌入eflash受限于工艺节点；
+
+需要eflash controller IP；
+
+通常也需要system cache IP；
+
+## Flash programming  
+
+eflash的memory是以page进行划分，因此eflash的操作也都是以page为单位；
+
+做flash的program时，并不是直接将debugger和eflash controller连接，而是通过如下方式：
+
+- 将flash programming algorithm  程序加载到SRAM中
+- 将要写入flash中的数据，放到SRAM中；
+- 配置flash programming algorithm需要的信息；
+- PC设置到flash programming algorithm进行program；
+
+- 一次program一个page，而且flash programming algorithm   可以对page内容进行verify；
+- debugger重复上述过程，直到完成对flash的编程；
+
+
+
+## Bringing up a new device without a valid program image  
+
+如果eflash中没有任何程序，怎么启动Cortex-M MCU？
+
+1、power on上电，此时flash中是空程序，会先发生hardfault，然后再lockup；
+
+2、即使MCU处于lockup的状态，debugger仍然能够和MCU建立连接；
+
+3、此时调试器可以使能reset vector catch  ，然后写AIRCR 寄存器进行软复位；处理捕获到reset release之后，进入halt状态；
+
+4、debugger下载flash program algorithm以及程序镜像数据到SRAM，然后设置PC去启动flash program algorithm
+
+5、当所有的flash程序program完毕之后，再次复位开始执行flash usercode；
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

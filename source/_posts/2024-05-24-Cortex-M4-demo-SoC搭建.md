@@ -2,7 +2,7 @@
 title: Cortex-M4 demo SoC搭建
 date: 2024-05-24 09:23:38
 categories:
-- SoC设计
+- 基于Cortex-M的SoC设计
 tags:
 - TBD
 ---

@@ -2,7 +2,7 @@
 title: 3 AMBA/AHB/APB（1）
 date: 2024-06-11 21:26:50
 categories:
-- SoC设计
+- 基于Cortex-M的SoC设计
 tags:
 - AMBA
 - AHB
