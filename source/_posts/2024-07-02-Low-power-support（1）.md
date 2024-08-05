@@ -3,6 +3,7 @@ title: 6 Low-power support（1）
 date: 2024-07-02 20:49:45
 categories:
 - 基于Cortex-M的SoC设计
+- 理论知识：基于Cortex-M的SoC设计指南
 tags:
 - low power
 - TBD
@@ -227,13 +228,13 @@ WIC只在deepsleep mode的时候才会使用；
 
 
 
-## Wakeup Interrupt Controller (WIC)  
+## Wakeup Interrupt Controller (WIC)
 
 <font color=blue>为什么需要WIC</font>
 
 如果将CORE的所有时钟都关闭，或者CORE处于掉电状态（最大程度的降低CORE的功耗），那么NVIC此时就不能检测唤醒事件，此时就需要WIC。
 
-<font color=blue>WIC接口</font>
+### WIC接口
 
 WIC是一个可选的模块，处于always-on power domain。当NVIC没有时钟或者掉电的时候，WIC起到检测中断事件的作用。
 
@@ -247,7 +248,7 @@ WIC接口特定于处理器，但是一般来说，：
 
 {% asset_img image-20240723104002065.png %}
 
-
+### WIC demo 代码
 
 <font color=blue>Cortex-M产品包交付的WIC是一个示例逻辑，允许修改（如下面代码所示）。在某些情况下，designer会将WIC设计成基于锁存器的操作，这样的话，唤醒时间的检测和capture就无需任何时钟;</font>
 
@@ -472,7 +473,7 @@ module cm4_wic
 endmodule
 ```
 
-
+### WIC修改后基于锁存的代码
 
 项目中的修改：
 
@@ -737,7 +738,7 @@ endmodule
 
 
 
-<font color=blue>WIC的工作机制</font>
+### WIC的工作流程
 
 1、当进入睡眠模式的时候，wakeup event mask将会从NVIC--》WIC，通过(WICMASK[] and WICLOAD)。
 
@@ -749,9 +750,13 @@ endmodule
 
 {% asset_img image-20240723111728699.png %}
 
+### WIC的详细时序图
+
+{% asset_img image-20240730094308493.png %}
 
 
-<font color=blue>WIC的集成</font>
+
+### WIC的集成
 
 Cortex-M处理器，部分是将WIC放在处理器内部，有些是将WIC放在处理器外部；
 
@@ -761,7 +766,7 @@ Cortex-M处理器，部分是将WIC放在处理器内部，有些是将WIC放在
 
 
 
-<font color=blue>EDBGRQ信号</font>
+### EDBGRQ信号
 
 Armv7-M 和 Armv8-M Mainline 处理器系统中，会将EDBGRQ signal (external debug request)  作为WIC的唤醒源之一，因为外部debug请求会触发Debug Monitor exception；
 
@@ -782,7 +787,7 @@ Armv7-M 和 Armv8-M Mainline 处理器系统中，会将EDBGRQ signal (external 
 
 
 
-<font color=blue>WIC可以通过handshake信号enable或者disable</font>
+### WIC可以通过handshake信号enable或者disable
 
 在M3和M4系统中，其handshake信号有两对：
 
@@ -798,11 +803,13 @@ WIC的enable 顺序如下：
 >
 > <font color=red>PMU什么时候去处理power gating？怎么去处理？</font>
 
+### SRPG support端口
+
 如果使用SRPG（State Retention Power Gating  ），需要去控制一系列的信号，并且需要看特定的工艺（cell的控制端口），但是通常来说，需要有如下信号：
 
 {% asset_img image-20240724152606630.png %}
 
-
+### Demo PMU state machine
 
 系统设计者需要通过state machine去控制power-down和power-up的状态，并且需要一个表示是否上电完成的信号PWRUPREADY（模拟LDO给数字供电需要一个过程），大概的流程如下所示：
 
