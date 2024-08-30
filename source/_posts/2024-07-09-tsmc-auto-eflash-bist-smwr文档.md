@@ -301,6 +301,25 @@ BIST操作是否需要添加ECC
 ## Operation Descriptions
 ### Smart-Erase Operation
 
+{% asset_img image-20240806172954142.png%}
+
+1、User assert `SMW_OP`
+
+- SME2：3’b010, one-shot mass-erase on MAIN array or MAIN, IFREN, and REDEN arrays, Tme is fixed based on macro specs
+- SME3：3’b011, smart-page-erase on selected array
+
+2、TSMWR asserts 
+
+- `SMWR_BUSY` signal high until smart-erase cycle is completed.   
+- `SMWR_ERR` indicates PASS(0) or FAIL(1) of the cycle, 
+- `SMWR_LASTSET`, and `SMWR_LOOP` indicate detailed internal setting to complete the “smart-write” cycle.
+
+对于10K-enduranced 的array，SM3 run with SMW-HEM disable
+
+对于100K-enduranced的array，SM3 run with SMW-HEM enable
+
+SMWR会更具SMW_HEM的设置，自动控制array的最大擦除次数；
+
 ### Smart-Program Operation
 
 ### Abort Operation

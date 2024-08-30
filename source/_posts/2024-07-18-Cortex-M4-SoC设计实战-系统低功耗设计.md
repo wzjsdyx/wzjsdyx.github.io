@@ -9,7 +9,9 @@ tags:
 - TBD
 ---
 
-> 基于Cortex-M4的系统低功耗设计
+> 基于Cortex-M4的系统低功耗设计：
+>
+> 注意进入VLPS mode以及Standby mode的时候，除了关闭时钟和掉电之外，工作电压也从1.1V降低到0.9V
 
 # 电源域以及低功耗模式
 
@@ -97,19 +99,19 @@ tags:
 
 # STANDBY模式下的低功耗唤醒机制
 
+## 软件流程
+
+0、使能中断唤醒源（有哪些唤醒源是由什么决定？？）
+
+1、配置DEEPSLEEP，执行WFI；（WFI处于TOP电源域，在standby模式下，也会掉电）
+
+2、中断唤醒并通过PMU处理；
+
+## 硬件流程
+
+{% asset_img  image-20240806153805333.png %}
 
 
-
-
-
-
-
-
-# 实现细节
-
-## Cortex-M4 clock gating
-
-## Cortex-M4 WIC
 
 
 

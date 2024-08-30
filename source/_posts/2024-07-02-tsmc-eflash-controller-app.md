@@ -1,6 +1,6 @@
 ---
-title: tsmc eflash controller-应用文档
-date: 2024-07-02 09:54:50
+title: eflash controller-应用文档
+date: 2024-07-16 09:54:50
 categories:
 - eflash
 - tsmc auot eflash controller
@@ -33,11 +33,11 @@ NOTE：
 
 ## pflash info page0/1: option page
 
-pflash info page0和info page 1被称为option byte；用来配置pflash和dflash main区域各个page的read以及write protect属性；
+- pflash info page0和info page 1被称为option byte，用来配置pflash和dflash main区域各个page的read以及write protect属性；
 
-> 思考：
->
-> <font color=red>memory map中提到的pflash info 2的作用是什么？</font>
+- 使用8Byte（64bits）去控制64个region，low bit去控制low地址空间
+- bit value=1'b1表示对应的region 处于写保护的状态；
+- 设计上是通过复位之后，将option page数据load到eflash controller，然后起作用；（意味着如果对option byte进行program操作，需要复位之后才能生效）
 
 ## pflash info page2: Hardware Segment
 
