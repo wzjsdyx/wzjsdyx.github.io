@@ -27,11 +27,42 @@
 <meta property="og:site_name" content="芯青年">
 <meta property="og:description" content="车规芯片中，有secure boot的选项，即对Flash中的user code进行校验，防止非法修改  大致的工作流程如下: 1、host romcode执行，此时的romcode会读取（dflash info&#x2F;OTP区域）secure boot配置（hsm enable，secure boot enable等）； 2、如果secure boot enable，则读取（pflash">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240613193648354.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240613192251191.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240613202913302.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240613203755205.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240613204224175.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614134053043.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614134651421.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614134840559.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614135113981.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614135258415.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614135539302.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614161410855.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614161506218.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614162500741.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614163102775.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614163132301.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614163634621.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614135113981.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614172128526.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614172219853.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614172334022.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614172349477.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614135113981.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614173335395.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614173459441.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614174827334.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614174907336.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240614172349477.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240617133007752.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240617151247080.png">
 <meta property="article:published_time" content="2024-06-12T01:52:42.000Z">
-<meta property="article:modified_time" content="2024-06-12T02:18:37.149Z">
+<meta property="article:modified_time" content="2024-06-17T07:17:58.405Z">
 <meta property="article:author" content="Youngster">
 <meta property="article:tag" content="secure boot">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/06/12/secure-boot/image-20240613193648354.png">
 
 <link rel="canonical" href="https://wzjsdyx.github.io/2024/06/12/secure-boot/">
 
@@ -188,10 +219,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-06-12 09:52:42 / 修改时间：10:18:37" itemprop="dateCreated datePublished" datetime="2024-06-12T09:52:42+08:00">2024-06-12</time>
+              <time title="创建时间：2024-06-12 09:52:42" itemprop="dateCreated datePublished" datetime="2024-06-12T09:52:42+08:00">2024-06-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-17 15:17:58" itemprop="dateModified" datetime="2024-06-17T15:17:58+08:00">2024-06-17</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -240,6 +277,355 @@
 <p>大致的工作流程如下:</p>
 <p>1、host romcode执行，此时的romcode会读取（dflash info&#x2F;OTP区域）<code>secure boot配置</code>（hsm enable，secure boot enable等）；</p>
 <p>2、如果secure boot enable，则读取（pflash info区域）<code>secure boot的校验参数</code>（verify size，boot address， HSM public key addr，HSM code signature addr等）与HSM交互，然后对Flash的特定区域进行校验；</p>
+<hr>
+<h1 id="同事1"><a href="#同事1" class="headerlink" title="同事1"></a>同事1</h1><h2 id="hsm的程序分成两个部分"><a href="#hsm的程序分成两个部分" class="headerlink" title="hsm的程序分成两个部分"></a>hsm的程序分成两个部分</h2><ul>
+<li><p>第一部分是hsm romcode程序（存放在hsm rom中）</p>
+</li>
+<li><p>第二部分是hsm firmware程序（存放在dflash bank1中）</p>
+</li>
+</ul>
+<p>工作机制大致是：hsm reset释放之后，先执行hsm romcode的程序，用来校验firmware中的code</p>
+<h2 id="build-secure-boot所需要的文件"><a href="#build-secure-boot所需要的文件" class="headerlink" title="build secure boot所需要的文件"></a>build secure boot所需要的文件</h2><ul>
+<li><p>host romcode &amp; hsm romcode</p>
+</li>
+<li><p>dflash info: OTP(存放秘钥)</p>
+</li>
+<li><p>dflash main: FW&#x2F;firmware&#x2F;hsm image&#x2F;</p>
+</li>
+</ul>
+<p>不同的算法，就会生成不同的fw和otp</p>
+<h2 id="想要测试的点"><a href="#想要测试的点" class="headerlink" title="想要测试的点"></a>想要测试的点</h2><ul>
+<li>能否正确等到HSM的状态&#x2F;ready信号</li>
+<li>能否下命令调动HSM</li>
+<li>host能否boot起来</li>
+</ul>
+<hr>
+<h1 id="同事2"><a href="#同事2" class="headerlink" title="同事2"></a>同事2</h1><h2 id="pflash-info区域的参数"><a href="#pflash-info区域的参数" class="headerlink" title="pflash info区域的参数"></a>pflash info区域的参数</h2><ul>
+<li><p>verify size[31:0]：hsm需要验证的代码大小</p>
+</li>
+<li><p>boot addr[31:0]：hsm需要验证的代码的起始地址</p>
+</li>
+<li><p>HSM public key address：如果使用非对称HSM算法，就需要提供公钥所在的地址</p>
+</li>
+<li><p>HSM code signature address：签名地址，将pflash usercode计算出来的MAC值（非对称，直接利用软件&#x2F;工具计算出来的结果） 存放在某一个地址处，例如pflash info或者pflash main等等</p>
+</li>
+</ul>
+<blockquote>
+<p>签名值：</p>
+<ul>
+<li><p>非对称HSM算法计算出来的签名值–&gt;签名</p>
+</li>
+<li><p>​     对称HSM算饭计算出来的签名值–&gt;MAC值</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>Header size：如果不需要osr处理之后的head参与计算，此size配置为0</p>
+</li>
+<li><p>Header address：</p>
+</li>
+</ul>
+<blockquote>
+<p>关于head的理解，一般编译之后，会生成pflash main区域的user code；OSR会对这个user code进行处理，</p>
+<p>然后会在签名值和code之间添加很多其他信息，例如Code public key，code size等等–》OSR 命名为head</p>
+<p>计算最终的code_Signature签名值的时候，有可能将head的一部分和usercode一起参与计算</p>
+</blockquote>
+<img src="/2024/06/12/secure-boot/image-20240613193648354.png" class="">
+
+
+
+<ul>
+<li>Version address</li>
+</ul>
+<blockquote>
+<p>head中会有一个版本号，如果head中的版本号小于pflash info中提供的版本号，<font color=red>就不会去更新版本号??</font></p>
+</blockquote>
+<ul>
+<li><p>reset disable</p>
+</li>
+<li><p>Version Update enable</p>
+</li>
+<li><p>CheckSum</p>
+</li>
+</ul>
+<img src="/2024/06/12/secure-boot/image-20240613192251191.png" class="">
+
+
+
+<h2 id="romcode需要将整个secure-boot框架搭建好，会调用HSM进行校验"><a href="#romcode需要将整个secure-boot框架搭建好，会调用HSM进行校验" class="headerlink" title="romcode需要将整个secure boot框架搭建好，会调用HSM进行校验"></a>romcode需要将整个secure boot框架搭建好，会调用HSM进行校验</h2><h2 id="测试步骤（FPGA侧）"><a href="#测试步骤（FPGA侧）" class="headerlink" title="测试步骤（FPGA侧）"></a>测试步骤（FPGA侧）</h2><ol>
+<li><p>确定使用rsa sm2 aes sm4使用哪种HSM算法</p>
+<p>首先确定使用rsa sm2 aes sm4使用哪种算法，此时需要配置OTP的FW control SoC</p>
+<img src="/2024/06/12/secure-boot/image-20240613202913302.png" class=""></li>
+</ol>
+<p>具体32bits对应的含义，如下：</p>
+<img src="/2024/06/12/secure-boot/image-20240613203755205.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240613204224175.png" class="">
+
+
+
+<ol start="2">
+<li>更新HSM的秘钥</li>
+</ol>
+<p><font color=red>这个秘钥是指？作用是什么？</font>我理解是OTP的KEY区域</p>
+<p>作用是让hsm romcode对hsm的firmware进行校验</p>
+<ol start="3">
+<li>更新固件</li>
+</ol>
+<p>因为HSM默认是没有固件的（dflash main区域的code）；可以backdoor的方式放进去</p>
+<ol start="4">
+<li>升级pflash usercode代码</li>
+</ol>
+<p>此时host的pflash侧是没有usercode，需要编译pflash usercode，并需要将此usercode烧录到pflash中；</p>
+<p>此时还需要利用OSR的工具计算出一个签名值（可以选择用什么算法 计算签名），得到一个<code>签名值+head+usercode</code>的pack,一起烧录到pflash 中；</p>
+<p>然后就能得到校验参数，需要烧写到pflash info区域；</p>
+<ol start="5">
+<li><p>烧写host romcode信息（烧写到flash进行模拟）</p>
+</li>
+<li><p>复位</p>
+</li>
+<li><p>读取pflash info校验参数</p>
+</li>
+<li><p>mail通信，调用hsm校验pflash user code</p>
+</li>
+<li><p>跳转到pflash user code执行</p>
+</li>
+</ol>
+<h1 id="doc-eHSM-secure-boot-TRM"><a href="#doc-eHSM-secure-boot-TRM" class="headerlink" title="doc-&gt;eHSM secure boot TRM"></a>doc-&gt;eHSM secure boot TRM</h1><h2 id="Secure-Boot-Install-and-Upgrade"><a href="#Secure-Boot-Install-and-Upgrade" class="headerlink" title="Secure Boot, Install and Upgrade"></a>Secure Boot, Install and Upgrade</h2><p>The eHSM supports firmware stored in ROM, internal NVM or external NVM, </p>
+<p>and also supports the firmware excuted in IROM, internal IRAM or internal NVM.  </p>
+<p><font color=blue>This section describs one of the combinations that eHSM firmware is stored and excuted in internal NVM.</font></p>
+<h3 id="eHSM-Secure-Boot-Install-and-Upgrade"><a href="#eHSM-Secure-Boot-Install-and-Upgrade" class="headerlink" title="eHSM Secure Boot, Install and Upgrade"></a>eHSM Secure Boot, Install and Upgrade</h3><p><font color=blue>eHSM Secure Boot: Verify eHSM firmware in NVM before excuting</font></p>
+<p>•Verify the eHSM firmware image w&#x2F; ”eHSM FW Verify Key”</p>
+<p>•Excute the code in NVM</p>
+<p><font color=blue>eHSM Secure Install: Install eHSM firmware to NVM</font></p>
+<p>•Decrypt and verify the eHSM firmware upgrade image w&#x2F; ”eHSM Upgrade Encrypt Key” and”eHSM Upgrade Verify Key”</p>
+<p>•Sign the eHSM firmware code w&#x2F; ”eHSM FW Verify Key”</p>
+<p>•Save the plaintext code image to NVM</p>
+<p><font color=blue>eHSM Secure Upgrade: Upgrade eHSM firmware to NVM</font></p>
+<p>•Similar flow as secure install</p>
+<blockquote>
+<p>一些思考：</p>
+<p><font color=red>或者说install和upgrade的区别是什么?</font></p>
+</blockquote>
+<img src="/2024/06/12/secure-boot/image-20240614134053043.png" class="">
+
+
+
+<h4 id="eHSM-Code-Location"><a href="#eHSM-Code-Location" class="headerlink" title="eHSM Code Location"></a>eHSM Code Location</h4><img src="/2024/06/12/secure-boot/image-20240614134651421.png" class="">
+
+
+
+<h4 id="Encryption-Algorithm"><a href="#Encryption-Algorithm" class="headerlink" title="Encryption Algorithm"></a>Encryption Algorithm</h4><img src="/2024/06/12/secure-boot/image-20240614134840559.png" class="">
+
+
+
+<h4 id="Encryption-OTP-Keys"><a href="#Encryption-OTP-Keys" class="headerlink" title="Encryption OTP Keys"></a>Encryption OTP Keys</h4><img src="/2024/06/12/secure-boot/image-20240614135113981.png" class="">
+
+
+
+<h4 id="OTP-Algorithm-Selection-Field"><a href="#OTP-Algorithm-Selection-Field" class="headerlink" title="OTP Algorithm Selection Field"></a>OTP Algorithm Selection Field</h4><img src="/2024/06/12/secure-boot/image-20240614135258415.png" class="">
+
+
+
+<h3 id="eHSM-Image-Format"><a href="#eHSM-Image-Format" class="headerlink" title="eHSM Image Format"></a>eHSM Image Format</h3><h4 id="eHSM-Image-Format-1"><a href="#eHSM-Image-Format-1" class="headerlink" title="eHSM Image Format"></a>eHSM Image Format</h4><p>The eHSM image includes code image and upgrade image</p>
+<img src="/2024/06/12/secure-boot/image-20240614135539302.png" class="">
+
+
+
+<h4 id="eHSM-Image-Fields-Definition"><a href="#eHSM-Image-Fields-Definition" class="headerlink" title="eHSM Image Fields Definition"></a>eHSM Image Fields Definition</h4><ul>
+<li>Code Image Fields Definition</li>
+</ul>
+<img src="/2024/06/12/secure-boot/image-20240614161410855.png" class="">
+
+<blockquote>
+<p>Note:</p>
+<p>•The ”Code_Signature” covers 432+254K bytes, from ”Code_Valid_Flag” to the end of the ”Code”</p>
+</blockquote>
+<ul>
+<li>Upgrade Image Fields Definition</li>
+</ul>
+<img src="/2024/06/12/secure-boot/image-20240614161506218.png" class="">
+
+<blockquote>
+<p>Note:</p>
+<p>•The ”Upgrade_Signature” covers 448+255K bytes data, including the whole upgrade imagefields except ”Upgrade_Signature” and ”Upgrade_Public_Key”.</p>
+<p>•The whole 255K bytes code image is encrypted with ”eHSM_UPGRADE_ENC_KEY”</p>
+</blockquote>
+<h3 id="eHSM-Secure-Boot"><a href="#eHSM-Secure-Boot" class="headerlink" title="eHSM Secure Boot"></a>eHSM Secure Boot</h3><h4 id="Secure-Boot-Flow"><a href="#Secure-Boot-Flow" class="headerlink" title="Secure Boot Flow"></a>Secure Boot Flow</h4><ol>
+<li><p>HW loads OTP information, decrypts OTP keys(Optional) and initializes system before releasingeHSM’s CPU reset</p>
+</li>
+<li><p>FW decryption and verification can be skipped in lifecycle ”TEST_MODE” and ”DEVELOP_MODE”,controlled by OTP control fields</p>
+</li>
+<li><p>eHSM will report error if there is no available FW code to info host and wait host to burn FW code through mailbox</p>
+</li>
+<li><p>eHSM will reports error if secure boot fails to info host and wait for host to debug through mailboxor UART port, including:</p>
+<ol>
+<li>(a)Crypto IP self-test fail</li>
+<li>(b)Key (eHSM FW Verify Key) slot is not available</li>
+<li>(c)Program (NVM code) verification fail</li>
+<li>(d)Version number mismatch (OTP is newer than NVM)</li>
+</ol>
+</li>
+</ol>
+<img src="/2024/06/12/secure-boot/image-20240614162500741.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240614163102775.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240614163132301.png" class="">
+
+
+
+<blockquote>
+<p>Note:</p>
+<ul>
+<li><p>Program verification flow depends on the algorithm, it’s CMAC for symmetric algorithm and Hash &amp; RSA (or SM3 &amp; SM2) for asymmetric algorithm.</p>
+</li>
+<li><p>BOOTDONE_SUCCESS and BOOTDONE_FAIL means:</p>
+<ul>
+<li><p>BOOTDONE_SUCCESS: </p>
+<ul>
+<li><p>BOOTDONE&#x3D;1 and BOOTERR&#x3D;0</p>
+</li>
+<li><p>BOOTDONE_FAIL: BOOTDONE&#x3D;1 and BOOTERR&#x3D;1</p>
+<p>Both BOOTDONE and BOOTERR are register fields in ”SYS_BOOT_STA”, and is routedto eHSM top output pin ”o_ehsm_status”The ”Report Error” is defined in EMU registers, and will be monitored through the eHSM’soutput pin ”o_ehsm_fw_err” by host</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>一些思考&amp;说明：</p>
+<p><font color=red>crypto IP self test是什么意思？</font></p>
+</blockquote>
+<h4 id="Secure-Boot-Related-OTP-Fields"><a href="#Secure-Boot-Related-OTP-Fields" class="headerlink" title="Secure Boot Related OTP Fields"></a>Secure Boot Related OTP Fields</h4><img src="/2024/06/12/secure-boot/image-20240614163634621.png" class="">
+
+
+
+<h3 id="eHSM-Secure-Install"><a href="#eHSM-Secure-Install" class="headerlink" title="eHSM Secure Install"></a>eHSM Secure Install</h3><h4 id="Secure-Install-Related-Keys"><a href="#Secure-Install-Related-Keys" class="headerlink" title="Secure Install Related Keys"></a>Secure Install Related Keys</h4><img src="/2024/06/12/secure-boot/image-20240614135113981.png" class="">
+
+
+
+<h4 id="Secure-Install-Flow"><a href="#Secure-Install-Flow" class="headerlink" title="Secure Install Flow"></a>Secure Install Flow</h4><p>The secure install only contains following three steps:</p>
+<h5 id="step1-Burn-install-FW-image-to-NVM"><a href="#step1-Burn-install-FW-image-to-NVM" class="headerlink" title="step1: Burn install FW image to NVM"></a>step1: Burn install FW image to NVM</h5><p>1.Burn <code>install FW image</code> to NVM</p>
+<p>(a)Host prepares the FW install image and sends an INSTALL command to eHSM to start the FW install</p>
+<p>(b)Once eHSM bootloader receives the INSTALL command, it starts following steps </p>
+<p>​	i.Check the version with version counter in OTP</p>
+<p>​	ii.Verify and decrypt the install image</p>
+<p>​		(a) Verify the image with ”eHSM_UPGRADE_VERIFY_KEY”</p>
+<p>​		(b)- For asymmetric algorithm</p>
+<p>​				(i) Calculate the Hash of the image</p>
+<p>​				(ii) Verify the signature of the image Hash value</p>
+<p>​			- For symmetric algorithm</p>
+<p>​				(i) Verify the signature of the image</p>
+<p>​		(c)Decrypt the image with ”eHSM_UPGRADE_ENC_KEY”</p>
+<p>​	iii.Compare the version counter between code image and upgrade image, report error if they are different</p>
+<p>​	iv.(Optional) If Boot_Alg is symmetric algorithm: Calculate the code image MAC with”eHSM_VERIFY_KEY” and update the ”Code_Signature” field with the 		calculated MAC</p>
+<blockquote>
+<p>Note: This step is only needed when each part has its own ”eHSM_VERIFY_KEY”which is different from others’</p>
+</blockquote>
+<p>​	v.Write image to internal NVM</p>
+<p>​	vi.Return command response with ”UPGRADE_DONE” (or corresponding error code)</p>
+<h5 id="step2-Verify-installed-Program-in-NVM"><a href="#step2-Verify-installed-Program-in-NVM" class="headerlink" title="step2: Verify installed Program in NVM"></a>step2: Verify installed Program in NVM</h5><p>2.Verify installed Program in NVM</p>
+<p>(a)Host sends VERIFY_PROGRAM command to start the program verification</p>
+<p>(b)Once eHSM receives the VERIFY_PROGRAM command, it starts to verify the program inNVM, including</p>
+<p>​	i.Compare the program version with OTP version counter</p>
+<p>​	ii.Verify the program with ”eHSM_VERIFY_KEY”</p>
+<p>​	iii.Return command response with ”REV_MATCH” or expected warning code ”REV_NEW”(Verification pass, but NVM program is newer than or same as OTP version counter)</p>
+<h5 id="step3-Update-OTP-version-counter"><a href="#step3-Update-OTP-version-counter" class="headerlink" title="step3: Update OTP version counter"></a>step3: Update OTP version counter</h5><p>3.Update OTP version counter</p>
+<p>(a)Host resets the eHSM</p>
+<p>(b)Bootloader jumps to the internal NVM after verification</p>
+<p>(c)eHSM runs the new FW.</p>
+<p>(d)eHSM’s new FW always compare the image version with version counter in OTP, and burn the new version to OTP version counter bit filed if image version is newer than OTP versioncounter.</p>
+<img src="/2024/06/12/secure-boot/image-20240614172128526.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240614172219853.png" class="">
+
+
+
+
+
+<blockquote>
+<p>Note:</p>
+<p>•Upgrade algorithm field in OTP and image will be compared in ”Is Upgrade_Alg asymmetric?”step</p>
+</blockquote>
+<img src="/2024/06/12/secure-boot/image-20240614172334022.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240614172349477.png" class="">
+
+
+
+<h3 id="eHSM-Secure-Upgrade"><a href="#eHSM-Secure-Upgrade" class="headerlink" title="eHSM Secure Upgrade"></a>eHSM Secure Upgrade</h3><h4 id="Secure-Upgrade-Related-Keys"><a href="#Secure-Upgrade-Related-Keys" class="headerlink" title="Secure Upgrade Related Keys"></a>Secure Upgrade Related Keys</h4><img src="/2024/06/12/secure-boot/image-20240614135113981.png" class="">
+
+
+
+<h4 id="Secure-Upgrade-Flow"><a href="#Secure-Upgrade-Flow" class="headerlink" title="Secure Upgrade Flow"></a>Secure Upgrade Flow</h4><p>In order to avoid stopping eHSM secure service during upgrade, the upgrade image will be split into several segments, e.g., 4KB for each segment, and eHSM will verify, decrypt and encrypt eachsegment individually with Crypto IPs in interleave mode. The secure upgrade contains following three steps</p>
+<h5 id="step1-Burn-Upgrade-FW-image-to-NVM"><a href="#step1-Burn-Upgrade-FW-image-to-NVM" class="headerlink" title="step1:Burn Upgrade FW image to NVM"></a>step1:Burn Upgrade FW image to NVM</h5><img src="/2024/06/12/secure-boot/image-20240614173335395.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240614173459441.png" class="">
+
+
+
+<h5 id="step2-Verify-Upgrade-Program-in-NVM"><a href="#step2-Verify-Upgrade-Program-in-NVM" class="headerlink" title="step2:Verify Upgrade Program in NVM"></a>step2:Verify Upgrade Program in NVM</h5><img src="/2024/06/12/secure-boot/image-20240614174827334.png" class="">
+
+<img src="/2024/06/12/secure-boot/image-20240614174907336.png" class="">
+
+
+
+<h5 id="step3-Update-OTP-version-counter-1"><a href="#step3-Update-OTP-version-counter-1" class="headerlink" title="step3:Update OTP version counter"></a>step3:Update OTP version counter</h5><p>Same as secure install</p>
+<img src="/2024/06/12/secure-boot/image-20240614172349477.png" class="">
+
+
+
+
+
+<h3 id="SoC-Secure-Boot-Install-Upgrade"><a href="#SoC-Secure-Boot-Install-Upgrade" class="headerlink" title="SoC Secure Boot, Install &amp; Upgrade"></a>SoC Secure Boot, Install &amp; Upgrade</h3><h4 id="SoC-Secure-Boot-Install-Upgrade-Keys"><a href="#SoC-Secure-Boot-Install-Upgrade-Keys" class="headerlink" title="SoC Secure Boot, Install &amp; Upgrade Keys"></a>SoC Secure Boot, Install &amp; Upgrade Keys</h4><p>Similar to eHSM secure boot, image installation and upgrade, corresponding keys are needed forSoC secure boot, image installation and upgrade, including：</p>
+<ul>
+<li>SOC_ENC_KEY</li>
+<li>SOC_VERIFY_KEY</li>
+<li>SOC_UPGRADE_ENC_KEY</li>
+<li>SOC_UPGRADE_VERIFY_KEY</li>
+</ul>
+<h4 id="SoC-Sequential-Parallel-Secure-Boot"><a href="#SoC-Sequential-Parallel-Secure-Boot" class="headerlink" title="SoC Sequential &amp; Parallel Secure Boot"></a>SoC Sequential &amp; Parallel Secure Boot</h4><p>There are two secure boot Strategies for SoC’s secure boot:</p>
+<p>1.Sequential secure boot</p>
+<ul>
+<li>eHSM bootloader (ROM) verifies eHSM firmware</li>
+<li>eHSM firmware verifies SoC bootloader</li>
+<li>SoC bootloader calls eHSM’s secure service (e.g. by a specify command) to verify SoCfirmware</li>
+</ul>
+<p>2.Parallel secure boot</p>
+<ul>
+<li>eHSM bootloader (ROM) verifies eHSM firmware</li>
+<li>SoC bootloader (ROM) calls eHSM’s secure service to verify SoC firmware</li>
+</ul>
+<blockquote>
+<p>区别在于SoC的bootloader是否需要验证</p>
+</blockquote>
+<img src="/2024/06/12/secure-boot/image-20240617133007752.png" class="">
+
+
+
+
+
+<p>The SoC boot strategy (sequential or parallel boot) is defined by the OTP field ”SocBootType”. </p>
+<p>The boot and upgrade algorithms are also defined in OTP control fields.</p>
+<p>eHSM first reads the configuration in OTP. If in sequential boot, eHSM firmware will verify the host directly. Otherwise, it waits for host to call interface to verify.</p>
+<p>eHSM first reads the configuration in OTP. If in sequential boot, eHSM firmware will verify the hostdirectly. Otherwise, it waits for host to call interface to verify. No matter the verification is passed ornot, eHSM firmware just runs and offers the services. <font color=blue>The only difference is that soc_boot_erris setor not.</font></p>
+<h4 id="SoC-Secure-Install-Upgrade"><a href="#SoC-Secure-Install-Upgrade" class="headerlink" title="SoC Secure Install &amp; Upgrade"></a>SoC Secure Install &amp; Upgrade</h4><p>The secure install &amp; upgrade for SoC bootloader or firmware could be very similar to the secureupgrade for eHSM firmware. The SoC’s bootloader or firmware image will be splinted into severalpieces and each will call corresponding eHSM mailbox commands (reuse eHSM upgrade commandsor new commands) to <font color=blue>decrypt, verify and encrypt</font> these image pieces to combine as the final encrypted code image for SoC.</p>
+<blockquote>
+<p>思考：</p>
+<p>image为什么需要加密解密？</p>
+<p>开发者如果想要开发程序，然后在SOTA升级的时候，为防止别人截获程序，需要使用密文传输，然后再进行解密，最后写到flash中。</p>
+</blockquote>
+<h3 id="eHsm-Single-Bank-Upgrade"><a href="#eHsm-Single-Bank-Upgrade" class="headerlink" title="eHsm Single Bank Upgrade"></a>eHsm Single Bank Upgrade</h3><p>Single Bank Upgrade Flow</p>
+<img src="/2024/06/12/secure-boot/image-20240617151247080.png" class="">
+
+
+
+
+
+<h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><p><font color=blue>Secure Boot install &amp; update有什么区别？</font></p>
+<p>没什么太多的区别，install主要是一开始flash中没有数据；update主要是，flash中有数据之后，再进行更新</p>
+<h1 id="secure-boot仿真build"><a href="#secure-boot仿真build" class="headerlink" title="secure boot仿真build"></a>secure boot仿真build</h1><p>更新OTP和FW</p>
 
     </div>
 
@@ -324,6 +710,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%BA%8B1"><span class="nav-number">1.</span> <span class="nav-text">同事1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hsm%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%88%86%E6%88%90%E4%B8%A4%E4%B8%AA%E9%83%A8%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">hsm的程序分成两个部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build-secure-boot%E6%89%80%E9%9C%80%E8%A6%81%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">build secure boot所需要的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%B3%E8%A6%81%E6%B5%8B%E8%AF%95%E7%9A%84%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">想要测试的点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%BA%8B2"><span class="nav-number">2.</span> <span class="nav-text">同事2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pflash-info%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">pflash info区域的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#romcode%E9%9C%80%E8%A6%81%E5%B0%86%E6%95%B4%E4%B8%AAsecure-boot%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E5%A5%BD%EF%BC%8C%E4%BC%9A%E8%B0%83%E7%94%A8HSM%E8%BF%9B%E8%A1%8C%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.2.</span> <span class="nav-text">romcode需要将整个secure boot框架搭建好，会调用HSM进行校验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%AD%A5%E9%AA%A4%EF%BC%88FPGA%E4%BE%A7%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">测试步骤（FPGA侧）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#doc-eHSM-secure-boot-TRM"><span class="nav-number">3.</span> <span class="nav-text">doc-&gt;eHSM secure boot TRM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Secure-Boot-Install-and-Upgrade"><span class="nav-number">3.1.</span> <span class="nav-text">Secure Boot, Install and Upgrade</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eHSM-Secure-Boot-Install-and-Upgrade"><span class="nav-number">3.1.1.</span> <span class="nav-text">eHSM Secure Boot, Install and Upgrade</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#eHSM-Code-Location"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">eHSM Code Location</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Encryption-Algorithm"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">Encryption Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Encryption-OTP-Keys"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">Encryption OTP Keys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OTP-Algorithm-Selection-Field"><span class="nav-number">3.1.1.4.</span> <span class="nav-text">OTP Algorithm Selection Field</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eHSM-Image-Format"><span class="nav-number">3.1.2.</span> <span class="nav-text">eHSM Image Format</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#eHSM-Image-Format-1"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">eHSM Image Format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eHSM-Image-Fields-Definition"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">eHSM Image Fields Definition</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eHSM-Secure-Boot"><span class="nav-number">3.1.3.</span> <span class="nav-text">eHSM Secure Boot</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure-Boot-Flow"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">Secure Boot Flow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure-Boot-Related-OTP-Fields"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">Secure Boot Related OTP Fields</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eHSM-Secure-Install"><span class="nav-number">3.1.4.</span> <span class="nav-text">eHSM Secure Install</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure-Install-Related-Keys"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">Secure Install Related Keys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure-Install-Flow"><span class="nav-number">3.1.4.2.</span> <span class="nav-text">Secure Install Flow</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#step1-Burn-install-FW-image-to-NVM"><span class="nav-number">3.1.4.2.1.</span> <span class="nav-text">step1: Burn install FW image to NVM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#step2-Verify-installed-Program-in-NVM"><span class="nav-number">3.1.4.2.2.</span> <span class="nav-text">step2: Verify installed Program in NVM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#step3-Update-OTP-version-counter"><span class="nav-number">3.1.4.2.3.</span> <span class="nav-text">step3: Update OTP version counter</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eHSM-Secure-Upgrade"><span class="nav-number">3.1.5.</span> <span class="nav-text">eHSM Secure Upgrade</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure-Upgrade-Related-Keys"><span class="nav-number">3.1.5.1.</span> <span class="nav-text">Secure Upgrade Related Keys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Secure-Upgrade-Flow"><span class="nav-number">3.1.5.2.</span> <span class="nav-text">Secure Upgrade Flow</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#step1-Burn-Upgrade-FW-image-to-NVM"><span class="nav-number">3.1.5.2.1.</span> <span class="nav-text">step1:Burn Upgrade FW image to NVM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#step2-Verify-Upgrade-Program-in-NVM"><span class="nav-number">3.1.5.2.2.</span> <span class="nav-text">step2:Verify Upgrade Program in NVM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#step3-Update-OTP-version-counter-1"><span class="nav-number">3.1.5.2.3.</span> <span class="nav-text">step3:Update OTP version counter</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SoC-Secure-Boot-Install-Upgrade"><span class="nav-number">3.1.6.</span> <span class="nav-text">SoC Secure Boot, Install &amp; Upgrade</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SoC-Secure-Boot-Install-Upgrade-Keys"><span class="nav-number">3.1.6.1.</span> <span class="nav-text">SoC Secure Boot, Install &amp; Upgrade Keys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SoC-Sequential-Parallel-Secure-Boot"><span class="nav-number">3.1.6.2.</span> <span class="nav-text">SoC Sequential &amp; Parallel Secure Boot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SoC-Secure-Install-Upgrade"><span class="nav-number">3.1.6.3.</span> <span class="nav-text">SoC Secure Install &amp; Upgrade</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eHsm-Single-Bank-Upgrade"><span class="nav-number">3.1.7.</span> <span class="nav-text">eHsm Single Bank Upgrade</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-A"><span class="nav-number">4.</span> <span class="nav-text">Q&amp;A</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#secure-boot%E4%BB%BF%E7%9C%9Fbuild"><span class="nav-number">5.</span> <span class="nav-text">secure boot仿真build</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -339,20 +726,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-count">138</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

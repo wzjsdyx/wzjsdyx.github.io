@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="AHB中，可以将传输分成 transfer：单次传输或者burst传输 beat：单次传输或者burst的一次传输  More details on the AHB protocolAddress phase signalsessential transfer control signals地址阶段有几个非常重要的控制信号，HTRANS，HADDR，HWRITE，HSIZE。  HTRANSHT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3 AMBA&#x2F;AHB&#x2F;APB（2）">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="AHB中，可以将传输分成 transfer：单次传输或者burst传输 beat：单次传输或者burst的一次传输  More details on the AHB protocolAddress phase signalsessential transfer control signals地址阶段有几个非常重要的控制信号，HTRANS，HADDR，HWRITE，HSIZE。  HTRANSHT">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616165415891.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616172147763.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616172322146.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616174912975.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175218009.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175631251.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175828205.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175901131.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616184400696.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616211837581.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620225155600.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620194927328.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620194939436.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620200157299.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620201916174.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620232339504.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620234744237.png">
+<meta property="article:published_time" content="2024-06-15T15:54:36.000Z">
+<meta property="article:modified_time" content="2024-07-12T02:15:52.131Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="AMBA">
+<meta property="article:tag" content="AHB">
+<meta property="article:tag" content="APB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616165415891.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>3 AMBA/AHB/APB（2） | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3 AMBA/AHB/APB（2）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-15 23:54:36" itemprop="dateCreated datePublished" datetime="2024-06-15T23:54:36+08:00">2024-06-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 10:15:52" itemprop="dateModified" datetime="2024-07-12T10:15:52+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>AHB中，可以将传输分成</p>
+<p>transfer：单次传输或者burst传输</p>
+<p>beat：单次传输或者burst的一次传输</p>
+</blockquote>
+<h1 id="More-details-on-the-AHB-protocol"><a href="#More-details-on-the-AHB-protocol" class="headerlink" title="More details on the AHB protocol"></a>More details on the AHB protocol</h1><h2 id="Address-phase-signals"><a href="#Address-phase-signals" class="headerlink" title="Address phase signals"></a>Address phase signals</h2><h3 id="essential-transfer-control-signals"><a href="#essential-transfer-control-signals" class="headerlink" title="essential transfer control signals"></a>essential transfer control signals</h3><p>地址阶段有几个非常重要的控制信号，HTRANS，HADDR，HWRITE，HSIZE。</p>
+<hr>
+<h4 id="HTRANS"><a href="#HTRANS" class="headerlink" title="HTRANS"></a>HTRANS</h4><p>HTRANS用于表明传输类型。大部分的AHB系统其实并不需要一直进行数据传输，Master此时可以发出idle transfer。HTRANS就是用来表明什么时候是active transfer，什么时候是idle state；</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616165415891.png" class="">
+
+<p>当正真需要传输数据的时候，Master会生成NSEQ或者SEQ的transfer类型；</p>
+<blockquote>
+<p>NSEQ的传输类型用于正常的数据传输（非burst传输），或者burst传输的第一笔transfer</p>
+<p>SEQ就用于burst传输的剩余transfer，表明当前transfer是上一笔transaction的延续；</p>
+</blockquote>
+<p>IDLE和BUSY都是non-active传输，即不会传输实际的数据。BUSY类型的transfer类型仅在如下场景使用：</p>
+<blockquote>
+<p>master发起一次burst transaction，但是在burst发送的过程中，master没有准备好处理下一笔data transfer，那么此时就会发出busy的transfer，以保持burst传输的连续性，并在master ready的时候继续burst传输。</p>
+</blockquote>
+<p>IDLE类型的transfer前面已经说过了，就是Master不需要transaction的时候</p>
+<hr>
+<h4 id="HADDR"><a href="#HADDR" class="headerlink" title="HADDR"></a>HADDR</h4><p>HADDR用32bits表示，用于指定传输的地址；</p>
+<h4 id="HWRITE"><a href="#HWRITE" class="headerlink" title="HWRITE"></a>HWRITE</h4><p>HWRITE用于表明当前是write transfer还是read transfer</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616172147763.png" class="">
+
+<h4 id="HSIZE"><a href="#HSIZE" class="headerlink" title="HSIZE"></a>HSIZE</h4><p>HSIZE信号是3bits位宽，用于表明一次transfer的data size。大多数的AHB系统仅仅用到了低2bits。</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616172322146.png" class="">
+
+
+
+<p><font color=blue>当一个bus的master发起传输的时候，bus master要去确保数据是transfer对其的，即word传输，地址就要是4Byte对齐；half-word传输，地址就要是2Byte对齐</font></p>
+<p><font color=blue>AHB interface不支持unaligned transfer；如果master需要进行unaligned 访问，那么就需要拆分成多个align transfer；</font></p>
+<blockquote>
+<p>说明：</p>
+<p>Cortex-M处理器的AHB接口能够发出byte&#x2F;half-word&#x2F;word size的读写访问</p>
+</blockquote>
+<hr>
+<h3 id="optional-sideband-signals"><a href="#optional-sideband-signals" class="headerlink" title="optional sideband signals"></a>optional sideband signals</h3><p>除了上面几个关键的AHB信号，还有一些可选的sideband信号，他们可以提供一些有用的信息，例如特权级信息，以及支持的burst类型信息；</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616174912975.png" class="">
+
+<hr>
+<h4 id="HPROT"><a href="#HPROT" class="headerlink" title="HPROT"></a>HPROT</h4><p>AMBA 2 AHB以及AHB-Lite协议中，HPROT信号的每个bit有不同的作用：</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175218009.png" class="">
+
+<p>当访问normal memories（sram等）时候，HPROT[3:2]可以用来表示cache types</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175631251.png" class="">
+
+
+
+<p>AMBA 5 AHB协议中，HPROT信号的每个bit有不同的作用：</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175828205.png" class="">
+
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175901131.png" class="">
+
+<blockquote>
+<p>思考：</p>
+<p>cache types??</p>
+<p><font color=red>没懂啥意思？？这个属性是不是MPU发出的？？</font></p>
+<p>说明：</p>
+<p>1、Cortex-M0处理器没有user access level  ，HPROT[1] is always 1  ；</p>
+<p>2、Cortex-M0&#x2F;M0+&#x2F;M3&#x2F;M4&#x2F;M23&#x2F;M33 处理器不支持内部cache, 因此cacheable的一些控制信号一般不会用到</p>
+</blockquote>
+<h4 id="HBURST"><a href="#HBURST" class="headerlink" title="HBURST"></a>HBURST</h4><p><font color=blue>HBURST信号表明burst传输的类型。当mem device针对顺序访问做了优化时，burst传输就能够优化系统性能。</font></p>
+<blockquote>
+<p>思考：</p>
+<p>&#x3D;&#x3D;》burst传输时怎样优化传输带宽的？</p>
+<p>Burst传输可以提高系统性能主要有两个关键原因：减少开销和最大化内存带宽利用。</p>
+<p><strong>减少开销：</strong> 在处理器或主设备发起内存访问时，通常会涉及到设置和完成每个单独事务的开销。这包括地址传输、命令传输以及连续访问之间的延迟。在burst传输中，可以在初始设置后以较少的开销发起多个数据访问。一旦burst序列开始，后续的数据传输在burst长度内需要的开销较少，因为地址和其他控制信号通常是预先建立或由硬件递增管理。</p>
+<p><strong>最大化内存带宽利用：</strong> 内存设备（如DRAM）通常具有优化连续数据访问的内部机制（如DRAM中的页面打开策略）。Burst传输利用这些机制，连续地访问burst长度内的内存位置。这减少了每个访问之间的时间间隙，有效地最大化了内存带宽的利用率。因此，与非burst（单周期）传输相比，数据传输的整体吞吐量增加。</p>
+<p><strong>例子说明：</strong> 假设一个处理器需要读取存储在内存中的大块顺序数据。如果没有burst传输，处理器将为每个内存位置单独发起读取命令，这将导致大量的地址设置、命令传输以及每个访问之间的延迟开销。</p>
+<p>然而，使用burst传输时，处理器可以发起一个单一命令，指示burst传输模式并指定起始地址。内存控制器随后连续从连续的内存位置中检索数据字，通常不需要为burst长度内的每个访问重新发起地址。这减少了发起每个访问的时间开销，从而提高了数据检索的效率和速度。</p>
+<p>总之，burst传输通过减少开销和最大化内存带宽利用来优化系统性能，特别适用于需要顺序数据访问或大数据传输的场景。</p>
+<p>&#x3D;&#x3D;》 AHB协议中 Burst的意义何在，为何要有这种feature?</p>
+<p>(1) ”只发首地址，后续地址不用发“用于降低功耗之类 肯定是不对的。因为AHB协议明确规定收地址发出后，接下来的地址一个也不能少。</p>
+<p>(2) 对于从机来说，不同之处在于，从机可以提前知道”主机的访问计划“，进而提早做准备，对于特定的从机来说，能够显著提高效率。</p>
+<p>   举个例子: 对于单周期访问，零时延的SRAM&#x2F;寄存器来说，burst没有起到作用。但是对于一些慢速的从机，例如DDR，就可以提前知道主机的访问，然后以pipeline的方式访问某个打开的row，提高效率，如此。</p>
+</blockquote>
+<p>AHB 支持如下几种burst  transfer：</p>
+<ul>
+<li><p>Single. (Not burst transfer. Each transfer is separated from each other.)  </p>
+</li>
+<li><p>Incrementing burst transfer. (The address is incremented by the size of the transfer.)  </p>
+</li>
+<li><p>Wrapping burst transfer. For each transfer, the address increments as in an incrementing burst<br>except when the address reaches the block size boundary of the burst. In this case, the address<br>wraps round to the beginning of the block size boundary. The block size of the burst can be<br>determined from the number of beats times the size of each transfer.</p>
+</li>
+</ul>
+<p><font color=blue>Burst transfer是由多个beats组成，每个beat的地址都和相邻beat有关</font>。burst transfer中，每个beat的控制信号都是相同的。Both incrementing and wrapping bursts are supported for 4-beats, 8-beats, and 16-beats transfers. Incremental bursts can also be of unspecified length.  </p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616184400696.png" class="">
+
+<p><font color=blue>wrap burst在cache controller设计中有用</font>。例如，处理器想要访问0x1008，cache controller的cache line是4 words，那就需要取0x1000, 0x1004, 0x1008 and 0x100C到cache memory中，这种情况下，可以从0x1000地址使用4拍递增burst传输，也可以从0x1008使用wrap burst传输。</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616211837581.png" class="">
+
+<blockquote>
+<p> 第一种和第二种情况，虽然传输的数据相同，但是wrap会先传输处理器所需要的数据，减少处理器的等待时间。</p>
+<p>第三种情况，increment burst就不会获取0x1000和0x1004的数据，cache line的数据就不完整；</p>
+</blockquote>
+<p><font color=blue>burst transfer可以用不同的data size进行传输，但是其传输的过程中，有一个限制，那就是不能够超过1KB地址边界。</font></p>
+<blockquote>
+<p>协议上这么规定是有两个好处:</p>
+<p>1、内部计数器和高级地址生成：为了优化burst传输的性能，AHB主设备和从设备可能需要内部计数器来监控burst操作，并可能提前产生地址。通过将burst传输限制到1KB Size，10bits的计数器就足够访问所有的burst transfer；</p>
+<p>2、防止burst transfer跨越多个AHB Slave：如果burst transfer跨device 边界访问，那么跨边界的第二个device可能有一个开头是SEQ的burst transfer，违反了AHB协议；</p>
+<p>（ARM对AHB burst这样设计的目的是在于，<font color=blue>SLAVE的地址访问空间基本都是以1KB为单位的</font>，设定burst不超过1KB是为了让一个单独的BURST不能访问多个slave，从而违反AHB协议；）</p>
+<p>3、若需要跨1KB边界时，需要重新initial一个新的传输。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">例如：访问如下地址</span><br><span class="line">0x3F00 x3F40 x3F80 x3FC0 x4000 x4040 x4080</span><br><span class="line">1KB地址边界传输就需要按照如下规则访问：</span><br><span class="line">NSEQ SEQ SEQ SEQ NSEQ SEQ SEQ</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="HMASTERLOCK"><a href="#HMASTERLOCK" class="headerlink" title="HMASTERLOCK"></a>HMASTERLOCK</h4><p><font color=blue>对于atomic access sequence ，通常使用HMASTLOCK 表示总线的所有权是否被锁定，通常用于信号量操作</font></p>
+<p>HMASTLOCK被设置为1的时候，总线部件（例如arbiter）不能够切换总线的所有权。针对信号量的操作，即有一个地址空间（lock flag）被用来表明某一个资源是否被进程或者处理器锁定，当处理器需要锁定某一个source的时候，需要执行locked transfer sequence（reads the lock flag and then<br>updates it  ）。使用HMASTLOCK，read-modify-write transfers are locked (atomic)  ，其他bus master在此期间就无法修改lock flag，防止竞争的情况发生。</p>
+<blockquote>
+<p>说明：</p>
+<p>除了Cortex-M3以及Cortex-M4处理器，大多数的Cortex-M处理器不需要使用HMASTERLOCK信号</p>
+</blockquote>
+<h4 id="HMASTER"><a href="#HMASTER" class="headerlink" title="HMASTER"></a>HMASTER</h4><p>在多bus master的AHB系统中，Arbiter或者Master Multiplexer 可能会输出一个HMASTER信号，用于表明是哪一个AHB Master。</p>
+<p>在某些场景中，AHB Slave可能需要对不同的AHB Master访问有不同的行为。例如MPU就可能对Cortex-M，debugger，DMA以及其他Master做出不同的行为。</p>
+<blockquote>
+<p>在Cortex-M处理器中，通常会使用HMASTER信号来表明当前的transfer是Cortex-M发出还是Debugger发出</p>
+</blockquote>
+<blockquote>
+<p>传输类型</p>
+<p>burst类型</p>
+<p>beat传输数据大小</p>
+</blockquote>
+<h2 id="Data-phase-signals"><a href="#Data-phase-signals" class="headerlink" title="Data phase signals"></a>Data phase signals</h2><img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620225155600.png" class="">
+
+
+
+
+
+<h3 id="HRDATA-and-HWDATA"><a href="#HRDATA-and-HWDATA" class="headerlink" title="HRDATA and HWDATA"></a>HRDATA and HWDATA</h3><p><font color=blue>传输的数据在总线上的位置取决于transfer size</font></p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620194927328.png" class="">
+
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620194939436.png" class="">
+
+<p>For word transfers, the whole 32-bit is used  .</p>
+<p><font color=blue>不管是哪种AHB协议，仅支持对齐传输&#x3D;&#x3D;》地址是传输size的整数倍</font></p>
+<p>例如，word传输，地址是4的倍数；</p>
+<p>half-word传输，地址是2的倍数；</p>
+<p>byte传输，地址是1的倍数，也就是永远对齐；</p>
+<h3 id="HRESP"><a href="#HRESP" class="headerlink" title="HRESP"></a>HRESP</h3><p><font color=blue>AMBA2 AHB协议中，response包括，OKAY，ERROR,RETRY,SPLIT四种类型，因此HRESP有2bit；</font></p>
+<p><font color=blue>但是在AMBA 3 AHB LITE以及AMBA5 AHB中，仅仅只有OKAY和ERROR两种信号，因此HRESP只需要1bit</font></p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620200157299.png" class="">
+
+<p><font color=blue>只有OK response在一拍内完成，其他类型的response需要两拍完成；</font></p>
+<blockquote>
+<p>NOTE:</p>
+<p>例如返回ERROR</p>
+<ul>
+<li>第一拍 HREADY low + ERROR：</li>
+</ul>
+<p>这一拍是给master留出反应时间，让其可以停止再发送下一次tranfer的有效地址，防止已经发生错误了，但是仍然还进行访问的操作；</p>
+<ul>
+<li>第二排 HREADY high+ERROR：</li>
+</ul>
+<p>实际的ERROR response</p>
+</blockquote>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620201916174.png" class="">
+
+<blockquote>
+<p>NOTE:</p>
+<p>1、如上图所示，response也是可以插入wait status（HREADYOUT high，response OK）；</p>
+<p>2、error response的第一拍（HREADYOUT low，response ERROR），master能够选择继续发送下一笔还是取消发送下一笔，然后发送IDLE状态；</p>
+<p>不同的Cortex-M系列的处理器，其行为不一样；</p>
+</blockquote>
+<p><font color=blue>HTRANS是IDLE或者BUSY，又或者HSEL是not active，AHB Slave必须要返回OKAY；</font></p>
+<p><font color=blue>RETRY和SPLIT信号和ERROR response的时序相同，他们的使用场景是，如果AHB Slave在短时间内无法完成传输的时候，他们会让AHB Master暂时放弃当前的传输；在多AHB Master的系统中，通过这种做法，就能让其他AHB Master有机会占用总线，防止带宽被浪费</font></p>
+<p><font color=blue>AHB Master对RETRY和SPLIT信号的处理方式是不同的</font></p>
+<ul>
+<li>RETRY：AHB Master接收到第一个RETRY response cycle的时候，会通过发送一个IDLE来取消当前传输，然后再去retry未完成的传输；</li>
+<li>SPLIT：AHB Master接收到第一个SPLITresponse cycle的时候，会通过发送一个IDLE来取消当前传输，同时会放弃总线所有权，等AHB Slave ready的时候再通过HSPLIT sideband信号恢复总线所有权；</li>
+</ul>
+<blockquote>
+<p>由于复杂的机制，SPLIT以及HSPLIT基本很少使用；</p>
+<p>从2001年的multi-layer AHB开始，SPLIT以及HSPLIT就被淘汰了，因为他能够有效的阻止单次传输降低系统性能的问题，能够提供更高的系统带宽；</p>
+<p>有些Cortex-M processors 例如M3,M4有两bit的 HRESP信号，是因为其release时间比AMBA3 AHB-Lite release时间早；</p>
+</blockquote>
+<h3 id="HEXOKAY"><a href="#HEXOKAY" class="headerlink" title="HEXOKAY"></a>HEXOKAY</h3><p> <font color=blue>HEXOKAY信号用于支持互斥访问，在AMBA5 AHB中被引入，是由global exlcusive access monitor生成</font></p>
+<p><font color=blue>互斥访问操作序列包括对同一个数据的<code>exclusive load</code>以及<code>exclusive store</code>，monitor将会检测在一个master的互斥访问序列中，其操作的数据是否会被其他Master进行修改，如果发现两个master访问冲突，将会通过HEXOKAY信号返回错误状态</font></p>
+<p>在exclusive store发生，并且没有access conflit的时候，HEXOKAY和HREADY在同一个Cycle assert；其他的case，HEXOKAY维持low；</p>
+<p>HEXOKAY不能和HRESP在同一个cycle assert；</p>
+<h2 id="Legacy-arbiter-handshake-signals"><a href="#Legacy-arbiter-handshake-signals" class="headerlink" title="Legacy arbiter handshake signals"></a>Legacy arbiter handshake signals</h2><p>如果使用的是AMBA2 AHB协议，就需要考虑arbiter的handshake信号（但是一般来说，multi-layer AHB的性能更好，而且兼容AMBA2 AHB）；</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620232339504.png" class="">
+
+<blockquote>
+<p>需要请求信号HBUSREQ，HGRANT授权信号；授权信号HLOCK表示进行一次locked transfer （可选）</p>
+<p>仲裁阶段在地址阶段前，如果地址阶段有多个周期，仲裁结果也会随之不断更新</p>
+</blockquote>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620234744237.png" class="">
+
+
+
+<p>参考博客：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://blog.eetop.cn/blog-910906-5755032.html">AHB burst功能理解</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/550883187">AHB协议-HREADY信号和1KB边界</a></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/AMBA/" rel="tag"># AMBA</a>
+              <a href="/tags/AHB/" rel="tag"># AHB</a>
+              <a href="/tags/APB/" rel="tag"># APB</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/12/secure-debug/" rel="prev" title="secure debug">
+      <i class="fa fa-chevron-left"></i> secure debug
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/17/C%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/" rel="next" title="C条件编译">
+      C条件编译 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#More-details-on-the-AHB-protocol"><span class="nav-number">1.</span> <span class="nav-text">More details on the AHB protocol</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Address-phase-signals"><span class="nav-number">1.1.</span> <span class="nav-text">Address phase signals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#essential-transfer-control-signals"><span class="nav-number">1.1.1.</span> <span class="nav-text">essential transfer control signals</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTRANS"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">HTRANS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HADDR"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">HADDR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HWRITE"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">HWRITE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HSIZE"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">HSIZE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#optional-sideband-signals"><span class="nav-number">1.1.2.</span> <span class="nav-text">optional sideband signals</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HPROT"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">HPROT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HBURST"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">HBURST</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HMASTERLOCK"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">HMASTERLOCK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HMASTER"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">HMASTER</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-phase-signals"><span class="nav-number">1.2.</span> <span class="nav-text">Data phase signals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HRDATA-and-HWDATA"><span class="nav-number">1.2.1.</span> <span class="nav-text">HRDATA and HWDATA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HRESP"><span class="nav-number">1.2.2.</span> <span class="nav-text">HRESP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HEXOKAY"><span class="nav-number">1.2.3.</span> <span class="nav-text">HEXOKAY</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Legacy-arbiter-handshake-signals"><span class="nav-number">1.3.</span> <span class="nav-text">Legacy arbiter handshake signals</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="研究怎样基于Cortex-M处理器构建bus system： Cortex-M0, Cortex-M0+,Cortex-M1, and Cortex-M3&#x2F;M4     Introduction to the basics of bus designsystem bus有几个基本的设计原则：  如果是哈佛结构，bus系统需要保证指令和数据的同时访问； 使用default slave I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4 Building simple bus systems for Cortex-M processors（1）">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="研究怎样基于Cortex-M处理器构建bus system： Cortex-M0, Cortex-M0+,Cortex-M1, and Cortex-M3&#x2F;M4     Introduction to the basics of bus designsystem bus有几个基本的设计原则：  如果是哈佛结构，bus系统需要保证指令和数据的同时访问； 使用default slave I">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625175846130.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625180447010.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625203309033.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625204223785.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210218086.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210337572.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210426184.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626201216548.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626223223336.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626224644608.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626231517758.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626233511046.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626234311838.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627212730972.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627212849347.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627220026567.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240628105739745.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240628133549414.png">
+<meta property="article:published_time" content="2024-06-25T09:44:15.000Z">
+<meta property="article:modified_time" content="2024-07-12T02:17:46.793Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="bus system">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625175846130.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>4 Building simple bus systems for Cortex-M processors（1） | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          4 Building simple bus systems for Cortex-M processors（1）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-25 17:44:15" itemprop="dateCreated datePublished" datetime="2024-06-25T17:44:15+08:00">2024-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 10:17:46" itemprop="dateModified" datetime="2024-07-12T10:17:46+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>研究怎样基于Cortex-M处理器构建bus system：</p>
+<p>Cortex-M0, Cortex-M0+,<br>Cortex-M1, and Cortex-M3&#x2F;M4   </p>
+</blockquote>
+<h1 id="Introduction-to-the-basics-of-bus-design"><a href="#Introduction-to-the-basics-of-bus-design" class="headerlink" title="Introduction to the basics of bus design"></a>Introduction to the basics of bus design</h1><p>system bus有几个基本的设计原则：</p>
+<ul>
+<li>如果是哈佛结构，bus系统需要保证指令和数据的同时访问；</li>
+<li>使用default slave IP去处理违法地址的访问；</li>
+<li>很多Cortex-M处理器，其中断向量表的起始地址在0x0000_0000，因此需要保证程序被加载到这个地址；</li>
+<li>访问mem的wait state数量要尽可能少，尤其是对于没有cache的处理器，访问mem的wait state会影响性能，功耗以及中断响应延时；</li>
+<li>尽量保证主系统bus有尽可能少的slave；</li>
+</ul>
+<p>system bus和peripheral bus分开的好处：</p>
+<ul>
+<li>降低对system bus的max clock frequency的影响；</li>
+<li>外设bus和system bus可以跑在不同的频率；</li>
+<li>外设协议更简单；</li>
+</ul>
+<blockquote>
+<p>NOTE:</p>
+<p>most of the peripherals that do not need low latency accesses (e.g., SPI, I2C, UART) can be placed in separated peripheral buses. Some peripherals like GPIO can gain the benefit of lower access latency, so some GPIO blocks are placed system AHB or single-cycle I&#x2F;O port interface (available on<br>Cortex-M0+ and Cortex-M23 processors).  </p>
+</blockquote>
+<h1 id="Building-a-simple-Cortex-M0-system"><a href="#Building-a-simple-Cortex-M0-system" class="headerlink" title="Building a simple Cortex-M0 system"></a>Building a simple Cortex-M0 system</h1><img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625175846130.png" class="">
+
+
+
+
+
+<h1 id="Building-a-simple-Cortex-M0-system-1"><a href="#Building-a-simple-Cortex-M0-system-1" class="headerlink" title="Building a simple Cortex-M0+ system"></a>Building a simple Cortex-M0+ system</h1><img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625180447010.png" class="">
+
+
+
+<p><font color=blue>和Cortex-M0系统非常类似，在如下方面有所不同：</font></p>
+<ul>
+<li><font color=blue>Optional single-cycle I&#x2F;O port (IOP) interface for low latency peripheral register accesses;  </font></li>
+<li><font color=blue>Optional Micro Trace Buffer (MTB).  </font></li>
+</ul>
+<blockquote>
+<p>NOTE：</p>
+<p>&#x3D;&#x3D;&gt;IOP</p>
+<p>1、如果想要使用single-cycle I&#x2F;O port interface  ，需要调整对应的外设时序；</p>
+<p>2、需要有一个简单的IOP decoder，去告诉CPU哪些地址通过IOP访问，哪些地址通过AHB-Lite访问；</p>
+<p>&#x3D;&#x3D;&gt;MTB</p>
+<p>1、用于提供低成本的指令trace；在AHB和SRAM中间；</p>
+<p>norm情况下，就可以看成是一个AHB2SRAM的bridge；</p>
+<p>在进行指令trace的时候，debugger会program MTB从SRAM中划分一块空间用于存储数据；</p>
+<p>2、MTB有一个和处理器连接的trace 接口，用于接收处理器trace数据，以及生成debug事件（halting request）到处理器；</p>
+<p>3、一般来说MTB可以配置成环形buffer从而保存最近执行的指令数据；</p>
+</blockquote>
+<ul>
+<li><font color=blue>Cortex-M0+支持特权级访问和非特权级访问；系统集成者也可以考虑配置MPU去支持特权&#x2F;非特权访问；</font></li>
+</ul>
+<blockquote>
+<p>这样就能够阻止非特权级别的代码去访问特权级别的memory；</p>
+<p>从功能安全级别的角度考虑：</p>
+<ul>
+<li>用于系统控制的外设寄存器应该设置为特权级别访问；</li>
+<li>非特权级别的AHB access 特权级别的device，地址decoder应该select default slave去产生bus error；</li>
+</ul>
+</blockquote>
+<h1 id="Building-a-simple-Cortex-M1-system"><a href="#Building-a-simple-Cortex-M1-system" class="headerlink" title="Building a simple Cortex-M1 system"></a>Building a simple Cortex-M1 system</h1><p>Cortex-M1和Cortex-M0的类似的features：</p>
+<ul>
+<li>不支持特权&#x2F;非特权级别的操作；</li>
+<li>仅仅只有一个AHB接口；</li>
+</ul>
+<p>Cortex-M1和Cortex-M0的不同的features：</p>
+<ul>
+<li>Cortex-M1支持ITCM和DTCM；</li>
+<li>没有sleep mode；</li>
+</ul>
+<p><font color=blue>Cortex-M1一般用作FPGA的开发；</font></p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625203309033.png" class="">
+
+
+
+<h1 id="Building-a-simple-Cortex-M3-Cortex-M4-system"><a href="#Building-a-simple-Cortex-M3-Cortex-M4-system" class="headerlink" title="Building a simple Cortex-M3&#x2F;Cortex-M4 system"></a>Building a simple Cortex-M3&#x2F;Cortex-M4 system</h1><p>Cortex-M3&#x2F;Cortex-M4处理器采用哈佛架构，而且有3个AHB总线接口以及一个APB总线接口；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625204223785.png" class="">
+
+
+
+<p><font color=blue>一个典型的Cortex-M3&#x2F;M4 system design ：</font></p>
+<ul>
+<li><font color=blue>program image 被放在CODE区域；</font></li>
+<li><font color=blue>sram和外设通过系统总线连接；通常地址0x2000_0000分配SRAM，0x4000_0000分配外设；因为方便软件开发者使用side-band特性；</font></li>
+</ul>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210218086.png" class="">
+
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210337572.png" class="">
+
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210426184.png" class="">
+
+<h2 id="I-CODE和D-CODE的处理方式1：无系统cache"><a href="#I-CODE和D-CODE的处理方式1：无系统cache" class="headerlink" title="I-CODE和D-CODE的处理方式1：无系统cache"></a>I-CODE和D-CODE的处理方式1：无系统cache</h2><p><font color=blue>将I-CODE和D-CODE分开的目的，添加一个常量数据cache，当指令访问flash，由于wait state而等待的时候，常量数据仍然可以从cache中read；</font></p>
+<p><font color=blue>解释如下：</font></p>
+<p><font color=blue>&#x3D;&#x3D;》首先只有一个总线的方案</font></p>
+<ul>
+<li>一般来说，flash的速度为30MHz-50MHz，远小于处理器的速度(超过100MHz)。</li>
+<li>通常会选择位宽更大以及有prefetch buffer的flash，<font color=blue>顺序执行的指令会被prefetch</font>，处理器更多时候会从prefetch buffer中读取指令，从而提供性能；</li>
+</ul>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626201216548.png" class="">
+
+<p>但是程序中还有很多常量，这些常量的访问往往是非顺序的，因此prefetch的性能会大大降低；</p>
+<p>往极端的方向思考：如果在prefetch刚开始的时候，发生了读常量的操作，需要等待的时间很更久；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626223223336.png" class="">
+
+<p><font color=blue>&#x3D;&#x3D;》过渡到两个总线的方案</font></p>
+<p><font color=blue>为了解决上述的问题，一种解决方案是，将数据访问和指令访问分开，然后在数据访问总线上添加一个小的data cache；</font></p>
+<blockquote>
+<p>数据访问一开始的时候会将变量搬运到SRAM中；</p>
+<p>之后程序的运行，即访问常量的时候，会通过D-CODE访问；</p>
+</blockquote>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626224644608.png" class="">
+
+<blockquote>
+<p>这是将一条程序总线分成I-CODE和D-CODE两条总线的初衷；</p>
+</blockquote>
+<h2 id="I-CODE和D-CODE的处理方式2：有系统cache"><a href="#I-CODE和D-CODE的处理方式2：有系统cache" class="headerlink" title="I-CODE和D-CODE的处理方式2：有系统cache"></a>I-CODE和D-CODE的处理方式2：有系统cache</h2><p><font color=blue>上述方案没有考虑系统级别的cache，如果有系统级别的cache，指令访问就不会因为flash的速度低而等待很久，因此可以不需要上述flash访问加速的机制，</font></p>
+<ul>
+<li>flash的prefetch机制</li>
+<li>常量cache机制</li>
+</ul>
+<p><font color=blue>可以考虑直接将I-CODE和D-CODE总线进行merge</font></p>
+<p>为了进行merge，Cortex-M3和Cortex-M4的产品交付包中包含两个组件：</p>
+<h3 id="Code-mux-component"><a href="#Code-mux-component" class="headerlink" title="Code mux component"></a>Code mux component</h3><p>门数量非常少，为了使用这个组件，I-CODE和D-CODE只能同时有一个active，通过配置DNOTITRANS  输入端口需要为1</p>
+<p>（防止在D-CODE进行transfer的时候，I-CODE再生成transfer）；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626231517758.png" class="">
+
+<h3 id="Flash-mux-component"><a href="#Flash-mux-component" class="headerlink" title="Flash mux component"></a>Flash mux component</h3><p>这个组件内部有仲裁机制；这个组件在CODE region还有其他slave组件的时候，非常有用，因为I-CODE和D-CODE可以同时发出访问；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626233511046.png" class="">
+
+
+
+<p><font color=blue>有系统cache和上述组件的时候，如果CODE区域没有其他组件，架构可以考虑如下：</font></p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626234311838.png" class="">
+
+<blockquote>
+<p>对于上述系统架构，I-CODE和D-CODE都是访问flash，在有系统cache的情况下，将I-CODE和D-CODE分开之后的收益不是很大了；</p>
+<p>假设CODE区域没有其他Slave组件，其将I-CODE和D-CODE分开的初衷是，防止指令访问的wait state也阻碍了数据访问，大大降低系统性能；</p>
+<p>但是现在有cache的情况下，指令访问不会有太多的wait state，因此就可以不用分开；</p>
+<p>新一代的处理器，例如M33和M35P，I-CODE和D-CODE已经merge了，用于降低系统集成的复杂度以及low power。</p>
+</blockquote>
+<p><font color=blue>cpu cache VS flash cache：</font></p>
+<ul>
+<li>cache如果放在cpu门口，那么只能CPU使用，其他master无法使用；</li>
+<li>cache放在flash附近，其和flash的接口可以使用更大的数据位宽；</li>
+<li>cache放在flash附近，cpu访问的时候就需要经过总线；</li>
+</ul>
+<p><font color=blue>NOTE：</font></p>
+<ul>
+<li><p>在Cortex-M3&#x2F;M4处理器中，通过S-BUS取指令，需要寄存一拍才能送到instruction fetch interface  ；通过I-BUS获取指令，不需要寄存，可以直接送到instruction fetch interface ，因此如果使用S-BUS执行指令的时候，性能会下降；</p>
+</li>
+<li><p>系统外设一般系统通过S-BUS访问，而不是PPB；</p>
+<ul>
+<li>PPB只能特权级别访问；</li>
+<li>永远是小端模式；</li>
+<li>访问行为是Strongly Ordered (no other data memory access can start until the current data access finished);  </li>
+<li>没有bit-band特性；</li>
+<li>只支持32bits访问，非对齐访问会出现未知结果；</li>
+<li>仅仅只有Core能访问；</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>思考：</p>
+<p><font color=red>什么是Strongly Ordered？难道AHB不是strongly Ordered？</font></p>
+<p>Strongly Ordered是一种存储器的访问模型；</p>
+</blockquote>
+<h1 id="Handling-multiple-bus-masters"><a href="#Handling-multiple-bus-masters" class="headerlink" title="Handling multiple bus masters"></a>Handling multiple bus masters</h1><p>&#x3D;&#x3D;》在很多的微处理器中，其实会有多个Master，例如：</p>
+<ul>
+<li>DMA</li>
+<li>高速外设：USB controller，Ethernet interface等等</li>
+</ul>
+<p>这些模块有master interface，能主动发起transfer；也有slave interface，为了配置其工作参数；</p>
+<p>&#x3D;&#x3D;》为了处理器多个Master的情况，ARM提供了不同的IP</p>
+<ul>
+<li>Simple AHB master multiplexers  ，多个Master只能有一个占用总线，考虑到带宽的问题，通常只能支持2-3个master</li>
+<li>Configurable AHB Bus Matrix components（ 支持多个Master并发访问）</li>
+</ul>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627212730972.png" class="">
+
+<blockquote>
+<p>这种设计适合对系统带宽要求不高的场景；</p>
+<p>如果对系统带宽有着严格的要求，可以采用如下的设计；</p>
+</blockquote>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627212849347.png" class="">
+
+<p><font color=blue>Bus Matrix支持稀疏的配置，内部有default slave，灵活性很高，但是在进行Master间切换的时候，会引入latency。</font></p>
+<p>可以通过 减少arbiter切换master 来对latency进行优化：</p>
+<ul>
+<li>定制化逻辑，例如定义默认选择的master</li>
+<li>当bus idle的时候，强制将地址设置为特定的值</li>
+</ul>
+<blockquote>
+<p>NOTE:</p>
+<p><font color=red>上面说的两种优化方式都不太懂，BusMatrix组件需要好好的研究下！！！</font></p>
+</blockquote>
+<p>&#x3D;&#x3D;》从安全的角度来考虑，例如DMA这种Master的Slave 接口，通常要保证特权级别访问；</p>
+<p>不然非特权级别的程序可能会利用DMA，bypass memory protect</p>
+<h1 id="Exclusive-access-support"><a href="#Exclusive-access-support" class="headerlink" title="Exclusive access support"></a>Exclusive access support</h1><p>Armv7-M 和 Armv8-M  架构的处理器都支持互斥访问操作。</p>
+<hr>
+<p>&#x3D;&#x3D;》多核系统</p>
+<p><font color=blue>如果多核系统要支持互斥访问操作，需要集成global exclusive access monitors ；</font></p>
+<p>global exclusive access monitors需要放在bus matrix或者AHB master multiplexer 的下游；</p>
+<p>总线组件也需要提供HMASTER，让global exclusive access monitor  知道是哪一个Master产生了transfer；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627220026567.png" class="">
+
+<p><font color=blue>符合如下情况，需要添加global exclusive access monitors：</font></p>
+<p>1、可能存放信号量数据；</p>
+<p>2、可能被多核互斥访问；</p>
+<p>只有在多核系统中才需要global exclusive access monitors；</p>
+<hr>
+<p>&#x3D;&#x3D;》单核系统</p>
+<p>单核系统中，即使有多个Master，软件也可以控制不会同时发生多个Master访问信号量数据的情况，因此不需要global exclusive access monitors</p>
+<p><font color=blue>单核系统中，如果使用的是M3&#x2F;M4&#x2F;M7，其会有专有的互斥访问handshake信号(EXREQ and EXRESP)  ：</font></p>
+<ul>
+<li>总线上如果有SRAM，就需要将EXRESP tie low，不然OS系统的信号量功能会一直返回fail</li>
+<li>总线上如果只有NVM，或者外设，此时可以将EXRESP tie high ，表示不支持互斥访问；</li>
+</ul>
+<p><font color=blue>单核系统中，如果使用的是M23&#x2F;M33&#x2F;M35P，使用的是标准AMBA5 AHB互斥访问信号，(HEXCL and HEXOKAY)  ：</font></p>
+<ul>
+<li>如果总线包含SRAM，需要对HEXOKAY做简单的glue逻辑；</li>
+<li>如果总线上如果只有NVM，或者外设，可以将HEXOKAY tie low，表示不支持互斥访问；</li>
+</ul>
+<h1 id="Address-remap"><a href="#Address-remap" class="headerlink" title="Address remap"></a>Address remap</h1><p>Address remap是基于Cortex-M的MCU中一种常见的system design technique  ；一般用来支持多个boot阶段或者多种boot mode；</p>
+<p>举例说明：</p>
+<p>假设一个基于Cortex-M0的MCU可能需要支持boot loader；</p>
+<p>&#x3D;&#x3D;》address remap需要完成如下动作：</p>
+<p>1、startup阶段将boot loader ROM放到0x0000_0000处；</p>
+<p>2、之后将embedded flash映射到0x0000_0000，用于执行用户程序；</p>
+<p>&#x3D;&#x3D;》为了支持address remap，需要寄存器去控制系统address decoder的行为</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240628105739745.png" class="">
+
+<p>0、在boot的时候，REMAP是出于active的状态，即ROM会映射到0x0000_0000地址处；</p>
+<p>1、处理器读取的是ROM的中断向量表（按照存放位置是0x0010_0000进行编译），执行的是ROM的reset handler（在0x0010_0000地址处执行）</p>
+<p>2、ROM的reset handler执行结束之后：</p>
+<ul>
+<li>将REMAP disable，（0x0000_0000映射的就是Flash usercode的中断向量表）；</li>
+<li>读取Flash usercode vector table中的MSP并进行配置；</li>
+<li>读取Flash usercode vector table中的reset handler的地址，并进行跳转；</li>
+</ul>
+<p>有如下几点说明：</p>
+<ul>
+<li>Flash在boot阶段的时候，也可以REMAP，这样romcode是可以对Flash中的程序做一些操作的；否则，REMAP之后，Flash的code就不可见；</li>
+<li>remap控制寄存器：<ul>
+<li>仅支持特权级别访问；</li>
+<li>通过power on reset控制，这样在boot的时候，仅执行一次；（例如，debugger在使用SYSRESETREQ field in AIRCR  进行复位的时候，不会再次执行；）</li>
+<li>有些系统中，REMAP只能软件被deactive而不能被active，或者说，bootrom仅仅在boot阶段可见，在REMAP关闭之后，rom就不可见，为了功能安全；</li>
+</ul>
+</li>
+</ul>
+<p>AHB BusMatrix IP是支持REMAP操作的；</p>
+<ul>
+<li><p>但是如果处理器支持VTOR，那么就不需要使用REMAP，因为其可以通过将VTOR指向某块区域；</p>
+</li>
+<li><p>Cortex-M7&#x2F;M23&#x2F;M33处理器支持启动时，中断向量表的位置是可配置的；</p>
+</li>
+</ul>
+<blockquote>
+<p>思考：</p>
+<p>1、VTOR寄存器的作用？</p>
+<p>指定中断向量表的位置；</p>
+<p>2、<font color=red>一般在什么场景中会利用VTOR寄存器？</font></p>
+</blockquote>
+<h1 id="AHB-based-memory-connection-versus-TCM"><a href="#AHB-based-memory-connection-versus-TCM" class="headerlink" title="AHB-based memory connection versus TCM"></a>AHB-based memory connection versus TCM</h1><p><font color=blue>有些处理器可能会使用TCM；如果没有TCM接口，就需要使用AHB去访问系统SRAM；</font></p>
+<p>就性能而言（且不考虑AHB访问时的wait state），TCM接口和AHB接口访问SRAM，在read access上，latency是相同的；</p>
+<p>写访问时间可能会有所不同，如下图所示：</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240628133549414.png" class="">
+
+<p>但是因为处理器的pipeline以及write buffer等技术，write access也可能被优化成一个Cycle完成；</p>
+<p><font color=blue>使用TCM的最大的优点是，不用担心总线的wait states；最大的缺点是只有Core能访问；SRAM资源利用不充分</font></p>
+<p><font color=blue>在有些设计场景中，需要使用TCM去获得一个确定的中断响应时间；</font></p>
+<h1 id="Handling-of-embedded-flash-memories"><a href="#Handling-of-embedded-flash-memories" class="headerlink" title="Handling of embedded flash memories"></a>Handling of embedded flash memories</h1><h2 id="IP-requirements"><a href="#IP-requirements" class="headerlink" title="IP requirements"></a>IP requirements</h2><p>嵌入eflash受限于工艺节点；</p>
+<p>需要eflash controller IP；</p>
+<p>通常也需要system cache IP；</p>
+<h2 id="Flash-programming"><a href="#Flash-programming" class="headerlink" title="Flash programming"></a>Flash programming</h2><p>eflash的memory是以page进行划分，因此eflash的操作也都是以page为单位；</p>
+<p>做flash的program时，并不是直接将debugger和eflash controller连接，而是通过如下方式：</p>
+<ul>
+<li><p>将flash programming algorithm  程序加载到SRAM中</p>
+</li>
+<li><p>将要写入flash中的数据，放到SRAM中；</p>
+</li>
+<li><p>配置flash programming algorithm需要的信息；</p>
+</li>
+<li><p>PC设置到flash programming algorithm进行program；</p>
+</li>
+<li><p>一次program一个page，而且flash programming algorithm   可以对page内容进行verify；</p>
+</li>
+<li><p>debugger重复上述过程，直到完成对flash的编程；</p>
+</li>
+</ul>
+<h2 id="Bringing-up-a-new-device-without-a-valid-program-image"><a href="#Bringing-up-a-new-device-without-a-valid-program-image" class="headerlink" title="Bringing up a new device without a valid program image"></a>Bringing up a new device without a valid program image</h2><p>如果eflash中没有任何程序，怎么启动Cortex-M MCU？</p>
+<p>1、power on上电，此时flash中是空程序，会先发生hardfault，然后再lockup；</p>
+<p>2、即使MCU处于lockup的状态，debugger仍然能够和MCU建立连接；</p>
+<p>3、此时调试器可以使能reset vector catch  ，然后写AIRCR 寄存器进行软复位；处理捕获到reset release之后，进入halt状态；</p>
+<p>4、debugger下载flash program algorithm以及程序镜像数据到SRAM，然后设置PC去启动flash program algorithm</p>
+<p>5、当所有的flash程序program完毕之后，再次复位开始执行flash usercode；</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/bus-system/" rel="tag"># bus system</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/" rel="prev" title="3 AMBA/AHB/APB（3）">
+      <i class="fa fa-chevron-left"></i> 3 AMBA/AHB/APB（3）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/26/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/" rel="next" title="C语言的变量存储位置">
+      C语言的变量存储位置 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction-to-the-basics-of-bus-design"><span class="nav-number">1.</span> <span class="nav-text">Introduction to the basics of bus design</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Building-a-simple-Cortex-M0-system"><span class="nav-number">2.</span> <span class="nav-text">Building a simple Cortex-M0 system</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Building-a-simple-Cortex-M0-system-1"><span class="nav-number">3.</span> <span class="nav-text">Building a simple Cortex-M0+ system</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Building-a-simple-Cortex-M1-system"><span class="nav-number">4.</span> <span class="nav-text">Building a simple Cortex-M1 system</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Building-a-simple-Cortex-M3-Cortex-M4-system"><span class="nav-number">5.</span> <span class="nav-text">Building a simple Cortex-M3&#x2F;Cortex-M4 system</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#I-CODE%E5%92%8CD-CODE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F1%EF%BC%9A%E6%97%A0%E7%B3%BB%E7%BB%9Fcache"><span class="nav-number">5.1.</span> <span class="nav-text">I-CODE和D-CODE的处理方式1：无系统cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-CODE%E5%92%8CD-CODE%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F2%EF%BC%9A%E6%9C%89%E7%B3%BB%E7%BB%9Fcache"><span class="nav-number">5.2.</span> <span class="nav-text">I-CODE和D-CODE的处理方式2：有系统cache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-mux-component"><span class="nav-number">5.2.1.</span> <span class="nav-text">Code mux component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flash-mux-component"><span class="nav-number">5.2.2.</span> <span class="nav-text">Flash mux component</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handling-multiple-bus-masters"><span class="nav-number">6.</span> <span class="nav-text">Handling multiple bus masters</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Exclusive-access-support"><span class="nav-number">7.</span> <span class="nav-text">Exclusive access support</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Address-remap"><span class="nav-number">8.</span> <span class="nav-text">Address remap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AHB-based-memory-connection-versus-TCM"><span class="nav-number">9.</span> <span class="nav-text">AHB-based memory connection versus TCM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handling-of-embedded-flash-memories"><span class="nav-number">10.</span> <span class="nav-text">Handling of embedded flash memories</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-requirements"><span class="nav-number">10.1.</span> <span class="nav-text">IP requirements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-programming"><span class="nav-number">10.2.</span> <span class="nav-text">Flash programming</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bringing-up-a-new-device-without-a-valid-program-image"><span class="nav-number">10.3.</span> <span class="nav-text">Bringing up a new device without a valid program image</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

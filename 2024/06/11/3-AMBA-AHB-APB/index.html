@@ -20,19 +20,24 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="AHB概述AHB版本AHB信号AHB基本操作在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：   data phase mux control?什么意思？怎么实现？ 如果遵循AMBA 5 AHB规范，可以按照如下方式连接：  多个AHB Master共享一个bus，需要使用Master Multiplexer和Master arbiter 多个AHB Slave返回的d">
+  <meta name="description" content="What is AMBA?Introduction to Advanced Microcontroller Bus ArchitectureHistory of AMBAVarious versions of AMBA specificationOverview of AHBVarious versions of AHBAHB signalsBasic operations &#x3D;&amp;#x3D">
 <meta property="og:type" content="article">
-<meta property="og:title" content="3 AMBA&#x2F;AHB&#x2F;APB">
+<meta property="og:title" content="3 AMBA&#x2F;AHB&#x2F;APB（1）">
 <meta property="og:url" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="AHB概述AHB版本AHB信号AHB基本操作在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：   data phase mux control?什么意思？怎么实现？ 如果遵循AMBA 5 AHB规范，可以按照如下方式连接：  多个AHB Master共享一个bus，需要使用Master Multiplexer和Master arbiter 多个AHB Slave返回的d">
+<meta property="og:description" content="What is AMBA?Introduction to Advanced Microcontroller Bus ArchitectureHistory of AMBAVarious versions of AMBA specificationOverview of AHBVarious versions of AHBAHB signalsBasic operations &#x3D;&amp;#x3D">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240611215804055.png">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240611221656976.png">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240611223909464.png">
-<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240611230046424.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240612222936437.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240612225507780.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240613230353912.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240613230916059.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240613234213952.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/image-20240615234302205.png">
 <meta property="article:published_time" content="2024-06-11T13:26:50.000Z">
-<meta property="article:modified_time" content="2024-06-12T00:35:29.748Z">
+<meta property="article:modified_time" content="2024-07-12T02:15:42.483Z">
 <meta property="article:author" content="Youngster">
 <meta property="article:tag" content="TBD">
 <meta property="article:tag" content="AMBA">
@@ -54,7 +59,7 @@
   };
 </script>
 
-  <title>3 AMBA/AHB/APB | 芯青年</title>
+  <title>3 AMBA/AHB/APB（1） | 芯青年</title>
   
 
 
@@ -187,7 +192,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          3 AMBA/AHB/APB
+          3 AMBA/AHB/APB（1）
         </h1>
 
         <div class="post-meta">
@@ -204,7 +209,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-12 08:35:29" itemprop="dateModified" datetime="2024-06-12T08:35:29+08:00">2024-06-12</time>
+                <time title="修改时间：2024-07-12 10:15:42" itemprop="dateModified" datetime="2024-07-12T10:15:42+08:00">2024-07-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,7 +217,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
                 </span>
             </span>
 
@@ -248,17 +253,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="AHB概述"><a href="#AHB概述" class="headerlink" title="AHB概述"></a>AHB概述</h1><h2 id="AHB版本"><a href="#AHB版本" class="headerlink" title="AHB版本"></a>AHB版本</h2><h2 id="AHB信号"><a href="#AHB信号" class="headerlink" title="AHB信号"></a>AHB信号</h2><h2 id="AHB基本操作"><a href="#AHB基本操作" class="headerlink" title="AHB基本操作"></a>AHB基本操作</h2><p>在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：</p>
+        <h1 id="What-is-AMBA"><a href="#What-is-AMBA" class="headerlink" title="What is AMBA?"></a>What is AMBA?</h1><h2 id="Introduction-to-Advanced-Microcontroller-Bus-Architecture"><a href="#Introduction-to-Advanced-Microcontroller-Bus-Architecture" class="headerlink" title="Introduction to Advanced Microcontroller Bus Architecture"></a>Introduction to Advanced Microcontroller Bus Architecture</h2><h2 id="History-of-AMBA"><a href="#History-of-AMBA" class="headerlink" title="History of AMBA"></a>History of AMBA</h2><h2 id="Various-versions-of-AMBA-specification"><a href="#Various-versions-of-AMBA-specification" class="headerlink" title="Various versions of AMBA specification"></a>Various versions of AMBA specification</h2><h1 id="Overview-of-AHB"><a href="#Overview-of-AHB" class="headerlink" title="Overview of AHB"></a>Overview of AHB</h1><h2 id="Various-versions-of-AHB"><a href="#Various-versions-of-AHB" class="headerlink" title="Various versions of AHB"></a>Various versions of AHB</h2><h2 id="AHB-signals"><a href="#AHB-signals" class="headerlink" title="AHB signals"></a>AHB signals</h2><h2 id="Basic-operations"><a href="#Basic-operations" class="headerlink" title="Basic operations"></a>Basic operations</h2><hr>
+<p>&#x3D;&#x3D;》 组件的连接</p>
+<p>在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：</p>
 <img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611215804055.png" class="">
 
-<p><font color=red>data phase mux control?什么意思？怎么实现？</font></p>
+<p><font color=red>1、data phase mux control?什么意思？怎么实现？</font></p>
+<p><font color=red>2、一般接触到的hready应该是将所有的hreadyout信号进行与操作实现</font></p>
+<p><font color=red>这两种方式均可</font></p>
 <p>如果遵循<code>AMBA 5 AHB</code>规范，可以按照如下方式连接：</p>
 <ul>
-<li>多个<code>AHB Master</code>共享一个bus，需要使用<code>Master Multiplexer</code>和<code>Master arbiter</code></li>
-<li>多个<code>AHB Slave</code>返回的data和response信号需要使用<code>Slave Multiplexer</code> feedback to <code>AHB Master</code></li>
+<li>多个<code>AHB Master</code>共享一个bus，需要使用<code>Master Multiplexer</code>和<code>Master arbiter</code>，arbiter仲裁之后产生选通信号，通过Multiplexer选通，占用总线</li>
+<li>多个<code>AHB Slave</code>返回的data和response信号需要使用<code>Slave Multiplexer</code> feedback to <code>AHB Master</code>，其中Slave Multiplexer通过Decoder产生的信号进行选通</li>
 </ul>
 <hr>
-<p>信号可以被划分为<code>address phase </code>信号和<code>data phase </code>信号：</p>
+<p>&#x3D;&#x3D;》信号基本时序</p>
+<p>信号可以被划分为<code>address phase singals </code>和<code>data phase singals  </code>：</p>
 <p><code>address phase</code> signals include:</p>
 <ul>
 <li>HADDR, HTRANS, HSEL, HWRITE, HSIZE.</li>
@@ -276,21 +286,87 @@
 <img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611221656976.png" class="">
 
 <hr>
-<p><font color=blue>每个phase的都是由<code>当前activated AHB Slave data phase的hreadyout assert</code>而结束;</font></p>
-<p><font color=red>这一块不是很明白他的描述，还需要再理解一下</font></p>
-<p>来自<code>AHB Slave的HREADYOUT信号</code>经过<code>Slave Multiplexer</code>，形成了<code>system-wide HREADY</code>信号；</p>
-<p>此Slave Multiplexer在transfer的数据阶段工作，其控制信号可以通过AHB decoder&#x2F;HSEL以及HREADY信号生成；</p>
+<p>&#x3D;&#x3D;》data phase select control生成</p>
+<blockquote>
+<p>Each phase is terminated by the assertion of HREADYOUT (HREADY) from <code>the currently activated AHB slave in the data phase</code>. </p>
+<p>The HREADYOUT from the AHB slaves are multiplexed by the slave multiplexer, forming the system-wide HREADY signal.</p>
+<p> The multiplexer is operating at the data phase of each transfer. Control of the multiplexer can be generated from the AHB decoder, or the HSEL<br>signals and the HREADY signal.  </p>
+</blockquote>
+<p>结合上面的波形图，来理解这段话：</p>
+<blockquote>
+<p>如果当前看的是Address Phase N，则当前有效的ahb slave data phase 就是上图的data phase(N-1)；</p>
+<p>hreadyout通过slave multiplexer形成了系统范围的HREADY信号；</p>
+<p>slave multiplexer在一个transfer的data phase进行mux，现在问题就是如何生成slave multiplexer的控制信号data phase select？</p>
+<p>&#x3D;&#x3D;》通过HSEL以及HREADY信号</p>
+</blockquote>
 <img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611223909464.png" class="">
 
-<p><font color=red>这一块电路对应的时序是什么样子？</font></p>
-<p>如果某一个AHB Slave当前没有被select，其HREADYOUT应该是h</p>
-<p>igh，表明其状态是ready的。</p>
-<p>该从机仅仅只能在上一次transfer完成的时候（由system-wide的HREADY high表示），再进行新的transfer</p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611230046424.png" class="">
+
+
+<blockquote>
+<p>If an AHB slave is not currently selected, its HREADYOUT should be high to indicate it is ready.<br>However, it can only accept a transfer from the bus master when the previous transfer is completed,<br>indicated by a high level in the system-wide HREADY.   </p>
+<p>注意两个词语，结合下面的波形图理解：</p>
+<p>(Address  phase)  AHB Slave A selected</p>
+<p>(Data pahse       )  AHB Slave A active</p>
+<p>以Slave B为例，如果开始时，Slave B未被选中进行transfer，那么下次Slave B的transfer需要等到系统范围的HREADY HIGH才可以进行；</p>
+</blockquote>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240612222936437.png" class="">
 
 
 
-<p><font color=red>没太懂这两段想要表达什么意思？需要结合具体的代码实现看</font></p>
+<h2 id="Minimal-AHB-systems"><a href="#Minimal-AHB-systems" class="headerlink" title="Minimal AHB systems"></a>Minimal AHB systems</h2><p>最小的AHB system有一个bus master，多个bus slave以及接下来的AHB 组件：</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240612225507780.png" class="">
+
+
+
+<p>address decoder应根据系统的memory map进行设计，HSEL是一个地址阶段的信号，由HADDR通过组合逻辑产生，其不应该有复杂的decode逻辑，否则综合的时候timing会受到影响；</p>
+<p>AHB slave multiplexer会更加通用一点，而且能够在各种ARM AHB IP bundles中找到。不同的AHB Slave有着不同的read data outputs和response outputs，因此需要一个Slave Multiplexer 在current active slave阶段返回data和response；</p>
+<p>AHB Slave multiplexer是被一个<code>data phase版本的HSEL信号</code>控制(对address phase的HSEL做一级pipelline)。具体的实现方法是，利用系统范围的HREADY信号做使能，然后对HSEL寄存一拍（可以参考前文的原理图）；<font color=blue>大多数情况下，HSEL的寄存行为是在AHB Slave Muxplexer中做的，所以Designer可以直接将地址阶段的HSEL信号连接到AHB Slave Multiplexer即可；</font></p>
+<p>AHB system中可能由多个decoder和AHB Slave Multiplexer。AHB system有多个AHB subsystem，各自包含了一块地址空间。在这样的场景下，子系统的decoder可能就要考虑到顶层decoder的HSEL信号，如下图所示：</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240613230353912.png" class="">
+
+
+
+<h2 id="Handling-of-multiple-bus-masters"><a href="#Handling-of-multiple-bus-masters" class="headerlink" title="Handling of multiple bus masters"></a>Handling of multiple bus masters</h2><hr>
+<p>&#x3D;&#x3D;》如果是基于AMBA2规范的AHB协议，多个AHB Master和AHB Slave之间的连接关系如下图所示：</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240613230916059.png" class="">
+
+<blockquote>
+<p>多个AHB Master通过Master multiplexer共享同一个总线，由master arbiter仲裁产生控制信号；</p>
+<p>read data和response通过Slave multiplexer返回，由decoder产生控制信号；</p>
+<p>在Master发出transfer之前，首先通过<code>HBUSREQ (Bus Request) </code>以及<code>HGRANT (Bus Granted)  </code>信号和Master arbiter进行handshaking</p>
+<ol>
+<li>A bus master must first assert a bus request (HBUSREQ) to the arbiter, then</li>
+<li>After arbitration, the arbiter returns the bus granted signal (HGRANT) to one of the bus masters, then</li>
+<li>The bus master can then generate transfers on the bus.</li>
+<li>If the HGRANT signal is de-asserted, the bus master must stop issuing new transfers.</li>
+</ol>
+</blockquote>
+<hr>
+<p>&#x3D;&#x3D;》<font color=blue>简单的AHB系统可以根据这种规则进行工作，但是如果是复杂的场景，BUS带宽就会受到限制，因为BUS上同时只能有一个Master和一个Slave进行通信；</font></p>
+<p><font color=blue><code>AMBA Design Kit (ADK) </code>产品有了一种新的技术（<code>multi-layer AHB</code>）去支持多个AHB Master同时使用总线的场景；</font></p>
+<p>ADK的<code>BusMatrix IP</code>是一个<code>AHB interconnect</code>组件（使用的是multi-layer AHB技术）,即支持多个Master和多个Slave互联；</p>
+<p>如果有多个AHB Slave需要连接到总线，但是总线资源有限的情况下，可以在BusMatrix外面使用额外的Slave Muxplexer进行扩展；</p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240613234213952.png" class="">
+
+<p>可以看到，BusMatrix IP<font color=blue>为了解决多个bus master去访问同一个bus slave时的冲突</font>，每个master port（connects to bus slave）都有一个arbiter；</p>
+<p>如果某一个bus masterA想要传输数据到某个bus slave，但是此bus slave正在被另外一个bus masterB访问，那么bus masterA的transfer会保存到input stage的buffer中；在这种情形下，HBUSREQ 和HGRANT 就不再需要了；</p>
+<blockquote>
+<p>一些思考：</p>
+<p>1，原来的HBUSREQ 和HGRANT是为了解决多个bus master去访问同一个bus slave的场景；</p>
+<p>现在使用input stage之后，transfer会被缓存到input stage中；就不会造成冲突，因此就不需要HBUSREQ 和HGRANT</p>
+<p>2，文中只说明了一个bus masterB已经访问了bus slave，然后在访问期间，另外一个bus masterA有来访问bus slave的情况；如果是两个bus Master同时访问同一个bus Slave，处理的情况也是类似的；都会经过arbiter仲裁，然后有一个bus master transfer会被缓存到input stage；</p>
+<p>3，如果bus masterA的transfer的被缓存到input stage中，此时slave port（connect to bus masterA）hreadyout应该是拉低的，此时bus masterA会hold<font color=red>这一步transfer吗?如果会的话，为什么要缓存？直接返回hreadyout，然bus MasterA一直hold不可以吗？</font></p>
+</blockquote>
+<p><font color=blue>bus matrix的这种设计允许不同的master同时访问不同的slave，增强了系统带宽的处理能力</font></p>
+<p>bus matrix IP可以在<code>AMBA Design Kit(ADK)</code>以及<code>Cortex-M System Design Kit(CMSDK)</code>中配置使用；AHB BusMatrix IP是<code>Corstone foundation IP</code> &#x2F; <code>CoreLink SDK (System Design Kit)  </code>的一部分。</p>
+<hr>
+<p>针对系统带宽要求不高的场景，可以使用类似于AMBA 2 AHB的架构，如下图所示，其利用了一个重新设计的AHB Master Multiplexer, 内部包括了<code>internal input state以及internal arbiter(可以看成是Bus Matrix，只不过只有一个slave，因此不需要internel address decoder)</code></p>
+<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240615234302205.png" class="">
+
+
+
+<p><font color=red>需要研究下AHB组件 Slave Mux IP 的HSEL信号一级HREADYOUTx，HREADY实现</font></p>
 
     </div>
 
@@ -378,7 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AHB%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">AHB概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AHB%E7%89%88%E6%9C%AC"><span class="nav-number">1.1.</span> <span class="nav-text">AHB版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AHB%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.</span> <span class="nav-text">AHB信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AHB%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">AHB基本操作</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-is-AMBA"><span class="nav-number">1.</span> <span class="nav-text">What is AMBA?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-to-Advanced-Microcontroller-Bus-Architecture"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction to Advanced Microcontroller Bus Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#History-of-AMBA"><span class="nav-number">1.2.</span> <span class="nav-text">History of AMBA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Various-versions-of-AMBA-specification"><span class="nav-number">1.3.</span> <span class="nav-text">Various versions of AMBA specification</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview-of-AHB"><span class="nav-number">2.</span> <span class="nav-text">Overview of AHB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Various-versions-of-AHB"><span class="nav-number">2.1.</span> <span class="nav-text">Various versions of AHB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AHB-signals"><span class="nav-number">2.2.</span> <span class="nav-text">AHB signals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-operations"><span class="nav-number">2.3.</span> <span class="nav-text">Basic operations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Minimal-AHB-systems"><span class="nav-number">2.4.</span> <span class="nav-text">Minimal AHB systems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-of-multiple-bus-masters"><span class="nav-number">2.5.</span> <span class="nav-text">Handling of multiple bus masters</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -394,20 +470,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-count">138</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

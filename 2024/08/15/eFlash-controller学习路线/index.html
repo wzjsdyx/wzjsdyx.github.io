@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、eFlash user mode 各种工作机制 &amp; RTL仿真 RTL详细分析 2、eFlash test mode design review学习整理DRS文档； 详细设计文档； design review PPT；  DRSpflash drs 1、软件的verify命令是： page erase verify； mass erase verify； 2、 page program">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eFlash controller学习路线">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="1、eFlash user mode 各种工作机制 &amp; RTL仿真 RTL详细分析 2、eFlash test mode design review学习整理DRS文档； 详细设计文档； design review PPT；  DRSpflash drs 1、软件的verify命令是： page erase verify； mass erase verify； 2、 page program">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815201154560.png">
+<meta property="og:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF\image-20240815201154560.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815203928579.png">
+<meta property="og:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF\image-20240815203928579.png">
+<meta property="og:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF\image-20240815210009026.png">
+<meta property="article:published_time" content="2024-08-15T01:21:22.000Z">
+<meta property="article:modified_time" content="2024-08-16T05:53:15.900Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="eflash controller">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815201154560.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>eFlash controller学习路线 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          eFlash controller学习路线
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-15 09:21:22" itemprop="dateCreated datePublished" datetime="2024-08-15T09:21:22+08:00">2024-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-16 13:53:15" itemprop="dateModified" datetime="2024-08-16T13:53:15+08:00">2024-08-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/tsmc-auot-eflash-controller/" itemprop="url" rel="index"><span itemprop="name">tsmc auot eflash controller</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>1、eFlash user mode</p>
+<p>各种工作机制 &amp; RTL仿真</p>
+<p>RTL详细分析</p>
+<p>2、eFlash test mode</p>
+<h1 id="design-review学习整理"><a href="#design-review学习整理" class="headerlink" title="design review学习整理"></a>design review学习整理</h1><p>DRS文档；</p>
+<p>详细设计文档；</p>
+<p>design review PPT；</p>
+<hr>
+<h2 id="DRS"><a href="#DRS" class="headerlink" title="DRS"></a>DRS</h2><p>pflash drs</p>
+<p>1、软件的verify命令是：</p>
+<p>page erase verify；</p>
+<p>mass erase verify；</p>
+<p>2、</p>
+<p>page program可以配置的长度（最大长度是一个page，最小长度是一个word）</p>
+<p>page erase verify命令可以配置的长度（最大长度是一个page，最小长度是一个word）</p>
+<p>3、page program</p>
+<p>program之前会有verify命令执行，可以通过软件寄存器配置关闭，但是关闭之后，无法保证program是否成功；</p>
+<p>4、读写保护规则</p>
+<p>可以通过option byte区域，也可以通过寄存器配置</p>
+<p>5、external reset pin control</p>
+<p>dflash DRS和pflash DRS基本相同</p>
+<h2 id="Flash-IP"><a href="#Flash-IP" class="headerlink" title="Flash IP"></a>Flash IP</h2><p>PFlash  256KB, DFlash 128KB</p>
+<img src="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815201154560.png" class="">
+
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller学习路线\image-20240815201154560.png" alt="image-20240815201154560"></p>
+<h3 id="read操作"><a href="#read操作" class="headerlink" title="read操作"></a>read操作</h3><p>电压范围有要求：正常工作电压0.81V~1.21V</p>
+<p>以0.99为档位：</p>
+<ul>
+<li>小于0.99V，Tcyc&#x3D;40ns</li>
+<li>大于0.99V，Tcyc&#x3D;25ns；</li>
+</ul>
+<blockquote>
+<p>项目中eFlash的使用场景是大于0.99V的（ss corner）；</p>
+<p>进入低功耗mode的时候，eFlash controller和eFlash Macro都会掉电；</p>
+</blockquote>
+<h3 id="program操作"><a href="#program操作" class="headerlink" title="program操作"></a>program操作</h3><p>Macro的program操作每次支持的是36bits</p>
+<p>因此一个word program需要执行两次macro program</p>
+<h3 id="page-erase"><a href="#page-erase" class="headerlink" title="page erase"></a>page erase</h3><h3 id="mass-erase"><a href="#mass-erase" class="headerlink" title="mass erase"></a>mass erase</h3><p>mass erase和page erase的主要区别是需要将WHV参数设置成0xC</p>
+<h3 id="RECALL操作"><a href="#RECALL操作" class="headerlink" title="RECALL操作"></a>RECALL操作</h3><p>flash实际上可以看成是一个模拟的macro，recall操作就是将flash 的trim值读取出来</p>
+<h3 id="reference-cell-erase操作"><a href="#reference-cell-erase操作" class="headerlink" title="reference cell erase操作"></a>reference cell erase操作</h3><p>针对样片进行操作；</p>
+<h1 id="smart-write-IP"><a href="#smart-write-IP" class="headerlink" title="smart-write IP"></a>smart-write IP</h1><p>可以直接实现page program和page_erase操作</p>
+<p>可以提高endurance</p>
+<img src="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815203928579.png" class="">
+
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller学习路线\image-20240815203928579.png" alt="image-20240815203928579"></p>
+<blockquote>
+<p>思考：</p>
+<p><font color=red>为什么只用这几种smart-write算法？</font></p>
+<p>可能是直接follow原来项目的做法，也可能是有其他原因；</p>
+</blockquote>
+<h2 id="workspaceflow"><a href="#workspaceflow" class="headerlink" title="workspaceflow"></a>workspaceflow</h2><p>SME、SMP</p>
+<h1 id="BIST-IP"><a href="#BIST-IP" class="headerlink" title="BIST IP"></a>BIST IP</h1><h1 id="Architecture-Design"><a href="#Architecture-Design" class="headerlink" title="Architecture Design"></a>Architecture Design</h1><p><font color=red>flash组织中，info0的page3 ？？</font></p>
+<h2 id="eFlash组织规划"><a href="#eFlash组织规划" class="headerlink" title="eFlash组织规划"></a>eFlash组织规划</h2><h2 id="PFlash-Info规划"><a href="#PFlash-Info规划" class="headerlink" title="PFlash Info规划"></a>PFlash Info规划</h2><h2 id="DFlash-Info规划"><a href="#DFlash-Info规划" class="headerlink" title="DFlash Info规划"></a>DFlash Info规划</h2><p>dflash info区域更多的是和HSM相关，首先看HSM对Flash的要求：</p>
+<p>1、hsm在Flash中会占用一些区域</p>
+<ul>
+<li><p>OTP：</p>
+<ul>
+<li>存放一些key，校验参数（image start ，image size）以及chip lock state；</li>
+<li>存放在dflash info0 page0区域</li>
+</ul>
+</li>
+<li><p>Key area：</p>
+<ul>
+<li>存放一些custormer key</li>
+<li>存放在dflash info0 page1和page2</li>
+</ul>
+</li>
+<li><p>romcode area：PFlash main array</p>
+</li>
+<li><p>image area：PFlash main array</p>
+</li>
+</ul>
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller学习路线\image-20240815210009026.png" alt="image-20240815210009026"></p>
+<p>2、这些区域，在不同的生命周期中，对各个Master有着不同的访问要求</p>
+<p>3、mass erase</p>
+<p>如果pflash中存放了romcode以及image area，如果执行mass erase：</p>
+<ul>
+<li>RAW生命周期，mass erase命令可以通过执行macro 的mass erase实现</li>
+<li>其他life cycle，mass erase命令可以通过macro的page erase实现（因为pflash存放的rom以及image区域不能被擦除）</li>
+</ul>
+<blockquote>
+<p>各个生命周期是什么意思？</p>
+</blockquote>
+<p>romcode起始地址always是0地址；</p>
+<p>key area有两个，通过valid flag标记有效位，</p>
+<h2 id="Flash支持的命令"><a href="#Flash支持的命令" class="headerlink" title="Flash支持的命令"></a>Flash支持的命令</h2><h2 id="读写保护机制"><a href="#读写保护机制" class="headerlink" title="读写保护机制"></a>读写保护机制</h2><p>核心就是防止jtag修改或者读取flash main区域的内容</p>
+<h2 id="Flash-FS（function-support）"><a href="#Flash-FS（function-support）" class="headerlink" title="Flash FS（function support）"></a>Flash FS（function support）</h2><ul>
+<li>命令支持</li>
+<li><h2 id="读写保护机制-写保护可寄存器配置-读保护-》非读保护：触发Dflash-Pflash-mass-erase"><a href="#读写保护机制-写保护可寄存器配置-读保护-》非读保护：触发Dflash-Pflash-mass-erase" class="headerlink" title="读写保护机制- 写保护可寄存器配置- 读保护-》非读保护：触发Dflash&#x2F;Pflash mass erase"></a>读写保护机制<br>- 写保护可寄存器配置<br>- 读保护-》非读保护：触发Dflash&#x2F;Pflash mass erase</h2></li>
+<li>read while write<ul>
+<li>读pflash的时候可以写dflash</li>
+<li>反之也可</li>
+</ul>
+</li>
+<li>flash size可配置<ul>
+<li>pflash：256&#x2F;128&#x2F;64KB</li>
+<li>dflash：128&#x2F;64KB</li>
+</ul>
+</li>
+<li>LVD检测，低电压检测，当SPM给flash一个低电压信号的话，<font color=red>当前的program或者erase的操作会直接结束，因为这些操作对电压有要求；datasheet有要求</font></li>
+<li>abort command</li>
+<li>HSM相关区域权限管控</li>
+<li>cache，硬件自动清除cache（当发生flash write操作的时候）</li>
+<li>ECC</li>
+<li>EIM</li>
+<li>BIST</li>
+</ul>
+<blockquote>
+<p>思考：</p>
+<p>当LVD的时候，状态机需要停止当前的操作，因为Macro database上，program或者erase操作，对工作电压是有要求的；</p>
+</blockquote>
+<h2 id="硬件架构"><a href="#硬件架构" class="headerlink" title="硬件架构"></a>硬件架构</h2><p>flash是放在MTCMOS电源域，因此在vlps或者standy mode的时候会断电（controller和Macro都会断电）</p>
+<p>flash top ctrl：主要是处理顶层的信息</p>
+<p>AHB itf：处理bus的transaction，主要有两个cache</p>
+<p>apb itf：控制和状态寄存器</p>
+<p>pflash_ctrl主要是处理除了flash接口时序相关的之外的所有控制（读写管控，命令控制）</p>
+<p>pflash_itf主要是实现macro级别的时序</p>
+<h2 id="Design-and-Implementation"><a href="#Design-and-Implementation" class="headerlink" title="Design and Implementation"></a>Design and Implementation</h2><p>cache是2路组相连的设计？</p>
+<p>自研？添加了很多断言？</p>
+<p>flash寄存器读写都是脚本生成的？</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/eflash-controller/" rel="tag"># eflash controller</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/09/secure-debug%E5%92%8Csecure-boot/" rel="prev" title="secure-debug和secure-boot">
+      <i class="fa fa-chevron-left"></i> secure-debug和secure-boot
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/08/19/verilog%E4%B9%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/" rel="next" title="verilog之状态机设计">
+      verilog之状态机设计 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#design-review%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">design review学习整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DRS"><span class="nav-number">1.1.</span> <span class="nav-text">DRS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-IP"><span class="nav-number">1.2.</span> <span class="nav-text">Flash IP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#read%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.1.</span> <span class="nav-text">read操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#program%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.2.</span> <span class="nav-text">program操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page-erase"><span class="nav-number">1.2.3.</span> <span class="nav-text">page erase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mass-erase"><span class="nav-number">1.2.4.</span> <span class="nav-text">mass erase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RECALL%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.5.</span> <span class="nav-text">RECALL操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reference-cell-erase%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.6.</span> <span class="nav-text">reference cell erase操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#smart-write-IP"><span class="nav-number">2.</span> <span class="nav-text">smart-write IP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#workspaceflow"><span class="nav-number">2.1.</span> <span class="nav-text">workspaceflow</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIST-IP"><span class="nav-number">3.</span> <span class="nav-text">BIST IP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Architecture-Design"><span class="nav-number">4.</span> <span class="nav-text">Architecture Design</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#eFlash%E7%BB%84%E7%BB%87%E8%A7%84%E5%88%92"><span class="nav-number">4.1.</span> <span class="nav-text">eFlash组织规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PFlash-Info%E8%A7%84%E5%88%92"><span class="nav-number">4.2.</span> <span class="nav-text">PFlash Info规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DFlash-Info%E8%A7%84%E5%88%92"><span class="nav-number">4.3.</span> <span class="nav-text">DFlash Info规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash%E6%94%AF%E6%8C%81%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-number">4.4.</span> <span class="nav-text">Flash支持的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6"><span class="nav-number">4.5.</span> <span class="nav-text">读写保护机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-FS%EF%BC%88function-support%EF%BC%89"><span class="nav-number">4.6.</span> <span class="nav-text">Flash FS（function support）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6-%E5%86%99%E4%BF%9D%E6%8A%A4%E5%8F%AF%E5%AF%84%E5%AD%98%E5%99%A8%E9%85%8D%E7%BD%AE-%E8%AF%BB%E4%BF%9D%E6%8A%A4-%E3%80%8B%E9%9D%9E%E8%AF%BB%E4%BF%9D%E6%8A%A4%EF%BC%9A%E8%A7%A6%E5%8F%91Dflash-Pflash-mass-erase"><span class="nav-number">4.7.</span> <span class="nav-text">读写保护机制- 写保护可寄存器配置- 读保护-》非读保护：触发Dflash&#x2F;Pflash mass erase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%9E%B6%E6%9E%84"><span class="nav-number">4.8.</span> <span class="nav-text">硬件架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Design-and-Implementation"><span class="nav-number">4.9.</span> <span class="nav-text">Design and Implementation</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

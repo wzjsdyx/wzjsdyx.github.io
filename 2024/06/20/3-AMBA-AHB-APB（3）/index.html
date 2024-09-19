@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Exclusive access operationsIntroduction to exclusive accesses互斥访问对OS系统的的信号量操作至关重要，因为互斥访问能够检测出来RWM的访问冲突  RWM的访问冲突能够在很多场景中出现：  OS在RMW的中间发生时间片轮转&#x2F;中断 ,从而对进程进行切换 多处理器系统中，多个处理器同时执行RMW对同一个地址进行访问   为了能够对互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3 AMBA&#x2F;AHB&#x2F;APB（3）">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="Exclusive access operationsIntroduction to exclusive accesses互斥访问对OS系统的的信号量操作至关重要，因为互斥访问能够检测出来RWM的访问冲突  RWM的访问冲突能够在很多场景中出现：  OS在RMW的中间发生时间片轮转&#x2F;中断 ,从而对进程进行切换 多处理器系统中，多个处理器同时执行RMW对同一个地址进行访问   为了能够对互">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211132897.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211247944.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211343345.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211454371.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211736465.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211823114.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623220801138.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623220455386.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162045548.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162445025.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162505870.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625171242828.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625172653938.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625172821510.png">
+<meta property="article:published_time" content="2024-06-20T15:49:32.000Z">
+<meta property="article:modified_time" content="2024-07-12T02:15:58.401Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="AMBA">
+<meta property="article:tag" content="AHB">
+<meta property="article:tag" content="APB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211132897.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>3 AMBA/AHB/APB（3） | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3 AMBA/AHB/APB（3）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-20 23:49:32" itemprop="dateCreated datePublished" datetime="2024-06-20T23:49:32+08:00">2024-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 10:15:58" itemprop="dateModified" datetime="2024-07-12T10:15:58+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Exclusive-access-operations"><a href="#Exclusive-access-operations" class="headerlink" title="Exclusive access operations"></a>Exclusive access operations</h1><h2 id="Introduction-to-exclusive-accesses"><a href="#Introduction-to-exclusive-accesses" class="headerlink" title="Introduction to exclusive accesses"></a>Introduction to exclusive accesses</h2><p><font color=blue>互斥访问对OS系统的的信号量操作至关重要，因为互斥访问能够检测出来RWM的访问冲突</font></p>
+<blockquote>
+<p>RWM的访问冲突能够在很多场景中出现：</p>
+<ul>
+<li>OS在RMW的中间发生时间片轮转&#x2F;中断 ,从而对进程进行切换</li>
+<li>多处理器系统中，多个处理器同时执行RMW对同一个地址进行访问</li>
+</ul>
+</blockquote>
+<p><font color=blue>为了能够对互斥访问进行处理，需要从如下几个方面考虑：</font></p>
+<ol>
+<li><font color=blue>互斥访问指令，Cortex处理器有LDREX以及STREX等互斥访问指令</font></li>
+<li><font color=blue>bus接口需要有互斥访问信号，互斥访问信号在AMBA5 AHB才被正式引进，之前的Cortex-M处理器（M3&#x2F;M4&#x2F;M7）使用的是非标准的互斥访问sideband信号</font></li>
+<li><font color=blue>系统级的monitor，对于多处理器系统，需要一个bus级别的全局互斥访问monitor，用来检测多个master之间的互斥访问冲突；多个global互斥访问monitor可以用来检测不同范围的互斥访问操作；</font></li>
+</ol>
+<blockquote>
+<p>一些思考&amp;困惑：</p>
+<p>1、互斥访问指令的设计意图是什么？和正常的读写指令有什么不一样？</p>
+<p>我理解互斥访问指令，其目的就是告诉处理器这是一个RMW sequence，中间不能被打断；</p>
+<p>执行这种指令的时候，需要互斥访问的sideband信号协同工作；</p>
+</blockquote>
+<p>&#x3D;&#x3D;》首先看下访问冲突的问题</p>
+<p>信号量在操作系统中被用于资源管理，可以利用信号量确保同一时刻某一个硬件资源只能够被一个进程使用；</p>
+<p>具体来说，OS使用一个内存变量（信号量）去追踪资源分配情况（系统资源是否已经被占用），应用程序通过调用API接口去互斥的访问该信号量；</p>
+<blockquote>
+<p>假设没有互斥访问操作，就会出现访问冲突，具体可看如下例子：</p>
+<p>1、OS对进程切换的例子</p>
+<p>。。。</p>
+<p>2、多进程访问的具体例子</p>
+<p>。。。</p>
+</blockquote>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211132897.png" class="">
+
+
+
+<p>&#x3D;&#x3D;》互斥访问操作的引入</p>
+<p>为了解决这个问题，传统的处理器，例如Arm7TDMI   使用lock transfer确保总线在进行RMW操作的时候，不会被打断；但是lock传输在读写通道分离的高速传输总线协议上无法实现，因此互斥访问操作在Armv6架构被引入；</p>
+<p>简单的互斥访问序列如下：</p>
+<p>1、Processor X read semaphore data P with an exclusive load instruction;  </p>
+<p>2、If the value of P is 0, Processor X write 1 to P with an exclusive store instruction;  </p>
+<p>3、The exclusive store instruction returns a success or fail status. </p>
+<ul>
+<li>If the status is success, then the application task can continue the operation.<ul>
+<li>If the status is fail, then it means there is a potential access conflict, and it needs to restart the RMW sequence. The store operation is blocked if the<br>exclusive store returns fail status.</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211247944.png" class="">
+
+
+
+<p>为了确定返回状态，系统包含了两个互斥访问monitor：</p>
+<p>1、Local exclusive access monitor – This hardware is inside the processor, and it triggers exclusive fail if there has been a context switch (including exception entry&#x2F;exit);  </p>
+<p>2、Global exclusive access monitor – This hardware is at the bus level, and it triggers exclusive fail if another bus master has access to the address which is marked for exclusive access (when exclusive load is made).  </p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211343345.png" class="">
+
+
+
+<p>当处理器执行互斥访问操作的时候：</p>
+<ul>
+<li>If the local exclusive access monitor returns fail status – the exclusive store is blocked before it gets<br>to the bus interface level, so it won’t be carried out.</li>
+<li>If the global exclusive access monitor returns fail status - the exclusive store is blocked by the global<br>exclusive store monitor, so the memory won’t get updated.</li>
+<li>If either local or global exclusive access monitor return fail status, the write operation will not be<br>carried out, and the processor should retry the RMW sequence.</li>
+</ul>
+<h2 id="AHB5-exclusive-access-support"><a href="#AHB5-exclusive-access-support" class="headerlink" title="AHB5 exclusive access support"></a>AHB5 exclusive access support</h2><p>global exclusive access monitor除了标准的AMBA3 AHB-Lite信号之后，还需要</p>
+<ul>
+<li>HEXCL</li>
+<li>HEXOKAY</li>
+<li>HMASTER</li>
+</ul>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211454371.png" class="">
+
+
+
+
+
+<p>The address tag in the monitor does not necessarily record all bits of the address value. Typically, the<br>monitor can drop the lowest bits of the address as the exclusive fail information can be speculative:</p>
+<ul>
+<li>The data might be written with the same value.</li>
+<li>Nearby data could have been accessed by a different bus master.</li>
+</ul>
+<blockquote>
+<p>这段话不是很理解，需要结合具体的global monitor design才能理解</p>
+</blockquote>
+<p>互斥访问失败之后，不会有任何的系统性错误风险，最多只会牺牲点时间重新运行；</p>
+<p>Exclusive Reservation Granule (ERG)  用来记录不同的master信息，通过HMASTER以及HADDR信号；</p>
+<h2 id="Mapping-of-Cortex-M3-M4-M7-exclusive-access-signals-to-AHB5"><a href="#Mapping-of-Cortex-M3-M4-M7-exclusive-access-signals-to-AHB5" class="headerlink" title="Mapping of Cortex-M3&#x2F;M4&#x2F;M7 exclusive access signals to AHB5"></a>Mapping of Cortex-M3&#x2F;M4&#x2F;M7 exclusive access signals to AHB5</h2><p>Cortex-M3, Cortex-M4 and Cortex-M7  支持互斥访问指令，但是这些处理器在AMBA5 AHB之前release，因此他们使用的是非标准的互斥访问信号：</p>
+<ul>
+<li>EXREQ – same as HEXCL, an address phase signal to indicate exclusive load&#x2F;store accesses.  </li>
+<li>EXRESP – exclusive fail status in the data phase (assert at the end of the data phase - opposite<br>polarity compared to HEXOKAY).</li>
+</ul>
+<p>因此在将这些处理器集成到AHB5 系统的时候，需要添加一些glue逻辑；</p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211736465.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211823114.png" class="">
+
+<blockquote>
+<p>思考：</p>
+<p><font color=red>exclusive所需要的sideband控制信号EXREQ以及EXRESP和masterlock信号是不是功能上重复了？？</font></p>
+<p>masterlock的使用场景也是防止RMW造成的冲突，但是这个功能exclusive指令已经完成了</p>
+</blockquote>
+<h1 id="AHB5-TrustZone-support"><a href="#AHB5-TrustZone-support" class="headerlink" title="AHB5 TrustZone support"></a>AHB5 TrustZone support</h1><p><font color=blue>AMBA 5 AHB的一个关键特性是支持TrustZone，使用一个地址阶段的信号HNONSEC来表示security transfer属性</font></p>
+<ul>
+<li>If HNONSEC is 1 (Non-secure), the bus interconnect must block the transfer if the address of the<br>transfer is pointing to a Secure location.</li>
+<li>If HNONSEC is 0 (Secure), the bus master has Secure access privilege</li>
+</ul>
+<blockquote>
+<p>in Armv8-M, when a processor is in Secure state, access to Non-secure address is indicated as Non-secure (HNONSEC&#x3D;&#x3D;1).  </p>
+</blockquote>
+<p>A TrustZone capable Cortex-M23&#x2F;M33 processor system should have:</p>
+<ul>
+<li>Secure and Non-secure program spaces.</li>
+<li>Secure and Non-secure RAM spaces.</li>
+<li>Secure and Non-secure peripherals.</li>
+</ul>
+<p>The definitions of Secure and Non-secure address ranges are handled by a Security Attribution Unit<br>(SAU) inside the processor and Implementation Defined Attribution Unit (IDAU) which is tightly<br>coupled to the processor(s). SAU is programmable, and IDAU is system-specific, in some cases, even<br>the IDAU could be programmable.  </p>
+<p>To enable a high level of flexibility, Arm Corstone foundation IP &#x2F; CoreLink SDK-200 included several<br>bus components for TrustZone security management:</p>
+<ul>
+<li>Memory Protection Controller (MPC): for the partitioning of a memory block into Secure and Nonsecure address spaces.</li>
+<li>Peripheral Protection Controller (PPC): for assigning bus peripherals into Secure and Non-secure domains.</li>
+<li>Master security controller: An AHB5 bus wrapper for legacy bus masters that do not support TrustZone. This handles the blocking of Non-secure transfers to Secure addresses and generation of correct HNONSEC signals.</li>
+</ul>
+<blockquote>
+<p>总结：</p>
+<p>Trust zone特性需要处理器支持，也需要BUS支持；</p>
+</blockquote>
+<h1 id="Overview-of-APB"><a href="#Overview-of-APB" class="headerlink" title="Overview of  APB"></a>Overview of  APB</h1><h2 id="Introduction-to-the-APB-bus-system"><a href="#Introduction-to-the-APB-bus-system" class="headerlink" title="Introduction to the APB bus system"></a>Introduction to the APB bus system</h2><p>APB是一个简单的总线，其主要目的是为了连接外设。在AMBA2 中被引进，AMBA 3和AMBA 4中扩展了特性，允许wait states, error responses and additional transfer attributes (including TrustZone support)  。</p>
+<p>将外设直接连接到APB而不是AHB有如下好处：</p>
+<p>1、SoC中有很多外设，如果直接连接到AHB总线，由于信号的高扇出以及复杂的总线译码逻辑，总线频率可能会被降低，外设连接到APB上就可以降低对AHB的影响；</p>
+<p>2、外设系统可以运行在不同的时钟频率，降低功耗；</p>
+<p>3、外设使用APB接口可以简化设计复杂度；</p>
+<p>4、大部分传统外设使用的是APB接口；</p>
+<p>PRESETn相对于PCLK应该是异步复位同步释放的；</p>
+<h2 id="APB-signals-and-connection"><a href="#APB-signals-and-connection" class="headerlink" title="APB signals and connection"></a>APB signals and connection</h2><img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623220801138.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623220455386.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162045548.png" class="">
+
+<p><font color=blue>APB不是pipeline协议</font></p>
+<p><font color=blue>AMBA2 APB的transfer必须是2T，因为没有pready信号</font></p>
+<ul>
+<li><p><font color=blue>对读操作，rdata必须在第二个时钟周期有效；</font></p>
+</li>
+<li><p><font color=blue>对写操作，wdata必须在2T时间里一直有效；（因为APB Slave的写传输实际可能在第一T，也可能在第二T，由具体的实现所定义）</font></p>
+</li>
+</ul>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162445025.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162505870.png" class="">
+
+<p><font color=blue>AMBA3 APB引入PREADY以及PSLVERR</font></p>
+<p>因为APB不是pipeline的协议，所以第一个阶段不需要看pready信号！！！只在第二个阶段看pready信号；AHB如果第一个阶段不看hready信号，会造成协议冲突</p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625171242828.png" class="">
+
+<blockquote>
+<p>read transfer至少两个cycle，而且结尾是通过pready assert标明；</p>
+<p>pready信号在transfer的第一个cycle被忽略；</p>
+</blockquote>
+<h2 id="Additional-signals-in-APB-protocol-v2-0"><a href="#Additional-signals-in-APB-protocol-v2-0" class="headerlink" title="Additional signals in APB protocol v2.0"></a>Additional signals in APB protocol v2.0</h2><p><font color=blue>The APB v2 in AMBA 4 added the PPROT and PSTRB signals </font></p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625172653938.png" class=""> 
+
+<blockquote>
+<p>Please note, unlike AHB5, the TrustZone security attribute is part of PPROT instead of a separate signal.  </p>
+</blockquote>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625172821510.png" class=""> 
+
+<blockquote>
+<p>The PSTRB signal is active high and is used for write-operations only. </p>
+<p>During read operations, the PSTRB signal is ignored by the bus slave, and the whole 32-bit word is read.  </p>
+</blockquote>
+<h2 id="Data-values-on-APB"><a href="#Data-values-on-APB" class="headerlink" title="Data values on APB"></a>Data values on APB</h2><p>如果APB是32bits的话，地址传输需要word对齐；</p>
+<p>write transfer的时候，wdata在整个传输周期有效；</p>
+<p>read transfer的时候，rdata最少要在transfer的last cycle有效；</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/AMBA/" rel="tag"># AMBA</a>
+              <a href="/tags/AHB/" rel="tag"># AHB</a>
+              <a href="/tags/APB/" rel="tag"># APB</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/18/python%E8%84%9A%E6%9C%AC%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0/" rel="prev" title="python脚本传递参数">
+      <i class="fa fa-chevron-left"></i> python脚本传递参数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/" rel="next" title="4 Building simple bus systems for Cortex-M processors（1）">
+      4 Building simple bus systems for Cortex-M processors（1） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Exclusive-access-operations"><span class="nav-number">1.</span> <span class="nav-text">Exclusive access operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-to-exclusive-accesses"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction to exclusive accesses</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AHB5-exclusive-access-support"><span class="nav-number">1.2.</span> <span class="nav-text">AHB5 exclusive access support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-of-Cortex-M3-M4-M7-exclusive-access-signals-to-AHB5"><span class="nav-number">1.3.</span> <span class="nav-text">Mapping of Cortex-M3&#x2F;M4&#x2F;M7 exclusive access signals to AHB5</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AHB5-TrustZone-support"><span class="nav-number">2.</span> <span class="nav-text">AHB5 TrustZone support</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview-of-APB"><span class="nav-number">3.</span> <span class="nav-text">Overview of  APB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-to-the-APB-bus-system"><span class="nav-number">3.1.</span> <span class="nav-text">Introduction to the APB bus system</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APB-signals-and-connection"><span class="nav-number">3.2.</span> <span class="nav-text">APB signals and connection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Additional-signals-in-APB-protocol-v2-0"><span class="nav-number">3.3.</span> <span class="nav-text">Additional signals in APB protocol v2.0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-values-on-APB"><span class="nav-number">3.4.</span> <span class="nav-text">Data values on APB</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

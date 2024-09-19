@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="课程没有完全看完，需要继续细细体会 20240903：还剩下最后一节cache-coherence protocol 最终目标： 1、看完课程并理解所说的内容 2、博客整理  Agenda  Why Cache? Cache Organization Replacement policy Write policy Cache Performance Cache Coherence Scratch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cache system">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/08/30/cache-system/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="课程没有完全看完，需要继续细细体会 20240903：还剩下最后一节cache-coherence protocol 最终目标： 1、看完课程并理解所说的内容 2、博客整理  Agenda  Why Cache? Cache Organization Replacement policy Write policy Cache Performance Cache Coherence Scratch">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240830201109956.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831103935303.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831104025717.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831105329727.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831111540247.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831111257318.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831114206050.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831124710411.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831124801722.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831125558401.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831133616501.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831134213174.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831134612895.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831134732393.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831134908989.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831135507425.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831135809264.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831135839085.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831140145060.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831140545084.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240831140831090.png">
+<meta property="article:published_time" content="2024-08-30T12:08:48.000Z">
+<meta property="article:modified_time" content="2024-09-03T03:14:34.610Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="cache基础知识">
+<meta property="article:tag" content="TBD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/08/30/cache-system/image-20240830201109956.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/08/30/cache-system/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>cache system | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/30/cache-system/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cache system
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-30 20:08:48" itemprop="dateCreated datePublished" datetime="2024-08-30T20:08:48+08:00">2024-08-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-09-03 11:14:34" itemprop="dateModified" datetime="2024-09-03T11:14:34+08:00">2024-09-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cache%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">cache设计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/30/cache-system/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/30/cache-system/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>课程没有完全看完，需要继续细细体会</p>
+<p>20240903：还剩下最后一节cache-coherence protocol</p>
+<p>最终目标：</p>
+<p>1、看完课程并理解所说的内容</p>
+<p>2、博客整理</p>
+</blockquote>
+<p>Agenda</p>
+<ul>
+<li>Why Cache?</li>
+<li>Cache Organization</li>
+<li>Replacement policy</li>
+<li>Write policy</li>
+<li>Cache Performance</li>
+<li>Cache Coherence</li>
+<li>Scratchpad Memory</li>
+</ul>
+<h1 id="Why-Cache"><a href="#Why-Cache" class="headerlink" title="Why Cache"></a>Why Cache</h1><h2 id="Why-Do-We-Need-Caches"><a href="#Why-Do-We-Need-Caches" class="headerlink" title="Why Do We Need Caches?"></a>Why Do We Need Caches?</h2><img src="/2024/08/30/cache-system/image-20240830201109956.png" class="">
+
+
+
+<blockquote>
+<p>存储墙（Memory wall）：</p>
+<p>处理器的速度和memory的速度差距越来越大；</p>
+</blockquote>
+<p>&#x3D;&#x3D;》程序的运行一般都符合程序局部性原理（指令的访问以及数据的访问都具有局部性）</p>
+<ul>
+<li><p>时间局部性：当前访问的地址，之后还有可能访问。</p>
+</li>
+<li><p>空间局部性：当前访问的地址，其相邻地址之后有可能会访问。</p>
+</li>
+</ul>
+<p>因此，从局部性的角度来说，在不久的将来，只有一小部分地址空间会被访问到，例如</p>
+<ul>
+<li><p>程序的顺序执行;</p>
+</li>
+<li><p>子程序的调用；</p>
+</li>
+<li><p>循环语句等等；</p>
+</li>
+</ul>
+<p>&#x3D;&#x3D;》一般来说，memory size越小，其性能可以做的越快，可以放到距离CPU比较近的位置；</p>
+<p>自身的访问速度的限制；</p>
+<p>走线的长度限制；</p>
+<p>&#x3D;&#x3D;》cache存储的是memory中的副本</p>
+<h2 id="Memory-Access-Pattern-locality"><a href="#Memory-Access-Pattern-locality" class="headerlink" title="Memory Access Pattern &amp; locality"></a>Memory Access Pattern &amp; locality</h2><p>1、当前访问的地址数据，可以认为它在短时间内还会再被使用（时间局部性）–》为什么将数据保存到cache中的原因；</p>
+<p>2、当前访问地址的相邻数据，也可以认为在短时间内还会被再次使用（空间局部性）–》数据以block的形式加载到cache（cache-line）</p>
+<p>3、按顺序访问memory（空间局部性）–》prefetch</p>
+<p>4、循环和函数调用</p>
+<h1 id="Cache-Organization"><a href="#Cache-Organization" class="headerlink" title="Cache Organization"></a>Cache Organization</h1><h2 id="Cache-operation"><a href="#Cache-operation" class="headerlink" title="Cache operation"></a>Cache operation</h2><p>1、当CPU需要read某个内存地址的时候，它首先会check想要访问的数据是否在Cache中，</p>
+<ul>
+<li>如果数据在cache中，即cache hit，此时会把Cache中的数据直接返回到CPU中；</li>
+<li>如果数据不在cache中，即cache miss，通常cache会分配一个cache line去保存新的memory数据<ul>
+<li>（也不是绝对，有些先进的处理器技术可以预判当前read操作的数据将来不会被使用，此时就不需要分配cache line去保存数据）</li>
+<li>还需要考虑，如果cache 满了，哪些cache-line会被替换</li>
+</ul>
+</li>
+</ul>
+<p>2、如果CPU write 某个地址，他同样会先check想要访问的数据是否在cache中，</p>
+<ul>
+<li><p>如果数据在cache中，</p>
+</li>
+<li><p>如果数据不在cache中，即cache miss，是否一定要write-locate？不一定，通常来说有两种处理策略：</p>
+<ul>
+<li>write-allocate：（同样，有些先进的处理器技术可以预判当前write操作的数据将来不会被使用，此时就不需要分配cache line去保存数据）</li>
+<li>write through：write to main memory</li>
+</ul>
+</li>
+<li><p>命中率是衡量cache性能指标</p>
+</li>
+</ul>
+<h2 id="Accessing-the-cache-address-mapping"><a href="#Accessing-the-cache-address-mapping" class="headerlink" title="Accessing the cache- address mapping"></a>Accessing the cache- address mapping</h2><img src="/2024/08/30/cache-system/image-20240831103935303.png" class="">
+
+
+
+<p>tag：数据标识符；</p>
+<p>index：表示哪一个cache line；</p>
+<p>offset：一个cache line中的地址；</p>
+<h2 id="Direct-mapped-Cache"><a href="#Direct-mapped-Cache" class="headerlink" title="Direct-mapped Cache"></a>Direct-mapped Cache</h2><img src="/2024/08/30/cache-system/image-20240831104025717.png" class="">
+
+
+
+<p>如果对某一个地址访问：</p>
+<p>0、cache Initialization：clear all valid bit</p>
+<p>1、首先会通过index选择哪一个cache line</p>
+<p>2、然后会通过tags以及valid比较是否hit，（tags和data同时访问，效率更高，功耗更大）</p>
+<p>直接映射方式的优点：</p>
+<ul>
+<li>设计简单；</li>
+<li>access速度快（因为tags和data是同时访问的，不用先访问tags再访问data）；</li>
+</ul>
+<p>直接映射方式的缺点：</p>
+<ul>
+<li>命令率比较低；（很容易造成地址冲突，如下图所示：）</li>
+</ul>
+<img src="/2024/08/30/cache-system/image-20240831105329727.png" class="">
+
+<blockquote>
+<p>0x4  &#x3D;&#x3D;&gt; 001 00</p>
+<p>0x24&#x3D;&#x3D;&gt; 001 00</p>
+<p>两者的index是相同的，会不断地替换；</p>
+</blockquote>
+<h2 id="Set-associative-Cache"><a href="#Set-associative-Cache" class="headerlink" title="Set-associative Cache"></a>Set-associative Cache</h2><p>一个memory block可以存放在不同的way中；</p>
+<p>相对于直接映射方式，它的命中率更高，因为对于同样的cache index，其可以映射到cache中的不同位置；</p>
+<p>优点：</p>
+<p>相比较于直接映射， 它的灵活性更高；</p>
+<p>缺点：</p>
+<p>硬件实现更复杂（相比cache line更复杂）：</p>
+<img src="/2024/08/30/cache-system/image-20240831111540247.png" class="">
+
+
+
+<p>不同的cache size和ways对命中率的影响：</p>
+<img src="/2024/08/30/cache-system/image-20240831111257318.png" class="">
+
+
+
+
+
+<h2 id="Full-Associative-Cache"><a href="#Full-Associative-Cache" class="headerlink" title="Full-Associative Cache"></a>Full-Associative Cache</h2><p>一个memory block可以存放在任意一个cache line中；</p>
+<p>优点：</p>
+<p>命中率更高；</p>
+<p>缺点；</p>
+<p>硬件实现最复杂；</p>
+<p>也是有他的应用场景在的：</p>
+<p><font color=blue>TLB，其size非常小，可能只有32-64个entry</font></p>
+<p><font color=blue>只要cache的line数量很少，在能满足时序的要求下，全相连模式可以考虑使用</font></p>
+<h1 id="Replacement-policy"><a href="#Replacement-policy" class="headerlink" title="Replacement policy"></a>Replacement policy</h1><h2 id="Replacement-Policies"><a href="#Replacement-Policies" class="headerlink" title="Replacement Policies"></a>Replacement Policies</h2><p>如果是直接映射，一个memory block只有一个对应的cache line，没有什么替换策略；</p>
+<p>如果是全相连映射，在cache line已经被塞满的情况下，可以选择多所有的cache-line进行替换；</p>
+<p>如果是组相连映射，在cache line已经被塞满的情况下，可以选择替换的cache-line是ways的数量决定；</p>
+<p>如果有多个cache-line可供选择：会有如下的替换策略：</p>
+<ul>
+<li>round robin：<ul>
+<li>cycle round</li>
+<li>first in  first out</li>
+<li>简单，但是不是最高效的方式</li>
+</ul>
+</li>
+<li>LRU（least-recently used）最不经常使用算法：（最合理）<ul>
+<li>需要额外的逻辑对cache line进行追踪，</li>
+<li><font color=blue>通常使用的是pseudo-LRU算法</font></li>
+</ul>
+</li>
+<li>FIFO</li>
+<li>random</li>
+</ul>
+<blockquote>
+<p>Pseudo-LRU (Least Recently Used) 是一种近似于最近最少使用的缓存替换算法。LRU算法会记录每一个缓存块的使用顺序，当需要替换缓存块时，会选择最久未使用的块进行替换。但LRU算法的实现复杂度较高，尤其是在硬件实现中，需要较多的存储和计算资源。</p>
+<p><strong>Pseudo-LRU</strong> 是一种简化的LRU算法，通过减少记录的精确度来降低实现复杂度。它不需要完全记录每个缓存块的使用顺序，而是通过使用额外的逻辑或位标记来大致估算哪些块最近被使用过。常见的pseudo-LRU实现包括以下几种方法：</p>
+<ol>
+<li><strong>Tree-based Pseudo-LRU</strong>: 用一棵二叉树来表示缓存块的状态，每个节点保存一个标志位，指示左子树或右子树中的块是否最近被使用过。通过遍历树的标志位，算法可以找到一个大致的最少最近使用的块来进行替换。</li>
+<li><strong>Bit-based Pseudo-LRU</strong>: 通过为每个缓存块分配一位标志位（或者多位），记录是否最近被访问。更新标志位时不精确记录顺序，而是通过简单规则更新（如最近访问的块标志位置1，其它块标志位置0），从而近似实现LRU行为。</li>
+</ol>
+<p><strong>优点</strong>:</p>
+<ul>
+<li>实现复杂度低：相比于精确的LRU算法，pseudo-LRU使用较少的硬件资源。</li>
+<li>提高效率：在大多数情况下能够接近LRU算法的效果，降低缓存冲突。</li>
+</ul>
+<p><strong>缺点</strong>:</p>
+<ul>
+<li>不如精确的LRU算法那么准确：在某些情况下，可能不会选择最佳的缓存块进行替换，导致性能下降。</li>
+</ul>
+<p>总结来说，pseudo-LRU是一种在性能和实现复杂度之间做出权衡的缓存替换算法，适用于硬件资源有限但仍需较好缓存管理的场景。</p>
+<p><font color=green>硬件实现的时候，如果复杂度较高，在合理范围内可以使用近似的方式去实现，复杂度更低，对硬件更加友好；</font></p>
+</blockquote>
+<h2 id="LRU实现方式"><a href="#LRU实现方式" class="headerlink" title="LRU实现方式"></a>LRU实现方式</h2><img src="/2024/08/30/cache-system/image-20240831114206050.png" class="">
+
+
+
+<blockquote>
+<ul>
+<li><strong>MRU（Most Recently Used）</strong>: 指的是缓存中最近使用的块。图中的“MRU”标记在每次缓存命中（Hit）或缺失（Miss）时，都会被更新到最新的访问位置。这意味着，MRU是最不可能被替换的块，因为它是最近使用过的。</li>
+<li><strong>LRU（Least Recently Used）</strong>: 指的是缓存中最久未使用的块。图中的“LRU”标记代表最可能被替换的缓存块，因为它已经有一段时间未被访问。</li>
+</ul>
+<p><strong>图的说明</strong>:</p>
+<ol>
+<li><strong>Hit (命中)</strong>:<ul>
+<li><strong>块B被访问</strong>时，它已经在缓存中（命中）。</li>
+<li>缓存将块B的LRU值设置为0（MRU位置），表示它现在是最近使用的块。</li>
+<li>在B和MRU之间的所有块（即块C）的LRU值增加，表示这些块的使用顺序向后移动了一位。</li>
+<li>块A和块D的LRU值保持不变，因为它们的顺序并未被影响。</li>
+</ul>
+</li>
+<li><strong>Miss (缺失)</strong>:<ul>
+<li>当访问块E时（如图下部分），它不在缓存中，因此会发生缓存缺失（Miss）。</li>
+<li>系统会查找LRU值最大的块（即当前的LRU块），然后将其替换为新的块E。</li>
+<li>块E被放入MRU位置（LRU值设置为0），表示它是最新使用的块，而其他块的LRU值则相应增加。</li>
+</ul>
+</li>
+</ol>
+<p>这个过程通过更新块的LRU值（越大表示越少使用），实现了自动替换缓存中最不常用的块，确保经常使用的数据优先保存在缓存中。</p>
+</blockquote>
+<h1 id="Write-policy"><a href="#Write-policy" class="headerlink" title="Write policy"></a>Write policy</h1><h2 id="cache-policies-write-hit-write-through-write-back"><a href="#cache-policies-write-hit-write-through-write-back" class="headerlink" title="cache policies- write hit, write-through,write-back"></a>cache policies- write hit, write-through,write-back</h2><p>当write-hit的时候，write策略有如下两种：</p>
+<p>write-through：同时更新cache和外部memory</p>
+<p>write-back	  ：只更新cache，不更新外部memory</p>
+<p>（write-back的好处是不需要频繁的访问外部memory，但是控制变复杂；）</p>
+<p>write-once      :write-through on the first write, write-back on all subsequent write(cache coherence)</p>
+<p>（当系统有多个cache并且采用write-back策略的时候，此时为了cache一致性，需要将cache line的第一笔数据write-through，通知其他的cache，此数据被修改了）</p>
+<img src="/2024/08/30/cache-system/image-20240831124710411.png" class="">
+
+
+
+<h2 id="cache-policies-write-miss：write-allocatioin，non-writre-allocation"><a href="#cache-policies-write-miss：write-allocatioin，non-writre-allocation" class="headerlink" title="cache policies-write miss：write-allocatioin，non-writre-allocation"></a>cache policies-write miss：write-allocatioin，non-writre-allocation</h2><img src="/2024/08/30/cache-system/image-20240831124801722.png" class="">
+
+
+
+<p>如果采用write-allocate策略，当发生write miss的时候，先<code>read-fill</code>,然后write-hit;</p>
+<p><font color=blue>read-fill操作比较重要，因为并不是单纯的做read，还需要修改，需要通知别的cache做invalid(维护cache一致性)</font></p>
+<p><code>read-fill和read miss fill在bus transaction上看到的控制信号是不同的</code></p>
+<blockquote>
+<p>一般来说：</p>
+<p>write-back搭配write-allocate</p>
+<p>write-through搭配non-write-allocate</p>
+</blockquote>
+<h2 id="Multi-level-caches"><a href="#Multi-level-caches" class="headerlink" title="Multi-level caches"></a>Multi-level caches</h2><img src="/2024/08/30/cache-system/image-20240831125558401.png" class="">
+
+
+
+
+
+<p><font color=blue>LLC的一个非常重要的作用是做snoop filter</font></p>
+<blockquote>
+<p><font color=blue>snoop操作</font></p>
+<p> <strong>Snoop 操作的背景</strong></p>
+<p>在多核处理器中，每个核心通常都有自己的私有缓存（如L1缓存和L2缓存）。为了确保多个核心之间的数据一致性，需要使用一种机制来保证当一个核心修改了数据，其他核心能够及时获知并更新它们的缓存。这就涉及到了 <strong>缓存一致性协议</strong>，如MESI协议（Modified, Exclusive, Shared, Invalid）。</p>
+<p><strong>Snoop 操作</strong> 是这种缓存一致性协议中的一部分，它的目的是在一个核心对内存位置进行读写操作时，通知其他核心检查它们的缓存状态，并根据需要更新或无效化它们缓存中的数据。</p>
+<p> <strong>举个具体例子</strong></p>
+<p>假设我们有一个四核处理器（核心A、B、C、D），每个核心都有自己的L1缓存。现在有一个内存位置X，它最初存储在主存储器中。</p>
+<p><strong>步骤 1: 核心A读取内存位置X</strong></p>
+<ul>
+<li><strong>读取操作</strong>: 核心A需要访问内存位置X。首先，它会检查自己的L1缓存，看是否已经有X的缓存行。如果没有（缓存未命中），它会将请求发送到L2缓存，L2缓存也没有（再未命中），最终它会从主存储器中加载X。</li>
+<li><strong>缓存X</strong>: 一旦X被加载，核心A会将其存储在自己的L1缓存中，并将状态标记为 **”Exclusive”**（意味着只有核心A有这个缓存行，且数据与主存储器一致）。</li>
+</ul>
+<p><strong>步骤 2: 核心B写入内存位置X</strong></p>
+<ul>
+<li><strong>写入操作</strong>: 现在，核心B决定要写入内存位置X。为了保持一致性，核心B需要先检查其他核心是否也缓存了X（即是否有核心A、C或D缓存了X）。</li>
+<li><strong>Snoop操作</strong>: 核心B的写请求会触发 <strong>snoop 操作</strong>。在MESI协议下，核心B会发送一个 <strong>snoop 请求</strong>，询问其他核心（A、C、D）是否缓存了X。</li>
+</ul>
+<p><strong>步骤 3: 其他核心响应snoop请求</strong></p>
+<ul>
+<li><strong>核心A响应</strong>: 核心A检查自己的缓存，发现它确实有X的缓存行（状态为Exclusive）。根据协议，核心A必须将X的缓存行状态设置为 **”Invalid”**（无效），表示它现在不能再使用这个缓存行，因为核心B要更新X。</li>
+<li><strong>核心C和D</strong>: 如果核心C和D没有X的缓存行，它们会简单地忽略snoop请求或返回“未缓存”的响应。</li>
+</ul>
+<p><strong>步骤 4: 核心B完成写入</strong></p>
+<ul>
+<li><strong>写入数据</strong>: 在核心B收到所有核心的snoop响应后（A将其缓存行无效化），核心B将X的更新后的数据写入自己的L1缓存，并将状态标记为 **”Modified”**（修改过的，且数据与主存储器不一致）。</li>
+</ul>
+<p><strong>后续操作</strong></p>
+<ul>
+<li><strong>其他核心读取X</strong>: 如果核心C或D之后试图读取内存位置X，它们会发现自己的缓存中没有有效的X（如果有，状态会是Invalid）。因此，它们会发出读取请求，最终从核心B的缓存中获得最新的X数据。</li>
+</ul>
+<p><font color=green>可以看到这个overhead非常大；</font></p>
+<p><font color=green>希望在last level cache中，就可以判断数据是否在cache中:</font></p>
+<ul>
+<li><p><font color=green>如果不在的话，就不发出snoop请求;</font></p>
+</li>
+<li><p><font color=green>如果在，具体在哪个cache中，只在需要更新的cache中，发出snoop请求；</font></p>
+</li>
+</ul>
+<p><font color=blue>LLC （last level cache）+  snoop filter机制</font></p>
+<p><strong>Snoop Filter 在有 LLC 的情况下的工作机制</strong></p>
+<p>在多核处理器中，LLC作为最后一级缓存，由多个核心共享。在这种架构下，Snoop Filter的主要功能是减少不必要的snoop操作，从而优化系统的缓存一致性管理。</p>
+<p><strong>基本机制：</strong></p>
+<ol>
+<li><strong>跟踪缓存行状态</strong>：<ul>
+<li>Snoop Filter会跟踪每个缓存行的状态，尤其是跟踪哪些缓存行可能在某个核心的私有缓存（如L1或L2缓存）中存在。这些信息通常存储在一个表格或目录结构中，这个表格记录了哪些核心正在缓存哪些数据。</li>
+</ul>
+</li>
+<li><strong>过滤snoop请求</strong>：<ul>
+<li>当一个核心需要访问或修改某个数据（如一个缓存行）时，首先会检查LLC。如果在LLC中未命中，或需要更新数据，通常需要发起snoop请求，通知其他核心检查它们的私有缓存。</li>
+<li>在有Snoop Filter的情况下，Snoop Filter会根据其记录的缓存行信息决定是否需要向所有核心广播snoop请求，还是只向特定的核心发送请求。这样可以显著减少不必要的通信开销。</li>
+</ul>
+</li>
+<li><strong>优化缓存一致性</strong>：<ul>
+<li>通过减少无关核心的snoop请求，Snoop Filter不仅降低了总线上的通信负担，还减少了核心的响应延迟，提升了系统整体的效率。</li>
+</ul>
+</li>
+</ol>
+<p><strong>具体例子说明：</strong></p>
+<p>假设我们有一个四核处理器（核心A、B、C、D），每个核心都有自己的L1缓存，还有一个共享的LLC。Snoop Filter与LLC集成在一起，用于管理缓存一致性。</p>
+<p><strong>场景设置：</strong></p>
+<ol>
+<li><strong>初始状态</strong>：<ul>
+<li>核心A从主存储器加载了数据块X，并将其存储在L1缓存中，同时LLC中也缓存了这块数据。Snoop Filter记录了“数据块X在核心A的L1缓存中”。</li>
+<li>核心B、C、D的缓存中没有数据块X。</li>
+</ul>
+</li>
+<li><strong>核心B尝试修改数据块X</strong>：<ul>
+<li>核心B决定修改数据块X。这意味着它需要确保其他核心不能继续使用旧的数据块X（以防止数据不一致）。根据MESI协议，这通常会触发snoop请求。</li>
+<li>核心B检查LLC。假设LLC中的数据块X被标记为“共享状态”，那么核心B的请求将被发送给Snoop Filter。</li>
+</ul>
+</li>
+<li><strong>Snoop Filter的作用</strong>：<ul>
+<li>Snoop Filter检查其记录，发现数据块X的共享记录表明它只在核心A的L1缓存中存在。</li>
+<li>Snoop Filter决定<strong>只向核心A发送snoop请求</strong>，而不向核心C和D发送请求，因为它知道C和D并没有缓存数据块X。</li>
+</ul>
+</li>
+<li><strong>核心A响应</strong>：<ul>
+<li>核心A收到snoop请求后，将数据块X的状态更新为“无效”，因为核心B要对其进行修改。</li>
+<li>核心B随后将数据块X从LLC加载到自己的缓存中，并执行修改操作。此时，数据块X在B的缓存中被标记为“修改”状态。</li>
+</ul>
+</li>
+<li><strong>后续操作</strong>：<ul>
+<li>如果之后核心C或D尝试访问数据块X，它们将会查询LLC。如果LLC中数据块X已经被核心B修改，且其他核心的缓存中没有有效的副本，C或D将从B的缓存中读取最新的数据块X。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p>LLC的snoop filter的实现 需要进一步了解incluse cache和exclusive cache的内容；</p>
+<h2 id="Inclusive-Exclusive-Cache"><a href="#Inclusive-Exclusive-Cache" class="headerlink" title="Inclusive&#x2F;Exclusive Cache"></a>Inclusive&#x2F;Exclusive Cache</h2><img src="/2024/08/30/cache-system/image-20240831133616501.png" class="">
+
+
+
+<p>inclusive cache：L1中的内容一定会在L2中，这个特性用来做snoop filter；</p>
+<p>假设L2是LLC，如果要做snoop操作，直接在L2 cache中就能知道需要write的数据是否在L1中；</p>
+<p>如果L2的数据被替换，L1中的cache肯定也是需要被替换；</p>
+<p>当L2&gt;&gt;L1，L1仅仅作为L2的一个copy，这种overhead还可以接受；</p>
+<p>如果L2不是&gt;&gt;L1，为了让cache能够存更多的数据，需要用到exclusive cache，此时就没办法用L2做snoop filter，还是得需要访问L1；</p>
+<h2 id="Example-Multi-level-Cache-size-latency"><a href="#Example-Multi-level-Cache-size-latency" class="headerlink" title="Example Multi-level Cache size&#x2F;latency"></a>Example Multi-level Cache size&#x2F;latency</h2><img src="/2024/08/30/cache-system/image-20240831134213174.png" class="">
+
+
+
+
+
+<p>举一个例子，在现在的CPU中，每一层cache size以及访问latency示例。</p>
+<p>对于如上的cache size配置，L1&lt;&lt;L2&lt;&lt;L3，其实是适合使用inclusive cache</p>
+<h1 id="Cache-Performance"><a href="#Cache-Performance" class="headerlink" title="Cache Performance"></a>Cache Performance</h1><h2 id="cache-performance"><a href="#cache-performance" class="headerlink" title="cache performance"></a>cache performance</h2><img src="/2024/08/30/cache-system/image-20240831134612895.png" class="">
+
+
+
+<blockquote>
+<p>这里需要提一点：</p>
+<p><font color=blue>让我们探讨一下为什么在很多文献和网络资源中，AMAT公式常常被写成：</font></p>
+<p><code>AMAT=Hit Time+Miss Rate×Miss Penalty</code></p>
+<p>而不是更精确的公式：</p>
+<p><code>AMAT=Hit Time×(1−Miss Rate)+Miss Rate×Miss Penalty</code></p>
+<ol>
+<li><strong>公式的简化假设</strong></li>
+</ol>
+<ul>
+<li><strong>简化的前提</strong>: 在很多系统设计和计算机体系结构的讨论中，假设 <code>Hit Time</code> 相对于 <code>Miss Penalty</code> 非常小，因此 <code>Hit Time × (1 - Miss Rate)</code> 和 <code>Hit Time</code> 在数值上非常接近。这种情况下，简化为 <code>Hit Time</code> 对结果影响很小。</li>
+<li><strong>直观表达</strong>: 采用简化公式后，公式更直观地表达了 <code>Miss Penalty</code> 对 <code>AMAT</code> 的贡献。这样公式更易于理解，并且在许多情况下，这种简化足够准确。</li>
+</ul>
+<ol start="2">
+<li><strong>衡量平均访问时间的重点</strong></li>
+</ol>
+<ul>
+<li><strong>命中时的表现</strong>: 在实际应用中，命中的情况下，系统表现的波动较小（因为 <code>Hit Time</code> 通常很短且稳定），而未命中的影响则更为明显，因此简化公式将重点放在未命中时的惩罚上。</li>
+<li><strong>大多数情况下的有效性</strong>: 对于一般的缓存设计来说，<code>Hit Time</code> 通常是一个固定值，不会随着 <code>Miss Rate</code> 的变化而显著变化，因此，简化后的公式在大多数应用中都能提供足够的精确度。</li>
+</ul>
+</blockquote>
+<p>从AMAT公式，可以看到，有三个方向可以做优化，去提高Cache性能；</p>
+<h2 id="reduce-cache-miss-rate"><a href="#reduce-cache-miss-rate" class="headerlink" title="reduce cache miss rate"></a>reduce cache miss rate</h2><h3 id="硬件reduce-cache-miss-rate"><a href="#硬件reduce-cache-miss-rate" class="headerlink" title="硬件reduce cache miss rate"></a>硬件reduce cache miss rate</h3><img src="/2024/08/30/cache-system/image-20240831134732393.png" class="">
+
+<blockquote>
+<p>缓存未命中可以分为三种情况：冷启动未命中、容量未命中和冲突未命中。</p>
+<ul>
+<li><p>冷启动未命中是指在系统刚启动时，缓存中没有任何数据，需要从主存中读取。</p>
+</li>
+<li><p>容量未命中是指缓存的容量不足以存放所有需要的数据，导致一部分数据无法保存在缓存中。</p>
+</li>
+<li><p>冲突未命中是指不同的数据映射到了缓存中同一个位置，需要进行替换操作。</p>
+</li>
+</ul>
+</blockquote>
+<img src="/2024/08/30/cache-system/image-20240831134908989.png" class="">
+
+
+
+<h3 id="软件reduce-cache-miss-rate"><a href="#软件reduce-cache-miss-rate" class="headerlink" title="软件reduce cache miss rate"></a>软件reduce cache miss rate</h3><img src="/2024/08/30/cache-system/image-20240831135507425.png" class="">
+
+
+
+<p>1、cpu会有prefetch的指令；</p>
+<p>软件很清楚自己用到的数据在哪里，可以使用prefetch指令，提前将会使用到的data进行 prefetch到cache；</p>
+<p>2、<font color=blue>根据cache的机制，调整软件的行为</font></p>
+<p>例如cache采用direct-mapping，可以调整软件减少冲突；</p>
+<p>3、不是连续的loop循环；</p>
+<h2 id="recude-hit-time-physical-virtual-address-cache"><a href="#recude-hit-time-physical-virtual-address-cache" class="headerlink" title="recude hit time-physical&#x2F;virtual address cache"></a>recude hit time-physical&#x2F;virtual address cache</h2><p><font color=red>涉及到虚实地址转换的内容</font></p>
+<p>一般来说，cache的行为可能是：</p>
+<p>先查找tag，命中之后才会访问数据；</p>
+<p>怎么去减少access时间？</p>
+<h3 id="Physical-Indexed-and-Physically-Tagged-PIPT-cache"><a href="#Physical-Indexed-and-Physically-Tagged-PIPT-cache" class="headerlink" title="Physical Indexed and Physically Tagged(PIPT) cache"></a>Physical Indexed and Physically Tagged(PIPT) cache</h3><img src="/2024/08/30/cache-system/image-20240831135809264.png" class="">
+
+
+
+<h3 id="virtual-Indexed-and-virtual-Tagged-VIVT-cache"><a href="#virtual-Indexed-and-virtual-Tagged-VIVT-cache" class="headerlink" title="virtual Indexed and virtual Tagged(VIVT) cache"></a>virtual Indexed and virtual Tagged(VIVT) cache</h3><img src="/2024/08/30/cache-system/image-20240831135839085.png" class="">
+
+
+
+<h3 id="virtual-Indexed-and-Physically-Tagged-VIPT-cache"><a href="#virtual-Indexed-and-Physically-Tagged-VIPT-cache" class="headerlink" title="virtual Indexed and Physically Tagged(VIPT) cache"></a>virtual Indexed and Physically Tagged(VIPT) cache</h3><p>略：</p>
+<h2 id="Reduce-Miss-penalty"><a href="#Reduce-Miss-penalty" class="headerlink" title="Reduce Miss penalty"></a>Reduce Miss penalty</h2><img src="/2024/08/30/cache-system/image-20240831140145060.png" class="">
+
+<p><strong>1、Read Priority over Write on Miss</strong></p>
+<ul>
+<li><strong>解释</strong>: 当cache miss的时候，优先处理读操作而不是写操作。</li>
+<li><strong>详细说明:</strong><ul>
+<li>例如，在处理器发出读取请求且缓存未命中时，如果CPU写请求也发生，缓存会优先处理读取操作，而推迟写入操作。这样可以减少处理器因等待数据而产生的延迟，降低Miss Penalty。</li>
+<li><font color=blue>读操作的优先级较高是因为处理器通常无法继续执行下一步操作，直到读请求的数据可用。而写操作可以在后台完成，并且通常不会立即阻塞处理器。</font></li>
+</ul>
+</li>
+</ul>
+<p><strong>2、Subblock Placement to Reduce Miss Penalty</strong></p>
+<ul>
+<li><p><strong>解释</strong>: 将缓存块进一步分割为更小的子块（Subblock），这样在发生未命中时，可以只加载所需的子块，而不是整个缓存块。</p>
+</li>
+<li><p><strong>详细说明</strong>:</p>
+<ul>
+<li><p>缓存通常按块存储数据，然而一个块内的所有字节可能不会同时被使用。通过引入子块，可以只将需要的子块加载到缓存中，而不是整个块。</p>
+</li>
+<li><p>每个子块都有一个有效位（valid bit），表示这个子块是否包含有效数据。这样做可以减少从内存加载数据的时间，进而减少Miss Penalty。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>3、Early Restart and Critical Word First</strong></p>
+<ul>
+<li><p><strong>解释</strong>: 未命中时，关键字优先</p>
+</li>
+<li><p><strong>详细说明</strong>:</p>
+<ul>
+<li><p><strong>Critical Word First</strong>: 当未命中发生时，处理器首先需要某个特定字（critical word），如指令或数据地址。这个策略优先加载并返回该字，处理器可以开始执行，而不必等待整个块的数据加载完毕。</p>
+</li>
+<li><p><strong>Early Restart</strong>: 类似地，一旦所需数据字节被加载，处理器就可以继续工作，而不必等待整个缓存块加载完毕。这种策略减少了等待时间，提高了处理器的效率，减少了Miss Penalty。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>4、Non-blocking Caches to Reduce Stalls on Misses (Hit Under Miss)</strong></p>
+<ul>
+<li><strong>解释</strong>: 非阻塞缓存允许处理器在等待未命中数据的同时，继续访问cache其他命中的数据，从而减少处理器停顿的次数。</li>
+<li><strong>详细说明:</strong><ul>
+<li>在传统的阻塞缓存中，当发生未命中时，缓存会等待直到未命中数据被加载完成，处理器在此期间会被阻塞，无法继续其他操作。</li>
+<li><strong>Non-blocking Caches</strong>: 通过非阻塞缓存设计，处理器可以在未命中数据被加载的同时继续访问缓存中的其他数据（假设这些数据命中），从而减少处理器的等待时间和性能损失。</li>
+<li><strong>Hit Under Miss</strong>: 处理器在等待未命中数据的同时，如果其他数据请求命中缓存，处理器仍然可以继续工作。</li>
+</ul>
+</li>
+</ul>
+<h2 id="现代处理器提升mem访问性能的一些方法"><a href="#现代处理器提升mem访问性能的一些方法" class="headerlink" title="现代处理器提升mem访问性能的一些方法"></a>现代处理器提升mem访问性能的一些方法</h2><h3 id="Latency-Reduction-Tolerance-and-Hiding"><a href="#Latency-Reduction-Tolerance-and-Hiding" class="headerlink" title="Latency Reduction, Tolerance and Hiding"></a>Latency Reduction, Tolerance and Hiding</h3><img src="/2024/08/30/cache-system/image-20240831140545084.png" class="">
+
+<p>1、tolerance，可以利用多线程操作；</p>
+<h3 id="prefetch"><a href="#prefetch" class="headerlink" title="prefetch"></a>prefetch</h3><img src="/2024/08/30/cache-system/image-20240831140831090.png" class="">
+
+<p>1、投机访问</p>
+<p>2、一些现代处理器会自动判断memset-like的write操作是否需要allocate，有些操作可能只执行一次，例如配置PLL等，就不会进行write-allocate</p>
+<hr>
+<h1 id="Cache-Coherence"><a href="#Cache-Coherence" class="headerlink" title="Cache Coherence"></a>Cache Coherence</h1><h2 id="cache-coherence-protocol-Share-memory"><a href="#cache-coherence-protocol-Share-memory" class="headerlink" title="cache-coherence protocol - Share memory"></a>cache-coherence protocol - Share memory</h2><p><font color=blue>memory consistency</font></p>
+<p>：内存一致性</p>
+<p><font color=blue>transactiion serialization</font></p>
+<p>：事务序列化</p>
+<h1 id="Scratchpad-Memory"><a href="#Scratchpad-Memory" class="headerlink" title="Scratchpad Memory"></a>Scratchpad Memory</h1><p><strong>Scratchpad Memory (SPM)</strong> 是一种特殊类型的高速内存，通常用于嵌入式系统和高性能计算中。与传统的缓存（Cache）机制不同，Scratchpad Memory 由软件明确管理，而不是由硬件自动控制其内容。这意味着程序员或编译器需要负责数据的加载和存储，从而提供更大的灵活性和可预测性。</p>
+<p><strong>主要特点和优势：</strong></p>
+<ol>
+<li><strong>可预测的访问时间</strong>：<ul>
+<li>由于由软件管理，访问 Scratchpad Memory 的时间是确定性的，没有缓存替换策略带来的不确定性。这对于实时系统尤为重要。</li>
+</ul>
+</li>
+<li><strong>减少能耗</strong>：<ul>
+<li>Scratchpad Memory 通常设计为低功耗，适合能量敏感的应用。</li>
+</ul>
+</li>
+<li><strong>更高的控制权</strong>：<ul>
+<li>开发者可以优化数据布局和访问模式，以最大化性能和效率，适应特定应用需求。</li>
+</ul>
+</li>
+<li><strong>简化的硬件设计</strong>：<ul>
+<li>由于不需要复杂的缓存控制逻辑，硬件设计可以更简单，减少面积和功耗。</li>
+</ul>
+</li>
+</ol>
+<p><strong>与传统缓存的对比：</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>Cache</strong></th>
+<th><strong>Scratchpad Memory</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>管理方式</strong></td>
+<td>硬件自动管理（如缓存替换策略）</td>
+<td>软件手动管理</td>
+</tr>
+<tr>
+<td><strong>访问时间</strong></td>
+<td>可能存在不可预测的访问延迟</td>
+<td>可预测的访问延迟</td>
+</tr>
+<tr>
+<td><strong>能耗</strong></td>
+<td>相对较高，特别是在高负载情况下</td>
+<td>通常较低</td>
+</tr>
+<tr>
+<td><strong>控制权</strong></td>
+<td>限制在硬件层面</td>
+<td>开发者拥有更高的控制权</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>通用计算，适用于数据访问模式不确定的应用</td>
+<td>嵌入式系统、实时系统和对性能有严格要求的高性能计算</td>
+</tr>
+</tbody></table>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13T421k7TS/?spm_id_from=333.999.0.0&vd_source=c76cab13994e90aef30da628f94d99e8">cache system</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/94811032">cache之多核一致性(一) - 总线上没有秘密</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cache%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># cache基础知识</a>
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/23/verilog%E6%96%AD%E8%A8%80%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="verilog断言的使用">
+      <i class="fa fa-chevron-left"></i> verilog断言的使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/09/09/verilog-assign-initial-always%E8%AF%AD%E5%8F%A5/" rel="next" title="verilog assign/initial/always语句">
+      verilog assign/initial/always语句 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Why-Cache"><span class="nav-number">1.</span> <span class="nav-text">Why Cache</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Do-We-Need-Caches"><span class="nav-number">1.1.</span> <span class="nav-text">Why Do We Need Caches?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Access-Pattern-locality"><span class="nav-number">1.2.</span> <span class="nav-text">Memory Access Pattern &amp; locality</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cache-Organization"><span class="nav-number">2.</span> <span class="nav-text">Cache Organization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cache-operation"><span class="nav-number">2.1.</span> <span class="nav-text">Cache operation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Accessing-the-cache-address-mapping"><span class="nav-number">2.2.</span> <span class="nav-text">Accessing the cache- address mapping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Direct-mapped-Cache"><span class="nav-number">2.3.</span> <span class="nav-text">Direct-mapped Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-associative-Cache"><span class="nav-number">2.4.</span> <span class="nav-text">Set-associative Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Full-Associative-Cache"><span class="nav-number">2.5.</span> <span class="nav-text">Full-Associative Cache</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Replacement-policy"><span class="nav-number">3.</span> <span class="nav-text">Replacement policy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Replacement-Policies"><span class="nav-number">3.1.</span> <span class="nav-text">Replacement Policies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LRU%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">LRU实现方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Write-policy"><span class="nav-number">4.</span> <span class="nav-text">Write policy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-policies-write-hit-write-through-write-back"><span class="nav-number">4.1.</span> <span class="nav-text">cache policies- write hit, write-through,write-back</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-policies-write-miss%EF%BC%9Awrite-allocatioin%EF%BC%8Cnon-writre-allocation"><span class="nav-number">4.2.</span> <span class="nav-text">cache policies-write miss：write-allocatioin，non-writre-allocation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-level-caches"><span class="nav-number">4.3.</span> <span class="nav-text">Multi-level caches</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inclusive-Exclusive-Cache"><span class="nav-number">4.4.</span> <span class="nav-text">Inclusive&#x2F;Exclusive Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Multi-level-Cache-size-latency"><span class="nav-number">4.5.</span> <span class="nav-text">Example Multi-level Cache size&#x2F;latency</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cache-Performance"><span class="nav-number">5.</span> <span class="nav-text">Cache Performance</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-performance"><span class="nav-number">5.1.</span> <span class="nav-text">cache performance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduce-cache-miss-rate"><span class="nav-number">5.2.</span> <span class="nav-text">reduce cache miss rate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6reduce-cache-miss-rate"><span class="nav-number">5.2.1.</span> <span class="nav-text">硬件reduce cache miss rate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6reduce-cache-miss-rate"><span class="nav-number">5.2.2.</span> <span class="nav-text">软件reduce cache miss rate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#recude-hit-time-physical-virtual-address-cache"><span class="nav-number">5.3.</span> <span class="nav-text">recude hit time-physical&#x2F;virtual address cache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Physical-Indexed-and-Physically-Tagged-PIPT-cache"><span class="nav-number">5.3.1.</span> <span class="nav-text">Physical Indexed and Physically Tagged(PIPT) cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#virtual-Indexed-and-virtual-Tagged-VIVT-cache"><span class="nav-number">5.3.2.</span> <span class="nav-text">virtual Indexed and virtual Tagged(VIVT) cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#virtual-Indexed-and-Physically-Tagged-VIPT-cache"><span class="nav-number">5.3.3.</span> <span class="nav-text">virtual Indexed and Physically Tagged(VIPT) cache</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reduce-Miss-penalty"><span class="nav-number">5.4.</span> <span class="nav-text">Reduce Miss penalty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E4%BB%A3%E5%A4%84%E7%90%86%E5%99%A8%E6%8F%90%E5%8D%87mem%E8%AE%BF%E9%97%AE%E6%80%A7%E8%83%BD%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95"><span class="nav-number">5.5.</span> <span class="nav-text">现代处理器提升mem访问性能的一些方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Latency-Reduction-Tolerance-and-Hiding"><span class="nav-number">5.5.1.</span> <span class="nav-text">Latency Reduction, Tolerance and Hiding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prefetch"><span class="nav-number">5.5.2.</span> <span class="nav-text">prefetch</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cache-Coherence"><span class="nav-number">6.</span> <span class="nav-text">Cache Coherence</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-coherence-protocol-Share-memory"><span class="nav-number">6.1.</span> <span class="nav-text">cache-coherence protocol - Share memory</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Scratchpad-Memory"><span class="nav-number">7.</span> <span class="nav-text">Scratchpad Memory</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

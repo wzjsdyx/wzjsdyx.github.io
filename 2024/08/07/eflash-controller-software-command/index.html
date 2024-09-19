@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="page erase1、page erase操作会调用SMWR IP，SME操作会遵循SME操作流程图；   开始擦除 (Start Erase):  流程开始，初始化擦除操作。   初始化计数器:  擦除脉冲计数器 NNN 被设为 0。 后擦除计数器 MMM 被设为 0。   设置擦除电压:  擦除电压设置为高电平 (EV&#x3D;H)。 设置写入电压寄存器 (WHV3:03:03:0)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eflash controller software command">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="page erase1、page erase操作会调用SMWR IP，SME操作会遵循SME操作流程图；   开始擦除 (Start Erase):  流程开始，初始化擦除操作。   初始化计数器:  擦除脉冲计数器 NNN 被设为 0。 后擦除计数器 MMM 被设为 0。   设置擦除电压:  擦除电压设置为高电平 (EV&#x3D;H)。 设置写入电压寄存器 (WHV3:03:03:0)。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/image-20240809141508322.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/image-20240809103335826.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/image-20240814134414239.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/image-20240814135309547.png">
+<meta property="og:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152102767.png">
+<meta property="og:image" content="d:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152118901.png">
+<meta property="article:published_time" content="2024-08-07T01:47:09.000Z">
+<meta property="article:modified_time" content="2024-08-14T08:46:38.451Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="eflash controller">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/image-20240809141508322.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>eflash controller software command | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          eflash controller software command
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-07 09:47:09" itemprop="dateCreated datePublished" datetime="2024-08-07T09:47:09+08:00">2024-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-14 16:46:38" itemprop="dateModified" datetime="2024-08-14T16:46:38+08:00">2024-08-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/tsmc-auot-eflash-controller/" itemprop="url" rel="index"><span itemprop="name">tsmc auot eflash controller</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/07/eflash-controller-software-command/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/07/eflash-controller-software-command/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="page-erase"><a href="#page-erase" class="headerlink" title="page erase"></a>page erase</h1><p>1、page erase操作会调用SMWR IP，SME操作会遵循SME操作流程图；</p>
+<blockquote>
+<ol>
+<li><p><strong>开始擦除 (Start Erase)</strong>:</p>
+<ul>
+<li>流程开始，初始化擦除操作。</li>
+</ul>
+</li>
+<li><p><strong>初始化计数器</strong>:</p>
+<ul>
+<li>擦除脉冲计数器 NNN 被设为 0。</li>
+<li>后擦除计数器 MMM 被设为 0。</li>
+</ul>
+</li>
+<li><p><strong>设置擦除电压</strong>:</p>
+<ul>
+<li>擦除电压设置为高电平 (EV&#x3D;H)。</li>
+<li>设置写入电压寄存器 (WHV3:03:03:0)。</li>
+</ul>
+</li>
+<li><p><strong>执行擦除 (Do Erase)</strong>:</p>
+</li>
+</ol>
+<ul>
+<li>进行实际的擦除操作。</li>
+</ul>
+<ol start="5">
+<li><strong>执行后擦除读取 (Do Post-Erase Read)</strong>:</li>
+</ol>
+<ul>
+<li><font color=blue>初步读取和检查步骤，用于获得擦除后的数据状态，并为后续的擦除验证提供基础数据。</font></li>
+</ul>
+<ol start="6">
+<li><strong>增加擦除脉冲计数器</strong>:</li>
+</ol>
+<ul>
+<li>擦除脉冲计数器 N 增加 1。</li>
+</ul>
+<ol start="7">
+<li><strong>擦除验证 (Erase Verify)</strong>:</li>
+</ol>
+<ul>
+<li>验证擦除是否成功。</li>
+</ul>
+<ol start="8">
+<li><strong>验证成功</strong>:</li>
+</ol>
+<ul>
+<li><p><font color=blue>即使擦除验证通过，为了确保擦除的彻底性，可能还需要进行额外擦除操作。这可能是为了应对一些边缘情况，确保数据完全擦除。&#x3D;&#x3D;&gt;大概率和Macro的自身设计有关，Erase Verify并不能cover到所有的情况，因此需要足够的额外擦除操作（M &gt;&#x3D; POST_ERS ），以保证数据完全擦除。</font></p>
+</li>
+<li><p>如果 M 大于等于 POST_ERS，流程结束。</p>
+</li>
+<li><p>如果 M 小于 POST_ERS，执行额外擦除操作，后擦除计数器 MMM 增加 1，然后返回步骤 4 继续擦除。</p>
+</li>
+</ul>
+<ol start="9">
+<li><strong>失败处理</strong>:</li>
+</ol>
+<ul>
+<li>如果擦除失败，检查擦除脉冲计数器 N 是否大于 N_me。<ul>
+<li>如果 N 大于 N_me，擦除操作失败，流程结束。</li>
+<li>如果 N 小于 N_me，返回步骤 4 继续擦除。</li>
+</ul>
+</li>
+</ul>
+<p>术语解释</p>
+<ul>
+<li><strong>N_me</strong>: 最大擦除脉冲次数，通常是基于特定芯片的耐久性限制。</li>
+<li><strong>T_erase</strong>: 总擦除时间。</li>
+<li><strong>T_sme</strong>: 智能擦除操作的时间。</li>
+</ul>
+</blockquote>
+<p>2、SWMR的工作状态可以通过端口信号判断；</p>
+<blockquote>
+<p>1、User assert <code>SMW_OP</code></p>
+<ul>
+<li>SME2：3’b010, one-shot mass-erase on MAIN array or MAIN, IFREN, and REDEN arrays, Tme is fixed based on macro specs</li>
+<li>SME3：3’b011, smart-page-erase on selected array</li>
+</ul>
+<p>2、TSMWR asserts </p>
+<ul>
+<li><code>SMWR_BUSY</code> signal high until smart-erase cycle is completed.   </li>
+<li><code>SMWR_ERR</code> indicates PASS(0) or FAIL(1) of the cycle, </li>
+<li><code>SMWR_LASTSET</code>, and <code>SMWR_LOOP</code> indicate detailed internal setting to complete the “smart-write” cycle.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Q&amp;A：</p>
+<p>Q1、page erase operation，到底是什么信号触发了是让SMWR动起来？SMWR动起来之后，会拉高swm_busy信号，使得smw_mux输出的是smw_top的信号而不是user信号；</p>
+<p>A1：通过SME操作时序图，可以判断是因为前一级触发了smw_op，然后让SMWR动起来；</p>
+<p>Q2、SME操作流程图怎么理解？</p>
+<p>A2：如上解释</p>
+</blockquote>
+<h1 id="mass-erase命令"><a href="#mass-erase命令" class="headerlink" title="mass erase命令"></a>mass erase命令</h1><p>pflash main区域和dflash main区域是分开操作的，需要不同的指令</p>
+<p>操作的地址只要是在对应的main区域中，即可？？？</p>
+<p>&#x2F;&#x2F; try遇到的问题</p>
+<p>eflash boot，debugger不能erase flash main区域？</p>
+<p>1、先确认读写保护寄存器；</p>
+<p>2、根据读写保护规则确定行为；</p>
+<h2 id="Macro-mass-erase的操作范围："><a href="#Macro-mass-erase的操作范围：" class="headerlink" title="Macro mass erase的操作范围："></a>Macro mass erase的操作范围：</h2><h1 id="reference-cell-erase"><a href="#reference-cell-erase" class="headerlink" title="reference cell erase"></a>reference cell erase</h1><p>空片必须要执行一次reference cell erase；</p>
+<h2 id="软件流程"><a href="#软件流程" class="headerlink" title="软件流程"></a>软件流程</h2><p>首先写FMUKR 0x00ac7805 -&gt;  0x01234567 unlock；</p>
+<p>然后针对FMSPCLCK写32’h3322 1100 -&gt; 32’hffee ddcc；</p>
+<p>最后写FMCCR寄存器，执行reference erase 命令；</p>
+<h2 id="硬件流程"><a href="#硬件流程" class="headerlink" title="硬件流程"></a>硬件流程</h2><p>仿真流程</p>
+<p>1、user logic控制pflash Macro执行reference cell erase</p>
+<p>2、user logic控制dflash Macro执行reference cell erase</p>
+<p>3、user logic控制pflash Macro执行mass erase&#x3D;&#x3D;》pflash main array</p>
+<p>4、smart-write IP采用SM3对pflash Macro区域执行page erase&#x3D;&#x3D;》pflash info page0和page1</p>
+<p>5、user logic控制dflash Macro执行mass erase&#x3D;&#x3D;》dflash main array</p>
+<p>实际芯片的流程</p>
+<p>时序图</p>
+<p>遇到的问题</p>
+<img src="/2024/08/07/eflash-controller-software-command/image-20240809141508322.png" class="">
+
+<p>解决思路</p>
+<ul>
+<li>reference cell erase执行完之后，怎么判断有没有执行成功</li>
+</ul>
+<p>没办法判断，只能按照时序图来，最好多添加一些余量；</p>
+<ul>
+<li>对pflash info区域进行erase操作（利用smart ip）：</li>
+</ul>
+<p>1、smart-ip flow怎么和波形对应？&#x3D;&#x3D;》这个其实可以不用管，只要给command到smwr IP，其能够正确执行page erase操作即可；</p>
+<p>2、怎么看是对应哪一个page进行操作？&#x3D;&#x3D;》通过地址解码table</p>
+<ul>
+<li>reference cell erase命令，执行的范围怎么定？</li>
+</ul>
+<h1 id="page-program"><a href="#page-program" class="headerlink" title="page program"></a>page program</h1><h2 id="software-page-program的使用方式"><a href="#software-page-program的使用方式" class="headerlink" title="software page program的使用方式"></a>software page program的使用方式</h2><img src="/2024/08/07/eflash-controller-software-command/image-20240809103335826.png" class="">
+
+<blockquote>
+<p>NOTE：</p>
+<p>1、硬件首先会verify判断当前地址是否有valid data</p>
+<p>2、如果有valid data的话，需要先erase；</p>
+</blockquote>
+<h2 id="硬件执行机制"><a href="#硬件执行机制" class="headerlink" title="硬件执行机制"></a>硬件执行机制</h2><h3 id="SMP-flow-chart"><a href="#SMP-flow-chart" class="headerlink" title="SMP flow chart"></a>SMP flow chart</h3><img src="/2024/08/07/eflash-controller-software-command/image-20240814134414239.png" class="">
+
+
+
+<blockquote>
+<p>Note: Once “prog_mask” is set to’1’ for existing ‘0’ bit, it will keep at ‘1’ till end of SMP by<br>default.</p>
+</blockquote>
+<h3 id="Smart-Program-Operation"><a href="#Smart-Program-Operation" class="headerlink" title="Smart-Program Operation"></a>Smart-Program Operation</h3><img src="/2024/08/07/eflash-controller-software-command/image-20240814135309547.png" class="">
+
+
+
+<blockquote>
+<p>NOTE：</p>
+<p>SMW_OP</p>
+<p>SWM_BUSY</p>
+<p>SMW_ERR</p>
+<p>SMW_LATESET</p>
+<p>SMW_LOOP</p>
+<p>思考：</p>
+<p><font color=red>SMWR burst-write??</font></p>
+</blockquote>
+<h2 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h2><h1 id="option-page-program"><a href="#option-page-program" class="headerlink" title="option page program"></a>option page program</h1><h2 id="software-option-page-program的使用方式"><a href="#software-option-page-program的使用方式" class="headerlink" title="software option page program的使用方式"></a>software option page program的使用方式</h2><p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152102767.png" alt="image-20240814152102767"></p>
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152118901.png" alt="image-20240814152118901"></p>
+<blockquote>
+<p>NOTE：</p>
+<p>1、当SEGWREN是enable的时候，pflash info page2 和option page的属性相同；</p>
+<p>2、当做read protect&#x3D;&#x3D;》non read protect，此SW命令会对pflash main 和 dflash main做mass erase；</p>
+<p>3、program之后，SMWR IP会做program verify操作；</p>
+</blockquote>
+<h2 id="硬件执行机制-1"><a href="#硬件执行机制-1" class="headerlink" title="硬件执行机制"></a>硬件执行机制</h2><h1 id="page-verify"><a href="#page-verify" class="headerlink" title="page verify"></a>page verify</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/eflash-controller/" rel="tag"># eflash controller</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/" rel="prev" title="Cortex-M4的时钟/复位/Power control">
+      <i class="fa fa-chevron-left"></i> Cortex-M4的时钟/复位/Power control
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/08/07/eflash-controller-Q-A/" rel="next" title="eflash controller Q&A">
+      eflash controller Q&A <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#page-erase"><span class="nav-number">1.</span> <span class="nav-text">page erase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mass-erase%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">mass erase命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Macro-mass-erase%E7%9A%84%E6%93%8D%E4%BD%9C%E8%8C%83%E5%9B%B4%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">Macro mass erase的操作范围：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference-cell-erase"><span class="nav-number">3.</span> <span class="nav-text">reference cell erase</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">软件流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">硬件流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#page-program"><span class="nav-number">4.</span> <span class="nav-text">page program</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#software-page-program%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">software page program的使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">硬件执行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMP-flow-chart"><span class="nav-number">4.2.1.</span> <span class="nav-text">SMP flow chart</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Smart-Program-Operation"><span class="nav-number">4.2.2.</span> <span class="nav-text">Smart-Program Operation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="nav-number">4.3.</span> <span class="nav-text">时序图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#option-page-program"><span class="nav-number">5.</span> <span class="nav-text">option page program</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#software-option-page-program%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">software option page program的使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6-1"><span class="nav-number">5.2.</span> <span class="nav-text">硬件执行机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#page-verify"><span class="nav-number">6.</span> <span class="nav-text">page verify</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

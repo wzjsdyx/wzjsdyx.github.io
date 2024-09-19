@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Overview of low-power Cortex-M features现在的MCU追究非常机制的能效比； Cortex-M系列处理器提供了很多的低功耗特性：  sleep mode：sleep mode和deep sleep mode 多个模块级别的时钟门控，以及子模块级别的时钟门控（有些时候也称为架构门控时钟） 状态保持电源门口SRPG（State retention power gat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6 Low-power support（1）">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="Overview of low-power Cortex-M features现在的MCU追究非常机制的能效比； Cortex-M系列处理器提供了很多的低功耗特性：  sleep mode：sleep mode和deep sleep mode 多个模块级别的时钟门控，以及子模块级别的时钟门控（有些时候也称为架构门控时钟） 状态保持电源门口SRPG（State retention power gat">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709093742706.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709094847853.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709095233535.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709100104211.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240712094613888.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240721172648556.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240722163855336.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240722165602006.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723104002065.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723104805892.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723111728699.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240730094308493.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723111937842.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724150409817.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724151628321.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724152606630.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724153806629.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724154409712.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724173005520.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724194003374.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240725171927479.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240725174130100.png">
+<meta property="article:published_time" content="2024-07-02T12:49:45.000Z">
+<meta property="article:modified_time" content="2024-07-30T01:53:35.214Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="low power">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709093742706.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>6 Low-power support（1） | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6 Low-power support（1）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-02 20:49:45" itemprop="dateCreated datePublished" datetime="2024-07-02T20:49:45+08:00">2024-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-30 09:53:35" itemprop="dateModified" datetime="2024-07-30T09:53:35+08:00">2024-07-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86%EF%BC%9A%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/" itemprop="url" rel="index"><span itemprop="name">理论知识：基于Cortex-M的SoC设计指南</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Overview-of-low-power-Cortex-M-features"><a href="#Overview-of-low-power-Cortex-M-features" class="headerlink" title="Overview of low-power Cortex-M features"></a>Overview of low-power Cortex-M features</h1><p>现在的MCU追究非常机制的能效比；</p>
+<p><font color=blue>Cortex-M系列处理器提供了很多的低功耗特性：</font></p>
+<ul>
+<li>sleep mode：sleep mode和deep sleep mode</li>
+<li>多个模块级别的时钟门控，以及子模块级别的时钟门控（有些时候也称为架构门控时钟）</li>
+<li>状态保持电源门口SRPG（State retention power gating  ）</li>
+<li>WIC</li>
+<li>sleep-on-exit：应用在中断驱动的场景中</li>
+</ul>
+<p><font color=blue>Cortex-M系列处理器还有很多能降低功耗的优点：</font></p>
+<ul>
+<li>代码密度高：降低存储空间要求；</li>
+<li>core的面积小：门数少</li>
+<li>性能优，程序执行的快，减少运行时间；</li>
+<li>低中断延时以及中断处理优化：能够降低中断处理时的功耗</li>
+</ul>
+<p><font color=blue>还有些系统级别的低功耗策略：</font></p>
+<p>例如将SRAM分成多个bank，某些场景下关闭不用的bank，来降低功耗；</p>
+<h1 id="Low-power-design-basics"><a href="#Low-power-design-basics" class="headerlink" title="Low-power design basics"></a>Low-power design basics</h1><h2 id="clock-gating"><a href="#clock-gating" class="headerlink" title="clock gating"></a>clock gating</h2><p>时钟门控clock gating是最基本的低功耗技术之一。</p>
+<h3 id="寄存器级别的时钟门控："><a href="#寄存器级别的时钟门控：" class="headerlink" title="寄存器级别的时钟门控："></a>寄存器级别的时钟门控：</h3><p>综合工具会将使能信号综合成寄存器时钟门控，对Verilog RTL的代码风格有要求</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709093742706.png" class="">
+
+<p><font color=blue></font></p>
+<h3 id="模块级别的时钟门控"><a href="#模块级别的时钟门控" class="headerlink" title="模块级别的时钟门控"></a>模块级别的时钟门控</h3><p><font color=blue></font></p>
+<p>处理器内部各个功能模块的时钟信号受到时钟门控，通过例化时钟门控CELL，这种做法也叫做ACG（architectural clock gating  ）；</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709094847853.png" class="">
+
+
+
+<p>很多的Cortex-M处理器有多个top_level级别的时钟信号，designer需要自行添加时钟门控；</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709095233535.png" class="">
+
+<blockquote>
+<p>可以使用debug power control signals CDBGPWRUPREQ and CDBGPWRUPACK  去门控debug CLK</p>
+<p>可以使用GATEHCLK signal   去门控system CLK</p>
+</blockquote>
+<h2 id="power-gating"><a href="#power-gating" class="headerlink" title="power gating"></a>power gating</h2><p>有些场景下仅仅关闭时钟还是无法满足低功耗场景的要求，这时就可以考虑power gating；</p>
+<p>power gating技术需要：</p>
+<ul>
+<li>power switch transistors  </li>
+<li>isolation  cell</li>
+<li>clamping  cell</li>
+</ul>
+<blockquote>
+<p><strong>电源开关晶体管 (Power Switch Transistors)</strong>:</p>
+<ul>
+<li>这些晶体管用于实现电源门控，即通过控制它们的通断来控制电路的电源供应。当电源开关晶体管关闭时，相关电路部分与电源完全隔离，以减少静态功耗。</li>
+</ul>
+<p><strong>信号隔离 (Signal Isolation)</strong>:</p>
+<ul>
+<li>在电源门控中，关闭电源时，需要确保电路输入和输出信号不会影响其他部分。为了实现这一点，通常会使用专门的电路单元或电路设计技巧，如电流隔离器或传输门，以保持断开电源时的信号完整性和稳定性。</li>
+</ul>
+<p><strong>信号夹持 (Signal Clamping)</strong>:</p>
+<ul>
+<li>电源门控时，有时需要对电路输入或输出信号进行夹持，以防止信号超过安全电压范围。夹持电路通常包括二极管或其他电路元件，用于限制信号的振幅或保护相关电路部分不受损坏。</li>
+<li>信号夹持就是将对外的value输出为high或者low</li>
+</ul>
+</blockquote>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240709100104211.png" class="">
+
+<h3 id="SRPG（State-Retention-Power-Gating-）"><a href="#SRPG（State-Retention-Power-Gating-）" class="headerlink" title="SRPG（State Retention Power Gating  ）"></a>SRPG（State Retention Power Gating  ）</h3><p><font color=blue></font></p>
+<p>power gating的一个最大的缺点就是掉点后状态会丢失，为了解决这个问题，引入了新的技术，SRPG（State Retention Power Gating  ），其在寄存器内部引入状态保持的逻辑，并且使用独立的电源供电。</p>
+<ul>
+<li>寄存器除了状态保持部分，其余部分均会掉电，因此也会节省很多功耗；</li>
+<li>funciton功能下，此种寄存器的功耗比普通寄存器的功耗更高，因此不适合经常toggle的寄存器；</li>
+</ul>
+<h2 id="其他低功耗技术"><a href="#其他低功耗技术" class="headerlink" title="其他低功耗技术"></a>其他低功耗技术</h2><p>纯粹的数字逻辑一般会用到上述的低功耗技术。在其他方面还有低功耗技术，例如</p>
+<ul>
+<li>memory macro的低功耗技术；</li>
+<li>外设组件，例如ADC有其自身特有的低功耗技术</li>
+</ul>
+<h1 id="Cortex-M-low-power-interfaces"><a href="#Cortex-M-low-power-interfaces" class="headerlink" title="Cortex-M low-power interfaces"></a>Cortex-M low-power interfaces</h1><h2 id="Sleep-status-and-GATEHCLK-output"><a href="#Sleep-status-and-GATEHCLK-output" class="headerlink" title="Sleep status and GATEHCLK output"></a>Sleep status and GATEHCLK output</h2><p><font color=blue>大多数的Cortex-M处理器具有如下的低功耗状态输出信号：</font></p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240712094613888.png" class="">
+
+<hr>
+<p><font color=blue>&#x3D;&#x3D;》SLEEPING和SLEEPDEEP信号的说明</font></p>
+<p>从架构上来说，处理器支持两种睡眠模式，sleep mode和deep sleep mode。</p>
+<p>进入这两种睡眠模式的机制是相同的：</p>
+<p>1、首先执行WFI或者WFE；</p>
+<p>2、启用了sleep-on-exit   特性，处理器从异常处理程序返回到线程级别；</p>
+<blockquote>
+<p>思考：</p>
+<p>这里关于sleep-on-exit信号是不是说错了？sleep-on-exit特性使能的时候，中断处理结束会直接进入sleep mode。</p>
+</blockquote>
+<p>Cortex-M处理器进入哪种睡眠模式，根据SCR（System Control Register  ）的配置。</p>
+<p>处理器内部对这两种模式的处理是相同的，SLEEP和SLEEPDEEP信号的作用是，让system designer去定义系统级的低功耗策略。</p>
+<p>WIC只在deepsleep mode的时候才会使用；</p>
+<hr>
+<p><font color=blue>&#x3D;&#x3D;》GATEHCLK信号的说明</font></p>
+<p>当处理器是处于睡眠模式的时候，处理器的AHB-Lite总线接口仍然可能发出debug access访问；</p>
+<p>因此，就需要一个额外的GATEHCLK信号用来表示处理器处于睡眠状态，并且此时没有AHB-Lite总线访问（例如debug access导致的AHB-Lite transaction）。</p>
+<hr>
+<p>以上这些信号的使用特定于MCU，没有固定的使用规则；</p>
+<p>例如，如果GATEHCLK信号是高电平的时候，可以：</p>
+<ul>
+<li><p>将系统BUS clock gate off</p>
+</li>
+<li><p>SRAM进入低功耗模式</p>
+</li>
+<li><p>部分外设被关闭；</p>
+</li>
+</ul>
+<h2 id="Q-channel-low-power-interface"><a href="#Q-channel-low-power-interface" class="headerlink" title="Q-channel low-power interface"></a>Q-channel low-power interface</h2><blockquote>
+<p>(Applicable to Cortex-M23, Cortex-M33,Cortex-M35P)</p>
+</blockquote>
+<p>部分较新的处理器（Cortex-M23, Cortex-M33,Cortex-M35P）支持Q channel，这是AMBA 4 低功耗接口中定义的握手协议；</p>
+<p>略</p>
+<h2 id="Sleep-hold-interface"><a href="#Sleep-hold-interface" class="headerlink" title="Sleep hold interface"></a>Sleep hold interface</h2><p><font color=blue>sleep hold interface的作用</font></p>
+<p>当处理器从sleep mode唤醒的时候，可以使用这个接口延缓程序的执行；</p>
+<p><font color=blue>sleep hold interface的使用场景</font></p>
+<p>处理器的运行需要SRAM，但是SRAM可能需要一定的时间才能从低功耗状态退出，在SRAM退出低功耗状态时，CPU不应该执行程序，此时就可以使用这个端口；</p>
+<p>当在deep sleep mode的时候，<code>如果采用WIC的方案，整个特性就很少会被使用</code>。因为当使用WIC的时候，此时的门控机制会关闭处理器的所有时钟，让其处于低功耗模式；</p>
+<blockquote>
+<p>思考：</p>
+<p><font color=red>没太懂，为啥使用WIC方案的时候，sleep hold 这个特性很少会用到？</font></p>
+</blockquote>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240721172648556.png" class="">
+
+<blockquote>
+<p>这两个信号都是低电平有效，一般和功耗管理单元PMU交互</p>
+</blockquote>
+<p><font color=blue>sleep hold interface的使用方式</font></p>
+<p>1、当PMU检测到SLEEP&#x2F;DEEPSLEEP信号的时候，会assert SLEEPHOLDREQn；</p>
+<p>2、处理器返回SLEEPHOLDACKn</p>
+<ul>
+<li>如果处理器 asset SLEEPHOLDACKn，此时PMU就可以关闭memory，外设，时钟等等；</li>
+<li>如果处理器没有asset SLEEPHOLDACKn，此时意味着，处理器又接收到中断或者debugger request，直接就会被唤醒；在这种情况下，PMU就不应该进行下一步的行为，并且在SLEEPING or SLEEPDEEP  de-assert的时候，需要de-assert SLEEPHOLDACKn；</li>
+</ul>
+<p>3、如果处理器 asset SLEEPHOLDACKn，唤醒中断到来的时候，处理器将会de-asset sleep signal，此时处理器并不会立刻执行程序，而是需要等到SLEEPHOLDREQn  deassert</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240722163855336.png" class="">
+
+<blockquote>
+<p>思考：</p>
+<p>1、<font color=red>SLEEPHOLDACKn  会在什么时候从core返回？？</font></p>
+<p>2、在extended sleep  阶段，GATEHCLK有可能还是高电平，此时HCLK会被gating off；（特定于处理器，不同处理器的行为可能不相同）</p>
+<p>3、目前接触的项目中，并没有使用这个特性；</p>
+</blockquote>
+<p><font color=blue>如果不需要这个sleep hold feature  ，需要将SLEEPHOLDREQn  &#x3D; 1‘b1;</font></p>
+<h2 id="Wakeup-Interrupt-Controller-WIC"><a href="#Wakeup-Interrupt-Controller-WIC" class="headerlink" title="Wakeup Interrupt Controller (WIC)"></a>Wakeup Interrupt Controller (WIC)</h2><p><font color=blue>为什么需要WIC</font></p>
+<p>如果将CORE的所有时钟都关闭，或者CORE处于掉电状态（最大程度的降低CORE的功耗），那么NVIC此时就不能检测唤醒事件，此时就需要WIC。</p>
+<h3 id="WIC接口"><a href="#WIC接口" class="headerlink" title="WIC接口"></a>WIC接口</h3><p>WIC是一个可选的模块，处于always-on power domain。当NVIC没有时钟或者掉电的时候，WIC起到检测中断事件的作用。</p>
+<p>WIC接口特定于处理器，但是一般来说，：</p>
+<ul>
+<li>WIC和处理器的接口如下：</li>
+</ul>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240722165602006.png" class="">
+
+<ul>
+<li>WIC和系统的接口如下：</li>
+</ul>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723104002065.png" class="">
+
+<h3 id="WIC-demo-代码"><a href="#WIC-demo-代码" class="headerlink" title="WIC demo 代码"></a>WIC demo 代码</h3><p><font color=blue>Cortex-M产品包交付的WIC是一个示例逻辑，允许修改（如下面代码所示）。在某些情况下，designer会将WIC设计成基于锁存器的操作，这样的话，唤醒时间的检测和capture就无需任何时钟;</font></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// The confidential and proprietary information contained in this file may</span></span><br><span class="line"><span class="comment">// only be used by a person authorised under and to the extent permitted</span></span><br><span class="line"><span class="comment">// by a subsisting licensing agreement from ARM Limited.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//            (C) COPYRIGHT 2004-2010 ARM Limited.</span></span><br><span class="line"><span class="comment">//                ALL RIGHTS RESERVED</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This entire notice must be reproduced on all copies of this file</span></span><br><span class="line"><span class="comment">// and copies of this file may only be made by a person if such person is</span></span><br><span class="line"><span class="comment">// permitted to do so under the terms of a subsisting license agreement</span></span><br><span class="line"><span class="comment">// from ARM Limited.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  Revision            : $Revision: 141802 $</span></span><br><span class="line"><span class="comment">//  Release information : cortexm4_r0p1_00rel0</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Purpose: Wake-Up Interrupt Controller (WIC)</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> cm4_wic</span><br><span class="line">  (<span class="comment">// Inputs</span></span><br><span class="line">   FCLK, RESETn, WICLOAD, WICCLEAR, WICINT, WICMASK, WICENREQ,</span><br><span class="line">   WICDSACKn,</span><br><span class="line">   <span class="comment">// Outputs</span></span><br><span class="line">   WAKEUP, WICSENSE, WICPEND, WICDSREQn, WICENACK</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Parameters</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">parameter</span> WIC_PRESENT = <span class="number">0</span>;  <span class="comment">// WIC present if 1.</span></span><br><span class="line">  <span class="keyword">parameter</span> WIC_LINES   = <span class="number">8</span>;  <span class="comment">// Number of WIC lines. Min value is 3.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Port declarations</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clocks and resets</span></span><br><span class="line">  <span class="keyword">input</span>                  FCLK;</span><br><span class="line">  <span class="keyword">input</span>                  RESETn;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// WIC interface</span></span><br><span class="line">  <span class="keyword">input</span>                  WICLOAD;     <span class="comment">// WIC mask load from core</span></span><br><span class="line">  <span class="keyword">input</span>                  WICCLEAR;    <span class="comment">// WIC mask clear from core</span></span><br><span class="line">  <span class="keyword">input</span>  [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICINT;      <span class="comment">// Interrupt request from system</span></span><br><span class="line">  <span class="keyword">input</span>  [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICMASK;     <span class="comment">// Mask from core</span></span><br><span class="line">  <span class="keyword">input</span>                  WICENREQ;    <span class="comment">// WIC enable request from PMU</span></span><br><span class="line">  <span class="keyword">input</span>                  WICDSACKn;   <span class="comment">// WIC enable ack from core</span></span><br><span class="line">  <span class="keyword">output</span> [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICSENSE;    <span class="comment">// Input lines that can generate WAKEUP</span></span><br><span class="line">  <span class="keyword">output</span> [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICPEND;     <span class="comment">// Pended interrupt request</span></span><br><span class="line">  <span class="keyword">output</span>                 WICDSREQn;   <span class="comment">// WIC enable request to core</span></span><br><span class="line">  <span class="keyword">output</span>                 WICENACK;    <span class="comment">// WIC enable ack to PMU</span></span><br><span class="line">  <span class="keyword">output</span>                 WAKEUP;      <span class="comment">// Wake up request to PMU</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Signal declarations</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Pending and status registers</span></span><br><span class="line">  <span class="keyword">reg</span>    [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] wic_sense;        <span class="comment">// Interrupt mask register</span></span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] nxt_wic_sense;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_sense_we;</span><br><span class="line">  <span class="keyword">reg</span>    [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] wic_pend;         <span class="comment">// Interrupt pend register</span></span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] nxt_wic_pend;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_pend_we;</span><br><span class="line">  <span class="keyword">reg</span>                    wic_active;       <span class="comment">// Active status register</span></span><br><span class="line">  <span class="keyword">wire</span>                   wic_active_we;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// WIC enable handshake signals</span></span><br><span class="line">  <span class="keyword">reg</span>                    wic_ds_req;</span><br><span class="line">  <span class="keyword">wire</span>                   set_wic_ds_req;</span><br><span class="line">  <span class="keyword">wire</span>                   clr_wic_ds_req;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_ds_req_we;</span><br><span class="line">  <span class="keyword">reg</span>                    wic_en_ack;</span><br><span class="line">  <span class="keyword">wire</span>                   set_wic_en_ack;</span><br><span class="line">  <span class="keyword">wire</span>                   clr_wic_en_ack;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_en_ack_we;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// PMU wakeup</span></span><br><span class="line">  <span class="keyword">wire</span>                   wakeup_pmu;       <span class="comment">// Request wakeup to PMU</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Logic removal terms</span></span><br><span class="line">  <span class="keyword">wire</span>                   opt_mst_wic_en;</span><br><span class="line">  <span class="keyword">wire</span>                   opt_wakeup;</span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] opt_wic_sense;</span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] opt_wic_pend;</span><br><span class="line">  <span class="keyword">wire</span>                   opt_wic_ds_req_n;</span><br><span class="line">  <span class="keyword">wire</span>                   opt_wic_en_ack;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Logic removal</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">assign</span> opt_wakeup       = (WIC_PRESENT != <span class="number">0</span>) ? wakeup_pmu  : <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_sense    = (WIC_PRESENT != <span class="number">0</span>) ? wic_sense   : &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_pend     = (WIC_PRESENT != <span class="number">0</span>) ? wic_pend    : &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_ds_req_n = (WIC_PRESENT != <span class="number">0</span>) ? ~wic_ds_req : <span class="number">1&#x27;b1</span>;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_en_ack   = (WIC_PRESENT != <span class="number">0</span>) ? wic_en_ack  : <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">assign</span> opt_mst_wic_en   = (WIC_PRESENT != <span class="number">0</span>) ? <span class="number">1&#x27;b1</span>        : <span class="number">1&#x27;b0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// WIC enable handshake</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Request WIC mode sleep if PMU request is asserted and debugger is not</span></span><br><span class="line">  <span class="comment">// connected</span></span><br><span class="line">  <span class="keyword">assign</span> set_wic_ds_req = WICENREQ &amp; opt_wic_ds_req_n;</span><br><span class="line">  <span class="keyword">assign</span> clr_wic_ds_req = ~opt_wic_ds_req_n &amp; ~WICENREQ;</span><br><span class="line">  <span class="keyword">assign</span> wic_ds_req_we  = opt_mst_wic_en &amp; (set_wic_ds_req | clr_wic_ds_req);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_ds_req &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_ds_req_we)</span><br><span class="line">      wic_ds_req &lt;= set_wic_ds_req;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Acknowledge PMU request if core accepts and the debugger is not connected</span></span><br><span class="line">  <span class="keyword">assign</span> set_wic_en_ack = ~WICDSACKn &amp; ~opt_wic_en_ack;</span><br><span class="line">  <span class="keyword">assign</span> clr_wic_en_ack = opt_wic_en_ack &amp; WICDSACKn;</span><br><span class="line">  <span class="keyword">assign</span> wic_en_ack_we  = opt_mst_wic_en &amp; (set_wic_en_ack | clr_wic_en_ack);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_en_ack &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_en_ack_we)</span><br><span class="line">      wic_en_ack &lt;= set_wic_en_ack;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// LOAD/CLEAR WIC sensitivity</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Set mask value depending on operation</span></span><br><span class="line">  <span class="keyword">assign</span> nxt_wic_sense = &#123;WIC_LINES&#123;WICLOAD&#125;&#125; &amp; WICMASK;</span><br><span class="line">  <span class="keyword">assign</span> wic_sense_we  = opt_mst_wic_en &amp; (WICCLEAR | WICLOAD);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_sense &lt;= &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_sense_we)</span><br><span class="line">      wic_sense &lt;= nxt_wic_sense;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Pend interrupts</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">assign</span> nxt_wic_pend = &#123;WIC_LINES&#123;~WICCLEAR&#125;&#125; &amp; (WICINT | wic_pend);</span><br><span class="line">  <span class="keyword">assign</span> wic_pend_we  = opt_mst_wic_en &amp; (WICLOAD | wic_active) &amp; (WICCLEAR | (|WICINT));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @( <span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_pend &lt;= &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_pend_we)</span><br><span class="line">      wic_pend &lt;= nxt_wic_pend;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Active status register</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">assign</span> wic_active_we = opt_mst_wic_en &amp; (WICLOAD | WICCLEAR);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_active &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_active_we)</span><br><span class="line">      wic_active &lt;= WICLOAD;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Request wake-up</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Wake up if something has been pended that is observed whilst powered down</span></span><br><span class="line">  <span class="keyword">assign</span> wakeup_pmu = (|(wic_pend &amp; wic_sense));</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Output assignments</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">assign</span> WAKEUP    = opt_wakeup;</span><br><span class="line">  <span class="keyword">assign</span> WICSENSE  = opt_wic_sense;</span><br><span class="line">  <span class="keyword">assign</span> WICPEND   = opt_wic_pend;</span><br><span class="line">  <span class="keyword">assign</span> WICDSREQn = opt_wic_ds_req_n;</span><br><span class="line">  <span class="keyword">assign</span> WICENACK  = opt_wic_en_ack;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// OVL assertions</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="keyword">ifdef</span> ARM_ASSERT_ON</span></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_ds_req_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_ds_req_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_ds_req_we));</span><br><span class="line"></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_sense_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_sense_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_sense_we));</span><br><span class="line"></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_pend_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_pend_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_pend_we));</span><br><span class="line"></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_active_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_active_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_active_we));</span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="keyword">endif</span></span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="WIC修改后基于锁存的代码"><a href="#WIC修改后基于锁存的代码" class="headerlink" title="WIC修改后基于锁存的代码"></a>WIC修改后基于锁存的代码</h3><p>项目中的修改：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// The confidential and proprietary information contained in this file may</span></span><br><span class="line"><span class="comment">// only be used by a person authorised under and to the extent permitted</span></span><br><span class="line"><span class="comment">// by a subsisting licensing agreement from ARM Limited.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//            (C) COPYRIGHT 2004-2010 ARM Limited.</span></span><br><span class="line"><span class="comment">//                ALL RIGHTS RESERVED</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// This entire notice must be reproduced on all copies of this file</span></span><br><span class="line"><span class="comment">// and copies of this file may only be made by a person if such person is</span></span><br><span class="line"><span class="comment">// permitted to do so under the terms of a subsisting license agreement</span></span><br><span class="line"><span class="comment">// from ARM Limited.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  Revision            : $Revision: 141802 $</span></span><br><span class="line"><span class="comment">//  Release information : cortexm4_r0p1_00rel0</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Purpose: Wake-Up Interrupt Controller (WIC)</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> cm4_wic</span><br><span class="line">  (<span class="comment">// Inputs</span></span><br><span class="line">   TESTMODE, SCANCLK, FCLK, RESETn, WICLOAD, WICCLEAR, WICINT, WICMASK, WICENREQ,</span><br><span class="line">   WICDSACKn,</span><br><span class="line">   <span class="comment">// Outputs</span></span><br><span class="line">   WAKEUP, WICSENSE, WICPEND, WICDSREQn, WICENACK</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Parameters</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">parameter</span> WIC_PRESENT = <span class="number">0</span>;  <span class="comment">// WIC present if 1.</span></span><br><span class="line">  <span class="keyword">parameter</span> WIC_LINES   = <span class="number">8</span>;  <span class="comment">// Number of WIC lines. Min value is 3.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Port declarations</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">input</span>                  TESTMODE;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clocks and resets</span></span><br><span class="line">  <span class="keyword">input</span>                  SCANCLK;</span><br><span class="line">  <span class="keyword">input</span>                  FCLK;</span><br><span class="line">  <span class="keyword">input</span>                  RESETn;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// WIC interface</span></span><br><span class="line">  <span class="keyword">input</span>                  WICLOAD;     <span class="comment">// WIC mask load from core</span></span><br><span class="line">  <span class="keyword">input</span>                  WICCLEAR;    <span class="comment">// WIC mask clear from core</span></span><br><span class="line">  <span class="keyword">input</span>  [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICINT;      <span class="comment">// Interrupt request from system</span></span><br><span class="line">  <span class="keyword">input</span>  [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICMASK;     <span class="comment">// Mask from core</span></span><br><span class="line">  <span class="keyword">input</span>                  WICENREQ;    <span class="comment">// WIC enable request from PMU</span></span><br><span class="line">  <span class="keyword">input</span>                  WICDSACKn;   <span class="comment">// WIC enable ack from core</span></span><br><span class="line">  <span class="keyword">output</span> [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICSENSE;    <span class="comment">// Input lines that can generate WAKEUP</span></span><br><span class="line">  <span class="keyword">output</span> [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] WICPEND;     <span class="comment">// Pended interrupt request</span></span><br><span class="line">  <span class="keyword">output</span>                 WICDSREQn;   <span class="comment">// WIC enable request to core</span></span><br><span class="line">  <span class="keyword">output</span>                 WICENACK;    <span class="comment">// WIC enable ack to PMU</span></span><br><span class="line">  <span class="keyword">output</span>                 WAKEUP;      <span class="comment">// Wake up request to PMU</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Signal declarations</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Pending and status registers</span></span><br><span class="line">  <span class="keyword">reg</span>    [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] wic_sense;        <span class="comment">// Interrupt mask register</span></span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] nxt_wic_sense;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_sense_we;</span><br><span class="line">  <span class="keyword">reg</span>    [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] wic_pend;         <span class="comment">// Interrupt pend register</span></span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] nxt_wic_pend;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_pend_we;</span><br><span class="line">  <span class="keyword">reg</span>                    wic_active;       <span class="comment">// Active status register</span></span><br><span class="line">  <span class="keyword">wire</span>                   wic_active_we;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// WIC enable handshake signals</span></span><br><span class="line">  <span class="keyword">reg</span>                    wic_ds_req;</span><br><span class="line">  <span class="keyword">wire</span>                   set_wic_ds_req;</span><br><span class="line">  <span class="keyword">wire</span>                   clr_wic_ds_req;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_ds_req_we;</span><br><span class="line">  <span class="keyword">reg</span>                    wic_en_ack;</span><br><span class="line">  <span class="keyword">wire</span>                   set_wic_en_ack;</span><br><span class="line">  <span class="keyword">wire</span>                   clr_wic_en_ack;</span><br><span class="line">  <span class="keyword">wire</span>                   wic_en_ack_we;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// PMU wakeup</span></span><br><span class="line">  <span class="keyword">wire</span>                   wakeup_pmu;       <span class="comment">// Request wakeup to PMU</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Logic removal terms</span></span><br><span class="line">  <span class="keyword">wire</span>                   opt_mst_wic_en;</span><br><span class="line">  <span class="keyword">wire</span>                   opt_wakeup;</span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] opt_wic_sense;</span><br><span class="line">  <span class="keyword">wire</span>   [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] opt_wic_pend;</span><br><span class="line">  <span class="keyword">wire</span>                   opt_wic_ds_req_n;</span><br><span class="line">  <span class="keyword">wire</span>                   opt_wic_en_ack;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Logic removal</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">assign</span> opt_wakeup       = (WIC_PRESENT != <span class="number">0</span>) ? wakeup_pmu  : <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_sense    = (WIC_PRESENT != <span class="number">0</span>) ? wic_sense   : &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_pend     = (WIC_PRESENT != <span class="number">0</span>) ? wic_pend    : &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_ds_req_n = (WIC_PRESENT != <span class="number">0</span>) ? ~wic_ds_req : <span class="number">1&#x27;b1</span>;</span><br><span class="line">  <span class="keyword">assign</span> opt_wic_en_ack   = (WIC_PRESENT != <span class="number">0</span>) ? wic_en_ack  : <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">assign</span> opt_mst_wic_en   = (WIC_PRESENT != <span class="number">0</span>) ? <span class="number">1&#x27;b1</span>        : <span class="number">1&#x27;b0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// WIC enable handshake</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Request WIC mode sleep if PMU request is asserted and debugger is not</span></span><br><span class="line">  <span class="comment">// connected</span></span><br><span class="line">  <span class="keyword">assign</span> set_wic_ds_req = WICENREQ &amp; opt_wic_ds_req_n;</span><br><span class="line">  <span class="keyword">assign</span> clr_wic_ds_req = ~opt_wic_ds_req_n &amp; ~WICENREQ;</span><br><span class="line">  <span class="keyword">assign</span> wic_ds_req_we  = opt_mst_wic_en &amp; (set_wic_ds_req | clr_wic_ds_req);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_ds_req &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_ds_req_we)</span><br><span class="line">      wic_ds_req &lt;= set_wic_ds_req;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Acknowledge PMU request if core accepts and the debugger is not connected</span></span><br><span class="line">  <span class="keyword">assign</span> set_wic_en_ack = ~WICDSACKn &amp; ~opt_wic_en_ack;</span><br><span class="line">  <span class="keyword">assign</span> clr_wic_en_ack = opt_wic_en_ack &amp; WICDSACKn;</span><br><span class="line">  <span class="keyword">assign</span> wic_en_ack_we  = opt_mst_wic_en &amp; (set_wic_en_ack | clr_wic_en_ack);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_en_ack &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_en_ack_we)</span><br><span class="line">      wic_en_ack &lt;= set_wic_en_ack;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// LOAD/CLEAR WIC sensitivity</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Set mask value depending on operation</span></span><br><span class="line">  <span class="keyword">assign</span> nxt_wic_sense = &#123;WIC_LINES&#123;WICLOAD&#125;&#125; &amp; WICMASK;</span><br><span class="line">  <span class="keyword">assign</span> wic_sense_we  = opt_mst_wic_en &amp; (WICCLEAR | WICLOAD);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_sense &lt;= &#123;WIC_LINES&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_sense_we)</span><br><span class="line">      wic_sense &lt;= nxt_wic_sense;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Pend interrupts</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">assign</span> nxt_wic_pend = &#123;WIC_LINES&#123;~WICCLEAR&#125;&#125; &amp; (WICINT | wic_pend);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//AWIC modify by zhbin 20200826</span></span><br><span class="line">  <span class="comment">//assign wic_pend_we  = opt_mst_wic_en &amp; (WICLOAD | wic_active) &amp; (WICCLEAR | (|WICINT));</span></span><br><span class="line">  <span class="comment">//always @(posedge FCLK or negedge RESETn)</span></span><br><span class="line">  <span class="comment">//  if (!RESETn)</span></span><br><span class="line">  <span class="comment">//    wic_pend &lt;= &#123;WIC_LINES&#123;1&#x27;b0&#125;&#125;;</span></span><br><span class="line">  <span class="comment">//  else if (wic_pend_we)</span></span><br><span class="line">  <span class="comment">//    wic_pend &lt;= nxt_wic_pend;</span></span><br><span class="line">  <span class="keyword">wire</span>  wicclear_tmp;</span><br><span class="line">  dtc_buf  dtc_dly_wicclr_tmp( <span class="variable">.I</span>( !WICCLEAR ), <span class="variable">.Z</span>( wicclear_tmp ) );</span><br><span class="line">  <span class="comment">//assign wic_pend_we  = opt_mst_wic_en &amp; (WICLOAD | wic_active) &amp; (|WICINT);</span></span><br><span class="line">  <span class="keyword">assign</span> wic_pend_we  = opt_mst_wic_en &amp; (WICLOAD | wic_active) ; <span class="comment">//20210731 atc1010 update</span></span><br><span class="line">  <span class="comment">//wire wic_pend_clr_n = RESETn &amp; !WICCLEAR;</span></span><br><span class="line">  <span class="keyword">wire</span> wic_pend_clr_n = RESETn &amp; wicclear_tmp; <span class="comment">//20220629 atc1010 just add dtc buf;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">wire</span>  [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] wic_pend_clk;</span><br><span class="line">  <span class="keyword">wire</span>  [WIC_LINES-<span class="number">1</span>:<span class="number">0</span>] wic_pend_clk_mux;</span><br><span class="line">  <span class="keyword">wire</span>                  wic_pend_clr_n_mux;</span><br><span class="line">  dtc_ckmux2 dtc_wic_pend_rst (<span class="variable">.S</span>(TESTMODE), <span class="variable">.I0</span>(wic_pend_clr_n), <span class="variable">.I1</span>(RESETn), <span class="variable">.Z</span>(wic_pend_clr_n_mux));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">genvar</span> i;</span><br><span class="line">  <span class="keyword">generate</span></span><br><span class="line">     <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;WIC_LINES;i=i+<span class="number">1</span>)</span><br><span class="line">     <span class="keyword">begin</span>:wic_pend_int</span><br><span class="line"></span><br><span class="line">       dtc_ckbuf  dtc_ckbuf_int( <span class="variable">.I</span>(wic_active &amp; nxt_wic_pend[i]), <span class="variable">.Z</span>(wic_pend_clk[i]) );</span><br><span class="line">       dtc_ckmux2 dtc_wic_pend_mux (<span class="variable">.S</span>(TESTMODE), <span class="variable">.I0</span>(wic_pend_clk[i]), <span class="variable">.I1</span>(SCANCLK), <span class="variable">.Z</span>(wic_pend_clk_mux[i]));</span><br><span class="line">       <span class="keyword">always</span> @(<span class="keyword">posedge</span> wic_pend_clk_mux[i] <span class="keyword">or</span> <span class="keyword">negedge</span> wic_pend_clr_n_mux)</span><br><span class="line">       <span class="keyword">if</span> (!wic_pend_clr_n_mux)</span><br><span class="line">       <span class="comment">//wic_pend[i] &lt;= &#123;WIC_LINES&#123;1&#x27;b0&#125;&#125;;</span></span><br><span class="line">         wic_pend[i] &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">       <span class="keyword">else</span> <span class="keyword">if</span> (wic_pend_we)</span><br><span class="line">       <span class="comment">//wic_pend[i] &lt;= nxt_wic_pend[i];       </span></span><br><span class="line">         wic_pend[i] &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line">     <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">endgenerate</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Active status register</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">assign</span> wic_active_we = opt_mst_wic_en &amp; (WICLOAD | WICCLEAR);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @ (<span class="keyword">posedge</span> FCLK <span class="keyword">or</span> <span class="keyword">negedge</span> RESETn)</span><br><span class="line">    <span class="keyword">if</span> (!RESETn)</span><br><span class="line">      wic_active &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (wic_active_we)</span><br><span class="line">      wic_active &lt;= WICLOAD;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Request wake-up</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Wake up if something has been pended that is observed whilst powered down</span></span><br><span class="line">  <span class="keyword">assign</span> wakeup_pmu = (|(wic_pend &amp; wic_sense));</span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// Output assignments</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="keyword">assign</span> WAKEUP    = opt_wakeup;</span><br><span class="line">  <span class="keyword">assign</span> WICSENSE  = opt_wic_sense;</span><br><span class="line">  <span class="keyword">assign</span> WICPEND   = opt_wic_pend;</span><br><span class="line">  <span class="keyword">assign</span> WICDSREQn = opt_wic_ds_req_n;</span><br><span class="line">  <span class="keyword">assign</span> WICENACK  = opt_wic_en_ack;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment">// OVL assertions</span></span><br><span class="line">  <span class="comment">//----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="keyword">ifdef</span> ARM_ASSERT_ON</span></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_ds_req_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_ds_req_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_ds_req_we));</span><br><span class="line"></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_sense_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_sense_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_sense_we));</span><br><span class="line"></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_pend_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_pend_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_pend_we));</span><br><span class="line"></span><br><span class="line">  assert_never_unknown <span class="variable">#(0,1,0, &quot;wic_active_we must not be unknown&quot;)</span></span><br><span class="line">  ts_wic_active_we_unknown</span><br><span class="line">    (<span class="variable">.clk</span>       (FCLK),</span><br><span class="line">     <span class="variable">.reset_n</span>   (RESETn),</span><br><span class="line">     <span class="variable">.qualifier</span> (<span class="number">1&#x27;b1</span>),</span><br><span class="line">     <span class="variable">.test_expr</span> (wic_active_we));</span><br><span class="line"></span><br><span class="line"><span class="meta">`<span class="keyword">endif</span></span></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723104805892.png" class="">
+
+<blockquote>
+<p>项目中是如上图这么做的</p>
+<p><font color=red>有个问题，clock后面需要弄一个clock mux，用于切换scan和function clock？为什么这么做？</font></p>
+</blockquote>
+<h3 id="WIC的工作流程"><a href="#WIC的工作流程" class="headerlink" title="WIC的工作流程"></a>WIC的工作流程</h3><p>1、当进入睡眠模式的时候，wakeup event mask将会从NVIC–》WIC，通过(WICMASK[] and WICLOAD)。</p>
+<p>2、当唤醒事件到来的时候，WIC将会发送wake up request到PMU</p>
+<p>3、PMU控制处理器的power和clock恢复；此时处理器可以接收中断请求（或其他唤醒事件）；</p>
+<p>4、当处理器被唤醒之后，WIC的wake-up mask信息以及pending wake-up event将会被自动清除(WICCLEAR)  </p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723111728699.png" class="">
+
+<h3 id="WIC的详细时序图"><a href="#WIC的详细时序图" class="headerlink" title="WIC的详细时序图"></a>WIC的详细时序图</h3><img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240730094308493.png" class="">
+
+
+
+<h3 id="WIC的集成"><a href="#WIC的集成" class="headerlink" title="WIC的集成"></a>WIC的集成</h3><p>Cortex-M处理器，部分是将WIC放在处理器内部，有些是将WIC放在处理器外部；</p>
+<p>放在外部的WIC，集成上略有不同：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240723111937842.png" class="">
+
+
+
+<h3 id="EDBGRQ信号"><a href="#EDBGRQ信号" class="headerlink" title="EDBGRQ信号"></a>EDBGRQ信号</h3><p>Armv7-M 和 Armv8-M Mainline 处理器系统中，会将EDBGRQ signal (external debug request)  作为WIC的唤醒源之一，因为外部debug请求会触发Debug Monitor exception；</p>
+<p>但是在Armv6-M 和 Armv8-M baseline 系统（如 Cortex-M23 处理器系统）中，因为没有Debug Monitor exception，因此就没有外部debug请求；</p>
+<blockquote>
+<p>思考：</p>
+<p>1、什么是Mainline？什么是baseline？</p>
+<p>在Arm架构中，术语“Mainline”和“baseline”通常用来区分不同的处理器配置或特性水平。这些术语可以根据具体的处理器系列和架构版本来理解：</p>
+<ol>
+<li>Mainline：<ul>
+<li>在Arm架构中，“Mainline”通常指的是支持全套标准特性和功能的处理器配置。这些处理器通常具有较高的性能和更广泛的功能集，能够满足多种应用需求。例如，在Cortex-M系列中，Mainline处理器通常支持较多的调试和安全功能，如调试监视器异常和硬件安全扩展。</li>
+</ul>
+</li>
+<li>Baseline：<ul>
+<li>相比之下，“Baseline”处理器配置则是指针对低成本、低功耗以及对特定应用需求的优化。这些处理器可能会限制一些高级特性或功能，以降低成本和功耗，同时仍提供足够的性能来处理典型的嵌入式应用。在Arm的术语中，Baseline配置可能会限制或不支持一些高级的调试功能或安全扩展。</li>
+</ul>
+</li>
+</ol>
+<p><font color=red>2、debug monitor异常？</font></p>
+</blockquote>
+<h3 id="WIC可以通过handshake信号enable或者disable"><a href="#WIC可以通过handshake信号enable或者disable" class="headerlink" title="WIC可以通过handshake信号enable或者disable"></a>WIC可以通过handshake信号enable或者disable</h3><p>在M3和M4系统中，其handshake信号有两对：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724150409817.png" class="">
+
+<p>在程序开始的时候，软件去写PMU模块，让其和WIC进行handshake，使能WIC；这也使能了PMU去处理state retention  power gating；</p>
+<p>WIC的enable 顺序如下：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724151628321.png" class="">
+
+<blockquote>
+<p>思考：</p>
+<p><font color=red>PMU什么时候去处理power gating？怎么去处理？</font></p>
+</blockquote>
+<h3 id="SRPG-support端口"><a href="#SRPG-support端口" class="headerlink" title="SRPG support端口"></a>SRPG support端口</h3><p>如果使用SRPG（State Retention Power Gating  ），需要去控制一系列的信号，并且需要看特定的工艺（cell的控制端口），但是通常来说，需要有如下信号：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724152606630.png" class="">
+
+<h3 id="Demo-PMU-state-machine"><a href="#Demo-PMU-state-machine" class="headerlink" title="Demo PMU state machine"></a>Demo PMU state machine</h3><p>系统设计者需要通过state machine去控制power-down和power-up的状态，并且需要一个表示是否上电完成的信号PWRUPREADY（模拟LDO给数字供电需要一个过程），大概的流程如下所示：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724153806629.png" class="">
+
+<blockquote>
+<p>假设当前处于POWER-DOWN的状态：</p>
+<p>1、当WIC检测到唤醒事件的时候，会有WAKEUP信号送到PMU；</p>
+<p>2、PMU不在对状态保持逻辑做power gating，并且等到上电完成PWRUPREADY；</p>
+<p>3、恢复状态保持寄存器的值；</p>
+<p>4、关闭ISO单元；</p>
+<p>5、打开时钟，关闭睡眠保持请求；</p>
+<p>6、上电完成；</p>
+</blockquote>
+<p>还可以进一步设计，允许power down顺序被中断，从而减少中断响应的时间：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724154409712.png" class="">
+
+
+
+<blockquote>
+<p><font color=red>启用WIC的软件流程是什么？</font></p>
+</blockquote>
+<h2 id="SRPG’s-impact-on-software"><a href="#SRPG’s-impact-on-software" class="headerlink" title="SRPG’s impact on software"></a>SRPG’s impact on software</h2><p>SRPG对软件有一定的影响，需要考虑如下方面：</p>
+<p>1、systick timer将会被关闭。此时如果还需要定时操作的话，需要使用外部时钟；</p>
+<p>2、中断延时将会增加，当WIC或者SRPG使用的时候；</p>
+<p>3、当有外部调试器连接的时候，通常禁用掉电功能；这是因为在处理器内核处于睡眠模式的时候，外部的调试器也需要访问处理器；</p>
+<h2 id="Software-power-saving-approach"><a href="#Software-power-saving-approach" class="headerlink" title="Software power-saving approach"></a>Software power-saving approach</h2><p>软件开发的过程中，需要对如下场景做决策：</p>
+<ul>
+<li><p>程序快速运行，并尽可能的进入低功耗模式;</p>
+</li>
+<li><p>程序慢速运行；</p>
+</li>
+</ul>
+<p>对于这个问题的分析，并没有一个固定的准则，原因如下：</p>
+<p>1、如果振荡器的功耗很高，那么慢速时钟可能是减低功耗的方法，但是这会增加中断延时以及整体的漏电流；</p>
+<p>2、如果eflash的漏电流很大，在程序快速运行然后进入低功耗模式的时候，可能是降低功耗的一种方法，但是其peak power会更高；</p>
+<h1 id="Cortex-M-processor-characteristics-that-enable-low-power-designs"><a href="#Cortex-M-processor-characteristics-that-enable-low-power-designs" class="headerlink" title="Cortex-M processor characteristics that enable low-power designs"></a>Cortex-M processor characteristics that enable low-power designs</h1><h2 id="High-code-density"><a href="#High-code-density" class="headerlink" title="High code density"></a>High code density</h2><p>Cortex-M系列的处理器使用的是16-bits&#x2F;32bits混合指令集，其代码密度更高，在低功耗方面带来的好处就是，可以使用更小的ROM&#x2F;Flash，从而降低功耗；</p>
+<p>除了功耗方面的好处之外，更小的ROM&#x2F;eflash可以降低成本；</p>
+<h2 id="Short-pipeline"><a href="#Short-pipeline" class="headerlink" title="Short pipeline"></a>Short pipeline</h2><p>除了Cortex-M7之外的大多数Cortex-M系列处理器，其流水线大多数都很短（2-3级），这样的处理器其好处就是（假设不考虑分支预测逻辑）：</p>
+<ul>
+<li>具有较低的分支代价branch penalty；</li>
+<li>减少了分支阴影branch shadow；</li>
+</ul>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724173005520.png" class="">
+
+<blockquote>
+<p>分支惩罚是指当分支条件不满足时，处理器需要清空流水线并重新开始执行的时间成本</p>
+<p>分支阴影（Branch shadows）指的是在处理器执行分支指令后，预先获取的指令</p>
+<p>如图所示，Cortex-M0+ 和 Cortex-M23  处理器中，流水线只有2级，分支阴影会被降到只有一个word大小；</p>
+<p>分支阴影的size可能和流水线的级数有关； </p>
+</blockquote>
+<h2 id="Instruction-fetch-optimizations"><a href="#Instruction-fetch-optimizations" class="headerlink" title="Instruction fetch optimizations"></a>Instruction fetch optimizations</h2><p>虽然有些指令是16位，但是Cortex-M处理器在大多数情况下以32bits的方式获取指令。这意味着获取每条指令的时候，Cortex-M处理器最多可以获取两条指令，并且指令fetch接口可以在不需要时处于非活动状态，这样可以降低程序存储器访问的功耗；</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240724194003374.png" class="">
+
+
+
+
+
+<h1 id="System-level-design-considerations"><a href="#System-level-design-considerations" class="headerlink" title="System-level design considerations"></a>System-level design considerations</h1><h2 id="Low-power-designs-overview"><a href="#Low-power-designs-overview" class="headerlink" title="Low-power designs overview"></a>Low-power designs overview</h2><p>低功耗本身是一个非常大的话题。除了利用CORE本身的睡眠模式之外，芯片的其他部分都会对低功耗产生影响。例如，可以用clock gating技术，此外如果某些外设不用的情况下，还可以关闭电源。</p>
+<h2 id="Clock-sources"><a href="#Clock-sources" class="headerlink" title="Clock sources"></a>Clock sources</h2><p><font color=blue>有一个低功耗的时钟源非常重要</font>。很多设计都需要一个持续工作的32KHz常开时钟源，如果这个时钟源的功耗很高，那么将会对系统功耗产生很严重的影响。理想情况下，32KHz需要超低功耗的特性，在工作电压变化很大的情况下也能正常工作。</p>
+<p><font color=blue>时钟晶振的工作范围选择也很重要</font>，如果微处理器产品运行在100MHz，如果使用一个100Mhz的晶振，它意味着会以100Mhz running all the time因此会消耗大量的power。一次通常会使用一个低频率的时钟晶振+PLL去产生高频率的时钟源。</p>
+<h2 id="Low-power-memories"><a href="#Low-power-memories" class="headerlink" title="Low-power memories"></a>Low-power memories</h2><ul>
+<li><p>memory macros 在设计中考虑了多种睡眠&#x2F;保持模式，并提供了各种<code>“钩子”（hooks）</code>来允许系统设计者<font color=blue>将内存的低功耗状态与系统的睡眠模式进行关联。但是需要注意睡眠模式功耗和唤醒延迟之间存在的权衡。</font></p>
+</li>
+<li><p>eflash 可以选择关闭电源，因为其数据不会被丢失。<font color=blue>但是需要注意当闪存重新上电时，会产生一个瞬时的电流峰值，这被称为 in-rush current 或 current spike；这个电流峰值可能会导致电源线上的电压瞬时下降；电压下降可能会导致芯片中其他电路或模块出现工作不正常的问题，例如可能导致微处理器（或其他处理器）在重新启动时失去部分电源；</font></p>
+</li>
+<li><p>某些处理器允许软件在掉电之前向闪存写入数据，目的是让SRAM中的关键数据在上电会被恢复。当替换电池的时候，可能需要这样的操作。</p>
+</li>
+</ul>
+<h2 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h2><p>系统中加入cache，虽然会增加芯片面积，漏电流以及对电源的需求，但是在一些情况下</p>
+<ul>
+<li>可以降低功耗，因为避免频繁访问eflash，访问flash的开销是非常巨大的；</li>
+<li>可以增加系统的整体性能，因为访问flash的速度是很慢的；</li>
+</ul>
+<h2 id="Low-power-analog-components"><a href="#Low-power-analog-components" class="headerlink" title="Low-power analog components"></a>Low-power analog components</h2><p>在睡眠模式的时候，有很多的模拟组件是开着的：</p>
+<ul>
+<li><p>32kHz振荡器：这是一种低频振荡器，通常用于实时时钟（RTC，Real-Time Clock）和定时器。它的低频率特性使其在功耗上比高频率振荡器更为节能，适合在系统的低功耗模式（如睡眠模式）下运行。</p>
+</li>
+<li><p>实时时钟（RTC）：RTC是嵌入式系统中用于跟踪日期和时间的设备或模块。即使系统进入睡眠模式，RTC通常也需要保持运行，以便能够在系统唤醒时继续提供准确的时间信息。</p>
+</li>
+<li><p>低电压检测器（brown-out detector）：这是一种检测电源电压是否低于安全工作范围的电路。它通常会在电源电压低于规定值时发出警告或者复位系统，以防止芯片和周边电路因电压不稳定而受损。</p>
+</li>
+<li><p>部分I&#x2F;O引脚：在睡眠模式下，有些输入&#x2F;输出引脚可能需要保持活动状态，特别是当它们用于外部中断检测时。这意味着即使系统处于低功耗模式，这些引脚需要能够接收并响应来自外部的信号变化。</p>
+</li>
+</ul>
+<p>很多I&#x2F;O引脚具有可配置的功耗模式，可以通过调整驱动强度和翻转速度来降低功耗。系统设计人员可以通过引入寄存器来控制这些配置信号；</p>
+<h2 id="Maximizing-clock-gating-opportunities"><a href="#Maximizing-clock-gating-opportunities" class="headerlink" title="Maximizing clock gating opportunities"></a>Maximizing clock gating opportunities</h2><p>在系统设计中，也可以通过clock gating增加时钟门控单元以降低动态功耗。ARM的Corstone Foundation IP &#x2F; Cortex-M System Design Kit   中提供的AHB to APB bridge  就有一个<code>APBACTIVE </code>信号，当bridge上没有transaction时，就可以利用此信号去做门控，关闭APB外设时钟；</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240725171927479.png" class="">
+
+
+
+<h2 id="Sleep-mode-that-completely-powers-down-the-processor"><a href="#Sleep-mode-that-completely-powers-down-the-processor" class="headerlink" title="Sleep mode that completely powers down the processor"></a>Sleep mode that completely powers down the processor</h2><p>Cortex-M处理器允许完全掉电，并且能被某些时间唤醒，但是需要注意如下两点：</p>
+<p>1、处理器的状态会丢失，因此软件在执行掉电之前必须将处理器中关键的数据保存的状态保持SRAM中；</p>
+<p>2、系统设计需要额外的硬件逻辑去处理硬件唤醒时间；</p>
+<p>硬件逻辑需要完成如下任务：</p>
+<p>1、向PMU发送唤醒信号，恢复处理器的供电；</p>
+<p>2、复位处理器系统，（不对状态保持memory和寄存器进行复位）；</p>
+<p>3、释放reset，让处理器boot-up并执行软件程序；</p>
+<p>这样的一个系统，其框架大致如图所示：</p>
+<img src="/2024/07/02/Low-power-support%EF%BC%881%EF%BC%89/image-20240725174130100.png" class="">
+
+<p>1、电源控制，允许软件主动选择进入哪一种睡眠模式（例如是否在低功耗的时候掉电）</p>
+<p>2、复位信息寄存器，允许软件决定是否进入冷启动或者暖启动；</p>
+<blockquote>
+<p>冷启动（Cold Boot）和暖启动（Warm Boot）是两种不同的系统启动方式，它们的主要区别在于系统在启动过程中是否经历了完全的电源断电。</p>
+<ul>
+<li><p>冷启动指的是系统在完全断电后重新上电启动</p>
+</li>
+<li><p>暖启动是指系统在不断电的情况下重新启动</p>
+</li>
+</ul>
+</blockquote>
+<p>3、状态保持SRAM，用于保存关键数据；</p>
+<p>4、事件唤醒检测；</p>
+<p><font color=blue>由于唤醒的过程需要时间，因此必须保存wake-up event ，以便软件有时间启动NIVC，然后由NVIC处理；</font></p>
+<p>DAP(debug access port)有两种使用方法：</p>
+<p>1、将DAP放在always-on power-domain，允许调试器连接的时候去唤醒处理器；</p>
+<p>2、先使用其他的方式去唤醒，然后再连接调试器；</p>
+<p>这种掉电的方式，其缺点是处理器必须先boot-up，然后才能处理中断。可以通过将处理器关键的状态保存在retention 的sram中，这种方式，就可以跳过C startup就可以及时响应中断。一般来说，关键的信息包括如下内容：</p>
+<ul>
+<li>NVIC的配置</li>
+<li>MPU的配置</li>
+<li>ststick的配置</li>
+<li>MPS和PSP的配置</li>
+<li>特殊寄存器的配置，PRIMASK, FAULTMASK, BASEPRI, etc.  </li>
+<li>FPU的配置</li>
+</ul>
+<blockquote>
+<p><font color=red>软件流程上具体是如何做的？？</font></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/low-power/" rel="tag"># low power</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/07/01/posim%E4%BB%BF%E7%9C%9Ftiming-violation%E9%97%AE%E9%A2%98/" rel="prev" title="posim仿真timing violation问题">
+      <i class="fa fa-chevron-left"></i> posim仿真timing violation问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/02/security%E4%B9%8B%E7%89%88%E6%9C%AC%E5%8F%B7/" rel="next" title="security之版本号">
+      security之版本号 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview-of-low-power-Cortex-M-features"><span class="nav-number">1.</span> <span class="nav-text">Overview of low-power Cortex-M features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Low-power-design-basics"><span class="nav-number">2.</span> <span class="nav-text">Low-power design basics</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#clock-gating"><span class="nav-number">2.1.</span> <span class="nav-text">clock gating</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%B6%E9%92%9F%E9%97%A8%E6%8E%A7%EF%BC%9A"><span class="nav-number">2.1.1.</span> <span class="nav-text">寄存器级别的时钟门控：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E7%BA%A7%E5%88%AB%E7%9A%84%E6%97%B6%E9%92%9F%E9%97%A8%E6%8E%A7"><span class="nav-number">2.1.2.</span> <span class="nav-text">模块级别的时钟门控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#power-gating"><span class="nav-number">2.2.</span> <span class="nav-text">power gating</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SRPG%EF%BC%88State-Retention-Power-Gating-%EF%BC%89"><span class="nav-number">2.2.1.</span> <span class="nav-text">SRPG（State Retention Power Gating  ）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BD%8E%E5%8A%9F%E8%80%97%E6%8A%80%E6%9C%AF"><span class="nav-number">2.3.</span> <span class="nav-text">其他低功耗技术</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M-low-power-interfaces"><span class="nav-number">3.</span> <span class="nav-text">Cortex-M low-power interfaces</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sleep-status-and-GATEHCLK-output"><span class="nav-number">3.1.</span> <span class="nav-text">Sleep status and GATEHCLK output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-channel-low-power-interface"><span class="nav-number">3.2.</span> <span class="nav-text">Q-channel low-power interface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sleep-hold-interface"><span class="nav-number">3.3.</span> <span class="nav-text">Sleep hold interface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wakeup-Interrupt-Controller-WIC"><span class="nav-number">3.4.</span> <span class="nav-text">Wakeup Interrupt Controller (WIC)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.4.1.</span> <span class="nav-text">WIC接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC-demo-%E4%BB%A3%E7%A0%81"><span class="nav-number">3.4.2.</span> <span class="nav-text">WIC demo 代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC%E4%BF%AE%E6%94%B9%E5%90%8E%E5%9F%BA%E4%BA%8E%E9%94%81%E5%AD%98%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">3.4.3.</span> <span class="nav-text">WIC修改后基于锁存的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.4.4.</span> <span class="nav-text">WIC的工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC%E7%9A%84%E8%AF%A6%E7%BB%86%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="nav-number">3.4.5.</span> <span class="nav-text">WIC的详细时序图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC%E7%9A%84%E9%9B%86%E6%88%90"><span class="nav-number">3.4.6.</span> <span class="nav-text">WIC的集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EDBGRQ%E4%BF%A1%E5%8F%B7"><span class="nav-number">3.4.7.</span> <span class="nav-text">EDBGRQ信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WIC%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87handshake%E4%BF%A1%E5%8F%B7enable%E6%88%96%E8%80%85disable"><span class="nav-number">3.4.8.</span> <span class="nav-text">WIC可以通过handshake信号enable或者disable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SRPG-support%E7%AB%AF%E5%8F%A3"><span class="nav-number">3.4.9.</span> <span class="nav-text">SRPG support端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo-PMU-state-machine"><span class="nav-number">3.4.10.</span> <span class="nav-text">Demo PMU state machine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SRPG%E2%80%99s-impact-on-software"><span class="nav-number">3.5.</span> <span class="nav-text">SRPG’s impact on software</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Software-power-saving-approach"><span class="nav-number">3.6.</span> <span class="nav-text">Software power-saving approach</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M-processor-characteristics-that-enable-low-power-designs"><span class="nav-number">4.</span> <span class="nav-text">Cortex-M processor characteristics that enable low-power designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#High-code-density"><span class="nav-number">4.1.</span> <span class="nav-text">High code density</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Short-pipeline"><span class="nav-number">4.2.</span> <span class="nav-text">Short pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instruction-fetch-optimizations"><span class="nav-number">4.3.</span> <span class="nav-text">Instruction fetch optimizations</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#System-level-design-considerations"><span class="nav-number">5.</span> <span class="nav-text">System-level design considerations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Low-power-designs-overview"><span class="nav-number">5.1.</span> <span class="nav-text">Low-power designs overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clock-sources"><span class="nav-number">5.2.</span> <span class="nav-text">Clock sources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Low-power-memories"><span class="nav-number">5.3.</span> <span class="nav-text">Low-power memories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cache"><span class="nav-number">5.4.</span> <span class="nav-text">cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Low-power-analog-components"><span class="nav-number">5.5.</span> <span class="nav-text">Low-power analog components</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maximizing-clock-gating-opportunities"><span class="nav-number">5.6.</span> <span class="nav-text">Maximizing clock gating opportunities</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sleep-mode-that-completely-powers-down-the-processor"><span class="nav-number">5.7.</span> <span class="nav-text">Sleep mode that completely powers down the processor</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
