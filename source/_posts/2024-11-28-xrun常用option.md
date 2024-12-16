@@ -1,7 +1,11 @@
 ---
 title: xrun常用option
 date: 2024-11-28 11:12:18
+categories:
+- EDA工具
 tags:
+- xrun
+- indago
 ---
 
 
@@ -81,6 +85,54 @@ Set the global wreal resolution function
 >     - 在 Windows 上扩展为 `.dll`。
 >5. **PLI1.0 应用**：
 >   - 对于 PLI 1.0 应用，仿真器总是按照上述流程加载共享库并执行提供的引导函数。
+
+
+
+## -disableopt
+
+Disable elaboration optimizations
+
+
+
+## -linedebug
+
+> By default, models are compiled with performance optimizations turned on. Some of these optimizations disable the ability to set line breakpoints and to single-step though source code. Use -linedebug to override this behavior. Running the simulator with the SimVision debug environment (xmsim -gui) then lets you look at the source code and see where the simulator has stopped for a line breakpoint or when you are stepping through the code.
+>
+> Using this option sets the default access to simulation objects to read/write/connectivity when the design is elaborated. Do not use this option if you want to run in regression mode.
+
+<font color=red>set line breakpoints and to single-step though source code</font>
+
+什么是set line breakpoints？
+
+什么是step though source code？
+
+
+
+
+
+# TCL脚本
+
+## drives
+
+> You can use the scope -drivers [scope_name] command to display the drivers of each object that is declared within a specified scope. 
+
+## value
+
+> The Tcl value command prints the current value of the specified objects using the last format specifier preceding the object name argument. If no format is specified, a default format is used.
+
+## stop
+
+> The Tcl stop command creates or operates on a breakpoint.
+>
+> `-object object_name`
+>
+> Sets a breakpoint that triggers when the specified object changes value (wires, signals, registers, and variables) or is written to (memories). You can also set a breakpoint on an assertion.
+>
+> `-continue`
+>
+> Resumes the simulation after executing the breakpoint. The simulator does not go into interactive mode.
+
+
 
 
 
