@@ -2,7 +2,8 @@
 title: xrun常用option
 date: 2024-11-28 11:12:18
 categories:
-- EDA工具
+- ip开发环境搭建
+- EDA开发环境
 tags:
 - xrun
 - indago

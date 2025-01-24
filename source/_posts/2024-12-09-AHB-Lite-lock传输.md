@@ -2,11 +2,24 @@
 title: AHB-Lite lock传输
 date: 2024-12-09 10:46:52
 categories:
-- AHB-Lite总线
+- AMBA
+- AHB-Lite
 tags:
 - lock传输
 - TBD
 ---
+
+
+
+
+
+
+
+
+
+
+
+Cortex-M4 Master 怎么发出lock传输？
 
 
 
