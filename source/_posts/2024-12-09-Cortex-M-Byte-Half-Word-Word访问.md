@@ -2,7 +2,6 @@
 title: Cortex-M Byte/Half_Word/Word访问
 date: 2024-12-09 17:02:40
 categories:
-- ISA和处理器
 - ARM
 - Cortex-M4
 tags:

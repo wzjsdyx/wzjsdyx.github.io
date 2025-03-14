@@ -2,6 +2,7 @@
 title: CPUID base寄存器
 date: 2024-10-30 16:03:37
 categories:
+- ARM
 - Cortex-M4
 tags:
 ---

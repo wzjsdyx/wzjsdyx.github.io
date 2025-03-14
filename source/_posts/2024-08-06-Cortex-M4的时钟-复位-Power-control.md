@@ -2,6 +2,7 @@
 title: Cortex-M4的时钟/复位/Power control
 date: 2024-08-06 15:45:26
 categories:
+- ARM
 - Cortex-M4
 tags:
 - core clock

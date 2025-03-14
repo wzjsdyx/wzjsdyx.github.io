@@ -2,6 +2,7 @@
 title: B1.2 About the ARMv7-M memory mapped architecture
 date: 2024-04-17 09:37:57
 categories:
+- ARM
 - ARMv7-M架构
 tags:
 - System Level Architecture

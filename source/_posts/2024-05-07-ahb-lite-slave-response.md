@@ -2,7 +2,9 @@
 title: ahb-lite slave response
 date: 2024-05-07 20:48:32
 categories:
-- AHB-Lite总线
+- ARM
+- AMBA
+- AHB-Lite
 tags:
 - response
 ---

@@ -2,6 +2,7 @@
 title: Cortex-M4 IBUS/DBUS/SBUS的使用限制
 date: 2024-04-09 08:24:54
 categories:
+- ARM
 - Cortex-M4
 tags:
 - IBUS

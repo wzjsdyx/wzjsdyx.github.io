@@ -2,7 +2,9 @@
 title: 项目实践 AHB-Lite ready信号
 date: 2024-03-24 16:08:11
 categories:
-- AHB-Lite总线
+- ARM
+- AMBA
+- AHB-Lite
 tags:
 - AHB-Lite ready信号
 - TBD

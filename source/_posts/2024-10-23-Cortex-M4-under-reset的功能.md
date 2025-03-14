@@ -2,6 +2,7 @@
 title: Cortex-M4 under reset的功能
 date: 2024-10-23 15:00:06
 categories:
+- ARM
 - Cortex-M4
 tags:
 ---

@@ -2,7 +2,9 @@
 title: 项目实践 AHB-Lite hsel和htrans
 date: 2024-03-24 17:10:50
 categories:
-- AHB-Lite总线
+- ARM
+- AMBA
+- AHB-Lite
 tags:
 - AHB-Lite hsel信号
 - AHB-Lite htrans信号
