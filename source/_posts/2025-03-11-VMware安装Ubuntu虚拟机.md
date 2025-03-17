@@ -84,6 +84,7 @@ vmware-toolbox-cmd -v
 1. [基于VMware虚拟机的Ubuntu22.04系统安装和配置](https://blog.csdn.net/qq_42417071/article/details/136327674)
 
 2. [Open-VM-Tools：虚拟化环境中的开源工具套件](https://blog.csdn.net/weixin_35706067/article/details/142925696)
+3. [ubuntu22.04安装vmware tools](https://blog.csdn.net/sofa_r/article/details/126060382)
 
 3. [关闭 Ubuntu 开机软件更新弹窗通知](https://www.11343.com/8094.html)
 
