@@ -3,7 +3,7 @@ title: xrun常用option
 date: 2024-11-28 11:12:18
 categories:
 - ip开发环境搭建
-- EDA开发环境
+- EDA工具
 tags:
 - xrun
 - indago
@@ -169,6 +169,20 @@ Disable elaboration optimizations
 什么是set line breakpoints？
 
 什么是step though source code？
+
+
+
+## -xmlibdirname
+
+能够改变xrun工作目录的name
+
+```shell
+xrun -xmlibdirname xcelium_nwcl.d -input probe_pattern_nwcl.tcl -l top_sim_nwcl.log 
+
+# probe_pattern_nwcl.tcl：
+# database -open -shm top_sim_nbch -default
+可以同时在一个目录下运行多个仿真，而不会导致冲突
+```
 
 
 
