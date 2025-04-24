@@ -184,6 +184,27 @@ xrun -xmlibdirname xcelium_nwcl.d -input probe_pattern_nwcl.tcl -l top_sim_nwcl.
 可以同时在一个目录下运行多个仿真，而不会导致冲突
 ```
 
+## -loadpli1
+
+> This option dynamically loads the specified PLI1.0 application.
+>
+> **Syntax**
+>
+> xrun -loadpli1 <shared_lib_name:boot_func_name
+
+```shell
+# 一般用于加载verdi的接口，来使用dump fsdb相关的task
+# 1、配置环境变量，debpli库在./boot/debpli.so中
+setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${NOVAS_HOME}/share/PLI/VCS/LINUX64:${NOVAS_HOME}/share/PLI/IUS/LINUX64
+# 2、添加xrun编译仿真选项
+xrun +access+rwc -loadpli1 debpli:novas_pli_boot
+# 3、testbench中添加dump fsdb相关的task
+initial begin
+    $fsdbAutoSwitchDumpfile(500,"top_sim.fsdb",150);
+    $fsdbDumpvars(0, top_sim,"+mda");
+end
+```
+
 
 
 
