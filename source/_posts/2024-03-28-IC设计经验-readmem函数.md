@@ -2,7 +2,7 @@
 title: IC设计经验-readmem函数
 date: 2024-03-28 15:42:52
 categories:
-- IC电路设计tips
+- verilog语法
 tags:
 - readmemh
 - readmemb

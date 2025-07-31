@@ -2,7 +2,7 @@
 title: apb_sync_unit
 date: 2024-06-07 09:27:24
 categories:
-- IC电路设计tips
+- SoC设计
 tags:
 - apb协议同步
 ---

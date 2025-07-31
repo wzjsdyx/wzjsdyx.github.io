@@ -2,6 +2,7 @@
 title: sram compiler中的column multiplexer配置
 date: 2024-03-05 20:02:02
 categories:
+- SoC设计
 - SRAM
 tags:
 - sram compiler
