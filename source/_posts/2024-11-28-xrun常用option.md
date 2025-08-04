@@ -205,7 +205,15 @@ initial begin
 end
 ```
 
+## -nontcglitch
 
+> Functional Description
+>
+> In a design that contains negative timing checks, the default negative timing check algorithm will calculate, when needed, delays with two values (rise and fall) for the different nets. When a delay with two values is calculated, there is the possibility that an event on the input net may cancel a scheduled event on the internal signal driven by the delay. This is called glitch suppression. Because glitch suppression can hide input events from a timing check's input, the simulator generates a glitch suppression timing violation if an event on a delayed signal is canceled.
+>
+> Glitch suppression messages are displayed by default. Use the xmsim -nontcglitch option if you want to suppress these messages.
+
+一般用于网表后仿的时候，抑制`Warning! Glitch suppression`log输出
 
 
 
