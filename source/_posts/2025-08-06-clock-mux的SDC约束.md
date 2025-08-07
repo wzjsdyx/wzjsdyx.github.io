@@ -11,14 +11,16 @@ tags:
 
 
 
-shi
+# RTC clock mux约束
 
-示例
+> 7842E RTC模块；
 
 ## 时钟架构图
 
 {% asset_img image-20250806202137964.png %}
 
+> 备注：没有画总线时钟；
+>
 > 0、PAD无需special timing的约束；
 >
 > 1、RTC clk in需要create clock；
@@ -28,7 +30,7 @@ shi
 >
 > 3、RTC_CLK_OUT无需再create clock，因为后面没有使用RTC_CLK_OUT作为时钟，进行驱动的逻辑；不需要考虑时钟balance的问题；因此这里不需要create clock；
 >
-> 4、如果func_clk不create clock？综合工具会如何综合？
+> <font color=blue>4、如果func_clk不create clock？综合工具会如何综合？</font>
 > 首先func_clk也是时钟属性，并且RTC内部的寄存器需要和4个时钟源头做balance；（影响clock tree）
 > 如果func_clk进行create generate clock，会对clock tree比较友好，此时只是RTC内部的寄存器和func_clk做balance即可，不用和4个时钟源头做balance；
 
@@ -111,3 +113,52 @@ set_clock_groups -name rtc_clk_group -asynchronous \
 > -add：选项用于在同一个端口或引脚上添加多个时钟源。一般当需要为同一物理引脚定义多个时钟约束时，该选项允许指定附加的时钟源
 >
 > [get_pins xxx]：新时钟设置在哪一个对象上；
+
+# WDG clock mux约束
+
+> 7842E 模块
+
+{% asset_img image-20250807104359425.png %}
+
+```bash
+#LSI 128K
+create_generated_clock  -name lsi128k_clk_sel_clk \
+                     -master_clock [get_clocks lsi128k_clk] \
+                     -source [get_pins ana1_wrap_inst/ana1_wrap_u1/MCU_TOP/AD_MCU_LPOSC_OSCOUT] \
+                     -divide_by 1 \
+                     -add \
+                    [get_pins top_design_ctl/ckgen_inst/u_ckgen_div_top/dtc_lsi_clk_mux/dtc_ckmux4_1_3/Z]
+```
+
+> create_generated_clock：会生成一个新时钟，与一个已存在的主时钟 `master_clock` 有直接的相位和频率关系
+>
+> -master_clock：指定新生成的时钟 `lsi128k_clk_sel_clk` 的**参考主时钟**是 `lsi128k_clk`
+>
+> -source：新生成时钟的源点，（即master clock设置点--master clock get_pins设置的点）
+>
+> -divide_by：定义新时钟 `lsi128k_clk_sel_clk` 相对于主时钟 `lsi128k_clk` 的**分频比**
+>
+> -add：选项用于在同一个端口或引脚上添加多个时钟源。一般当需要为同一物理引脚定义多个时钟约束时，该选项允许指定附加的时钟源
+>
+> [get_pins xxx]：新时钟设置在哪一个对象上；
+
+# EWDG clock mux约束
+
+> 7842E 模块
+
+{% asset_img image-20250807104430448.png %}
+
+```bash
+
+#max sys clk
+
+create_generated_clock  -name wdg_fclk \
+                     -master_clock [get_clocks bus_clk] \
+                     -source [get_pins top_design_ctl/ckgen_inst/u_ckgen_div_top/u_ckgen_div/ahb_clk_div/DTC_div_cg/dtc_icgd2/Q] \
+                     -divide_by 1 \
+                     -add \
+                    [get_pins wdg_whole_top/wdt_top/wdt_cnt_core/wdt_clk_ckmux4/clk_sync_icg/dtc_icgd2/Q]
+```
+
+
+

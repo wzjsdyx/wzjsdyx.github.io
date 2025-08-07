@@ -134,3 +134,18 @@ endmodule
 
 {% asset_img image-20240607095127922.png %}
 
+
+
+# 致命问题
+
+{% asset_img image-20250807133930899.png %}
+
+> 当一笔transaction发生时，pready信号通过psel 然后mux为pready_comb；
+> pready_comb是边沿检测逻辑；
+> 如果在sync过程中发生复位，psel信号是power-on-reset控制仍然为高，但是pready_comb会检测不到边沿，从而pready信号一直拉低；
+
+##解决方法
+
+<font color=blue>在复位的时候，可以使用reset信号控制pready信号为高；或者psel信号为低；</font>
+
+<font color=blue>警示：对于同步逻辑，一定要注意reset domain 带来的影响</font>
