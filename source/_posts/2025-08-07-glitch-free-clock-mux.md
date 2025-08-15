@@ -16,11 +16,15 @@ tags:
 
 # 接口
 
-![image-20250807142929081](D:\blog\wzjsdyx.github.io\source\_posts\2025-08-07-glitch-free-clock-mux\image-20250807142929081.png)
+{% asset_img image-20250807142929081.png %}
+
+
 
 ## 原理图
 
-![image-20250807142939116](D:\blog\wzjsdyx.github.io\source\_posts\2025-08-07-glitch-free-clock-mux\image-20250807142939116.png)
+{% asset_img image-20250807142939116.png %}
+
+
 
 ## RTL Code
 
