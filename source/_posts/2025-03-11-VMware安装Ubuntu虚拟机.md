@@ -10,7 +10,7 @@ tags:
 
 
 
-==》虚拟机以及虚拟磁盘
+# 虚拟机以及虚拟磁盘
 
 > 1. **虚拟机配置文件**
 >
@@ -40,7 +40,7 @@ tags:
 
 
 
-==》账号
+# 账号密码
 
 用户名：`Zhijun Wang`
 
@@ -56,15 +56,15 @@ tags:
 
 
 
-==》关闭开机时的软件更新
+# 关闭开机时的软件更新
 
-==》 linux初始root密码设置
+# linux初始root密码设置
 
-==》配置中文输入法
+# 配置中文输入法
 
 
 
-==》open_VM_Tools
+# open_VM_Tools
 
 ```shell
 sudo apt update
@@ -73,9 +73,41 @@ sudo reboot
 vmware-toolbox-cmd -v
 ```
 
+# 桥接模式无法连接网络
+
+> 问题描述：
+>
+> 右上角网络连接出现`?`,游览器无法上网；
+>
+> Ubuntu虚拟机，配置的是桥接模式
+
+问题解决：
+
+step1：控制面板》网络和 Internet》网络和共享中心》更改适配器设置（Windows11系统）
+
+{% asset_img image-20250910223822899.png %}
+
+step2:打开VMware软件》编辑》虚拟网络编辑器》更改设置，将桥接模式选择上面的网卡即可；
+
+{% asset_img image-20250910224040357.png %}
+
+<font color=blue>VMware桥接模式的“自动”有时并不自动，有的时候需要手动配置桥接模式的网卡</font>
+
+参考博客：
+
+1. [VMware的Linux虚拟机桥接模式突然上不了网解决方法](https://cloud.tencent.com/developer/article/2093268)
+
+# Ubuntu虚拟机 使用主机代理
+
+ping不通，但是游览器能访问google；
+
+git clone github可以使用
 
 
 
+参考博客：
+
+1. [vmware虚拟机解决vpn链接问题 win or linux系统](https://zhuanlan.zhihu.com/p/661644999)
 
 ---
 
