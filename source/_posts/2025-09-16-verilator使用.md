@@ -1040,6 +1040,36 @@ endif
 
 
 
+# 进阶使用
+
+verilator的仿真选项：
+
+`timescale `仿真时间单位需要--timing参数？
+
+如果没有timescale？？
+
+`--timing`
+
+contextp->timeInc()函数；
+
+dump fsdb需要推进时间片;
+
+contextp->traceOn(True);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 参考博客&文档：
