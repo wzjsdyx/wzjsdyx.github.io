@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="compile&#x2F;elaborate&#x2F;simulate命令行选项-default_ext verilog Functional Description：xrun generates an error if it encounters a file with an extension that it does not recognize. Use the -default_ext">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xrun常用option">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="compile&#x2F;elaborate&#x2F;simulate命令行选项-default_ext verilog Functional Description：xrun generates an error if it encounters a file with an extension that it does not recognize. Use the -default_ext">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-28T03:12:18.000Z">
+<meta property="article:modified_time" content="2025-08-04T11:21:03.853Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="xrun">
+<meta property="article:tag" content="indago">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>xrun常用option | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          xrun常用option
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-11-28 11:12:18" itemprop="dateCreated datePublished" datetime="2024-11-28T11:12:18+08:00">2024-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-04 19:21:03" itemprop="dateModified" datetime="2025-08-04T19:21:03+08:00">2025-08-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="compile-elaborate-simulate命令行选项"><a href="#compile-elaborate-simulate命令行选项" class="headerlink" title="compile&#x2F;elaborate&#x2F;simulate命令行选项"></a>compile&#x2F;elaborate&#x2F;simulate命令行选项</h1><h2 id="default-ext-verilog"><a href="#default-ext-verilog" class="headerlink" title="-default_ext verilog"></a>-default_ext verilog</h2><blockquote>
+<p>Functional Description：<br>xrun generates an error if it encounters a file with an extension that it does not recognize. Use the -default_ext option to specify the file type for files with unrecognized file extensions.</p>
+<p>For example, the following specifies that all files with unrecognized extensions are to be treated as Verilog files:</p>
+<p>-default_ext verilog</p>
+</blockquote>
+<h2 id="vlog-ext"><a href="#vlog-ext" class="headerlink" title="-vlog_ext"></a>-vlog_ext</h2><blockquote>
+<p>Syntax</p>
+<p>% xrun *_ext [+].<extension>[,.<extension>…]</p>
+<p>Example 1</p>
+<p>% xrun -vlog_ext .v,.rtl,.vg</p>
+<p>This example specifies that .v, .rtl, and .vg are valid extensions for Verilog files. The default file extensions for Verilog files are .v, .vp, .vs, .V, .VP, and .VS. With the command used in this example, the list of built-in, predefined extensions is<font color=blue> replaced </font> with a new list that is provided in the command.</p>
+<p>Example 2</p>
+<p>% xrun -vlog_ext +.rtl,.vg</p>
+<p>This example <font color=blue>adds extensions</font> to the list of built-in, predefined extensions by using a plus sign (+) argument. Two new options, .rtl and .vg, are added.<br>This is same as using:</p>
+<p>% xrun -vlog_ext .v,.vp,.vs,.V,.VP,.VS,.rtl,.vg</p>
+<p>Example 3</p>
+<p>% xrun -sysv_ext +, mysvtop</p>
+<p>This example specifies the file type SystemVerilog for file mysvtop, <font color=blue>which does not have any extension.</font></p>
+</blockquote>
+<h2 id="nowarn"><a href="#nowarn" class="headerlink" title="-nowarn"></a>-nowarn</h2><p>关闭不感兴趣的log打印</p>
+<blockquote>
+<p>% xmvhdl -nowarn INTOVF:CUVWSP source.vhd</p>
+</blockquote>
+<h2 id="r-R"><a href="#r-R" class="headerlink" title="-r&#x2F;-R"></a>-r&#x2F;-R</h2><blockquote>
+<p>-r | -R</p>
+<p>The -r option loads and simulates the specified snapshot.</p>
+<p>The -R option simulates the last snapshot generated by an xrun command.<br>Syntax</p>
+<p>% xrun -r <snapshot_name> [other_options]</p>
+<p>% xrun -R [other_options]</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"></span><br><span class="line">-libext &lt;ext&gt;   </span><br><span class="line">Functional Description：</span><br><span class="line">Specify extensions to be used <span class="keyword">for</span> the -y search</span><br><span class="line"></span><br><span class="line">-nowarn BIDANA:LIBNOU:PMBMDV:ILIOPT:RMVANAL</span><br><span class="line">关闭指定的warning信息</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-xmlibdirname</span><br><span class="line">Functional Description：</span><br><span class="line">This option specifies an alternative name <span class="keyword">for</span> the directory <span class="keyword">in</span> <span class="built_in">which</span> the snapshot, libraries, and other generated objects are stored after invoking a simulation with xrun. By default, xrun uses the directory name xcelium.d <span class="keyword">for</span> storing this information.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-allowredefinition         </span><br><span class="line">Functional Description：</span><br><span class="line">Allow multiple files to define the same object</span><br><span class="line"></span><br><span class="line">-nontcglitch</span><br><span class="line">Functional Description：</span><br><span class="line">In a design that contains negative timing checks, the default negative timing check algorithm will calculate, when needed, delays with two values (rise and fall) <span class="keyword">for</span> the different nets. When a delay with two values is calculated, there is the possibility that an event on the input net may cancel a scheduled event on the internal signal driven by the delay. This is called glitch suppression. Because glitch suppression can hide input events from a timing check<span class="string">&#x27;s input, the simulator generates a glitch suppression timing violation if an event on a delayed signal is canceled.</span></span><br><span class="line"><span class="string">Glitch suppression messages are displayed by default. </span></span><br><span class="line"><span class="string">Use the xmsim -nontcglitch option if you want to suppress these messages.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-loadpli1</span></span><br><span class="line"><span class="string">Functional Description：</span></span><br><span class="line"><span class="string">If a PLI application has already been compiled into a dynamic shared library, you can use -loadpli1 to load the library and to register the system tasks defined in the application at run time.</span></span><br><span class="line"><span class="string">The argument to this option is the name or full path of the shared library that contains the PLI application followed by the name of the function that registers the new system tasks. This function, called the bootstrap function, is part of the PLI application, and is defined in the shared library.</span></span><br><span class="line"><span class="string">You can load any number of applications in the same statement by separating the names of the bootstrap functions with a comma. No spaces are allowed in the argument.</span></span><br><span class="line"><span class="string">The file extension of the shared library is optional. The elaborator appends a suffix that is consistent with the OS that you are running. For example, if you are running on the SUN4v platform and enter the following command, the elaborator searches for a library called SSI.so .</span></span><br><span class="line"><span class="string">% xmelab -loadpli1 SSI:ssi_boot top</span></span><br><span class="line"><span class="string">For PLI1.0 applications, the simulator always loads the shared library and executes any bootstrap function(s) that is passed to the elaborator.</span></span><br><span class="line"><span class="string">通过 -loadpli1 指定共享库的同时，必须提供该引导函数的名称</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-wreal  &lt;wreal1driver|wreal4state|wrealmin|wrealmax|wrealsum|wrealavg&gt; </span></span><br><span class="line"><span class="string">Enable wreal AMS datatype</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-wreal_resolution &lt;default|4state|sum|avg|max|min&gt; </span></span><br><span class="line"><span class="string">Set the global wreal resolution function</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>-loadpli1选项说明：</p>
+<p>背景知识</p>
+<p><code>PLI（Programming Language Interface）</code> 是 Verilog 仿真中的一种扩展机制，允许用户通过 C 语言编写自定义的系统任务或函数。这些任务或函数可以在仿真运行时被调用，用于执行仿真器本身无法直接实现的特殊功能。</p>
+<hr>
+<p>关键点解析</p>
+<ol>
+<li><strong>动态共享库加载</strong>：</li>
+</ol>
+<ul>
+<li>如果一个 PLI 应用程序已经被编译为动态共享库（比如 <code>.so</code> 或 <code>.dll</code> 文件），可以通过 <code>-loadpli1</code> 选项在运行时加载这个共享库。</li>
+<li>加载的同时，这个选项还会注册 PLI 应用程序中定义的新系统任务。</li>
+</ul>
+<ol start="2">
+<li><strong>引导函数（Bootstrap Function）</strong>：</li>
+</ol>
+<ul>
+<li>每个 PLI 应用程序共享库中包含一个<strong>引导函数</strong>，负责将该应用程序中的新系统任务注册到仿真器。</li>
+<li>通过 <code>-loadpli1</code> 指定共享库的同时，必须提供该引导函数的名称。</li>
+<li>格式：<code>库名称:引导函数名</code>。</li>
+</ul>
+<ol start="3">
+<li><strong>支持多个共享库</strong>：</li>
+</ol>
+<ul>
+<li>可以一次性加载多个 PLI 应用程序。</li>
+<li>用逗号分隔多个引导函数名，<strong>注意</strong>：逗号之间不能有空格。</li>
+</ul>
+<ol start="4">
+<li><strong>文件扩展名处理</strong>：</li>
+</ol>
+<ul>
+<li>动态共享库的文件扩展名（如 <code>.so</code> 或 <code>.dll</code>）可以省略。</li>
+<li>仿真器会根据操作系统自动补充扩展名。例如：<ul>
+<li>在 Linux 或 Solaris 上扩展为 <code>.so</code>。</li>
+<li>在 Windows 上扩展为 <code>.dll</code>。</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li><strong>PLI1.0 应用</strong>：</li>
+</ol>
+<ul>
+<li>对于 PLI 1.0 应用，仿真器总是按照上述流程加载共享库并执行提供的引导函数。</li>
+</ul>
+</blockquote>
+<h2 id="disableopt"><a href="#disableopt" class="headerlink" title="-disableopt"></a>-disableopt</h2><p>Disable elaboration optimizations</p>
+<h2 id="linedebug"><a href="#linedebug" class="headerlink" title="-linedebug"></a>-linedebug</h2><blockquote>
+<p>By default, models are compiled with performance optimizations turned on. Some of these optimizations disable the ability to set line breakpoints and to single-step though source code. Use -linedebug to override this behavior. Running the simulator with the SimVision debug environment (xmsim -gui) then lets you look at the source code and see where the simulator has stopped for a line breakpoint or when you are stepping through the code.</p>
+<p>Using this option sets the default access to simulation objects to read&#x2F;write&#x2F;connectivity when the design is elaborated. Do not use this option if you want to run in regression mode.</p>
+</blockquote>
+<p><font color=red>set line breakpoints and to single-step though source code</font></p>
+<p>什么是set line breakpoints？</p>
+<p>什么是step though source code？</p>
+<h2 id="xmlibdirname"><a href="#xmlibdirname" class="headerlink" title="-xmlibdirname"></a>-xmlibdirname</h2><p>能够改变xrun工作目录的name</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xrun -xmlibdirname xcelium_nwcl.d -input probe_pattern_nwcl.tcl -l top_sim_nwcl.log </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">probe_pattern_nwcl.tcl：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">database -open -shm top_sim_nbch -default</span></span><br><span class="line">可以同时在一个目录下运行多个仿真，而不会导致冲突</span><br></pre></td></tr></table></figure>
+
+<h2 id="loadpli1"><a href="#loadpli1" class="headerlink" title="-loadpli1"></a>-loadpli1</h2><blockquote>
+<p>This option dynamically loads the specified PLI1.0 application.</p>
+<p><strong>Syntax</strong></p>
+<p>xrun -loadpli1 &lt;shared_lib_name:boot_func_name</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">一般用于加载verdi的接口，来使用dump fsdb相关的task</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、配置环境变量，debpli库在./boot/debpli.so中</span></span><br><span class="line">setenv LD_LIBRARY_PATH $&#123;LD_LIBRARY_PATH&#125;:$&#123;NOVAS_HOME&#125;/share/PLI/VCS/LINUX64:$&#123;NOVAS_HOME&#125;/share/PLI/IUS/LINUX64</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2、添加xrun编译仿真选项</span></span><br><span class="line">xrun +access+rwc -loadpli1 debpli:novas_pli_boot</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3、testbench中添加dump fsdb相关的task</span></span><br><span class="line">initial begin</span><br><span class="line">    $fsdbAutoSwitchDumpfile(500,&quot;top_sim.fsdb&quot;,150);</span><br><span class="line">    $fsdbDumpvars(0, top_sim,&quot;+mda&quot;);</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h2 id="nontcglitch"><a href="#nontcglitch" class="headerlink" title="-nontcglitch"></a>-nontcglitch</h2><blockquote>
+<p>Functional Description</p>
+<p>In a design that contains negative timing checks, the default negative timing check algorithm will calculate, when needed, delays with two values (rise and fall) for the different nets. When a delay with two values is calculated, there is the possibility that an event on the input net may cancel a scheduled event on the internal signal driven by the delay. This is called glitch suppression. Because glitch suppression can hide input events from a timing check’s input, the simulator generates a glitch suppression timing violation if an event on a delayed signal is canceled.</p>
+<p>Glitch suppression messages are displayed by default. Use the xmsim -nontcglitch option if you want to suppress these messages.</p>
+</blockquote>
+<p>一般用于网表后仿的时候，抑制<code>Warning! Glitch suppression</code>log输出</p>
+<h1 id="TCL命令"><a href="#TCL命令" class="headerlink" title="TCL命令"></a>TCL命令</h1><h2 id="drives"><a href="#drives" class="headerlink" title="drives"></a>drives</h2><blockquote>
+<p>You can use the scope -drivers [scope_name] command to display the drivers of each object that is declared within a specified scope. </p>
+</blockquote>
+<h2 id="value"><a href="#value" class="headerlink" title="value"></a>value</h2><blockquote>
+<p>The Tcl value command prints the current value of the specified objects using the last format specifier preceding the object name argument. If no format is specified, a default format is used.</p>
+</blockquote>
+<h2 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h2><blockquote>
+<p>The Tcl stop command creates or operates on a breakpoint.</p>
+<p><code>-object object_name</code></p>
+<p>Sets a breakpoint that triggers when the specified object changes value (wires, signals, registers, and variables) or is written to (memories). You can also set a breakpoint on an assertion.</p>
+<p><code>-continue</code></p>
+<p>Resumes the simulation after executing the breakpoint. The simulator does not go into interactive mode.</p>
+</blockquote>
+<h2 id="ida-probe-probe"><a href="#ida-probe-probe" class="headerlink" title="ida_probe&#x2F;probe"></a>ida_probe&#x2F;probe</h2><p>使用ida_probe的-wave</p>
+<h1 id="VCS选项的替换"><a href="#VCS选项的替换" class="headerlink" title="VCS选项的替换"></a>VCS选项的替换</h1><h2 id="编译选项"><a href="#编译选项" class="headerlink" title="编译选项"></a>编译选项</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">vcs </span><br><span class="line">+v2k </span><br><span class="line">-sverilog </span><br><span class="line">+verilog2001ext+.vp </span><br><span class="line">-timescale=1ns/10ps </span><br><span class="line">-q </span><br><span class="line">-notice </span><br><span class="line">+lint=all,noSVA-NSVU,noPCTIO-L,noVCDE,noUI,noSVA-CE,noSVA-DIU,noPORTFRC,noSVA-ICP,noNS </span><br><span class="line">+warn=noPHNE </span><br><span class="line">-debug_access+all </span><br><span class="line">-debug_region=cell+lib </span><br><span class="line">-j16 </span><br><span class="line">-full64 </span><br><span class="line">-kdb </span><br><span class="line">+vpi /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/common_vpi/vpi_user.c </span><br><span class="line">-LDFLAGS <span class="string">&quot;-z muldefs&quot;</span> </span><br><span class="line">-o simv </span><br><span class="line">-l simv_compile.log </span><br><span class="line">-P  /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/jtag_vpi/jtag_vpi.tab </span><br><span class="line">-CC <span class="string">&quot;-DVCS_VPI&quot;</span> /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/jtag_vpi/jtag_vpi.c /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/jtag_model/debug_init.c </span><br><span class="line">+vcs+initreg+config+/proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/config_file  </span><br><span class="line">+define+ASSERT_ON </span><br><span class="line">+define+ENABLE_UART_FWRITE </span><br><span class="line">+define+SERIAL_EXECU </span><br><span class="line">+define+VIRAGE_FAST_VERILOG </span><br><span class="line">+define+ADD_DDR_PHY_SIM_DLY  </span><br><span class="line">+define+FAST_SIM </span><br><span class="line">-top tb_top </span><br><span class="line">-f /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/rtl/rtl.vf </span><br><span class="line">-f /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/rtl/macro.vf </span><br><span class="line">-f /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/tb.vf ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="主要选项"><a href="#主要选项" class="headerlink" title="主要选项"></a>主要选项</h3><p><strong><code>+v2k</code></strong></p>
+<ul>
+<li>启用 Verilog-2001 语言特性。</li>
+</ul>
+<p><strong><code>-sverilog</code></strong></p>
+<ul>
+<li>启用 SystemVerilog 支持。</li>
+</ul>
+<p><strong><code>+verilog2001ext+.vp</code></strong></p>
+<ul>
+<li>指定 Verilog-2001 的文件扩展名为 <code>.vp</code>。</li>
+</ul>
+<p><strong><code>-timescale=1ns/10ps</code></strong></p>
+<ul>
+<li>指定仿真时间精度为 1ns 和最小时间单位为 10ps。</li>
+</ul>
+<p><strong><code>-q</code></strong></p>
+<ul>
+<li>安静模式，减少非必要的日志输出。</li>
+</ul>
+<p><strong><code>-notice</code></strong></p>
+<ul>
+<li>启用 VCS 通知信息的输出。</li>
+</ul>
+<p><strong><code>+lint=...</code></strong></p>
+<ul>
+<li>开启 lint 检查以报告潜在的问题：<ul>
+<li><code>all</code>：启用所有 lint 检查。</li>
+<li><code>noSVA-NSVU</code> 等：禁用特定类型的检查。</li>
+<li>例如，<code>noVCDE</code> 表示禁用对未使用的变量的警告。</li>
+</ul>
+</li>
+</ul>
+<p><strong><code>+warn=noPHNE</code></strong></p>
+<ul>
+<li>禁用特定的警告，如未连接的端口。</li>
+</ul>
+<p><strong><code>-debug_access+all</code></strong></p>
+<ul>
+<li>启用所有调试访问功能（例如变量值、波形信号）。</li>
+</ul>
+<p><strong><code>-debug_region=cell+lib</code></strong></p>
+<ul>
+<li>指定调试级别，包括 <code>cell</code> 和 <code>lib</code> 范围内的信号。</li>
+</ul>
+<p><strong><code>-j16</code></strong></p>
+<ul>
+<li>启用多线程编译，设置线程数为 16。</li>
+</ul>
+<p><strong><code>-full64</code></strong></p>
+<ul>
+<li>启用 64 位模式。</li>
+</ul>
+<p><strong><code>-kdb</code></strong></p>
+<ul>
+<li>启用 Kernel Database（KDB）功能，用于动态调试。</li>
+</ul>
+<h3 id="VPI-相关选项"><a href="#VPI-相关选项" class="headerlink" title="VPI 相关选项"></a>VPI 相关选项</h3><p><strong><code>+vpi</code></strong></p>
+<ul>
+<li>使能vpi</li>
+</ul>
+<p><strong><code>-LDFLAGS &quot;-z muldefs&quot;</code></strong></p>
+<ul>
+<li>链接器选项，允许多重定义的符号（<code>-z muldefs</code> 是 Linux 链接选项）。</li>
+</ul>
+<p><strong><code>-P .../jtag_vpi.tab</code></strong></p>
+<ul>
+<li>指定 VPI 的模块定义表（.tab 文件），用于配置 VPI。</li>
+</ul>
+<p><strong><code>-CC &quot;-DVCS_VPI&quot; ...</code></strong></p>
+<ul>
+<li>向 C 预处理器传递宏定义选项 <code>-DVCS_VPI</code>，并编译指定的 C 文件。</li>
+</ul>
+<h2 id="仿真选项"><a href="#仿真选项" class="headerlink" title="仿真选项"></a>仿真选项</h2><hr>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_48731721/article/details/127773239">RUN无法识别$fsdbDumpfile函数的解决办法</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/xrun/" rel="tag"># xrun</a>
+              <a href="/tags/indago/" rel="tag"># indago</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/06/xrun%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/" rel="prev" title="xrun仿真工具">
+      <i class="fa fa-chevron-left"></i> xrun仿真工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/04/verilog-timescale/" rel="next" title="verilog timescale">
+      verilog timescale <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#compile-elaborate-simulate%E5%91%BD%E4%BB%A4%E8%A1%8C%E9%80%89%E9%A1%B9"><span class="nav-number">1.</span> <span class="nav-text">compile&#x2F;elaborate&#x2F;simulate命令行选项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#default-ext-verilog"><span class="nav-number">1.1.</span> <span class="nav-text">-default_ext verilog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vlog-ext"><span class="nav-number">1.2.</span> <span class="nav-text">-vlog_ext</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nowarn"><span class="nav-number">1.3.</span> <span class="nav-text">-nowarn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#r-R"><span class="nav-number">1.4.</span> <span class="nav-text">-r&#x2F;-R</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#disableopt"><span class="nav-number">1.5.</span> <span class="nav-text">-disableopt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linedebug"><span class="nav-number">1.6.</span> <span class="nav-text">-linedebug</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xmlibdirname"><span class="nav-number">1.7.</span> <span class="nav-text">-xmlibdirname</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loadpli1"><span class="nav-number">1.8.</span> <span class="nav-text">-loadpli1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nontcglitch"><span class="nav-number">1.9.</span> <span class="nav-text">-nontcglitch</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCL%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">TCL命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#drives"><span class="nav-number">2.1.</span> <span class="nav-text">drives</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value"><span class="nav-number">2.2.</span> <span class="nav-text">value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stop"><span class="nav-number">2.3.</span> <span class="nav-text">stop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ida-probe-probe"><span class="nav-number">2.4.</span> <span class="nav-text">ida_probe&#x2F;probe</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VCS%E9%80%89%E9%A1%B9%E7%9A%84%E6%9B%BF%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">VCS选项的替换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9"><span class="nav-number">3.1.</span> <span class="nav-text">编译选项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%80%89%E9%A1%B9"><span class="nav-number">3.1.1.</span> <span class="nav-text">主要选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VPI-%E7%9B%B8%E5%85%B3%E9%80%89%E9%A1%B9"><span class="nav-number">3.1.2.</span> <span class="nav-text">VPI 相关选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E9%80%89%E9%A1%B9"><span class="nav-number">3.2.</span> <span class="nav-text">仿真选项</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

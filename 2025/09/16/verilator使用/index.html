@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Verilator demo示例make_hello_binaryMakefile文件1234567# Check for sanity to avoid later confusionifneq ($(words $(CURDIR)),1) $(error Unsupported: GNU Make cannot build in directories containing spaces, b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="verilator使用">
+<meta property="og:url" content="https://wzjsdyx.github.io/2025/09/16/verilator%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="Verilator demo示例make_hello_binaryMakefile文件1234567# Check for sanity to avoid later confusionifneq ($(words $(CURDIR)),1) $(error Unsupported: GNU Make cannot build in directories containing spaces, b">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-15T17:02:13.000Z">
+<meta property="article:modified_time" content="2025-09-28T01:46:51.010Z">
+<meta property="article:author" content="Youngster">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2025/09/16/verilator%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>verilator使用 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/09/16/verilator%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          verilator使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-09-16 01:02:13" itemprop="dateCreated datePublished" datetime="2025-09-16T01:02:13+08:00">2025-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-09-28 09:46:51" itemprop="dateModified" datetime="2025-09-28T09:46:51+08:00">2025-09-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/E%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">E阶段</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/09/16/verilator%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/09/16/verilator%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Verilator-demo示例"><a href="#Verilator-demo示例" class="headerlink" title="Verilator demo示例"></a>Verilator demo示例</h1><h2 id="make-hello-binary"><a href="#make-hello-binary" class="headerlink" title="make_hello_binary"></a>make_hello_binary</h2><h3 id="Makefile文件"><a href="#Makefile文件" class="headerlink" title="Makefile文件"></a>Makefile文件</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Check for sanity to avoid later confusion</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(words <span class="variable">$(CURDIR)</span>)</span>,1)</span><br><span class="line"> <span class="variable">$(<span class="built_in">error</span> Unsupported: GNU Make cannot build in directories containing spaces, build elsewhere: &#x27;<span class="variable">$(CURDIR)</span>&#x27;)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>$(CURDIR)</code>：当前工作目录。</p>
+<p><code>$(words $(CURDIR))</code>：统计目录路径里有几个“单词”，空格会被分隔成多个单词。</p>
+<p>如果目录路径里包含空格，就报错并退出。<br>👉 作用：<strong>防止在带空格路径下构建</strong>，否则后续命令可能解析错误。</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is intended to be a minimal example.  Before copying this to start a</span></span><br><span class="line"><span class="comment"># real project, it is better to start with a more complete example,</span></span><br><span class="line"><span class="comment"># e.g. examples/make_tracing_c.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># If $VERILATOR_ROOT isn&#x27;t in the environment, we assume it is part of a</span></span><br><span class="line"><span class="comment"># package install, and verilator is in your path. Otherwise find the</span></span><br><span class="line"><span class="comment"># binary relative to $VERILATOR_ROOT (such as when inside the git sources).</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(VERILATOR_ROOT)</span>,)</span><br><span class="line">VERILATOR = verilator</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">export</span> VERILATOR_ROOT</span><br><span class="line">VERILATOR = <span class="variable">$(VERILATOR_ROOT)</span>/bin/verilator</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ifeq (arg1, arg2)<br>   …   # 当 arg1 &#x3D;&#x3D; arg2 时执行<br>endif</p>
+<p>ifeq ($(VERILATOR_ROOT),)</p>
+<p>如果环境变量 <code>VERILATOR_ROOT</code> 没设置,即为空：（默认 <code>verilator</code> 在系统路径 (<code>PATH</code>) 里），直接调用</p>
+<p>如果设置了 <code>VERILATOR_ROOT</code>：使用它指定的目录中的 <code>bin/verilator</code></p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="section">default:</span></span><br><span class="line">	@echo <span class="string">&quot;-- Verilator hello-world simple binary example&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;-- VERILATE &amp; BUILD --------&quot;</span></span><br><span class="line">	<span class="variable">$(VERILATOR)</span> --binary -j 0 top.v</span><br><span class="line">	@echo <span class="string">&quot;-- RUN ---------------------&quot;</span></span><br><span class="line">	obj_dir/Vtop</span><br><span class="line">	@echo <span class="string">&quot;-- DONE --------------------&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;Note: Once this example is understood, see examples/make_hello_c.&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;Note: See also https://verilator.org/guide/latest/examples.html&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>default:</code> 定义默认目标（运行 <code>make</code> 就执行这里）。</p>
+<p><code>@echo ...</code>：打印提示信息（<code>@</code> 表示不打印命令本身，只显示输出）。</p>
+<p><code>--binary</code>：自动生成 C++ 仿真框架并编译成二进制</p>
+<p><code>-j 0</code>：多线程编译，<code>0</code> 表示自动使用所有 CPU 核心</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="section">maintainer-copy::</span></span><br><span class="line">clean mostlyclean distclean maintainer-clean::</span><br><span class="line">	-rm -rf obj_dir *.log *.dmp *.vpd core</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这一段的作用就是：</p>
+<ul>
+<li>定义了常见的 <strong>清理目标</strong> (<code>clean</code>、<code>distclean</code> 等)。</li>
+<li>无论你输入 <code>make clean</code> 还是 <code>make distclean</code>，都会执行 <strong>同样的删除命令</strong>。</li>
+<li>这样做是模仿 GNU 工程里的习惯：<ul>
+<li><code>clean</code>：删除编译生成的临时文件。</li>
+<li><code>distclean</code>：比 <code>clean</code> 更彻底，适合打包发布。</li>
+<li><code>maintainer-clean</code>：给维护者准备的，通常最彻底</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="make-hello-c"><a href="#make-hello-c" class="headerlink" title="make_hello_c"></a>make_hello_c</h2><h3 id="Makefile文件-1"><a href="#Makefile文件-1" class="headerlink" title="Makefile文件"></a>Makefile文件</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">default:</span></span><br><span class="line">	@echo <span class="string">&quot;-- Verilator hello-world simple example&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;-- VERILATE &amp; BUILD --------&quot;</span></span><br><span class="line">	<span class="variable">$(VERILATOR)</span> -cc --exe --build -j top.v sim_main.cpp</span><br><span class="line">	@echo <span class="string">&quot;-- RUN ---------------------&quot;</span></span><br><span class="line">	obj_dir/Vtop</span><br><span class="line">	@echo <span class="string">&quot;-- DONE --------------------&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;Note: Once this example is understood, see examples/make_tracing_c.&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;Note: See also https://verilator.org/guide/latest/examples.html&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>--exe </code>：</p>
+<ul>
+<li>告诉 Verilator：<br>“我要<font color=blue>生成一个可以编译成 <strong>可执行文件</strong> 的工程</font>，请把 <code>sim_main.cpp</code> 一起加进去”。</li>
+<li>结果：Verilator 会在 <code>obj_dir/</code> 下<font color=blue>生成一个 <strong>Makefile</strong>，比如 <code>obj_dir/Vtop.mk</code>，</font>这个 Makefile 知道怎么编译 <code>Vtop.cpp + sim_main.cpp</code>。</li>
+</ul>
+<p><code>--build</code>：</p>
+<ul>
+<li><p>在生成 <code>obj_dir/Vtop.mk</code> 之后，直接调用 <code>make -C obj_dir -f Vtop.mk</code> 来编译。</p>
+</li>
+<li><p>最终结果：得到真正的二进制可执行文件 <code>obj_dir/Vtop</code>。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="Vtop-classes-mk"><a href="#Vtop-classes-mk" class="headerlink" title="Vtop_classes.mk"></a>Vtop_classes.mk</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Verilated -*- Makefile -*-</span></span><br><span class="line"><span class="comment"># DESCRIPTION: Verilator output: Make include file with class lists</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This file lists generated Verilated files, for including in higher level makefiles.</span></span><br><span class="line"><span class="comment"># See Vtop.mk for the caller.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Switches...</span></span><br><span class="line"><span class="comment"># C11 constructs required?  0/1 (always on now)</span></span><br><span class="line">VM_C11 = 1</span><br><span class="line"><span class="comment"># Timing enabled?  0/1</span></span><br><span class="line">VM_TIMING = 0</span><br><span class="line"><span class="comment"># Coverage output mode?  0/1 (from --coverage)</span></span><br><span class="line">VM_COVERAGE = 0</span><br><span class="line"><span class="comment"># Parallel builds?  0/1 (from --output-split)</span></span><br><span class="line">VM_PARALLEL_BUILDS = 0</span><br><span class="line"><span class="comment"># Tracing output mode?  0/1 (from --trace/--trace-fst)</span></span><br><span class="line">VM_TRACE = 0</span><br><span class="line"><span class="comment"># Tracing output mode in VCD format?  0/1 (from --trace)</span></span><br><span class="line">VM_TRACE_VCD = 0</span><br><span class="line"><span class="comment"># Tracing output mode in FST format?  0/1 (from --trace-fst)</span></span><br><span class="line">VM_TRACE_FST = 0</span><br><span class="line"></span><br><span class="line"><span class="comment">### Object file lists...</span></span><br><span class="line"><span class="comment"># Generated module classes, fast-path, compile with highest optimization</span></span><br><span class="line">VM_CLASSES_FAST += \</span><br><span class="line">	Vtop \</span><br><span class="line">	Vtop___024root__DepSet_h84412442__0 \</span><br><span class="line">	Vtop___024root__DepSet_heccd7ead__0 \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generated module classes, non-fast-path, compile with low/medium optimization</span></span><br><span class="line">VM_CLASSES_SLOW += \</span><br><span class="line">	Vtop___024root__Slow \</span><br><span class="line">	Vtop___024root__DepSet_heccd7ead__0__Slow \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generated support classes, fast-path, compile with highest optimization</span></span><br><span class="line">VM_SUPPORT_FAST += \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generated support classes, non-fast-path, compile with low/medium optimization</span></span><br><span class="line">VM_SUPPORT_SLOW += \</span><br><span class="line">	Vtop__Syms \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Global classes, need linked once per executable, fast-path, compile with highest optimization</span></span><br><span class="line">VM_GLOBAL_FAST += \</span><br><span class="line">	verilated \</span><br><span class="line">	verilated_threads \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Global classes, need linked once per executable, non-fast-path, compile with low/medium optimization</span></span><br><span class="line">VM_GLOBAL_SLOW += \</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Verilated -*- Makefile -*-</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Vtop-mk"><a href="#Vtop-mk" class="headerlink" title="Vtop.mk"></a>Vtop.mk</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Verilated -*- Makefile -*-</span></span><br><span class="line"><span class="comment"># DESCRIPTION: Verilator output: Makefile for building Verilated archive or executable</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Execute this makefile from the object directory:</span></span><br><span class="line"><span class="comment">#    make -f Vtop.mk</span></span><br><span class="line"></span><br><span class="line"><span class="section">default: Vtop</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Constants...</span></span><br><span class="line"><span class="comment"># Perl executable (from $PERL)</span></span><br><span class="line">PERL = perl</span><br><span class="line"><span class="comment"># Path to Verilator kit (from $VERILATOR_ROOT)</span></span><br><span class="line">VERILATOR_ROOT = /home/zj/ic_workspace/verilator/verilator</span><br><span class="line"><span class="comment"># SystemC include directory with systemc.h (from $SYSTEMC_INCLUDE)</span></span><br><span class="line">SYSTEMC_INCLUDE ?= </span><br><span class="line"><span class="comment"># SystemC library directory with libsystemc.a (from $SYSTEMC_LIBDIR)</span></span><br><span class="line">SYSTEMC_LIBDIR ?= </span><br><span class="line"></span><br><span class="line"><span class="comment">### Switches...</span></span><br><span class="line"><span class="comment"># C++ code coverage  0/1 (from --prof-c)</span></span><br><span class="line">VM_PROFC = 0</span><br><span class="line"><span class="comment"># SystemC output mode?  0/1 (from --sc)</span></span><br><span class="line">VM_SC = 0</span><br><span class="line"><span class="comment"># Legacy or SystemC output mode?  0/1 (from --sc)</span></span><br><span class="line">VM_SP_OR_SC = <span class="variable">$(VM_SC)</span></span><br><span class="line"><span class="comment"># Deprecated</span></span><br><span class="line">VM_PCLI = 1</span><br><span class="line"><span class="comment"># Deprecated: SystemC architecture to find link library path (from $SYSTEMC_ARCH)</span></span><br><span class="line">VM_SC_TARGET_ARCH = linux</span><br><span class="line"></span><br><span class="line"><span class="comment">### Vars...</span></span><br><span class="line"><span class="comment"># Design prefix (from --prefix)</span></span><br><span class="line">VM_PREFIX = Vtop</span><br><span class="line"><span class="comment"># Module prefix (from --prefix)</span></span><br><span class="line">VM_MODPREFIX = Vtop</span><br><span class="line"><span class="comment"># User CFLAGS (from -CFLAGS on Verilator command line)</span></span><br><span class="line">VM_USER_CFLAGS = \</span><br><span class="line"></span><br><span class="line"><span class="comment"># User LDLIBS (from -LDFLAGS on Verilator command line)</span></span><br><span class="line">VM_USER_LDLIBS = \</span><br><span class="line"></span><br><span class="line"><span class="comment"># User .cpp files (from .cpp&#x27;s on Verilator command line)</span></span><br><span class="line">VM_USER_CLASSES = \</span><br><span class="line">	sim_main \</span><br><span class="line"></span><br><span class="line"><span class="comment"># User .cpp directories (from .cpp&#x27;s on Verilator command line)</span></span><br><span class="line">VM_USER_DIR = \</span><br><span class="line">	. \</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">### Default rules...</span></span><br><span class="line"><span class="comment"># Include list of all generated classes</span></span><br><span class="line"><span class="keyword">include</span> Vtop_classes.mk</span><br><span class="line"><span class="comment"># Include global rules</span></span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(VERILATOR_ROOT)</span>/<span class="keyword">include</span>/verilated.mk</span><br><span class="line"></span><br><span class="line"><span class="comment">### Executable rules... (from --exe)</span></span><br><span class="line">VPATH += <span class="variable">$(VM_USER_DIR)</span></span><br><span class="line"></span><br><span class="line"><span class="section">sim_main.o: sim_main.cpp</span></span><br><span class="line">	<span class="variable">$(OBJCACHE)</span> <span class="variable">$(CXX)</span> <span class="variable">$(CXXFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(OPT_FAST)</span> -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Link rules... (from --exe)</span></span><br><span class="line"><span class="section">Vtop: <span class="variable">$(VK_USER_OBJS)</span> <span class="variable">$(VK_GLOBAL_OBJS)</span> <span class="variable">$(VM_PREFIX)</span>__ALL.a <span class="variable">$(VM_HIER_LIBS)</span></span></span><br><span class="line">	<span class="variable">$(LINK)</span> <span class="variable">$(LDFLAGS)</span> <span class="variable">$^</span> <span class="variable">$(LOADLIBES)</span> <span class="variable">$(LDLIBS)</span> <span class="variable">$(LIBS)</span> <span class="variable">$(SC_LIBS)</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Verilated -*- Makefile -*-</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="verilated-mk"><a href="#verilated-mk" class="headerlink" title="verilated.mk"></a>verilated.mk</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- Makefile -*-</span></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># DESCRIPTION: Makefile commands for all verilated target files</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Copyright 2003-2023 by Wilson Snyder. This program is free software; you</span></span><br><span class="line"><span class="comment"># can redistribute it and/or modify it under the terms of either the GNU</span></span><br><span class="line"><span class="comment"># Lesser General Public License Version 3 or the Perl Artistic License</span></span><br><span class="line"><span class="comment"># Version 2.0.</span></span><br><span class="line"><span class="comment"># SPDX-License-Identifier: LGPL-3.0-only OR Artistic-2.0</span></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"></span><br><span class="line">AR = ar</span><br><span class="line">CXX = g++</span><br><span class="line">LINK = g++</span><br><span class="line">OBJCACHE ?= ccache</span><br><span class="line">PERL = /usr/bin/perl</span><br><span class="line">PYTHON3 = /usr/bin/python3</span><br><span class="line"></span><br><span class="line">CFG_WITH_CCWARN = no</span><br><span class="line">CFG_WITH_LONGTESTS = no</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compiler flags to enable profiling</span></span><br><span class="line">CFG_CXXFLAGS_PROFILE =  -pg</span><br><span class="line"><span class="comment"># Select language required to compile (often empty)</span></span><br><span class="line">CFG_CXXFLAGS_STD = </span><br><span class="line"><span class="comment"># Select newest language (unused by this Makefile, for some test&#x27;s Makefiles)</span></span><br><span class="line">CFG_CXXFLAGS_STD_NEWEST = -std=gnu++17</span><br><span class="line"><span class="comment"># Compiler flags to use to turn off unused and generated code warnings, such as -Wno-div-by-zero</span></span><br><span class="line">CFG_CXXFLAGS_NO_UNUSED =  -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-shadow</span><br><span class="line"><span class="comment"># Compiler flags that turn on extra warnings</span></span><br><span class="line">CFG_CXXFLAGS_WEXTRA =  -Wextra -Wfloat-conversion -Wlogical-op</span><br><span class="line"><span class="comment"># Compiler flags that enable coroutine support</span></span><br><span class="line">CFG_CXXFLAGS_COROUTINES = -fcoroutines</span><br><span class="line"><span class="comment"># Linker libraries for multithreading</span></span><br><span class="line">CFG_LDLIBS_THREADS =  -pthread -lpthread -latomic</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># Programs</span></span><br><span class="line"></span><br><span class="line">VERILATOR_COVERAGE = <span class="variable">$(PERL)</span> <span class="variable">$(VERILATOR_ROOT)</span>/bin/verilator_coverage</span><br><span class="line">VERILATOR_INCLUDER = <span class="variable">$(PYTHON3)</span> <span class="variable">$(VERILATOR_ROOT)</span>/bin/verilator_includer</span><br><span class="line">VERILATOR_CCACHE_REPORT = <span class="variable">$(PYTHON3)</span> <span class="variable">$(VERILATOR_ROOT)</span>/bin/verilator_ccache_report</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># Make checks</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(words <span class="variable">$(CURDIR)</span>)</span>,1)</span><br><span class="line"> <span class="variable">$(<span class="built_in">error</span> Unsupported: GNU Make cannot build in directories containing spaces, build elsewhere: &#x27;<span class="variable">$(CURDIR)</span>&#x27;)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># OS detection</span></span><br><span class="line">UNAME_S := <span class="variable">$(<span class="built_in">shell</span> uname -s)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># C Preprocessor flags</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Add -MMD -MP if you&#x27;re using a recent version of GCC.</span></span><br><span class="line">VK_CPPFLAGS_ALWAYS += \</span><br><span class="line">		-MMD \</span><br><span class="line">		-I<span class="variable">$(VERILATOR_ROOT)</span>/<span class="keyword">include</span> \</span><br><span class="line">		-I<span class="variable">$(VERILATOR_ROOT)</span>/<span class="keyword">include</span>/vltstd \</span><br><span class="line">		-DVM_COVERAGE=<span class="variable">$(VM_COVERAGE)</span> \</span><br><span class="line">		-DVM_SC=<span class="variable">$(VM_SC)</span> \</span><br><span class="line">		-DVM_TRACE=<span class="variable">$(VM_TRACE)</span> \</span><br><span class="line">		-DVM_TRACE_FST=<span class="variable">$(VM_TRACE_FST)</span> \</span><br><span class="line">		-DVM_TRACE_VCD=<span class="variable">$(VM_TRACE_VCD)</span> \</span><br><span class="line">		<span class="variable">$(CFG_CXXFLAGS_NO_UNUSED)</span> \</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CFG_WITH_CCWARN)</span>,yes)  <span class="comment"># Local... Else don&#x27;t burden users</span></span><br><span class="line">VK_CPPFLAGS_WALL += -Wall <span class="variable">$(CFG_CXXFLAGS_WEXTRA)</span> -Werror</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">CPPFLAGS += -I. <span class="variable">$(VK_CPPFLAGS_WALL)</span> <span class="variable">$(VK_CPPFLAGS_ALWAYS)</span></span><br><span class="line"></span><br><span class="line">VPATH += ..</span><br><span class="line">VPATH += <span class="variable">$(VERILATOR_ROOT)</span>/<span class="keyword">include</span></span><br><span class="line">VPATH += <span class="variable">$(VERILATOR_ROOT)</span>/<span class="keyword">include</span>/vltstd</span><br><span class="line"></span><br><span class="line"><span class="comment">#OPT = -ggdb -DPRINTINITSTR -DDETECTCHANGE</span></span><br><span class="line"><span class="comment">#OPT = -ggdb -DPRINTINITSTR</span></span><br><span class="line">CPPFLAGS += <span class="variable">$(OPT)</span></span><br><span class="line"></span><br><span class="line">CPPFLAGS += <span class="variable">$(M32)</span></span><br><span class="line">LDFLAGS  += <span class="variable">$(M32)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># On macOS, specify all weak symbols as dynamic_lookup.</span></span><br><span class="line"><span class="comment"># Otherwise, you get undefined symbol errors.</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(UNAME_S)</span>,Darwin)</span><br><span class="line">	LDFLAGS += -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Allow upper level user makefiles to specify flags they want.</span></span><br><span class="line"><span class="comment"># These aren&#x27;t ever set by Verilator, so users are free to override them.</span></span><br><span class="line">CPPFLAGS += <span class="variable">$(USER_CPPFLAGS)</span></span><br><span class="line">LDFLAGS  += <span class="variable">$(USER_LDFLAGS)</span></span><br><span class="line">LDLIBS   += <span class="variable">$(USER_LDLIBS)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Add flags from -CFLAGS and -LDFLAGS on Verilator command line</span></span><br><span class="line">CPPFLAGS += <span class="variable">$(VM_USER_CFLAGS)</span></span><br><span class="line">LDFLAGS  += <span class="variable">$(VM_USER_LDFLAGS)</span></span><br><span class="line">LDLIBS   += <span class="variable">$(VM_USER_LDLIBS)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># Optimization control.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># See also the BENCHMARKING &amp; OPTIMIZATION section of the manual.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Optimization flags for non performance-critical/rarely executed code.</span></span><br><span class="line"><span class="comment"># No optimization by default, which improves compilation speed.</span></span><br><span class="line">OPT_SLOW =</span><br><span class="line"><span class="comment"># Optimization for performance critical/hot code. Most time is spent in these</span></span><br><span class="line"><span class="comment"># routines. Optimizing by default for improved execution speed.</span></span><br><span class="line">OPT_FAST = -Os</span><br><span class="line"><span class="comment"># Optimization applied to the common run-time library used by verilated models.</span></span><br><span class="line"><span class="comment"># For compatibility this is called OPT_GLOBAL even though it only applies to</span></span><br><span class="line"><span class="comment"># files in the run-time library. Normally there should be no need for the user</span></span><br><span class="line"><span class="comment"># to change this as the library is small, but can have significant speed impact.</span></span><br><span class="line">OPT_GLOBAL = -Os</span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment">##### Profile builds</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(VM_PROFC)</span>,1)</span><br><span class="line">  CPPFLAGS += <span class="variable">$(CFG_CXXFLAGS_PROFILE)</span></span><br><span class="line">  LDFLAGS  += <span class="variable">$(CFG_CXXFLAGS_PROFILE)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment">##### SystemC builds</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(VM_SC)</span>,1)</span><br><span class="line">  CPPFLAGS += <span class="variable">$(SYSTEMC_CXX_FLAGS)</span> <span class="variable">$(<span class="built_in">addprefix</span> -I, <span class="variable">$(SYSTEMC_INCLUDE)</span>)</span></span><br><span class="line">  LDFLAGS  += <span class="variable">$(SYSTEMC_CXX_FLAGS)</span> <span class="variable">$(<span class="built_in">addprefix</span> -L, <span class="variable">$(SYSTEMC_LIBDIR)</span>)</span></span><br><span class="line">  SC_LIBS   = -lsystemc</span><br><span class="line"> <span class="keyword">ifneq</span> (<span class="variable">$(<span class="built_in">wildcard</span> <span class="variable">$(SYSTEMC_LIBDIR)</span>/*numeric_bit*)</span>,)</span><br><span class="line">  <span class="comment"># Systemc 1.2.1beta</span></span><br><span class="line">  SC_LIBS   += -lnumeric_bit -lqt</span><br><span class="line"> <span class="keyword">endif</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment">##### Threaded builds</span></span><br><span class="line"></span><br><span class="line">CPPFLAGS += <span class="variable">$(CFG_CXXFLAGS_STD)</span></span><br><span class="line">LDLIBS += <span class="variable">$(CFG_LDLIBS_THREADS)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(VM_TIMING)</span>,0)</span><br><span class="line"> <span class="keyword">ifneq</span> (<span class="variable">$(VM_TIMING)</span>,)</span><br><span class="line">  CPPFLAGS += <span class="variable">$(CFG_CXXFLAGS_COROUTINES)</span></span><br><span class="line"> <span class="keyword">endif</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment">### Aggregates</span></span><br><span class="line"></span><br><span class="line">VM_FAST += <span class="variable">$(VM_CLASSES_FAST)</span> <span class="variable">$(VM_SUPPORT_FAST)</span></span><br><span class="line">VM_SLOW += <span class="variable">$(VM_CLASSES_SLOW)</span> <span class="variable">$(VM_SUPPORT_SLOW)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment">### Overall Objects Linking</span></span><br><span class="line"></span><br><span class="line">VK_FAST_OBJS = <span class="variable">$(<span class="built_in">addsuffix</span> .o, <span class="variable">$(VM_FAST)</span>)</span></span><br><span class="line">VK_SLOW_OBJS = <span class="variable">$(<span class="built_in">addsuffix</span> .o, <span class="variable">$(VM_SLOW)</span>)</span></span><br><span class="line"></span><br><span class="line">VK_USER_OBJS = <span class="variable">$(<span class="built_in">addsuffix</span> .o, <span class="variable">$(VM_USER_CLASSES)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Note VM_GLOBAL_FAST and VM_GLOBAL_SLOW holds the files required from the</span></span><br><span class="line"><span class="comment"># run-time library. In practice everything is actually in VM_GLOBAL_FAST,</span></span><br><span class="line"><span class="comment"># but keeping the distinction for compatibility for now.</span></span><br><span class="line">VK_GLOBAL_OBJS = <span class="variable">$(<span class="built_in">addsuffix</span> .o, <span class="variable">$(VM_GLOBAL_FAST)</span> <span class="variable">$(VM_GLOBAL_SLOW)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Need to re-build if the generated makefile changes, as compiler options might</span></span><br><span class="line"><span class="comment"># have changed.</span></span><br><span class="line"><span class="variable">$(VK_GLOBAL_OBJS)</span>: <span class="variable">$(VM_PREFIX)</span>.mk</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(VM_PARALLEL_BUILDS)</span>,1)</span><br><span class="line">  <span class="comment"># Fast build for small designs: All .cpp files in one fell swoop. This</span></span><br><span class="line">  <span class="comment"># saves total compute, but can be slower if only a little changes. It is</span></span><br><span class="line">  <span class="comment"># also a lot slower for medium to large designs when the speed of the C</span></span><br><span class="line">  <span class="comment"># compiler dominates, which in this mode is not parallelizable.</span></span><br><span class="line"></span><br><span class="line">  VK_OBJS += <span class="variable">$(VM_PREFIX)</span>__ALL.o</span><br><span class="line">  <span class="variable">$(VM_PREFIX)</span>__ALL.cpp: <span class="variable">$(<span class="built_in">addsuffix</span> .cpp, <span class="variable">$(VM_FAST)</span> <span class="variable">$(VM_SLOW)</span>)</span></span><br><span class="line">	<span class="variable">$(VERILATOR_INCLUDER)</span> -DVL_INCLUDE_OPT=<span class="keyword">include</span> <span class="variable">$^</span> &gt; <span class="variable">$@</span></span><br><span class="line">  all_cpp: <span class="variable">$(VM_PREFIX)</span>__ALL.cpp</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="comment"># Parallel build: Each .cpp file by itself. This can be somewhat slower for</span></span><br><span class="line">  <span class="comment"># very small designs and examples, but is a lot faster for large designs.</span></span><br><span class="line"></span><br><span class="line">  VK_OBJS += <span class="variable">$(VK_FAST_OBJS)</span> <span class="variable">$(VK_SLOW_OBJS)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># When archiving just objects (.o), use single $(AR) run</span></span><br><span class="line"><span class="comment">#   1. Make .verilator_deplist.tmp file with list of objects so don&#x27;t exceed</span></span><br><span class="line"><span class="comment">#      the command line limits when calling $(AR).</span></span><br><span class="line"><span class="comment">#      The approach to write the dependency file is compatible with GNU Make 3,</span></span><br><span class="line"><span class="comment">#      and can be simplified using the file function once GNU Make 4.x becomes</span></span><br><span class="line"><span class="comment">#      the minimum supported version.</span></span><br><span class="line"><span class="comment"># When merging objects (.o) and archives (.a) additionally:</span></span><br><span class="line"><span class="comment">#   1. Extract object files from .a</span></span><br><span class="line"><span class="comment">#   2. Create a new archive from extracted .o and given .o</span></span><br><span class="line"><span class="section">%.a: | %.verilator_deplist.tmp</span></span><br><span class="line">	<span class="variable">$(info Archive <span class="variable">$(AR)</span> -rcs <span class="variable">$@</span> <span class="variable">$^</span>)</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">foreach</span> L, $(<span class="built_in">filter</span>-out %.a,<span class="variable">$^</span>)</span>, <span class="variable">$(<span class="built_in">shell</span> echo $L &gt;&gt;<span class="variable">$@</span>.verilator_deplist.tmp)</span>)</span><br><span class="line">	@if test <span class="variable">$(words $(<span class="built_in">filter</span> %.a,<span class="variable">$^</span>)</span>) -eq 0; then \</span><br><span class="line">		<span class="variable">$(RM)</span> -f <span class="variable">$@</span>; \</span><br><span class="line">		cat <span class="variable">$@</span>.verilator_deplist.tmp | xargs <span class="variable">$(AR)</span> -rc <span class="variable">$@</span>; \</span><br><span class="line">		<span class="variable">$(AR)</span> -s <span class="variable">$@</span>; \</span><br><span class="line">	<span class="keyword">else</span> \</span><br><span class="line">		<span class="variable">$(RM)</span> -rf <span class="variable">$@</span>.tmpdir; \</span><br><span class="line">		for archive in <span class="variable">$(<span class="built_in">filter</span> %.a,<span class="variable">$^</span>)</span>; do \</span><br><span class="line">			mkdir -p <span class="variable">$@</span>.tmpdir/$<span class="variable">$(<span class="built_in">basename</span> $$&#123;archive&#125;)</span>; \</span><br><span class="line">			cd <span class="variable">$@</span>.tmpdir/$<span class="variable">$(<span class="built_in">basename</span> $$&#123;archive&#125;)</span>; \</span><br><span class="line">			<span class="variable">$(AR)</span> -x ../../$$&#123;archive&#125;; \</span><br><span class="line">			cd ../..; \</span><br><span class="line">		done; \</span><br><span class="line">		<span class="variable">$(RM)</span> -f <span class="variable">$@</span>; \</span><br><span class="line">		cat <span class="variable">$@</span>.verilator_deplist.tmp | xargs <span class="variable">$(AR)</span> -rc <span class="variable">$@</span>; \</span><br><span class="line">		<span class="variable">$(AR)</span> -rcs <span class="variable">$@</span> <span class="variable">$@</span>.tmpdir/*/*.o; \</span><br><span class="line">	fi \</span><br><span class="line">	; <span class="variable">$(RM)</span> -rf <span class="variable">$@</span>.verilator_deplist.tmp <span class="variable">$@</span>.tmpdir</span><br><span class="line"></span><br><span class="line"><span class="comment"># Truncate the dependency list file used in the %.a target above.</span></span><br><span class="line"><span class="section">%.verilator_deplist.tmp:</span></span><br><span class="line">	echo <span class="string">&quot;&quot;</span> &gt; <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(VM_PREFIX)</span>__ALL.a: <span class="variable">$(VK_OBJS)</span> <span class="variable">$(VM_HIER_LIBS)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment">### Compile rules</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(VM_DEFAULT_RULES)</span>,0)</span><br><span class="line"><span class="comment"># Anything not in $(VK_SLOW_OBJS) or $(VK_GLOBAL_OBJS), including verilated.o</span></span><br><span class="line"><span class="comment"># and user files passed on the Verilator command line use this rule.</span></span><br><span class="line"><span class="section">%.o: %.cpp</span></span><br><span class="line">	<span class="variable">$(OBJCACHE)</span> <span class="variable">$(CXX)</span> <span class="variable">$(CXXFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(OPT_FAST)</span> -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(VK_SLOW_OBJS)</span>: %.o: %.cpp</span><br><span class="line">	<span class="variable">$(OBJCACHE)</span> <span class="variable">$(CXX)</span> <span class="variable">$(CXXFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(OPT_SLOW)</span> -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(VK_GLOBAL_OBJS)</span>: %.o: %.cpp</span><br><span class="line">	<span class="variable">$(OBJCACHE)</span> <span class="variable">$(CXX)</span> <span class="variable">$(CXXFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(OPT_GLOBAL)</span> -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Default rule embedded in make:</span></span><br><span class="line"><span class="comment">#.cpp.o:</span></span><br><span class="line"><span class="comment">#	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment">### ccache report</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(<span class="built_in">findstring</span> ccache-report,<span class="variable">$(MAKECMDGOALS)</span>)</span>,)</span><br><span class="line">  <span class="keyword">ifneq</span> (<span class="variable">$(OBJCACHE)</span>,ccache)</span><br><span class="line">    <span class="variable">$(<span class="built_in">error</span> ccache-report requires OBJCACHE to equal &#x27;ccache&#x27;)</span></span><br><span class="line">  <span class="keyword">endif</span></span><br><span class="line">  VK_OTHER_GOALS := <span class="variable">$(<span class="built_in">strip</span> $(<span class="built_in">subst</span> ccache-report,,<span class="variable">$(MAKECMDGOALS)</span>)</span>)</span><br><span class="line">  <span class="keyword">ifeq</span> (<span class="variable">$(VK_OTHER_GOALS)</span>,)</span><br><span class="line">    <span class="variable">$(<span class="built_in">error</span> ccache-report must be used with at least one other explicit target)</span></span><br><span class="line">  <span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Report ccache behaviour for this invocation of make</span></span><br><span class="line">  VK_CCACHE_LOGDIR := ccache-logs</span><br><span class="line">  VK_CCACHE_REPORT := <span class="variable">$(VM_PREFIX)</span>__ccache_report.txt</span><br><span class="line">  <span class="comment"># Remove previous logfiles and report</span></span><br><span class="line">  <span class="variable">$(<span class="built_in">shell</span> rm -rf <span class="variable">$(VK_CCACHE_LOGDIR)</span> <span class="variable">$(VK_CCACHE_REPORT)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(VK_CCACHE_LOGDIR)</span>:</span><br><span class="line">	mkdir -p <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(VK_OBJS)</span>: | <span class="variable">$(VK_CCACHE_LOGDIR)</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(VK_OBJS)</span>: <span class="keyword">export</span> CCACHE_LOGFILE=<span class="variable">$(VK_CCACHE_LOGDIR)</span>/<span class="variable">$@</span>.log</span><br><span class="line"></span><br><span class="line"><span class="variable">$(VK_CCACHE_REPORT)</span>: <span class="variable">$(VK_OBJS)</span></span><br><span class="line">	<span class="variable">$(VERILATOR_CCACHE_REPORT)</span> -o <span class="variable">$@</span> <span class="variable">$(VK_CCACHE_LOGDIR)</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: ccache-report</span></span><br><span class="line"><span class="section">ccache-report: <span class="variable">$(VK_CCACHE_REPORT)</span></span></span><br><span class="line">	@cat <span class="variable">$&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ccache-report runs last</span></span><br><span class="line"><span class="section">ccache-report: <span class="variable">$(VK_OTHER_GOALS)</span></span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment">### Debugging</span></span><br><span class="line"></span><br><span class="line"><span class="section">debug-make::</span></span><br><span class="line">	@echo</span><br><span class="line">	@echo CXXFLAGS: <span class="variable">$(CXXFLAGS)</span></span><br><span class="line">	@echo CPPFLAGS: <span class="variable">$(CPPFLAGS)</span></span><br><span class="line">	@echo OPT_FAST: <span class="variable">$(OPT_FAST)</span></span><br><span class="line">	@echo OPT_SLOW: <span class="variable">$(OPT_SLOW)</span></span><br><span class="line">	@echo VM_PREFIX:  <span class="variable">$(VM_PREFIX)</span></span><br><span class="line">	@echo VM_PARALLEL_BUILDS:  <span class="variable">$(VM_PARALLEL_BUILDS)</span></span><br><span class="line">	@echo VM_CLASSES_FAST: <span class="variable">$(VM_CLASSES_FAST)</span></span><br><span class="line">	@echo VM_CLASSES_SLOW: <span class="variable">$(VM_CLASSES_SLOW)</span></span><br><span class="line">	@echo VM_SUPPORT_FAST: <span class="variable">$(VM_SUPPORT_FAST)</span></span><br><span class="line">	@echo VM_SUPPORT_SLOW: <span class="variable">$(VM_SUPPORT_SLOW)</span></span><br><span class="line">	@echo VM_GLOBAL_FAST: <span class="variable">$(VM_GLOBAL_FAST)</span></span><br><span class="line">	@echo VM_GLOBAL_SLOW: <span class="variable">$(VM_GLOBAL_SLOW)</span></span><br><span class="line">	@echo VK_OBJS: <span class="variable">$(VK_OBJS)</span></span><br><span class="line">	@echo</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment">### Detect out of date files and rebuild.</span></span><br><span class="line"></span><br><span class="line">DEPS := <span class="variable">$(<span class="built_in">wildcard</span> *.d)</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(DEPS)</span>,)</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(DEPS)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="仿真文件sim-main-cpp"><a href="#仿真文件sim-main-cpp" class="headerlink" title="仿真文件sim_main.cpp"></a>仿真文件sim_main.cpp</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// verilated.h：包含一些通用函数和类，比如时间管理、命令行参数解析</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;verilated.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Vtop.h：由 Verilator 根据你的 Verilog 顶层模块 module top(...) 自动生成的 C++ 类</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Vtop.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// VerilatedContext：保存仿真环境的状态（比如当前时间、是否收到 $finish 信号）</span></span><br><span class="line">    VerilatedContext* contextp = <span class="keyword">new</span> VerilatedContext;</span><br><span class="line"></span><br><span class="line"><span class="comment">// commandArgs(...)：把命令行参数传给 Verilated 模型，以便在 Verilog 里用 $value$plusargs 获取</span></span><br><span class="line">    contextp-&gt;<span class="built_in">commandArgs</span>(argc, argv);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">上面两句可以理解为：搭建一个仿真环境的控制器</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 相当于 把 Verilog 模块 top 翻译成一个 C++ 对象，现在你可以调用它的 eval() 来执行仿真</span></span><br><span class="line">    Vtop* top = <span class="keyword">new</span> Vtop&#123;contextp&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// contextp-&gt;gotFinish()：检测 Verilog 仿真里是否调用了 $finish</span></span><br><span class="line">    <span class="keyword">while</span> (!contextp-&gt;<span class="built_in">gotFinish</span>()) &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行一次设计的计算（就像时钟推进或信号变化后更新电路状态）</span></span><br><span class="line">        top-&gt;<span class="built_in">eval</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模型收尾，比如执行 Verilog `final` 块（如果有）</span></span><br><span class="line">    top-&gt;<span class="built_in">final</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Destroy model</span></span><br><span class="line">    <span class="keyword">delete</span> top;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Return good completion status</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注释1：</p>
+<p>在 <strong>Verilator</strong> 里，生成的 C++ 顶层类名字是根据 <strong>Verilog 顶层模块名</strong> 来的</p>
+<p>如果你的 Verilog 顶层模块是<code>top</code>;Verilator 会生成一个 C++ 类,<code>Vtop</code>;</p>
+<p>假设顶层模块是 <code>top</code>，你会在 <code>obj_dir/</code> 里看到类似文件：</p>
+<ul>
+<li><code>Vtop.h</code> —— 类的声明（接口）。</li>
+<li><code>Vtop.cpp</code> —— 类的实现。</li>
+<li><code>Vtop__Syms.h / .cpp</code> —— 内部符号表（信号、子模块）。</li>
+<li><code>Vtop.mk</code> —— 用来编译的 Makefile 片段</li>
+</ul>
+<p>注释2：</p>
+<p> <code>$value$plusargs</code> 是什么？怎么用？</p>
+<ul>
+<li><code>$value$plusargs</code> 是 Verilog&#x2F;SystemVerilog 的 <strong>系统函数</strong>，用于从命令行读取参数。</li>
+<li>它常和 <strong>Verilator 的 <code>commandArgs(argc, argv)</code></strong> 配合使用</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> top;</span><br><span class="line">    <span class="keyword">integer</span> cycles;</span><br><span class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">$value$plusargs</span>(<span class="string">&quot;cycles=%d&quot;</span>, cycles)) <span class="keyword">begin</span></span><br><span class="line">            <span class="built_in">$display</span>(<span class="string">&quot;Simulation cycles = %0d&quot;</span>, cycles);</span><br><span class="line">        <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">            cycles = <span class="number">10</span>; <span class="comment">// 默认值</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// shell</span><br><span class="line">./Vtop +cycles=100</span><br><span class="line"></span><br><span class="line">// 输出</span><br><span class="line">Simulation cycles = 100</span><br></pre></td></tr></table></figure>
+
+<p>注释3：</p>
+<p>概念</p>
+<ul>
+<li><code>final</code> 块是 <strong>SystemVerilog</strong> 引入的一种过程块。</li>
+<li>它在 <strong>仿真结束时（遇到 <code>$finish</code>）</strong> 执行一次，用来做收尾工作。</li>
+<li>类似 C++&#x2F;Java 的析构函数。</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> top;</span><br><span class="line">    <span class="keyword">integer</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">always</span> #<span class="number">10</span> count++;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">        #<span class="number">100</span> <span class="built_in">$finish</span>;   <span class="comment">// 100 时间单位后结束仿真</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">begin</span></span><br><span class="line">        <span class="built_in">$display</span>(<span class="string">&quot;Final count = %0d at time %0t&quot;</span>, count, <span class="built_in">$time</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="make-tracing-c"><a href="#make-tracing-c" class="headerlink" title="make_tracing_c"></a>make_tracing_c</h2><h3 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(VERILATOR_ROOT)</span>,)</span><br><span class="line">VERILATOR = verilator</span><br><span class="line">VERILATOR_COVERAGE = verilator_coverage</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">export</span> VERILATOR_ROOT</span><br><span class="line">VERILATOR = <span class="variable">$(VERILATOR_ROOT)</span>/bin/verilator</span><br><span class="line">VERILATOR_COVERAGE = <span class="variable">$(VERILATOR_ROOT)</span>/bin/verilator_coverage</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate C++ in executable form</span></span><br><span class="line">VERILATOR_FLAGS += -cc --exe</span><br><span class="line"><span class="comment"># Generate makefile dependencies (not shown as complicates the Makefile)</span></span><br><span class="line"><span class="comment">#VERILATOR_FLAGS += -MMD</span></span><br><span class="line"><span class="comment"># Optimize，将所有显式的X态转化为0（此种方式仿真速度最快）</span></span><br><span class="line">VERILATOR_FLAGS += -x-assign fast</span><br><span class="line"><span class="comment"># Warn abount lint issues; may not want this on less solid designs</span></span><br><span class="line">VERILATOR_FLAGS += -Wall</span><br><span class="line"><span class="comment"># Make waveforms</span></span><br><span class="line">VERILATOR_FLAGS += --trace</span><br><span class="line"><span class="comment"># Check SystemVerilog assertions</span></span><br><span class="line">VERILATOR_FLAGS += --assert</span><br><span class="line"><span class="comment"># Generate coverage analysis</span></span><br><span class="line">VERILATOR_FLAGS += --coverage</span><br><span class="line"><span class="comment"># Input files for Verilator</span></span><br><span class="line">VERILATOR_INPUT = -f input.vc top.v sim_main.cpp</span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="section">default: run</span></span><br><span class="line"></span><br><span class="line"><span class="section">run:</span></span><br><span class="line">	@echo</span><br><span class="line">	@echo <span class="string">&quot;-- Verilator tracing example&quot;</span></span><br><span class="line"></span><br><span class="line">	@echo</span><br><span class="line">	@echo <span class="string">&quot;-- VERILATE ----------------&quot;</span></span><br><span class="line">	<span class="variable">$(VERILATOR)</span> <span class="variable">$(VERILATOR_FLAGS)</span> <span class="variable">$(VERILATOR_INPUT)</span></span><br><span class="line"></span><br><span class="line">	@echo</span><br><span class="line">	@echo <span class="string">&quot;-- BUILD -------------------&quot;</span></span><br><span class="line"><span class="comment"># To compile, we can either</span></span><br><span class="line"><span class="comment"># 1. Pass --build to Verilator by editing VERILATOR_FLAGS above.</span></span><br><span class="line"><span class="comment"># 2. Or, run the make rules Verilator does:</span></span><br><span class="line"><span class="comment">#	$(MAKE) -j -C obj_dir -f Vtop.mk</span></span><br><span class="line"><span class="comment"># 3. Or, call a submakefile where we can override the rules ourselves:</span></span><br><span class="line">	<span class="variable">$(MAKE)</span> -j -C obj_dir -f ../Makefile_obj</span><br><span class="line"></span><br><span class="line">	@echo</span><br><span class="line">	@echo <span class="string">&quot;-- RUN ---------------------&quot;</span></span><br><span class="line">	@rm -rf logs</span><br><span class="line">	@mkdir -p logs</span><br><span class="line">	obj_dir/Vtop +trace</span><br><span class="line"></span><br><span class="line">	@echo</span><br><span class="line">	@echo <span class="string">&quot;-- COVERAGE ----------------&quot;</span></span><br><span class="line">	@rm -rf logs/annotated</span><br><span class="line">	<span class="variable">$(VERILATOR_COVERAGE)</span> --annotate logs/annotated logs/coverage.dat</span><br><span class="line"></span><br><span class="line">	@echo</span><br><span class="line">	@echo <span class="string">&quot;-- DONE --------------------&quot;</span></span><br><span class="line">	@echo <span class="string">&quot;To see waveforms, open vlt_dump.vcd in a waveform viewer&quot;</span></span><br><span class="line">	@echo</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># Other targets</span></span><br><span class="line"></span><br><span class="line"><span class="section">show-config:</span></span><br><span class="line">	<span class="variable">$(VERILATOR)</span> -V</span><br><span class="line"></span><br><span class="line"><span class="section">maintainer-copy::</span></span><br><span class="line">clean mostlyclean distclean maintainer-clean::</span><br><span class="line">	-rm -rf obj_dir logs *.log *.dmp *.vpd coverage.dat core</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li><code>$(MAKE)</code></li>
+</ol>
+<ul>
+<li>这是 GNU Make 内置变量，代表 <strong>当前正在执行的 make 程序</strong>（比如 <code>/usr/bin/make</code>）。</li>
+</ul>
+<ol start="2">
+<li><code>-j</code></li>
+</ol>
+<ul>
+<li>表示 <strong>并行编译</strong>。</li>
+<li><code>-j</code> 后面可以加数字，例如 <code>-j4</code> 表示最多同时跑 4 个任务。</li>
+<li>这里只写了 <code>-j</code>，相当于“尽可能多并行”，由系统决定。</li>
+</ul>
+<ol start="3">
+<li><code>-C obj_dir</code></li>
+</ol>
+<ul>
+<li>表示 <strong>切换目录</strong>，进入 <code>obj_dir</code> 目录后再执行 make</li>
+</ul>
+<ol start="4">
+<li><code>-f ../Makefile_obj</code></li>
+</ol>
+<ul>
+<li><code>-f</code> 指定要用的 Makefile 文件</li>
+</ul>
+<p>因此作用是：</p>
+<p>在 <code>obj_dir</code> 目录下，调用 make，并行编译，使用 <code>../Makefile_obj</code> 作为规则文件</p>
+</blockquote>
+<h3 id="input-vc"><a href="#input-vc" class="headerlink" title="input.vc"></a>input.vc</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// This file typically lists flags required by a large project, e.g. include directories</span><br><span class="line">+librescan +libext+.v+.sv+.vh+.svh -y .</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>这是几条和 <strong>文件搜索路径 &#x2F; 库解析</strong> 有关的选项。</p>
+<p> (1) <code>+librescan</code></p>
+<ul>
+<li>意思是：<strong>允许重复搜索库文件</strong>。</li>
+<li>默认情况下，Verilog 编译器（包括 Verilator）在 <code>-y</code> 指定的目录下找到一个匹配的模块文件后就停止，不再继续找同名模块。</li>
+<li>加上 <code>+librescan</code>，会继续扫描目录中剩下的文件，避免因为库里有多个定义而漏掉。<br> 👉 一般用于 <strong>大 IP 库目录</strong>，确保所有依赖模块都能找到。</li>
+</ul>
+<hr>
+<p> (2) <code>+libext+.v+.sv+.vh+.svh</code></p>
+<ul>
+<li>指定 <strong>允许的文件扩展名</strong>。</li>
+<li><code>+libext+.v+.sv+.vh+.svh</code> 表示依次尝试：<ul>
+<li><code>.v</code> (Verilog)</li>
+<li><code>.sv</code> (SystemVerilog)</li>
+<li><code>.vh</code> (Verilog header)</li>
+<li><code>.svh</code> (SystemVerilog header)</li>
+</ul>
+</li>
+<li>当在 <code>-y</code> 指定的目录中搜索某个模块时，编译器会自动尝试这些扩展名。<br> 👉 这样就不用手动写出每个文件名，模块引用时只要写 <code>module_name</code>，工具会自动补齐后缀。</li>
+</ul>
+<hr>
+<p> (3) <code>-y .</code></p>
+<ul>
+<li>指定库搜索路径，<code>.</code> 表示<code>当前目录</code>。</li>
+<li>当 Verilator 找不到某个 <code>module xxx</code> 的定义时，就会去 <code>.</code> 目录下扫描所有符合 <code>+libext</code> 的文件。<br> 👉 常用来放 IP 库或者模块集合。</li>
+</ul>
+<p><font color=blue>最终形成的效果：</font></p>
+<p>综合起来，<code>input.vc</code> 的意思是：</p>
+<ol>
+<li>当仿真编译时，如果遇到未定义的模块，Verilator 会去 <strong>当前目录 (<code>.</code>)</strong> 搜索。</li>
+<li>搜索时，会尝试 <strong>.v &#x2F; .sv &#x2F; .vh &#x2F; .svh</strong> 这些扩展名。</li>
+<li>即使找到一个匹配文件，也会继续扫描，避免漏掉别的依赖。</li>
+</ol>
+</blockquote>
+<h3 id="Makefile-obj"><a href="#Makefile-obj" class="headerlink" title="Makefile_obj"></a>Makefile_obj</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="section">default: Vtop</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include the rules made by Verilator</span></span><br><span class="line"><span class="keyword">include</span> Vtop.mk</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use OBJCACHE (ccache) if using gmake and its installed</span></span><br><span class="line">COMPILE.cc = <span class="variable">$(OBJCACHE)</span> <span class="variable">$(CXX)</span> <span class="variable">$(CXXFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(TARGET_ARCH)</span> -c</span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################################################</span></span><br><span class="line"><span class="comment"># Compile flags</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Turn on creating .d make dependency files</span></span><br><span class="line">CPPFLAGS += -MMD -MP</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compile in Verilator runtime debugging, so +verilator+debug works</span></span><br><span class="line">CPPFLAGS += -DVL_DEBUG=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Turn on some more compiler lint flags (when configured appropriately)</span></span><br><span class="line"><span class="comment"># For testing inside Verilator, &quot;configure --enable-ccwarn&quot; will do this</span></span><br><span class="line"><span class="comment"># automatically; otherwise you may want this unconditionally enabled</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CFG_WITH_CCWARN)</span>,yes)  <span class="comment"># Local... Else don&#x27;t burden users</span></span><br><span class="line">USER_CPPFLAGS_WALL += -W -Werror -Wall</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># See the benchmarking section of bin/verilator.</span></span><br><span class="line"><span class="comment"># Support class optimizations.  This includes the tracing and symbol table.</span></span><br><span class="line"><span class="comment"># SystemC takes minutes to optimize, thus it is off by default.</span></span><br><span class="line">OPT_SLOW =</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fast path optimizations.  Most time is spent in these classes.</span></span><br><span class="line">OPT_FAST = -Os -fstrict-aliasing</span><br><span class="line"><span class="comment">#OPT_FAST = -O</span></span><br><span class="line"><span class="comment">#OPT_FAST =</span></span><br><span class="line"></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment">######################################################################</span></span><br><span class="line"><span class="comment"># Automatically understand dependencies</span></span><br><span class="line"></span><br><span class="line">DEPS := <span class="variable">$(<span class="built_in">wildcard</span> *.d)</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(DEPS)</span>,)</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(DEPS)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>Makefile_obj</code> 的作用是 <strong>给 Verilator 生成的核心规则 (<code>Vtop.mk</code>) 提供一个编译环境</strong>。</p>
+<p>核心逻辑在 <code>Vtop.mk</code>，而 <code>Makefile_obj</code> 只是：</p>
+<ol>
+<li>设置默认目标 (<code>Vtop</code>)；</li>
+<li>定义编译命令和依赖生成规则；</li>
+<li>启用调试宏和优化选项；</li>
+<li>自动处理头文件依赖。</li>
+</ol>
+<p>所以它相当于一个 <strong>薄包装层</strong>，让你在 <code>obj_dir</code> 下敲 <code>make</code> 就能编译，而不用手动关心一堆参数。</p>
+</blockquote>
+<h3 id="sub-v"><a href="#sub-v" class="headerlink" title="sub.v"></a>sub.v</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">always_ff</span> @ (<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></span><br><span class="line">   AssertionExample: <span class="keyword">assert</span> (!reset_l || count_c&lt;<span class="number">100</span>);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">// And example coverage analysis</span></span><br><span class="line"><span class="keyword">cover</span> <span class="keyword">property</span> (@(<span class="keyword">posedge</span> clk) count_c==<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>&#x2F;&#x2F; Check SystemVerilog assertions</p>
+<p>VERILATOR_FLAGS +&#x3D; <code>--assert</code>，<font color=blue>使得编译出来的C++工程能执行assert的功能</font></p>
+<p>&#x2F;&#x2F; Generate coverage analysis</p>
+<p>VERILATOR_FLAGS +&#x3D; <code>--coverage</code>，<font color=blue>使得编译出来的C++工程能执行覆盖率分析的功能</font></p>
+</blockquote>
+<h3 id="top-v"><a href="#top-v" class="headerlink" title="top.v"></a>top.v</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Print some stuff as an example</span></span><br><span class="line"><span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">   <span class="keyword">if</span> ($test$plusargs(<span class="string">&quot;trace&quot;</span>) != <span class="number">0</span>) <span class="keyword">begin</span></span><br><span class="line">      <span class="built_in">$display</span>(<span class="string">&quot;[%0t] Tracing to logs/vlt_dump.vcd...\n&quot;</span>, <span class="built_in">$time</span>);</span><br><span class="line">      <span class="built_in">$dumpfile</span>(<span class="string">&quot;logs/vlt_dump.vcd&quot;</span>);</span><br><span class="line">      <span class="built_in">$dumpvars</span>();</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line">   <span class="built_in">$display</span>(<span class="string">&quot;[%0t] Model running...\n&quot;</span>, <span class="built_in">$time</span>);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可执行文件 +trace，传递参数；</p>
+<p>&#x2F;&#x2F; Make waveforms</p>
+<p>VERILATOR_FLAGS +&#x3D; <code>--trace</code>，<font color=blue>使得编译出来的C++工程能执行trace的功能，即dump波形</font></p>
+</blockquote>
+<h3 id="sim-main-cpp"><a href="#sim-main-cpp" class="headerlink" title="sim_main.cpp"></a>sim_main.cpp</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// Using unique_ptr is similar to</span></span><br><span class="line">    <span class="comment">// &quot;VerilatedContext* contextp = new VerilatedContext&quot; then deleting at end.</span></span><br><span class="line">    <span class="type">const</span> std::unique_ptr&lt;VerilatedContext&gt; contextp&#123;<span class="keyword">new</span> VerilatedContext&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Pass arguments so Verilated code can see them, e.g. $value$plusargs</span></span><br><span class="line">    <span class="comment">// This needs to be called before you create any model</span></span><br><span class="line">    contextp-&gt;<span class="built_in">commandArgs</span>(argc, argv);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Randomization reset policy</span></span><br><span class="line">    <span class="comment">// May be overridden by commandArgs argument parsing</span></span><br><span class="line">    contextp-&gt;<span class="built_in">randReset</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Verilator must compute traced signals</span></span><br><span class="line">    contextp-&gt;<span class="built_in">traceEverOn</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Simulate until $finish</span></span><br><span class="line">    <span class="keyword">while</span> (!contextp-&gt;<span class="built_in">gotFinish</span>()) &#123;</span><br><span class="line">        contextp-&gt;<span class="built_in">timeInc</span>(<span class="number">1</span>);  <span class="comment">// 1 timeprecision period passes...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Toggle a fast (time/2 period) clock</span></span><br><span class="line">        top-&gt;clk = !top-&gt;clk;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!top-&gt;clk) &#123;</span><br><span class="line">            <span class="keyword">if</span> (contextp-&gt;<span class="built_in">time</span>() &gt; <span class="number">1</span> &amp;&amp; contextp-&gt;<span class="built_in">time</span>() &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                top-&gt;reset_l = !<span class="number">1</span>;  <span class="comment">// Assert reset</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                top-&gt;reset_l = !<span class="number">0</span>;  <span class="comment">// Deassert reset</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Assign some other inputs</span></span><br><span class="line">            top-&gt;in_quad += <span class="number">0x12</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Evaluate model</span></span><br><span class="line">        top-&gt;<span class="built_in">eval</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Final model cleanup</span></span><br><span class="line">    top-&gt;<span class="built_in">final</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Coverage analysis (calling write only after the test is known to pass)</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> VM_COVERAGE</span></span><br><span class="line">    Verilated::<span class="built_in">mkdir</span>(<span class="string">&quot;logs&quot;</span>);</span><br><span class="line">    contextp-&gt;<span class="built_in">coveragep</span>()-&gt;<span class="built_in">write</span>(<span class="string">&quot;logs/coverage.dat&quot;</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	top-&gt;<span class="built_in">delete</span>(); <span class="comment">//必须添加，不然生成的波形文件可能size为0；</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="trace-覆盖率-断言"><a href="#trace-覆盖率-断言" class="headerlink" title="trace&amp;覆盖率&amp;断言"></a>trace&amp;覆盖率&amp;断言</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>verilator选项</th>
+<th>verilog语句</th>
+<th>C-testbench语句</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>trace功能</td>
+<td>–trace</td>
+<td>$dumpfile(“logs&#x2F;vlt_dump.vcd”); <br>        $dumpvars();</td>
+<td>contextp-&gt;traceEverOn(true);</td>
+<td>gtkwave vlt_dump.vcd</td>
+</tr>
+<tr>
+<td>coverage功能</td>
+<td>–coverage</td>
+<td>&#x2F;&#x2F; And example coverage analysis<br>   cover property (@(posedge clk) count_c&#x3D;&#x3D;3);</td>
+<td>contextp-&gt;coveragep()-&gt;write(“logs&#x2F;coverage.dat”);</td>
+<td>verilator_coverage –annotate logs&#x2F;annotated logs&#x2F;coverage.dat</td>
+</tr>
+<tr>
+<td>assert功能</td>
+<td>–assert</td>
+<td>always_ff @ (posedge clk) begin<br>AssertionExample: assert (!reset_l || count_c&lt;100);<br>end</td>
+<td>NA</td>
+<td>NA</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h1><p>verilator的仿真选项：</p>
+<p><code>timescale </code>仿真时间单位需要–timing参数？</p>
+<p>如果没有timescale？？</p>
+<p><code>--timing</code></p>
+<p>contextp-&gt;timeInc()函数；</p>
+<p>dump fsdb需要推进时间片;</p>
+<p>contextp-&gt;traceOn(True);</p>
+<hr>
+<p>参考博客&amp;文档：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://verilator.org/guide/latest/example_cc.html#example-c-execution">Verilator_User_Guide</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/08/25/xrun-dump-fsdb/" rel="prev" title="xrun dump fsdb">
+      <i class="fa fa-chevron-left"></i> xrun dump fsdb
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/09/17/NVBoard%E4%BD%BF%E7%94%A8/" rel="next" title="NVBoard使用">
+      NVBoard使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Verilator-demo%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">Verilator demo示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#make-hello-binary"><span class="nav-number">1.1.</span> <span class="nav-text">make_hello_binary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Makefile%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">Makefile文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make-hello-c"><span class="nav-number">1.2.</span> <span class="nav-text">make_hello_c</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Makefile%E6%96%87%E4%BB%B6-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Makefile文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vtop-classes-mk"><span class="nav-number">1.2.2.</span> <span class="nav-text">Vtop_classes.mk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vtop-mk"><span class="nav-number">1.2.3.</span> <span class="nav-text">Vtop.mk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#verilated-mk"><span class="nav-number">1.2.4.</span> <span class="nav-text">verilated.mk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BF%E7%9C%9F%E6%96%87%E4%BB%B6sim-main-cpp"><span class="nav-number">1.2.5.</span> <span class="nav-text">仿真文件sim_main.cpp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make-tracing-c"><span class="nav-number">1.3.</span> <span class="nav-text">make_tracing_c</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#makefile"><span class="nav-number">1.3.1.</span> <span class="nav-text">makefile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#input-vc"><span class="nav-number">1.3.2.</span> <span class="nav-text">input.vc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Makefile-obj"><span class="nav-number">1.3.3.</span> <span class="nav-text">Makefile_obj</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sub-v"><span class="nav-number">1.3.4.</span> <span class="nav-text">sub.v</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top-v"><span class="nav-number">1.3.5.</span> <span class="nav-text">top.v</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sim-main-cpp"><span class="nav-number">1.3.6.</span> <span class="nav-text">sim_main.cpp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trace-%E8%A6%86%E7%9B%96%E7%8E%87-%E6%96%AD%E8%A8%80"><span class="nav-number">1.3.7.</span> <span class="nav-text">trace&amp;覆盖率&amp;断言</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">进阶使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

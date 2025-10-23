@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/11/%E9%94%81%E5%AD%98%E5%99%A8%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -176,261 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/08/07/eflash-controller-software-command/" class="post-title-link" itemprop="url">eflash controller software command</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-08-07 09:47:09" itemprop="dateCreated datePublished" datetime="2024-08-07T09:47:09+08:00">2024-08-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-14 16:46:38" itemprop="dateModified" datetime="2024-08-14T16:46:38+08:00">2024-08-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/eflash/tsmc-auot-eflash-controller/" itemprop="url" rel="index"><span itemprop="name">tsmc auot eflash controller</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/08/07/eflash-controller-software-command/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/07/eflash-controller-software-command/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="page-erase"><a href="#page-erase" class="headerlink" title="page erase"></a>page erase</h1><p>1、page erase操作会调用SMWR IP，SME操作会遵循SME操作流程图；</p>
-<blockquote>
-<ol>
-<li><p><strong>开始擦除 (Start Erase)</strong>:</p>
-<ul>
-<li>流程开始，初始化擦除操作。</li>
-</ul>
-</li>
-<li><p><strong>初始化计数器</strong>:</p>
-<ul>
-<li>擦除脉冲计数器 NNN 被设为 0。</li>
-<li>后擦除计数器 MMM 被设为 0。</li>
-</ul>
-</li>
-<li><p><strong>设置擦除电压</strong>:</p>
-<ul>
-<li>擦除电压设置为高电平 (EV&#x3D;H)。</li>
-<li>设置写入电压寄存器 (WHV3:03:03:0)。</li>
-</ul>
-</li>
-<li><p><strong>执行擦除 (Do Erase)</strong>:</p>
-</li>
-</ol>
-<ul>
-<li>进行实际的擦除操作。</li>
-</ul>
-<ol start="5">
-<li><strong>执行后擦除读取 (Do Post-Erase Read)</strong>:</li>
-</ol>
-<ul>
-<li><font color=blue>初步读取和检查步骤，用于获得擦除后的数据状态，并为后续的擦除验证提供基础数据。</font></li>
-</ul>
-<ol start="6">
-<li><strong>增加擦除脉冲计数器</strong>:</li>
-</ol>
-<ul>
-<li>擦除脉冲计数器 N 增加 1。</li>
-</ul>
-<ol start="7">
-<li><strong>擦除验证 (Erase Verify)</strong>:</li>
-</ol>
-<ul>
-<li>验证擦除是否成功。</li>
-</ul>
-<ol start="8">
-<li><strong>验证成功</strong>:</li>
-</ol>
-<ul>
-<li><p><font color=blue>即使擦除验证通过，为了确保擦除的彻底性，可能还需要进行额外擦除操作。这可能是为了应对一些边缘情况，确保数据完全擦除。&#x3D;&#x3D;&gt;大概率和Macro的自身设计有关，Erase Verify并不能cover到所有的情况，因此需要足够的额外擦除操作（M &gt;&#x3D; POST_ERS ），以保证数据完全擦除。</font></p>
-</li>
-<li><p>如果 M 大于等于 POST_ERS，流程结束。</p>
-</li>
-<li><p>如果 M 小于 POST_ERS，执行额外擦除操作，后擦除计数器 MMM 增加 1，然后返回步骤 4 继续擦除。</p>
-</li>
-</ul>
-<ol start="9">
-<li><strong>失败处理</strong>:</li>
-</ol>
-<ul>
-<li>如果擦除失败，检查擦除脉冲计数器 N 是否大于 N_me。<ul>
-<li>如果 N 大于 N_me，擦除操作失败，流程结束。</li>
-<li>如果 N 小于 N_me，返回步骤 4 继续擦除。</li>
-</ul>
-</li>
-</ul>
-<p>术语解释</p>
-<ul>
-<li><strong>N_me</strong>: 最大擦除脉冲次数，通常是基于特定芯片的耐久性限制。</li>
-<li><strong>T_erase</strong>: 总擦除时间。</li>
-<li><strong>T_sme</strong>: 智能擦除操作的时间。</li>
-</ul>
-</blockquote>
-<p>2、SWMR的工作状态可以通过端口信号判断；</p>
-<blockquote>
-<p>1、User assert <code>SMW_OP</code></p>
-<ul>
-<li>SME2：3’b010, one-shot mass-erase on MAIN array or MAIN, IFREN, and REDEN arrays, Tme is fixed based on macro specs</li>
-<li>SME3：3’b011, smart-page-erase on selected array</li>
-</ul>
-<p>2、TSMWR asserts </p>
-<ul>
-<li><code>SMWR_BUSY</code> signal high until smart-erase cycle is completed.   </li>
-<li><code>SMWR_ERR</code> indicates PASS(0) or FAIL(1) of the cycle, </li>
-<li><code>SMWR_LASTSET</code>, and <code>SMWR_LOOP</code> indicate detailed internal setting to complete the “smart-write” cycle.</li>
-</ul>
-</blockquote>
-<blockquote>
-<p>Q&amp;A：</p>
-<p>Q1、page erase operation，到底是什么信号触发了是让SMWR动起来？SMWR动起来之后，会拉高swm_busy信号，使得smw_mux输出的是smw_top的信号而不是user信号；</p>
-<p>A1：通过SME操作时序图，可以判断是因为前一级触发了smw_op，然后让SMWR动起来；</p>
-<p>Q2、SME操作流程图怎么理解？</p>
-<p>A2：如上解释</p>
-</blockquote>
-<h1 id="mass-erase命令"><a href="#mass-erase命令" class="headerlink" title="mass erase命令"></a>mass erase命令</h1><p>pflash main区域和dflash main区域是分开操作的，需要不同的指令</p>
-<p>操作的地址只要是在对应的main区域中，即可？？？</p>
-<p>&#x2F;&#x2F; try遇到的问题</p>
-<p>eflash boot，debugger不能erase flash main区域？</p>
-<p>1、先确认读写保护寄存器；</p>
-<p>2、根据读写保护规则确定行为；</p>
-<h2 id="Macro-mass-erase的操作范围："><a href="#Macro-mass-erase的操作范围：" class="headerlink" title="Macro mass erase的操作范围："></a>Macro mass erase的操作范围：</h2><h1 id="reference-cell-erase"><a href="#reference-cell-erase" class="headerlink" title="reference cell erase"></a>reference cell erase</h1><p>空片必须要执行一次reference cell erase；</p>
-<h2 id="软件流程"><a href="#软件流程" class="headerlink" title="软件流程"></a>软件流程</h2><p>首先写FMUKR 0x00ac7805 -&gt;  0x01234567 unlock；</p>
-<p>然后针对FMSPCLCK写32’h3322 1100 -&gt; 32’hffee ddcc；</p>
-<p>最后写FMCCR寄存器，执行reference erase 命令；</p>
-<h2 id="硬件流程"><a href="#硬件流程" class="headerlink" title="硬件流程"></a>硬件流程</h2><p>仿真流程</p>
-<p>1、user logic控制pflash Macro执行reference cell erase</p>
-<p>2、user logic控制dflash Macro执行reference cell erase</p>
-<p>3、user logic控制pflash Macro执行mass erase&#x3D;&#x3D;》pflash main array</p>
-<p>4、smart-write IP采用SM3对pflash Macro区域执行page erase&#x3D;&#x3D;》pflash info page0和page1</p>
-<p>5、user logic控制dflash Macro执行mass erase&#x3D;&#x3D;》dflash main array</p>
-<p>实际芯片的流程</p>
-<p>时序图</p>
-<p>遇到的问题</p>
-<img src="/2024/08/07/eflash-controller-software-command/image-20240809141508322.png" class="">
-
-<p>解决思路</p>
-<ul>
-<li>reference cell erase执行完之后，怎么判断有没有执行成功</li>
-</ul>
-<p>没办法判断，只能按照时序图来，最好多添加一些余量；</p>
-<ul>
-<li>对pflash info区域进行erase操作（利用smart ip）：</li>
-</ul>
-<p>1、smart-ip flow怎么和波形对应？&#x3D;&#x3D;》这个其实可以不用管，只要给command到smwr IP，其能够正确执行page erase操作即可；</p>
-<p>2、怎么看是对应哪一个page进行操作？&#x3D;&#x3D;》通过地址解码table</p>
-<ul>
-<li>reference cell erase命令，执行的范围怎么定？</li>
-</ul>
-<h1 id="page-program"><a href="#page-program" class="headerlink" title="page program"></a>page program</h1><h2 id="software-page-program的使用方式"><a href="#software-page-program的使用方式" class="headerlink" title="software page program的使用方式"></a>software page program的使用方式</h2><img src="/2024/08/07/eflash-controller-software-command/image-20240809103335826.png" class="">
-
-<blockquote>
-<p>NOTE：</p>
-<p>1、硬件首先会verify判断当前地址是否有valid data</p>
-<p>2、如果有valid data的话，需要先erase；</p>
-</blockquote>
-<h2 id="硬件执行机制"><a href="#硬件执行机制" class="headerlink" title="硬件执行机制"></a>硬件执行机制</h2><h3 id="SMP-flow-chart"><a href="#SMP-flow-chart" class="headerlink" title="SMP flow chart"></a>SMP flow chart</h3><img src="/2024/08/07/eflash-controller-software-command/image-20240814134414239.png" class="">
-
-
-
-<blockquote>
-<p>Note: Once “prog_mask” is set to’1’ for existing ‘0’ bit, it will keep at ‘1’ till end of SMP by<br>default.</p>
-</blockquote>
-<h3 id="Smart-Program-Operation"><a href="#Smart-Program-Operation" class="headerlink" title="Smart-Program Operation"></a>Smart-Program Operation</h3><img src="/2024/08/07/eflash-controller-software-command/image-20240814135309547.png" class="">
-
-
-
-<blockquote>
-<p>NOTE：</p>
-<p>SMW_OP</p>
-<p>SWM_BUSY</p>
-<p>SMW_ERR</p>
-<p>SMW_LATESET</p>
-<p>SMW_LOOP</p>
-<p>思考：</p>
-<p><font color=red>SMWR burst-write??</font></p>
-</blockquote>
-<h2 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h2><h1 id="option-page-program"><a href="#option-page-program" class="headerlink" title="option page program"></a>option page program</h1><h2 id="software-option-page-program的使用方式"><a href="#software-option-page-program的使用方式" class="headerlink" title="software option page program的使用方式"></a>software option page program的使用方式</h2><p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152102767.png" alt="image-20240814152102767"></p>
-<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152118901.png" alt="image-20240814152118901"></p>
-<blockquote>
-<p>NOTE：</p>
-<p>1、当SEGWREN是enable的时候，pflash info page2 和option page的属性相同；</p>
-<p>2、当做read protect&#x3D;&#x3D;》non read protect，此SW命令会对pflash main 和 dflash main做mass erase；</p>
-<p>3、program之后，SMWR IP会做program verify操作；</p>
-</blockquote>
-<h2 id="硬件执行机制-1"><a href="#硬件执行机制-1" class="headerlink" title="硬件执行机制"></a>硬件执行机制</h2><h1 id="page-verify"><a href="#page-verify" class="headerlink" title="page verify"></a>page verify</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/" class="post-title-link" itemprop="url">Cortex-M4的时钟/复位/Power control</a>
+            <a href="/2025/08/11/%E9%94%81%E5%AD%98%E5%99%A8%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/" class="post-title-link" itemprop="url">锁存器和触发器</a>
         </h2>
 
         <div class="post-meta">
@@ -441,7 +187,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-08-06 15:45:26 / 修改时间：15:52:55" itemprop="dateCreated datePublished" datetime="2024-08-06T15:45:26+08:00">2024-08-06</time>
+              <time title="创建时间：2025-08-11 14:08:37 / 修改时间：14:14:44" itemprop="dateCreated datePublished" datetime="2025-08-11T14:08:37+08:00">2025-08-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -449,110 +195,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="demo时钟结构"><a href="#demo时钟结构" class="headerlink" title="demo时钟结构"></a>demo时钟结构</h1><img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806155104547.png" class="">
-
-
-
-<h1 id="demo复位结构"><a href="#demo复位结构" class="headerlink" title="demo复位结构"></a>demo复位结构</h1><img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806154906930.png" class="">
-
-
-
-<h1 id="demo-power-control"><a href="#demo-power-control" class="headerlink" title="demo power control"></a>demo power control</h1><img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806154942748.png" class="">
-
-<img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806155007236.png" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">Cortex-M4的时钟和复位设计实战</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-08-01 19:57:54" itemprop="dateCreated datePublished" datetime="2024-08-01T19:57:54+08:00">2024-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-06 15:55:59" itemprop="dateModified" datetime="2024-08-06T15:55:59+08:00">2024-08-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4 SoC设计实战</span></a>
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
                 </span>
             </span>
 
@@ -565,8 +212,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/08/11/%E9%94%81%E5%AD%98%E5%99%A8%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/11/%E9%94%81%E5%AD%98%E5%99%A8%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -581,18 +228,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="core时钟结构"><a href="#core时钟结构" class="headerlink" title="core时钟结构"></a>core时钟结构</h1><img src="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/image-20240806155352379.png" class="">
-
-
-
-<h1 id="core复位结构"><a href="#core复位结构" class="headerlink" title="core复位结构"></a>core复位结构</h1><img src="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/image-20240806155512611.png" class="">
-
-
-
-<h1 id="core-power-control"><a href="#core-power-control" class="headerlink" title="core power control"></a>core power control</h1><img src="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/image-20240806155534555.png" class="">
-
-
-
+          <p>基本双稳态锁存器：</p>
+<p>实际电路的状态，中取决于上电的顺序以及延时；</p>
+<p>难以在实际中应用，是更复杂的锁存器（SR锁存器，D锁存器）和触发器（Flip-Flop）的基础；</p>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.elecfans.com/zt/31997/">两个反相器首尾相连锁存器</a></li>
+</ol>
 
       
     </div>
@@ -612,7 +254,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/11/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81%E3%80%81%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -626,7 +268,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">IP之dft设计</a>
+            <a href="/2025/08/11/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81%E3%80%81%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">原码、反码、补码、溢出检测</a>
         </h2>
 
         <div class="post-meta">
@@ -635,23 +277,21 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-07-29 20:53:07" itemprop="dateCreated datePublished" datetime="2024-07-29T20:53:07+08:00">2024-07-29</time>
+              <time title="创建时间：2025-08-11 10:55:23 / 修改时间：11:15:25" itemprop="dateCreated datePublished" datetime="2025-08-11T10:55:23+08:00">2025-08-11</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-06 16:39:52" itemprop="dateModified" datetime="2024-08-06T16:39:52+08:00">2024-08-06</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DFT%E5%8F%AF%E6%B5%8B%E6%80%A7%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">DFT可测性设计</span></a>
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
                 </span>
             </span>
 
@@ -664,8 +304,116 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/08/11/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81%E3%80%81%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/11/%E5%8E%9F%E7%A0%81%E3%80%81%E5%8F%8D%E7%A0%81%E3%80%81%E8%A1%A5%E7%A0%81%E3%80%81%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>原码：</p>
+<p>符号位不能直接参与运算；</p>
+<p>有正0和负0</p>
+<p>反码：</p>
+<p>符号位可以直接参与运算，但是<font color=blue>需要末位+1</font></p>
+<p>有正0和负0</p>
+<p>补码：</p>
+<p>进一步修复了反码计算错误时结果的偏差</p>
+<p>直接参与运算时，<font color=blue>不需要末位+1</font></p>
+<p>没有负0；</p>
+<blockquote>
+<p>例如对于4-bit补码表示：</p>
+<p>0000 &#x3D; 0;</p>
+<p>1000 &#x3D; -8;(特殊)</p>
+<p>1111 &#x3D; -1</p>
+</blockquote>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/cuisitana/article/details/142714454">原码、反码、补码、移码的定义以及各自的优缺点</a></li>
+</ol>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/07/glitch-free-clock-mux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/07/glitch-free-clock-mux/" class="post-title-link" itemprop="url">glitch free clock mux</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-08-07 14:27:26" itemprop="dateCreated datePublished" datetime="2025-08-07T14:27:26+08:00">2025-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-11 10:52:45" itemprop="dateModified" datetime="2025-08-11T10:52:45+08:00">2025-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/08/07/glitch-free-clock-mux/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/07/glitch-free-clock-mux/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -681,69 +429,18 @@
 
       
           <blockquote>
-<p>数字电路最常用的 DFT 技术就是加 scan chain。 用 ATPG 工具产生 scan pattern 可以很高效地判断片子内部是否有缺陷。</p>
-<p>能够测试的缺陷一般是：</p>
-<ul>
-<li>stuck at 错误</li>
-<li>transition错误</li>
-</ul>
-<p>DFT技术的核心就两个词：</p>
-<p>1、Controllability 可控性</p>
-<p> 2、Observability 可观察性</p>
-<p>Design中需要实现可控性以支持DFT技术；</p>
-<p>ATPG的test coverage可以用来评估可观察性好坏；</p>
+<p>核心思想是将有glitch的那段时间gating掉</p>
 </blockquote>
-<h1 id="可控性"><a href="#可控性" class="headerlink" title="可控性"></a>可控性</h1><h2 id="时钟可控"><a href="#时钟可控" class="headerlink" title="时钟可控"></a>时钟可控</h2><ul>
-<li>每一个时钟都应该加上 scan mux。在 ATPG mode 下，scan mux 切换到 scan clock 替换功能时钟 (functional clock) 驱动 flip flop。</li>
-<li>如果设计中用到 ICG (integrated clock gating) cell， 在 ATPG mode 下 ICG 保持“透明” transparent， 即 scan clock 要畅通无阻通过 ICG。 通常 ICG 会有一个 TE pin，连上 atpg_mode 信号就可以保证每个 scan clock pulse 都通过了。</li>
-</ul>
-<p>&#x3D;&#x3D;》bypass 内部时钟</p>
-<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730202209695.png" class="">
-
-<p>&#x3D;&#x3D;》bypass data当做clock的case</p>
-<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730202119127.png" class="">
-
-<h2 id="复位可控"><a href="#复位可控" class="headerlink" title="复位可控"></a>复位可控</h2><ul>
-<li>每一个复位都应该加上 scan mux。在 ATPG mode 下，scan mux 切换到 scan reset 替换功能复位。</li>
-<li>如果因为pin 紧张，无法提供 scan reset，可以在 ATPG mode 下把复位 tie 到 1。</li>
-</ul>
-<p><font color=blue>模块的clock和复位都需要在ATPG mode的时候切换成scan的clock和reset</font></p>
-<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730201957255.png" class="">
+<h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><img src="/2025/08/07/glitch-free-clock-mux/image-20250807142929081.png" class="">
 
 
 
-<h1 id="可观察性"><a href="#可观察性" class="headerlink" title="可观察性"></a>可观察性</h1><p>如果电路内部某个 gate 有 stuck at fault，是否都能观察到。 绝大部分 gate 如果有 stuck at fault， 都会被 scan chain 捕捉到。输出的 scan pattern 与预期不一致，就说明片子内部有缺陷了。</p>
-<p>ATPG 工具报告中的 test coverage可用来评估可观察性好坏。 如果test coverage % 比较低，就要研究如何让内部更多的信号可以被 scan chain 观察到了。 具体要看是哪部分电路覆盖率低，分析是否设计中有错造成部分 flip flop 没有加到 scan chain 里。 有些 gate 是无法完全覆盖的，如 scan mux, scan tie off。</p>
-<p><font color=blue>综合工具插入 scan chain 后通常可以生成 DFT DRC 报告。 要看一下。 如果 DFT DRC 过不了，就是scan有些地方出错了，例如出现不可控的path；</font></p>
-<h1 id="项目中的实操"><a href="#项目中的实操" class="headerlink" title="项目中的实操"></a>项目中的实操</h1><p>一般来说，实际项目中会在clock module以及reset module使用scan mux对时钟和复位进行切换；</p>
-<h2 id="添加时钟scan-mux-clock-mux"><a href="#添加时钟scan-mux-clock-mux" class="headerlink" title="添加时钟scan mux(clock mux)"></a>添加时钟scan mux(clock mux)</h2><h3 id="case1：模块内部有多个时钟需要切换"><a href="#case1：模块内部有多个时钟需要切换" class="headerlink" title="case1：模块内部有多个时钟需要切换"></a>case1：模块内部有多个时钟需要切换</h3><p>如果一个模块中只有一个时钟，那么模块内部一般就不用scan mux（clock mux）进行切换</p>
-<p>如果一个模块内部需要多个时钟，并且需要对其切换进行工作，那么就需要使用scan mux，如下图所示：</p>
-<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730203811707.png" class="">
-
-<blockquote>
-<p>原因是，clk_sel信号来自于某个寄存器，其在scan的过程中是不可控的；</p>
-<p>方式一：直接做一个scan mux</p>
-<p>方式二：源头上已经对fun_clock1以及fun_clock2做了切换，因此可以对原来的clock select进行控制即可；</p>
-</blockquote>
-<h3 id="case2：data当做clock"><a href="#case2：data当做clock" class="headerlink" title="case2：data当做clock"></a>case2：data当做clock</h3><p>WIC中data当做clock，就需要进行切换，如下图所示：</p>
-<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730204220520.png" class="">
+<h2 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h2><img src="/2025/08/07/glitch-free-clock-mux/image-20250807142939116.png" class="">
 
 
 
-<h2 id="添加复位scan-mux-clock-mux"><a href="#添加复位scan-mux-clock-mux" class="headerlink" title="添加复位scan mux(clock mux)"></a>添加复位scan mux(clock mux)</h2><h3 id="case1：data当做reset"><a href="#case1：data当做reset" class="headerlink" title="case1：data当做reset"></a>case1：data当做reset</h3><blockquote>
-<p>因为是异步复位同步释放之后的电路；</p>
-<p>属于是data当做reset的情况，因此需要添加scan mux；</p>
-</blockquote>
-<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730204805385.png" class="">
+<h2 id="RTL-Code"><a href="#RTL-Code" class="headerlink" title="RTL Code"></a>RTL Code</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> clk_sync_4_1 (clk0, clk1, clk2, clk3, clk_ref, test_scan_mode, scan_clk, test_mode, chg, sel, clkout, chg_ok, rst_b);</span><br><span class="line">   <span class="keyword">input</span> clk0, clk1, clk2, clk3;</span><br><span class="line">   <span class="keyword">input</span> chg;</span><br><span class="line">   <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] sel;</span><br><span class="line">   <span class="keyword">input</span> clk_ref;</span><br><span class="line">   <span class="keyword">input</span> test_scan_mode, scan_clk, test_mode;</span><br><span class="line">   <span class="keyword">input</span> rst_b;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">output</span> clkout;</span><br><span class="line">   <span class="keyword">output</span> chg_ok;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> chg_d, chg_2d, chg_3d;</span><br><span class="line"><span class="keyword">reg</span> trig, trig_d, trig_2d;</span><br><span class="line"><span class="keyword">reg</span> chg_ok;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] mux_sel;</span><br><span class="line"><span class="keyword">wire</span> mux_clk;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> mux_clk_scan;</span><br><span class="line">dtc_ckmux2 DTC_MUX_CLK_SCAN (<span class="variable">.I0</span>(mux_clk), <span class="variable">.I1</span>(scan_clk), <span class="variable">.S</span>(test_scan_mode), <span class="variable">.Z</span>(mux_clk_scan));</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> mux_clk_scan <span class="keyword">or</span> <span class="keyword">negedge</span> rst_b)</span><br><span class="line">   <span class="keyword">if</span>(~rst_b)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">     chg_d &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     chg_2d &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     chg_3d &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     chg_d &lt;= chg;</span><br><span class="line">     chg_2d &lt;= chg_d;</span><br><span class="line">     chg_3d &lt;= chg_2d;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dtc_ckmux2 DTC_REF_CLK_SCAN (<span class="variable">.I0</span>(clk_ref), <span class="variable">.I1</span>(scan_clk), <span class="variable">.S</span>(test_scan_mode), <span class="variable">.Z</span>(clk_ref_scan));</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_ref_scan <span class="keyword">or</span> <span class="keyword">negedge</span> rst_b)</span><br><span class="line">  <span class="keyword">if</span>(~rst_b)</span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     trig &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     trig_d &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     trig_2d &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">     chg_ok &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">else</span>     </span><br><span class="line">   <span class="keyword">begin</span></span><br><span class="line">     trig &lt;= chg_3d;</span><br><span class="line">     trig_d &lt;= trig;</span><br><span class="line">     trig_2d &lt;= trig_d;</span><br><span class="line">     chg_ok &lt;= trig_2d;</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> and_sel;</span><br><span class="line"><span class="keyword">assign</span> and_sel = trig_d &amp; ~trig_2d;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] mux_of_sel;</span><br><span class="line"><span class="keyword">assign</span> mux_of_sel  = and_sel ? sel : mux_sel;</span><br><span class="line"></span><br><span class="line"><span class="comment">//always @(posedge clk_ref)</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_ref_scan <span class="keyword">or</span> <span class="keyword">negedge</span> rst_b)</span><br><span class="line">  <span class="keyword">if</span>(~rst_b)</span><br><span class="line">   mux_sel &lt;= <span class="number">2&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    mux_sel &lt;= mux_of_sel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> mux_clk01, mux_clk23, mux_clk_1;</span><br><span class="line">dtc_ckmux2 DTC_MUX_CLK01 (<span class="variable">.I0</span>(clk0), <span class="variable">.I1</span>(clk1), <span class="variable">.S</span>(mux_sel[<span class="number">0</span>]|test_mode), <span class="variable">.Z</span>(mux_clk01));</span><br><span class="line">dtc_ckmux2 DTC_MUX_CLK23 (<span class="variable">.I0</span>(clk2), <span class="variable">.I1</span>(clk3), <span class="variable">.S</span>(mux_sel[<span class="number">0</span>]|test_mode), <span class="variable">.Z</span>(mux_clk23));</span><br><span class="line">dtc_ckmux2 DTC_MUX_CLK_OUT (<span class="variable">.I0</span>(mux_clk01), <span class="variable">.I1</span>(mux_clk23), <span class="variable">.S</span>(mux_sel[<span class="number">1</span>]|test_mode), <span class="variable">.Z</span>(mux_clk));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dtc_icg clk_sync_icg(<span class="variable">.TE</span>(<span class="number">1&#x27;b0</span>), <span class="variable">.E</span>(~chg_2d|test_mode), <span class="variable">.CP</span>(mux_clk), <span class="variable">.Q</span>(clkout));</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.eetop.cn/blog-1592-6946129.html">数字电路DFT</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.ip-soc.com/magazine/229.html">DFT的最佳设计实践</a></li>
-</ol>
 
       
     </div>
@@ -763,7 +460,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/07/counter-sync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -777,127 +474,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">dft基础概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-26 15:44:34" itemprop="dateCreated datePublished" datetime="2024-07-26T15:44:34+08:00">2024-07-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-30 20:18:14" itemprop="dateModified" datetime="2024-07-30T20:18:14+08:00">2024-07-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DFT%E5%8F%AF%E6%B5%8B%E6%80%A7%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">DFT可测性设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>芯片</p>
-<h1 id="寄存器的测试"><a href="#寄存器的测试" class="headerlink" title="寄存器的测试"></a>寄存器的测试</h1><p><font color=blue>寄存器的测试需要插入一条scan链，将所有的寄存器连接起来。</font></p>
-<p>1、原来的function逻辑</p>
-<img src="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/image-20240727112627887.png" class="">
-
-<p>2、插入scan链需要使用scan寄存器</p>
-<img src="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/image-20240727112828088.png" class="">
-
-<p>3、插入扫描链的示意图</p>
-<img src="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/image-20240727112943729.png" class="">
-
-
-
-
-
-
-
-<p>SCAN链和ATPG测试向量</p>
-<p>ATPG主要是覆盖两种错误：</p>
-<p>1、stuck at 错误</p>
-<p>2、transition错误</p>
-<p>其中：</p>
-<p>stuck at的错误可以通过scan测试来解决，其使用的是低速时钟；</p>
-<p>transition错误可以通过transition测试来解决，需要低速scan时钟和高速at speed时钟的切换，会使用OCC IP；</p>
-<p>OCC的用途</p>
-<p>OCC是片内时钟控制器，在DFT模式下可以进行低速scan时钟和高速at speed时钟的切换</p>
-<h1 id="SRAM-ROM-Macro的测试"><a href="#SRAM-ROM-Macro的测试" class="headerlink" title="SRAM&#x2F;ROM Macro的测试"></a>SRAM&#x2F;ROM Macro的测试</h1><p>Memory bist</p>
-<h1 id="Flash-Macro的测试"><a href="#Flash-Macro的测试" class="headerlink" title="Flash Macro的测试"></a>Flash Macro的测试</h1><ul>
-<li><p>使用vendor专门提供的的BIST IP（具有专门的JTAG接口）进行测试</p>
-</li>
-<li><p>需要开发Flash测试pattern</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/26/JTAG-SWD-ACK-error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/26/JTAG-SWD-ACK-error/" class="post-title-link" itemprop="url">JTAG/SWD ACK=error</a>
+            <a href="/2025/08/07/counter-sync/" class="post-title-link" itemprop="url">counter sync</a>
         </h2>
 
         <div class="post-meta">
@@ -908,7 +485,16 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-07-26 13:52:50 / 修改时间：15:42:14" itemprop="dateCreated datePublished" datetime="2024-07-26T13:52:50+08:00">2024-07-26</time>
+              <time title="创建时间：2025-08-07 14:19:52 / 修改时间：14:26:53" itemprop="dateCreated datePublished" datetime="2025-08-07T14:19:52+08:00">2025-08-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
             </span>
 
           
@@ -920,8 +506,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/26/JTAG-SWD-ACK-error/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/26/JTAG-SWD-ACK-error/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/08/07/counter-sync/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/07/counter-sync/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -936,14 +522,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>在对JTAG&#x2F;SWD仿真的时候，经常会遇到ACK error的情况，现在对一些会导致ACK error的场景做总结；</p>
-<p>一般来说不是IP本身的问题，需要对时钟，timing等等做check</p>
+          <p>从慢domain&#x3D;&#x3D;》快domain进行多bit counter同步；</p>
+<blockquote>
+<p>选取counter的一个bit作为pulse信号进行同步，然后latch counter数据；</p>
 </blockquote>
-<p>错误case1：判断DAP是否有时钟</p>
-<p>错误case2：判断DP是否有transaction到AP</p>
-<p>错误case3：判断AP是否有transaction通过总线打出</p>
-<p>错误case4：判断JTAG&#x2F;SWD的约束timing是否满足</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> sync_cnt_v2</span><br><span class="line">    #(</span><br><span class="line">        <span class="keyword">parameter</span> WIDTH = <span class="number">20</span></span><br><span class="line">    )</span><br><span class="line">    (</span><br><span class="line">        <span class="keyword">input</span>              frst_n       ,</span><br><span class="line">        <span class="keyword">input</span>              brst_n       ,</span><br><span class="line">        <span class="keyword">input</span>              fclk         ,</span><br><span class="line">        <span class="keyword">input</span>              bclk         ,</span><br><span class="line">        <span class="keyword">input</span>              enable       ,</span><br><span class="line">        <span class="keyword">input</span>  [      <span class="number">1</span>:<span class="number">0</span>] bit_sel      ,</span><br><span class="line">        <span class="keyword">input</span>  [WIDTH-<span class="number">1</span>:<span class="number">0</span>] multb_in     ,</span><br><span class="line">        <span class="keyword">output</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] multb_out    ,</span><br><span class="line">        <span class="keyword">output</span>             chg_bpulse   </span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">reg</span>  bit_ind;</span><br><span class="line">    <span class="keyword">reg</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] cnt_latch;</span><br><span class="line">    <span class="keyword">reg</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] cnt_b;</span><br><span class="line">    <span class="keyword">reg</span>       chg_fd;</span><br><span class="line">    <span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] chg_bd;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">always</span> @(*)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">case</span>(bit_sel)</span><br><span class="line">            <span class="number">2&#x27;d0</span> : bit_ind = multb_in[<span class="number">0</span>];</span><br><span class="line">            <span class="number">2&#x27;d1</span> : bit_ind = multb_in[<span class="number">1</span>];</span><br><span class="line">            <span class="number">2&#x27;d2</span> : bit_ind = multb_in[<span class="number">2</span>];</span><br><span class="line">            <span class="number">2&#x27;d3</span> : bit_ind = multb_in[<span class="number">3</span>];</span><br><span class="line">        <span class="keyword">endcase</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">//==============================================================</span></span><br><span class="line">    <span class="comment">// FCLK</span></span><br><span class="line">    <span class="comment">//==============================================================</span></span><br><span class="line">    <span class="keyword">always</span>@(<span class="keyword">posedge</span> fclk <span class="keyword">or</span> <span class="keyword">negedge</span> frst_n)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(~frst_n)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            chg_fd &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            chg_fd &lt;= bit_ind;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">assign</span> chg_fpulse = (chg_fd ^ bit_ind);</span><br><span class="line">    <span class="keyword">always</span>@(<span class="keyword">posedge</span> fclk <span class="keyword">or</span> <span class="keyword">negedge</span> frst_n)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(!frst_n)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            cnt_latch &lt;= &#123;WIDTH&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(chg_fpulse)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            cnt_latch &lt;= multb_in;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//==============================================================</span></span><br><span class="line">    <span class="comment">// BCLK</span></span><br><span class="line">    <span class="comment">//==============================================================</span></span><br><span class="line">    <span class="keyword">always</span>@(<span class="keyword">posedge</span> bclk <span class="keyword">or</span> <span class="keyword">negedge</span> brst_n)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(~brst_n)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            chg_bd &lt;= <span class="number">3&#x27;b0</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            chg_bd &lt;= &#123;chg_bd[<span class="number">1</span>:<span class="number">0</span>],chg_fd&#125;;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">assign</span> chg_bpulse = (chg_bd[<span class="number">1</span>] ^ chg_bd[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">always</span>@(<span class="keyword">posedge</span> bclk <span class="keyword">or</span> <span class="keyword">negedge</span> brst_n)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(!brst_n)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            cnt_b &lt;= &#123;WIDTH&#123;<span class="number">1&#x27;b0</span>&#125;&#125;;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!enable)</span><br><span class="line">            cnt_b &lt;= multb_in;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(chg_bpulse)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            cnt_b &lt;= cnt_latch;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">assign</span> multb_out = cnt_b;</span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -963,7 +547,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/07/pulse-sync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -977,7 +561,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/" class="post-title-link" itemprop="url">verilog之奇奇怪怪的注意点</a>
+            <a href="/2025/08/07/pulse-sync/" class="post-title-link" itemprop="url">pulse sync</a>
         </h2>
 
         <div class="post-meta">
@@ -986,16 +570,19 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-07-23 17:53:00" itemprop="dateCreated datePublished" datetime="2024-07-23T17:53:00+08:00">2024-07-23</time>
+              <time title="创建时间：2025-08-07 13:19:33 / 修改时间：14:19:31" itemprop="dateCreated datePublished" datetime="2025-08-07T13:19:33+08:00">2025-08-07</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-24 14:34:11" itemprop="dateModified" datetime="2024-07-24T14:34:11+08:00">2024-07-24</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+            </span>
 
           
   
@@ -1006,8 +593,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/08/07/pulse-sync/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/07/pulse-sync/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1022,113 +609,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="force语句"><a href="#force语句" class="headerlink" title="force语句"></a>force语句</h2><p>如果对wire就行force，那么整个wire逻辑都会是被传递；</p>
-<h2 id="判断语句"><a href="#判断语句" class="headerlink" title="&#x3D;&#x3D; 判断语句"></a>&#x3D;&#x3D; 判断语句</h2><p>如果32bits data中，高bit是Z或者X，那么在进行比较的时候，就可能出现问题；</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wait</span>(top_sim<span class="variable">.ac7843x</span><span class="variable">.MTCMOS_wrap</span><span class="variable">.protsys</span><span class="variable">.pbr_right_inf_u</span><span class="variable">.master3_right</span>[<span class="number">31</span>:<span class="number">0</span>] == <span class="number">32&#x27;h6</span>);</span><br><span class="line"># 在上述语句中，如果只有低<span class="number">3</span>bits有效，高<span class="number">29</span>bits是Z态，那么上面的比较就不会成立，可能会一直比较，修改进行如下的修改：</span><br><span class="line"><span class="keyword">wait</span>(top_sim<span class="variable">.ac7843x</span><span class="variable">.MTCMOS_wrap</span><span class="variable">.protsys</span><span class="variable">.pbr_right_inf_u</span><span class="variable">.master3_right</span>[<span class="number">2</span>:<span class="number">0</span>] == <span class="number">3&#x27;b110</span>);</span><br></pre></td></tr></table></figure>
+          <h1 id="sync-pu-不带busy"><a href="#sync-pu-不带busy" class="headerlink" title="sync_pu(不带busy)"></a>sync_pu(不带busy)</h1><h2 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h2><img src="/2025/08/07/pulse-sync/image-20250807135741977.png" class="">
 
+<h2 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h2><blockquote>
+<p>如果同步的level过长，会出现多个pulse输出</p>
+</blockquote>
+<img src="/2025/08/07/pulse-sync/image-20250807135920449.png" class="">
 
+<h2 id="RTL-Code"><a href="#RTL-Code" class="headerlink" title="RTL Code"></a>RTL Code</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> sync_pu(</span><br><span class="line">    prst_b,</span><br><span class="line">    tx_ck,</span><br><span class="line">    in,</span><br><span class="line">    rx_ck,</span><br><span class="line">    out</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">input</span>  prst_b;<span class="comment">// async. power-on reset</span></span><br><span class="line">  <span class="keyword">input</span>  tx_ck ;<span class="comment">// clock of the source domain</span></span><br><span class="line">  <span class="keyword">input</span>  in    ;<span class="comment">// asynchronous input signal</span></span><br><span class="line">  <span class="keyword">input</span>  rx_ck ;<span class="comment">// clock of the destination domain</span></span><br><span class="line">  <span class="keyword">output</span> out   ;<span class="comment">// synchronized output signal</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">reg</span>    sync_toggle;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q1    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q2    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q3    ;</span><br><span class="line">  <span class="keyword">reg</span>    out   ;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(<span class="keyword">posedge</span> tx_ck <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">    <span class="keyword">if</span>(prst_b==<span class="number">1&#x27;b0</span>)</span><br><span class="line">      sync_toggle &lt;= <span class="number">1&#x27;b0</span>        ;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      sync_toggle &lt;= sync_toggle ^ in ;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(<span class="keyword">posedge</span> rx_ck <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">    <span class="keyword">if</span>(prst_b==<span class="number">1&#x27;b0</span>)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">      sync_q1 &lt;= <span class="number">1&#x27;b0</span> ;</span><br><span class="line">      sync_q2 &lt;= <span class="number">1&#x27;b0</span> ;</span><br><span class="line">      sync_q3 &lt;= <span class="number">1&#x27;b0</span> ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">      sync_q1 &lt;= sync_toggle ;</span><br><span class="line">      sync_q2 &lt;= sync_q1     ;</span><br><span class="line">      sync_q3 &lt;= sync_q2     ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(sync_q2 <span class="keyword">or</span> sync_q3)</span><br><span class="line">    out = sync_q2 ^ sync_q3 ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span> <span class="comment">// end of module SYNC_PU</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="波形dump"><a href="#波形dump" class="headerlink" title="波形dump"></a>波形dump</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$fsdbAutoSwitchDumpfile(<span class="number">100</span>,<span class="string">&quot;top_sim.fsdb&quot;</span>,<span class="number">200</span>);</span><br><span class="line">$fsdbDumpvars(<span class="number">0</span>, top_sim,<span class="string">&quot;+mda&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="sync-pu-带busy"><a href="#sync-pu-带busy" class="headerlink" title="sync_pu(带busy)"></a>sync_pu(带busy)</h1><blockquote>
+<p>为了解决输入的pulse过长，出现多个pulse输出的问题；</p>
+</blockquote>
+<h2 id="原理图-1"><a href="#原理图-1" class="headerlink" title="原理图"></a>原理图</h2><img src="/2025/08/07/pulse-sync/image-20250807140608010.png" class="">
 
+<blockquote>
+<p>在busy期间，可以屏蔽pulse输入；</p>
+</blockquote>
+<h2 id="时序图-1"><a href="#时序图-1" class="headerlink" title="时序图"></a>时序图</h2><img src="/2025/08/07/pulse-sync/image-20250807140924666.png" class="">
 
-
-<img src="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/image-20240724121740011.png" class="">
-
-
-
-<p>$fsdbDumpvars</p>
-<p>depth表示要加载波形的层次；0表示当前instance下的所有变量一级其他module实例的波形，1表示当前instance中的变量的波形，不包括当前instance中的其他module实例的波形，2表示包含当前instance以及其中的第一级子instance的波形；以此类推。</p>
-<p>$fsdbAutoSwitchDumpfile(File_Size,”file_name”, Max_file_number[, log_file_name])</p>
-<p>file_size的单位是M。log file是可选的，建议加上。</p>
-<h2 id="反标延时"><a href="#反标延时" class="headerlink" title="反标延时"></a>反标延时</h2><p>$sdf_annotate</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/909f4d15a1c4">fsdbAutoSwitchDumpfile</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">trace时序约束</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-23 16:27:47" itemprop="dateCreated datePublished" datetime="2024-07-23T16:27:47+08:00">2024-07-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-26 14:00:22" itemprop="dateModified" datetime="2024-07-26T14:00:22+08:00">2024-07-26</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="时序约束原则"><a href="#时序约束原则" class="headerlink" title="时序约束原则"></a>时序约束原则</h1><img src="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240726135903139.png" class="">
-
-<img src="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240726135930695.png" class="">
-
-<img src="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240726135943324.png" class="">
+<h2 id="RTL-Code-1"><a href="#RTL-Code-1" class="headerlink" title="RTL Code"></a>RTL Code</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> sync_pu_busy(</span><br><span class="line">    prst_b,</span><br><span class="line">    tx_ck,</span><br><span class="line">    in,</span><br><span class="line">    rx_ck,</span><br><span class="line">    out</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">input</span>  prst_b;<span class="comment">// async. power-on reset</span></span><br><span class="line">  <span class="keyword">input</span>  tx_ck ;<span class="comment">// clock of the source domain</span></span><br><span class="line">  <span class="keyword">input</span>  in    ;<span class="comment">// asynchronous input signal</span></span><br><span class="line">  <span class="keyword">input</span>  rx_ck ;<span class="comment">// clock of the destination domain</span></span><br><span class="line">  <span class="keyword">output</span> out   ;<span class="comment">// synchronized output signal</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">reg</span>    sync_toggle;</span><br><span class="line">  <span class="keyword">reg</span>    in_dly1;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q1    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q2    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q3    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q4    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q5    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_q6    ;</span><br><span class="line">  <span class="keyword">reg</span>    sync_busy_period;</span><br><span class="line">  <span class="keyword">reg</span>    out   ;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">wire</span> sync_toggle_in = (in &amp; ~in_dly1 &amp; ~sync_busy_period) ^ sync_toggle;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(<span class="keyword">posedge</span> tx_ck <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">    <span class="keyword">if</span>(prst_b==<span class="number">1&#x27;b0</span>)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">      sync_q4 &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">      sync_q5 &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">      sync_q6 &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">      sync_q4 &lt;= sync_q3;</span><br><span class="line">      sync_q5 &lt;= sync_q4;</span><br><span class="line">      sync_q6 &lt;= sync_q5;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> tx_ck <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">    <span class="keyword">if</span>(prst_b==<span class="number">1&#x27;b0</span>)</span><br><span class="line">    sync_busy_period &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (sync_q6 ^ sync_q5)</span><br><span class="line">    sync_busy_period &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (sync_toggle ^ sync_toggle_in)</span><br><span class="line">    sync_busy_period &lt;= <span class="number">1&#x27;b1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(<span class="keyword">posedge</span> tx_ck <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">    <span class="keyword">if</span>(prst_b==<span class="number">1&#x27;b0</span>)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">      in_dly1 &lt;= <span class="number">1&#x27;b0</span>        ;</span><br><span class="line">      sync_toggle &lt;= <span class="number">1&#x27;b0</span>        ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">      in_dly1 &lt;= in;</span><br><span class="line">      sync_toggle &lt;= sync_toggle_in ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(<span class="keyword">posedge</span> rx_ck <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">    <span class="keyword">if</span>(prst_b==<span class="number">1&#x27;b0</span>)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">      sync_q1 &lt;= <span class="number">1&#x27;b0</span> ;</span><br><span class="line">      sync_q2 &lt;= <span class="number">1&#x27;b0</span> ;</span><br><span class="line">      sync_q3 &lt;= <span class="number">1&#x27;b0</span> ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">      sync_q1 &lt;= sync_toggle ;</span><br><span class="line">      sync_q2 &lt;= sync_q1     ;</span><br><span class="line">      sync_q3 &lt;= sync_q2     ;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">always</span> @(sync_q2 <span class="keyword">or</span> sync_q3)</span><br><span class="line">    out = sync_q2 ^ sync_q3 ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span> <span class="comment">// end of module SYNC_PU_BUSY</span></span><br></pre></td></tr></table></figure>
 
 
       
@@ -1149,7 +649,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -1163,7 +663,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">WIC原理图&工作机制</a>
+            <a href="/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">clock mux的SDC约束</a>
         </h2>
 
         <div class="post-meta">
@@ -1173,14 +673,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-07-22 20:38:51" itemprop="dateCreated datePublished" datetime="2024-07-22T20:38:51+08:00">2024-07-22</time>
+              <time title="创建时间：2025-08-06 20:16:36" itemprop="dateCreated datePublished" datetime="2025-08-06T20:16:36+08:00">2025-08-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-07 09:49:34" itemprop="dateModified" datetime="2024-08-07T09:49:34+08:00">2024-08-07</time>
+                <time title="修改时间：2025-08-07 10:47:17" itemprop="dateModified" datetime="2025-08-07T10:47:17+08:00">2025-08-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1188,7 +688,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
                 </span>
             </span>
 
@@ -1201,8 +701,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1217,23 +717,389 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="demo-WIC原理图"><a href="#demo-WIC原理图" class="headerlink" title="demo WIC原理图"></a>demo WIC原理图</h1><img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093513039.png" class="">
-
-<img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093701230.png" class="">
-
-
-
-<blockquote>
-<p>1、WIC CLEAR的时候写0<br>2、WIC active以及有中断的时候，写1</p>
+          <h1 id="RTC-clock-mux约束"><a href="#RTC-clock-mux约束" class="headerlink" title="RTC clock mux约束"></a>RTC clock mux约束</h1><blockquote>
+<p>7842E RTC模块；</p>
 </blockquote>
-<h1 id="修改后的WIC原理图"><a href="#修改后的WIC原理图" class="headerlink" title="修改后的WIC原理图"></a>修改后的WIC原理图</h1><img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093612230.png" class="">
-
-<img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093729352.png" class="">
-
-
+<h2 id="时钟架构图"><a href="#时钟架构图" class="headerlink" title="时钟架构图"></a>时钟架构图</h2><img src="/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/image-20250806202137964.png" class="">
 
 <blockquote>
-<p>1、WIC LOAD时，wic_active寄存器拉高；wic_pend_we也会拉高;<br>此时中断没有到来，WICPEND寄存器没有时钟；<br>2、当某个中断[i]到来的时候，此时寄存器有时钟，对应的WICPEND[i]会写1<br>3、当WIC_CLEAR或者复位的时候，WICPEND[i]会被清除</p>
+<p>备注：没有画总线时钟；</p>
+<p>0、PAD无需special timing的约束；</p>
+<p>1、RTC clk in需要create clock；</p>
+<p>2、RTC CLK OUT是data属性还是clock属性？<br>RTC是clock属性，因为外部有可能将这个PAD作为时钟，所以CHIP内部会作为时钟约束一下；</p>
+<p>3、RTC_CLK_OUT无需再create clock，因为后面没有使用RTC_CLK_OUT作为时钟，进行驱动的逻辑；不需要考虑时钟balance的问题；因此这里不需要create clock；</p>
+<p><font color=blue>4、如果func_clk不create clock？综合工具会如何综合？</font><br>首先func_clk也是时钟属性，并且RTC内部的寄存器需要和4个时钟源头做balance；（影响clock tree）<br>如果func_clk进行create generate clock，会对clock tree比较友好，此时只是RTC内部的寄存器和func_clk做balance即可，不用和4个时钟源头做balance；</p>
+</blockquote>
+<h2 id="PAD-PA7结构"><a href="#PAD-PA7结构" class="headerlink" title="PAD_PA7结构"></a>PAD_PA7结构</h2><p>-TBD</p>
+<h2 id="时序约束"><a href="#时序约束" class="headerlink" title="时序约束"></a>时序约束</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># STEP0: create PAD clock list</span></span><br><span class="line"><span class="built_in">set</span> io_clk_list <span class="string">&quot;pinx_sel_clk1 pinx_sel_clk2 pinx_sel_clk3 monitor_ref_clk ef_TCLK cpu_jtag_clk cpum0_clk cpum1_clk rtc_clk_in&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># STEP1:create RTC clock &amp;&amp; rtc_clk_list</span></span><br><span class="line"><span class="built_in">set</span> RTC_FCLK_HIERARCHY <span class="string">&quot;u_standby_ctl_pwr_wrap/standby_ctl_u1/rtc_top/u_rtc_standby_ckmux4/dtc_ckmux4_1_3/Z&quot;</span></span><br><span class="line"></span><br><span class="line">create_clock -name rtc_clk_in -period 100 -waveform <span class="string">&quot;0 50&quot;</span> \</span><br><span class="line">             [get_ports PAD_PA7]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pad/gpio_in_buf_7__u_gpio_buf/dtc_ckbufd4/I]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pin_top/imux_inst/u_pa7_cpum1_d/dtc_ckbufd4/I]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pin_top/imux_inst/u_pa7_edt_update/dtc_ckbufd4/I]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pin_top/imux_inst/u_pa7_pwm0_flt2/dtc_ckbufd4/I]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pin_top/imux_inst/u_pa7_pwm3_ch3/dtc_ckbufd4/I]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pin_top/imux_inst/u_pa7_scan_rst/dtc_ckbufd4/I]</span><br><span class="line">set_sense -stop_propagation -clocks [get_clocks rtc_clk_in] [get_pins pin_top/imux_inst/u_pa7_trapping_d/dtc_ckbufd4/I]</span><br><span class="line"></span><br><span class="line">create_generated_clock -name rtc_fclk -<span class="built_in">source</span> [get_pins top_design_ctl/ckgen_inst/u_ckgen_div_top/u_ckgen_div/hse_clk_div1/o_clk_reg/Q] -master_clock [get_clocks hse_1_div2_clk] -div 1 -add \</span><br><span class="line">                       [get_pins <span class="variable">$RTC_FCLK_HIERARCHY</span>]</span><br><span class="line">		       </span><br><span class="line">create_generated_clock -name rtc_psc_clk -<span class="built_in">source</span> [get_pins <span class="variable">$RTC_FCLK_HIERARCHY</span>] -divide_by 2 -add -master_clock [get_clocks rtc_fclk] \</span><br><span class="line">                       [get_pins u_standby_ctl_pwr_wrap/standby_ctl_u1/rtc_top/inst_rtc_cnt/toggle_psc_ov_reg/Q]</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> rtc_clk_list <span class="string">&quot;rtc_fclk rtc_psc_clk&quot;</span></span><br><span class="line"></span><br><span class="line">                       </span><br><span class="line">                       </span><br><span class="line"><span class="comment">### whole_top level group_list</span></span><br><span class="line">set_clock_groups -name ac7842e_clock_group -asynchronous \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$hse_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$vhsi_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$lsi_clk_list</span> <span class="variable">$acmp_abist_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$pll_clk_list</span> <span class="variable">$sys_clk_list</span> <span class="variable">$out_clk_list</span> <span class="variable">$cmu_clk_list</span> <span class="variable">$flash_clk_list</span> <span class="variable">$spm_clk_list</span> <span class="variable">$uart_clk_list</span> <span class="variable">$acmp_clk_list</span> <span class="variable">$eio_clk_list</span> <span class="variable">$iic_clk_list</span> <span class="variable">$spi_clk_list</span> <span class="variable">$timer_clk_list</span> <span class="variable">$rtc_clk_list</span> <span class="variable">$wdt_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$pll_adc_list</span> <span class="variable">$can_clk_list</span> <span class="variable">$adc_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$spm_int_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$cm4_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$acmp_ana_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$ctu_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$gpio_PA_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$gpio_PB_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$gpio_PC_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$gpio_PD_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$gpio_PE_clk_list</span>&quot;</span> \</span><br><span class="line">    -group <span class="string">&quot;<span class="variable">$io_clk_list</span>&quot;</span>                       </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set_clock_groups -name rtc_clk_group -asynchronous \</span><br><span class="line">    -group bus_clk ahb_clk \</span><br><span class="line">    -group rtc_fclk \</span><br><span class="line">    -group rtc_psc_clk</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明：</p>
+<p>set_clock_groups后的group如果后面有子group，则按照子group的规则来；没有的话，则是按照同步clock进行约束；</p>
+<p>create_generated_clock：会生成一个新时钟，与一个已存在的主时钟 <code>master_clock</code> 有直接的相位和频率关系</p>
+<p>-master_clock：指定新生成的时钟 <code>lsi128k_clk_sel_clk</code> 的<strong>参考主时钟</strong>是 <code>lsi128k_clk</code></p>
+<p>-source：新生成时钟的源点，（即master clock设置点–master clock get_pins设置的点）</p>
+<p>-divide_by：定义新时钟 <code>lsi128k_clk_sel_clk</code> 相对于主时钟 <code>lsi128k_clk</code> 的<strong>分频比</strong></p>
+<p>-add：选项用于在同一个端口或引脚上添加多个时钟源。一般当需要为同一物理引脚定义多个时钟约束时，该选项允许指定附加的时钟源</p>
+<p>[get_pins xxx]：新时钟设置在哪一个对象上；</p>
+</blockquote>
+<h1 id="WDG-clock-mux约束"><a href="#WDG-clock-mux约束" class="headerlink" title="WDG clock mux约束"></a>WDG clock mux约束</h1><blockquote>
+<p>7842E 模块</p>
+</blockquote>
+<img src="/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/image-20250807104359425.png" class="">
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#LSI 128K</span></span><br><span class="line">create_generated_clock  -name lsi128k_clk_sel_clk \</span><br><span class="line">                     -master_clock [get_clocks lsi128k_clk] \</span><br><span class="line">                     -<span class="built_in">source</span> [get_pins ana1_wrap_inst/ana1_wrap_u1/MCU_TOP/AD_MCU_LPOSC_OSCOUT] \</span><br><span class="line">                     -divide_by 1 \</span><br><span class="line">                     -add \</span><br><span class="line">                    [get_pins top_design_ctl/ckgen_inst/u_ckgen_div_top/dtc_lsi_clk_mux/dtc_ckmux4_1_3/Z]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>create_generated_clock：会生成一个新时钟，与一个已存在的主时钟 <code>master_clock</code> 有直接的相位和频率关系</p>
+<p>-master_clock：指定新生成的时钟 <code>lsi128k_clk_sel_clk</code> 的<strong>参考主时钟</strong>是 <code>lsi128k_clk</code></p>
+<p>-source：新生成时钟的源点，（即master clock设置点–master clock get_pins设置的点）</p>
+<p>-divide_by：定义新时钟 <code>lsi128k_clk_sel_clk</code> 相对于主时钟 <code>lsi128k_clk</code> 的<strong>分频比</strong></p>
+<p>-add：选项用于在同一个端口或引脚上添加多个时钟源。一般当需要为同一物理引脚定义多个时钟约束时，该选项允许指定附加的时钟源</p>
+<p>[get_pins xxx]：新时钟设置在哪一个对象上；</p>
+</blockquote>
+<h1 id="EWDG-clock-mux约束"><a href="#EWDG-clock-mux约束" class="headerlink" title="EWDG clock mux约束"></a>EWDG clock mux约束</h1><blockquote>
+<p>7842E 模块</p>
+</blockquote>
+<img src="/2025/08/06/clock-mux%E7%9A%84SDC%E7%BA%A6%E6%9D%9F/image-20250807104430448.png" class="">
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#max sys clk</span></span><br><span class="line"></span><br><span class="line">create_generated_clock  -name wdg_fclk \</span><br><span class="line">                     -master_clock [get_clocks bus_clk] \</span><br><span class="line">                     -<span class="built_in">source</span> [get_pins top_design_ctl/ckgen_inst/u_ckgen_div_top/u_ckgen_div/ahb_clk_div/DTC_div_cg/dtc_icgd2/Q] \</span><br><span class="line">                     -divide_by 1 \</span><br><span class="line">                     -add \</span><br><span class="line">                    [get_pins wdg_whole_top/wdt_top/wdt_cnt_core/wdt_clk_ckmux4/clk_sync_icg/dtc_icgd2/Q]</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/04/%E5%BC%82%E6%AD%A5fifo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/" class="post-title-link" itemprop="url">异步fifo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-04 11:02:46 / 修改时间：11:11:05" itemprop="dateCreated datePublished" datetime="2025-08-04T11:02:46+08:00">2025-08-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/FIFO%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">FIFO设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Version1"><a href="#Version1" class="headerlink" title="Version1"></a>Version1</h1><img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804110542890.png" class="">
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    version:1.0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> msc_async_fifo#(</span><br><span class="line">    <span class="keyword">parameter</span>   DEPTH   =   <span class="number">16</span>,</span><br><span class="line">    <span class="keyword">parameter</span>   WIDTH   =   <span class="number">8</span></span><br><span class="line">)(</span><br><span class="line">    <span class="keyword">input</span>                   wr_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_en   ,</span><br><span class="line">    <span class="keyword">input</span>       [WIDTH-<span class="number">1</span>:<span class="number">0</span>] wr_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">input</span>                   rd_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_en   ,</span><br><span class="line">    <span class="keyword">output</span>  <span class="keyword">reg</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] rd_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">output</span>                  rempty   ,</span><br><span class="line">    <span class="keyword">output</span>                  wfull    </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                              internal vars         </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [WIDTH-<span class="number">1</span>:<span class="number">0</span>] fifo_ram    [DEPTH-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d2;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] wr_addr;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] rd_addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wr_ptr &amp;&amp; rd_ptr       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        wr_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        wr_ptr &lt;= wr_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        rd_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_ptr &lt;= rd_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wfull &amp;&amp; rempty       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">assign</span> wr_ptr_g = (wr_ptr &gt;&gt; <span class="number">1</span>) ^ wr_ptr;</span><br><span class="line"><span class="keyword">assign</span> rd_ptr_g = (rd_ptr &gt;&gt; <span class="number">1</span>) ^ rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn )<span class="keyword">begin</span><span class="comment">//write_ptr_g sync to read domain</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= &#123;wr_ptr_g_d1,wr_ptr_g&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span><span class="comment">//read_ptr_g sync to write domain</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= &#123;rd_ptr_g_d1,rd_ptr_g&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> rempty = (rd_ptr_g == wr_ptr_g_d2);</span><br><span class="line"><span class="keyword">assign</span> wfull = wr_ptr_g == &#123;~rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH):<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>],rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">2</span>:<span class="number">0</span>]&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             write &amp;&amp; read       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> wr_addr = wr_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">assign</span> rd_addr = rd_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk)</span><br><span class="line">    <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        fifo_ram[wr_addr] &lt;= wr_data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk)</span><br><span class="line">    <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_data &lt;= fifo_ram[rd_addr];</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="version2改进版本"><a href="#version2改进版本" class="headerlink" title="version2改进版本"></a>version2改进版本</h1><h2 id="设计改动"><a href="#设计改动" class="headerlink" title="设计改动"></a>设计改动</h2><img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804110700011.png" class="">
+
+<p>1、跨时钟域数据同步的时候，一定要REG_clka &lt;-&gt; REG_clkb，不然会有毛刺，可能会导致芯片功能出现问题<br>具体解释，参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331">https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331</a><br>2.3和2.4节 空满指针跨时钟域处理，为什么要使用Gray信号进行同步</p>
+<img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804110851358.png" class="">
+
+
+
+<h2 id="添加时序约束"><a href="#添加时序约束" class="headerlink" title="添加时序约束"></a>添加时序约束</h2><p>2、由于格雷码，convergence汇聚问题不会造成影响；<br>具体解释，参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331">https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331</a><br>2.2节 空满指针跨时钟域处理，为什么要使用Gray信号进行同步</p>
+<img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804111006100.png" class="">
+
+
+
+<p>3、异步FIFO约束；<br>格雷码生效的前提是 REG_clkA-&gt;REG_clkB是同时到达，即skew要相同；</p>
+<img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804111048063.png" class="">
+
+
+
+<p>参考博客：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/iNostory/article/details/143173003">https://blog.csdn.net/iNostory/article/details/143173003</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43433724/article/details/137956386">https://blog.csdn.net/qq_43433724/article/details/137956386</a></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    version:2.0</span></span><br><span class="line"><span class="comment">    fix CDC problem:2024/02/1</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> msc_async_fifo#(</span><br><span class="line">    <span class="keyword">parameter</span>   DEPTH   =   <span class="number">16</span>,</span><br><span class="line">    <span class="keyword">parameter</span>   WIDTH   =   <span class="number">8</span></span><br><span class="line">)(</span><br><span class="line">    <span class="keyword">input</span>                   wr_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_en   ,</span><br><span class="line">    <span class="keyword">input</span>       [WIDTH-<span class="number">1</span>:<span class="number">0</span>] wr_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">input</span>                   rd_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_en   ,</span><br><span class="line">    <span class="keyword">output</span>  <span class="keyword">reg</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] rd_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">output</span>                  rempty   ,</span><br><span class="line">    <span class="keyword">output</span>                  wfull    </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                              internal vars         </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [WIDTH-<span class="number">1</span>:<span class="number">0</span>] fifo_ram    [DEPTH-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d2;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] wr_addr;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] rd_addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wr_ptr &amp;&amp; rd_ptr       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        wr_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        wr_ptr &lt;= wr_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        rd_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_ptr &lt;= rd_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wfull &amp;&amp; rempty       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">assign</span> wr_ptr_g = (wr_ptr &gt;&gt; <span class="number">1</span>) ^ wr_ptr;</span><br><span class="line"><span class="keyword">assign</span> rd_ptr_g = (rd_ptr &gt;&gt; <span class="number">1</span>) ^ rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             fix CDC Problem</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_reg;</span><br><span class="line"><span class="keyword">reg</span> [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_reg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn )<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">      rd_ptr_g_reg    &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      rd_ptr_g_reg    &lt;= rd_ptr_g;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">      wr_ptr_g_reg &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      wr_ptr_g_reg &lt;= wr_ptr_g;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn )<span class="keyword">begin</span><span class="comment">//write_ptr_g sync to read domain</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= &#123;wr_ptr_g_d1,wr_ptr_g_reg&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span><span class="comment">//read_ptr_g sync to write domain</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= &#123;rd_ptr_g_d1,rd_ptr_g_reg&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> rempty = (rd_ptr_g == wr_ptr_g_d2);</span><br><span class="line"><span class="keyword">assign</span> wfull = wr_ptr_g == &#123;~rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH):<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>],rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">2</span>:<span class="number">0</span>]&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             write &amp;&amp; read       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> wr_addr = wr_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">assign</span> rd_addr = rd_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk)</span><br><span class="line">    <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        fifo_ram[wr_addr] &lt;= wr_data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk)</span><br><span class="line">    <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_data &lt;= fifo_ram[rd_addr];</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/" class="post-title-link" itemprop="url">PMOS和NMOS晶体管</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-07-31 22:33:52" itemprop="dateCreated datePublished" datetime="2025-07-31T22:33:52+08:00">2025-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-04 10:55:48" itemprop="dateModified" datetime="2025-08-04T10:55:48+08:00">2025-08-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="NMOS和PMOS晶体管"><a href="#NMOS和PMOS晶体管" class="headerlink" title="NMOS和PMOS晶体管"></a>NMOS和PMOS晶体管</h1><p>载流子的方向都是从S到D：</p>
+<p>因此</p>
+<p>对于NMOS，载流子（电子）是S-&gt;D，电流则是D-&gt;S</p>
+<p>对于PMOS，载流子（空穴对）是S-&gt;D，电流是S-&gt;D</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_25814297/article/details/128163680">NMOS和PMOS管</a></li>
+</ol>
+<h1 id="CMOS技术及门电路搭建"><a href="#CMOS技术及门电路搭建" class="headerlink" title="CMOS技术及门电路搭建"></a>CMOS技术及门电路搭建</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://ysyx.oscc.cc/docs/2407/f/3.html#%E5%BC%82%E6%88%96%E9%97%A8">使用晶体管搭建门电路</a></li>
+</ol>
+<h2 id="或门对比总结："><a href="#或门对比总结：" class="headerlink" title="或门对比总结："></a>或门对比总结：</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>条件</th>
+<th>输出为1的情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>异或 XOR</td>
+<td>A ≠ B</td>
+<td>01、10</td>
+</tr>
+<tr>
+<td>同或 XNOR</td>
+<td>A &#x3D; B</td>
+<td>00、11</td>
+</tr>
+<tr>
+<td>相容或</td>
+<td>A、B 不冲突（常用于三值逻辑）</td>
+<td>通常为 0&#x2F;1、1&#x2F;X、X&#x2F;0 等</td>
+</tr>
+<tr>
+<td>相斥或</td>
+<td>A∧B&#x3D;0（不可同时为1）</td>
+<td>00、01、10</td>
+</tr>
+<tr>
+<td>或门 OR</td>
+<td>A 或 B 为1</td>
+<td>01、10、11</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/07/22/verilog-task%E5%92%8Cfunction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/22/verilog-task%E5%92%8Cfunction/" class="post-title-link" itemprop="url">verilog task和function</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-07-22 19:36:59 / 修改时间：19:42:54" itemprop="dateCreated datePublished" datetime="2025-07-22T19:36:59+08:00">2025-07-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/verilog%E8%AF%AD%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">verilog语法</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/07/22/verilog-task%E5%92%8Cfunction/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/07/22/verilog-task%E5%92%8Cfunction/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="function"><a href="#function" class="headerlink" title="function"></a>function</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> [<span class="number">4</span>:<span class="number">0</span>] crc5_serial;</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] crc;</span><br><span class="line">    <span class="keyword">input</span> data;</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        crc5_serial[<span class="number">0</span>] = crc[<span class="number">4</span>] ^ data;</span><br><span class="line">        crc5_serial[<span class="number">1</span>] = crc[<span class="number">0</span>];</span><br><span class="line">        crc5_serial[<span class="number">2</span>] = crc[<span class="number">1</span>] ^ crc[<span class="number">4</span>] ^ data;</span><br><span class="line">        crc5_serial[<span class="number">3</span>] = crc[<span class="number">2</span>];</span><br><span class="line">        crc5_serial[<span class="number">4</span>] = crc[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">endfunction</span></span><br></pre></td></tr></table></figure>
+
+<p>关键点：Verilog 函数用于描述组合逻辑，通过<strong>对函数名赋值</strong>返回结果，适合实现数学运算或状态转换（如 CRC、加密算法等）</p>
+<h1 id="task"><a href="#task" class="headerlink" title="task"></a>task</h1><blockquote>
 </blockquote>
 
       
@@ -1254,7 +1120,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/07/16/CRC%E7%94%B5%E8%B7%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -1268,7 +1134,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/" class="post-title-link" itemprop="url">Cortex-M4特权级转换</a>
+            <a href="/2025/07/16/CRC%E7%94%B5%E8%B7%AF/" class="post-title-link" itemprop="url">CRC电路</a>
         </h2>
 
         <div class="post-meta">
@@ -1278,15 +1144,24 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-07-22 11:11:28" itemprop="dateCreated datePublished" datetime="2024-07-22T11:11:28+08:00">2024-07-22</time>
+              <time title="创建时间：2025-07-16 13:55:13" itemprop="dateCreated datePublished" datetime="2025-07-16T13:55:13+08:00">2025-07-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-26 14:00:35" itemprop="dateModified" datetime="2024-07-26T14:00:35+08:00">2024-07-26</time>
+                <time title="修改时间：2025-07-21 16:39:42" itemprop="dateModified" datetime="2025-07-21T16:39:42+08:00">2025-07-21</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
+                </span>
+            </span>
 
           
   
@@ -1297,8 +1172,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/07/16/CRC%E7%94%B5%E8%B7%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/07/16/CRC%E7%94%B5%E8%B7%AF/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1313,7 +1188,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <p>注意点：</p>
+<blockquote>
+<p>和LFSR的计数器电路不同，CRC初始化种子可以为0；</p>
+</blockquote>
+<p>参考博客：</p>
+<ol start="0">
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/606665024">并行CRC的硬件实现</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612115347">并行CRC的硬件实现(续)</a></p>
+</li>
+</ol>
+<p>1.<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51487301/article/details/124270017">模2运算 &#x2F; 模2算法（模2加法、模2减法、模2乘法、模2除法）</a></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fucong59/article/details/89536075">LFSR和CRC串行实现移位寄存器结构,并行CRC时序实现</a></li>
+<li><a target="_blank" rel="noopener" href="https://polaris-chn.github.io/2022/06/12/Verilog-practice-8/#lfsr%E5%8E%9F%E7%90%86">Verilog编程-8. 线性反馈移位寄存器 LFSR</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yp421R7D4?spm_id_from=333.788.videopod.sections&vd_source=c76cab13994e90aef30da628f94d99e8">FPGA CRC 冗余校验原理_异或计算法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1dd4y1H7uT?spm_id_from=333.788.videopod.sections&vd_source=c76cab13994e90aef30da628f94d99e8">第15章 CRC编码</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lum250/article/details/124375678">循环冗余校验码CRC原理与LFSR循环码编码器原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c8ff4478453d">用于CRC计算的LFSR电路理解</a></li>
+</ol>
+
       
     </div>
 
@@ -1331,7 +1226,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1399,20 +1294,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">225</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-count">165</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1438,8 +1333,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

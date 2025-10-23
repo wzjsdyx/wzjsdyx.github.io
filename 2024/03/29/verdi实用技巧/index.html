@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="IC设计人员目前最常用的一款调试工具是Synopsys公司的Verdi，下面介绍一下使用技巧  reload操作Shift + L 信号列表  参数以及信号value标注  波形记录文件保存  显示信号完整路径h Bus OperationAdjust Bus  Shift从direction shift value 如下的配置表示，从右侧shift滑入一个0       TBD：待补充  参考">
+  <meta name="description" content="IC设计人员目前最常用的一款调试工具是Synopsys公司的Verdi，下面介绍一下使用技巧  reload操作Shift + L 信号列表  参数以及信号value标注  波形记录文件保存  显示信号完整路径h Bus OperationAdjust Bus  Shift从direction shift value 如下的配置表示，从右侧shift滑入一个0     搜索代码view搜索文本">
 <meta property="og:type" content="article">
 <meta property="og:title" content="verdi实用技巧">
 <meta property="og:url" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="IC设计人员目前最常用的一款调试工具是Synopsys公司的Verdi，下面介绍一下使用技巧  reload操作Shift + L 信号列表  参数以及信号value标注  波形记录文件保存  显示信号完整路径h Bus OperationAdjust Bus  Shift从direction shift value 如下的配置表示，从右侧shift滑入一个0       TBD：待补充  参考">
+<meta property="og:description" content="IC设计人员目前最常用的一款调试工具是Synopsys公司的Verdi，下面介绍一下使用技巧  reload操作Shift + L 信号列表  参数以及信号value标注  波形记录文件保存  显示信号完整路径h Bus OperationAdjust Bus  Shift从direction shift value 如下的配置表示，从右侧shift滑入一个0     搜索代码view搜索文本">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329092849873.png">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329093035289.png">
@@ -33,8 +33,9 @@
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100018553.png">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329095938642.png">
 <meta property="og:image" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100425460.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20250603175808724.png">
 <meta property="article:published_time" content="2024-03-29T01:24:15.000Z">
-<meta property="article:modified_time" content="2024-03-29T02:09:37.834Z">
+<meta property="article:modified_time" content="2025-06-03T09:59:25.169Z">
 <meta property="article:author" content="Youngster">
 <meta property="article:tag" content="TBD">
 <meta property="article:tag" content="verdi">
@@ -196,10 +197,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-29 09:24:15 / 修改时间：10:09:37" itemprop="dateCreated datePublished" datetime="2024-03-29T09:24:15+08:00">2024-03-29</time>
+              <time title="创建时间：2024-03-29 09:24:15" itemprop="dateCreated datePublished" datetime="2024-03-29T09:24:15+08:00">2024-03-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-06-03 17:59:25" itemprop="dateModified" datetime="2025-06-03T17:59:25+08:00">2025-06-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -207,6 +214,10 @@
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
                 </span>
             </span>
 
@@ -260,6 +271,13 @@
 <img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329095938642.png" class="">
 
 <img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100425460.png" class="">
+
+<h1 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h1><h2 id="代码view搜索"><a href="#代码view搜索" class="headerlink" title="代码view搜索"></a>代码view搜索</h2><p>文本</p>
+<p>模块</p>
+<p>instance</p>
+<h2 id="原理图view搜索"><a href="#原理图view搜索" class="headerlink" title="原理图view搜索"></a>原理图view搜索</h2><p><code>A</code></p>
+<h1 id="状态机助记符"><a href="#状态机助记符" class="headerlink" title="状态机助记符"></a>状态机助记符</h1><p>选择具有状态机的模块选中，然后在主工具栏选择Tools&gt;Extract interative FSM</p>
+<img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20250603175808724.png" class="">
 
 
 
@@ -354,7 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#reload%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">reload操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%88%97%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">信号列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E4%BF%A1%E5%8F%B7value%E6%A0%87%E6%B3%A8"><span class="nav-number">3.</span> <span class="nav-text">参数以及信号value标注</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A2%E5%BD%A2%E8%AE%B0%E5%BD%95%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98"><span class="nav-number">4.</span> <span class="nav-text">波形记录文件保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E4%BF%A1%E5%8F%B7%E5%AE%8C%E6%95%B4%E8%B7%AF%E5%BE%84"><span class="nav-number">5.</span> <span class="nav-text">显示信号完整路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bus-Operation"><span class="nav-number">6.</span> <span class="nav-text">Bus Operation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Adjust-Bus"><span class="nav-number">6.1.</span> <span class="nav-text">Adjust Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Shift"><span class="nav-number">6.1.1.</span> <span class="nav-text">Shift</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#reload%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">reload操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%88%97%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">信号列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E4%BF%A1%E5%8F%B7value%E6%A0%87%E6%B3%A8"><span class="nav-number">3.</span> <span class="nav-text">参数以及信号value标注</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A2%E5%BD%A2%E8%AE%B0%E5%BD%95%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98"><span class="nav-number">4.</span> <span class="nav-text">波形记录文件保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E4%BF%A1%E5%8F%B7%E5%AE%8C%E6%95%B4%E8%B7%AF%E5%BE%84"><span class="nav-number">5.</span> <span class="nav-text">显示信号完整路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bus-Operation"><span class="nav-number">6.</span> <span class="nav-text">Bus Operation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Adjust-Bus"><span class="nav-number">6.1.</span> <span class="nav-text">Adjust Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Shift"><span class="nav-number">6.1.1.</span> <span class="nav-text">Shift</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2"><span class="nav-number">7.</span> <span class="nav-text">搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81view%E6%90%9C%E7%B4%A2"><span class="nav-number">7.1.</span> <span class="nav-text">代码view搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E5%9B%BEview%E6%90%9C%E7%B4%A2"><span class="nav-number">7.2.</span> <span class="nav-text">原理图view搜索</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%8A%A9%E8%AE%B0%E7%AC%A6"><span class="nav-number">8.</span> <span class="nav-text">状态机助记符</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -370,20 +388,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">225</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-count">165</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -409,8 +427,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

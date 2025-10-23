@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="SHM格式波形及其dump方式- 允许自动切分成多个波形方式一：TCL脚本123456789101112131415161718192021222324252627# Consider a  database  command that opens a default SHM database called  waves .database -open -shm top_sim -default#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xrun dump vwdb波形文件">
+<meta property="og:url" content="https://wzjsdyx.github.io/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="SHM格式波形及其dump方式- 允许自动切分成多个波形方式一：TCL脚本123456789101112131415161718192021222324252627# Consider a  database  command that opens a default SHM database called  waves .database -open -shm top_sim -default#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/image-20250314163617169.png">
+<meta property="article:published_time" content="2025-01-07T05:33:34.000Z">
+<meta property="article:modified_time" content="2025-05-29T06:08:06.152Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta property="article:tag" content="xrun">
+<meta property="article:tag" content="vwdb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/image-20250314163617169.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>xrun dump vwdb波形文件 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          xrun dump vwdb波形文件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-07 13:33:34" itemprop="dateCreated datePublished" datetime="2025-01-07T13:33:34+08:00">2025-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-05-29 14:08:06" itemprop="dateModified" datetime="2025-05-29T14:08:06+08:00">2025-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="SHM格式波形及其dump方式-允许自动切分成多个波形"><a href="#SHM格式波形及其dump方式-允许自动切分成多个波形" class="headerlink" title="SHM格式波形及其dump方式- 允许自动切分成多个波形"></a>SHM格式波形及其dump方式- 允许自动切分成多个波形</h1><h2 id="方式一：TCL脚本"><a href="#方式一：TCL脚本" class="headerlink" title="方式一：TCL脚本"></a>方式一：TCL脚本</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Consider a  database  command that opens a default SHM database called  waves .</span></span><br><span class="line"></span><br><span class="line">database -<span class="keyword">open</span> -shm top_sim -default</span><br><span class="line"></span><br><span class="line"><span class="comment"># probe -create top_sim -depth all -all -memories</span></span><br><span class="line"></span><br><span class="line">probe -create top_sim                                                          -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x                                                  -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x.MTCMOS_wrap                                      -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x.cm4_core                                         -depth <span class="number">1</span></span><br><span class="line"></span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top                                -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_pflash_top.u_pf_bank0_state  -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_dflash_top.u_df_bank1_state  -depth all -all -memories</span><br><span class="line"></span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_dflash_top -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_pflash_top -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1     -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1            -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.top_design_ctl                                   -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                    -depth all -all -memories</span><br><span class="line"></span><br><span class="line">probe -create top_sim.ac7843x.pad                                              -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.pinmux                                           -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.imux                                             -depth all -all -memories</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+
+
+<p>NOTE:</p>
+<ol>
+<li>仿真的是时候添加选项：<code>-input probe_pattern.tcl</code></li>
+</ol>
+<h3 id="波形切分"><a href="#波形切分" class="headerlink" title="波形切分"></a>波形切分</h3><img src="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/image-20250314163617169.png" class="">
+
+
+
+<h2 id="方式二：system-task"><a href="#方式二：system-task" class="headerlink" title="方式二：system task"></a>方式二：system task</h2><p>波形文件达到500MB的时候，会自动切换到下一个文件进行存储；</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">	$shm_open(<span class="string">&quot;top_sim.shm&quot;</span>, , , , <span class="number">500</span>, );</span><br><span class="line">	<span class="comment">// $shm_probe(top_sim.ac7843x.cm4_core, &quot;ACMTF&quot;, top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS.cm4_MTCMOS.cm4_infra_ctl, &quot;AMTF&quot;);</span></span><br><span class="line">	$shm_probe(top_sim , <span class="string">&quot;ACMTF&quot;</span>);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>NOTE:</p>
+<p><font color=blue> 这种dump方式有使用缺陷，只能dump verilog格式文件，无法dump VHDL格式文件</font></p>
+<h1 id="VWDB格式波形及其dump方式-不允许自动切分波形"><a href="#VWDB格式波形及其dump方式-不允许自动切分波形" class="headerlink" title="VWDB格式波形及其dump方式-不允许自动切分波形"></a>VWDB格式波形及其dump方式-不允许自动切分波形</h1><h2 id="方式一：TCL脚本-1"><a href="#方式一：TCL脚本-1" class="headerlink" title="方式一：TCL脚本"></a>方式一：TCL脚本</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ida_database -<span class="keyword">open</span> -name top_sim</span><br><span class="line"></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim                       -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x               -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.MTCMOS_wrap   -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.cm4_core      -all -depth 1 -memories&quot;</span></span><br><span class="line"></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_flash_whole_top.u_dflash_top                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_flash_whole_top.u_pflash_top                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1              -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1                     -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.top_design_ctl                                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                             -all -depth all -memories&quot;</span></span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+
+
+<p><font color=blue> VWDB波形结果确认</font>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">xcelium&gt; </span><span class="language-bash">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x               -all -depth 1 -memories&quot;</span></span></span><br><span class="line">xmsim: *W,MEMPC: Some or all load-on-demand optimizations will get disabled due to IDA/Probe.</span><br><span class="line">database -open top_sim/top_sim.shm </span><br><span class="line">Created SHM database top_sim/top_sim.shm</span><br><span class="line"></span><br><span class="line">database -setdefault top_sim/top_sim.shm</span><br><span class="line">top_sim/top_sim.shm is set as default SHM database</span><br><span class="line"></span><br><span class="line">probe top_sim.ac7843x -all -depth 1 -memories -emptyok</span><br><span class="line">xmsim: Loading /atctools/XCELIUM/23.09.003_T/tools.lnx86/inca/lib/64bit/libxdump.so</span><br><span class="line">xmsim: *W,VEATUP: Auto update is enabled by default.</span><br><span class="line">xmsim: *I: VWDB Dumper, Linux x86_64/64bit, 11/21/2023 12:58:03</span><br><span class="line">xmsim: *I: Create VWDB top_sim/top_sim.shm/waves_ida.vwdb</span><br><span class="line">xmsim: *I: Enabled dumping strength</span><br><span class="line">xmsim: *W,VNPLDN: The design contains living-dead signals. To improve simulation performance these signals are excluded.</span><br><span class="line">xmsim: *W,PRHOPT: The design contains optimized signals. To improve simulation performance these signals are excluded.</span><br><span class="line">Created probe 1</span><br></pre></td></tr></table></figure>
+
+
+
+<p><font color=blue> vwdb波形文件位置</font>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*/top_sim/top_sim.shm:</span><br><span class="line">-rw-r--r-- 1 atc0288 atc0288 7312 Jan  7 15:47 top_sim.dsn</span><br><span class="line">-rw-r--r-- 1 atc0288 atc0288 1096 Jan  7 15:47 top_sim.trn</span><br><span class="line">drwxr-xr-x 5 atc0288 atc0288 4096 Jan  7 15:46 waves_ida.vwdb</span><br></pre></td></tr></table></figure>
+
+
+
+<p>NOTE:</p>
+<ol>
+<li><p>编译仿真的时候需要添加选项：<code>+vwdb+shm2vwdb=1</code></p>
+</li>
+<li><p>仿真的是时候添加选项：<code>-input probe_pattern.tcl</code></p>
+</li>
+<li><p><font color=blue> 这种dump方式有使用缺陷：无法对波形进行切割</font></p>
+</li>
+</ol>
+<h2 id="方式二：system-task-1"><a href="#方式二：system-task-1" class="headerlink" title="方式二：system task"></a>方式二：system task</h2><p>NOTE:</p>
+<p><font color=red>&#x3D;&#x3D;》TBD</font></p>
+<h1 id="减少波形文件size以及GUI-loading的常用方法"><a href="#减少波形文件size以及GUI-loading的常用方法" class="headerlink" title="减少波形文件size以及GUI loading的常用方法"></a>减少波形文件size以及GUI loading的常用方法</h1><ol>
+<li>使用VWDB格式文件（相比SHM格式，存储占用更小）</li>
+<li>设置单个波形文件上限，超过上限之后，自动存储到下一个文件</li>
+<li>dump hier instance</li>
+<li>只在需要的时间段dump波形</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+              <a href="/tags/xrun/" rel="tag"># xrun</a>
+              <a href="/tags/vwdb/" rel="tag"># vwdb</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/06/verilog%E6%89%93%E5%8D%B0/" rel="prev" title="verilog打印">
+      <i class="fa fa-chevron-left"></i> verilog打印
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/13/xrun-tcl%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="next" title="xrun tcl脚本控制">
+      xrun tcl脚本控制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SHM%E6%A0%BC%E5%BC%8F%E6%B3%A2%E5%BD%A2%E5%8F%8A%E5%85%B6dump%E6%96%B9%E5%BC%8F-%E5%85%81%E8%AE%B8%E8%87%AA%E5%8A%A8%E5%88%87%E5%88%86%E6%88%90%E5%A4%9A%E4%B8%AA%E6%B3%A2%E5%BD%A2"><span class="nav-number">1.</span> <span class="nav-text">SHM格式波形及其dump方式- 允许自动切分成多个波形</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9ATCL%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.</span> <span class="nav-text">方式一：TCL脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A2%E5%BD%A2%E5%88%87%E5%88%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">波形切分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9Asystem-task"><span class="nav-number">1.2.</span> <span class="nav-text">方式二：system task</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VWDB%E6%A0%BC%E5%BC%8F%E6%B3%A2%E5%BD%A2%E5%8F%8A%E5%85%B6dump%E6%96%B9%E5%BC%8F-%E4%B8%8D%E5%85%81%E8%AE%B8%E8%87%AA%E5%8A%A8%E5%88%87%E5%88%86%E6%B3%A2%E5%BD%A2"><span class="nav-number">2.</span> <span class="nav-text">VWDB格式波形及其dump方式-不允许自动切分波形</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9ATCL%E8%84%9A%E6%9C%AC-1"><span class="nav-number">2.1.</span> <span class="nav-text">方式一：TCL脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9Asystem-task-1"><span class="nav-number">2.2.</span> <span class="nav-text">方式二：system task</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%8F%E5%B0%91%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6size%E4%BB%A5%E5%8F%8AGUI-loading%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">减少波形文件size以及GUI loading的常用方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

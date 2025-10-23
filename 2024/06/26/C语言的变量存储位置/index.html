@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="嵌入式软件通常会涉及到程序变量的分配位置，此处做一个总结；  C程序中的数据分为：  变量 栈区：由编译器自动分配释放 堆区： 一般由程序员使用malloc函数分配释放，若程序员不释放，程序结束时可能由OS回收 全局&#x2F;静态变量存储区：存储全局变量以及静态变量（会对全局&#x2F;静态变量做初始化的和未初始化的区分）   常量（字面常量） 常量存储器：存放字面常量    程序会将变量搬运">
+  <meta name="description" content="嵌入式软件通常会涉及到程序变量的分配位置，此处做一个总结；  C程序中的数据分为：  变量 栈区：由编译器自动分配释放 堆区： 一般由程序员使用malloc函数分配释放，若程序员不释放，程序结束时可能由OS回收 全局&#x2F;静态变量存储区：存储全局变量以及静态变量（会对全局&#x2F;静态变量做初始化的和未初始化的区分）     在 ARM Cortex-M 处理器上，局部变量的存储位置取决">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C语言的变量存储位置">
 <meta property="og:url" content="https://wzjsdyx.github.io/2024/06/26/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="嵌入式软件通常会涉及到程序变量的分配位置，此处做一个总结；  C程序中的数据分为：  变量 栈区：由编译器自动分配释放 堆区： 一般由程序员使用malloc函数分配释放，若程序员不释放，程序结束时可能由OS回收 全局&#x2F;静态变量存储区：存储全局变量以及静态变量（会对全局&#x2F;静态变量做初始化的和未初始化的区分）   常量（字面常量） 常量存储器：存放字面常量    程序会将变量搬运">
+<meta property="og:description" content="嵌入式软件通常会涉及到程序变量的分配位置，此处做一个总结；  C程序中的数据分为：  变量 栈区：由编译器自动分配释放 堆区： 一般由程序员使用malloc函数分配释放，若程序员不释放，程序结束时可能由OS回收 全局&#x2F;静态变量存储区：存储全局变量以及静态变量（会对全局&#x2F;静态变量做初始化的和未初始化的区分）     在 ARM Cortex-M 处理器上，局部变量的存储位置取决">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-06-26T07:01:41.000Z">
-<meta property="article:modified_time" content="2024-06-26T09:34:35.268Z">
+<meta property="article:modified_time" content="2025-03-07T01:52:35.379Z">
 <meta property="article:author" content="Youngster">
 <meta property="article:tag" content="变量存储位置">
 <meta name="twitter:card" content="summary">
@@ -188,10 +188,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-06-26 15:01:41 / 修改时间：17:34:35" itemprop="dateCreated datePublished" datetime="2024-06-26T15:01:41+08:00">2024-06-26</time>
+              <time title="创建时间：2024-06-26 15:01:41" itemprop="dateCreated datePublished" datetime="2024-06-26T15:01:41+08:00">2024-06-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-07 09:52:35" itemprop="dateModified" datetime="2025-03-07T09:52:35+08:00">2025-03-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -249,6 +255,12 @@
 <li>全局&#x2F;静态变量存储区：存储全局变量以及静态变量（会对全局&#x2F;静态变量做初始化的和未初始化的区分）</li>
 </ul>
 </li>
+</ul>
+<blockquote>
+<p>在 ARM Cortex-M 处理器上，局部变量的存储位置取决于 <strong>变量的生命周期、大小和编译器优化</strong>。</p>
+<p>ARM-M 处理器采用 <strong>通用寄存器和堆栈（Stack）</strong> 来存储局部变量</p>
+</blockquote>
+<ul>
 <li>常量（字面常量）<ul>
 <li>常量存储器：存放字面常量</li>
 </ul>
@@ -256,6 +268,26 @@
 </ul>
 <p><font color=blue>程序会将变量搬运到SRAM区域；</font></p>
 <p><font color=blue>常量仍然会在Flash或者ROM等NVM介质中；</font></p>
+<hr>
+<p>举例说明1：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 已初始化的全局变量（会存入 .data 段）</span></span><br><span class="line"><span class="type">int</span> global_var = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 已初始化的静态变量（会存入 .data 段）</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> static_var = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 未初始化的全局变量（存入 .bss 段，不会进入 .data）</span></span><br><span class="line"><span class="type">int</span> global_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 未初始化的静态变量（存入 .bss 段，不会进入 .data）</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> static_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 5. 只读常量数据（存入 .rodata 段）</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span> *msg = <span class="string">&quot;Hello, World!&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test_function</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 6. 局部变量（存入通用寄存器或者栈，不会进入 .data）</span></span><br><span class="line">    <span class="type">int</span> local_var = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;global_var = %d\n&quot;</span>, global_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;static_var = %d\n&quot;</span>, static_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;local_var = %d\n&quot;</span>, local_var);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    test_function();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>举例说明2：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;   <span class="comment">// a 可能存入寄存器</span></span><br><span class="line">    <span class="type">int</span> b = <span class="number">10</span>;  <span class="comment">// b 可能存入寄存器</span></span><br><span class="line">    <span class="type">int</span> c = a + b;</span><br><span class="line">&#125;</span><br><span class="line">编译之后==》</span><br><span class="line">    MOV r0, #<span class="number">5</span>    <span class="comment">// 把 a 存入 r0 寄存器</span></span><br><span class="line">    MOV r1, #<span class="number">10</span>   <span class="comment">// 把 b 存入 r1 寄存器</span></span><br><span class="line">    ADD r2, r0, r1  <span class="comment">// c = a + b，r2 保存结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//=============================================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> func() &#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">100</span>;</span><br><span class="line">    <span class="type">int</span> y = <span class="number">200</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>];  <span class="comment">// 数组无法放入寄存器</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">编译之后==》</span><br><span class="line">    SUB sp, sp, #<span class="number">44</span>   <span class="comment">// 在栈上分配 44 字节（用于局部变量）</span></span><br><span class="line">    STR r0, [sp, #<span class="number">0</span>]  <span class="comment">// 存储 x</span></span><br><span class="line">    STR r1, [sp, #<span class="number">4</span>]  <span class="comment">// 存储 y</span></span><br><span class="line">    ADD r2, sp, #<span class="number">8</span>    <span class="comment">// arr[0] 的地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//=============================================================================================</span></span><br><span class="line">局部变量 优先存入寄存器，但如果变量过多或太大，就会存入栈。</span><br><span class="line">数组、结构体、指针等数据类型一般存入栈，因为它们无法完全放入寄存器</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
 <p>参考博客：</p>
 <p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/zy13270867781/article/details/78266675">c中各个变量存储的位置</a></p>
 
@@ -357,20 +389,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">225</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-count">165</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -396,8 +428,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

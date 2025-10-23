@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CoreMark简介CoreMark是更加复杂的benchmark程序用于衡量现代处理的性能； CoreMark是在2009年开发，非常容易获取以及非常容易移植；其开发的初衷就是为了替代Dhrystone benckmark。 Dhrystone是在1984年开发，在很多方面都存在问题，CoreMark可以进行弥补，具体如下： 工作负载的现实性 Dhrystone 是一个合成基准测试（synthe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARM coremark">
+<meta property="og:url" content="https://wzjsdyx.github.io/2025/03/06/ARM-coremark/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="CoreMark简介CoreMark是更加复杂的benchmark程序用于衡量现代处理的性能； CoreMark是在2009年开发，非常容易获取以及非常容易移植；其开发的初衷就是为了替代Dhrystone benckmark。 Dhrystone是在1984年开发，在很多方面都存在问题，CoreMark可以进行弥补，具体如下： 工作负载的现实性 Dhrystone 是一个合成基准测试（synthe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-06T05:41:01.000Z">
+<meta property="article:modified_time" content="2025-03-07T01:43:31.927Z">
+<meta property="article:author" content="Youngster">
+<meta property="article:tag" content="TBD">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2025/03/06/ARM-coremark/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ARM coremark | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/03/06/ARM-coremark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ARM coremark
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-06 13:41:01" itemprop="dateCreated datePublished" datetime="2025-03-06T13:41:01+08:00">2025-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-07 09:43:31" itemprop="dateModified" datetime="2025-03-07T09:43:31+08:00">2025-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">ISA和处理器</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/%E5%A4%84%E7%90%86%E5%99%A8%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E8%AE%A1%E7%AE%97%E5%8D%95%E5%85%83/" itemprop="url" rel="index"><span itemprop="name">处理器性能指标和计算单元</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/03/06/ARM-coremark/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/03/06/ARM-coremark/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CoreMark简介"><a href="#CoreMark简介" class="headerlink" title="CoreMark简介"></a>CoreMark简介</h1><p>CoreMark是更加复杂的benchmark程序用于衡量现代处理的性能；</p>
+<p>CoreMark是在2009年开发，非常容易获取以及非常容易移植；<font color=blue>其开发的初衷就是为了替代Dhrystone benckmark。</font></p>
+<p>Dhrystone是在1984年开发，在很多方面都存在问题，CoreMark可以进行弥补，具体如下：</p>
+<h2 id="工作负载的现实性"><a href="#工作负载的现实性" class="headerlink" title="工作负载的现实性"></a>工作负载的现实性</h2><blockquote>
+<p>Dhrystone 是一个<strong>合成基准测试</strong>（synthetic benchmark）：</p>
+<p>它通过执行一系列简单的整数运算和字符串操作来测试处理器的性能；<font color=blue>是人为设计的一组计算任务，不包含实际应用中的关键算法，它的测试结果与现实应用的性能关联度较低。</font></p>
+<p>CoreMark 提供更真实的工作负载<font color=blue>（采用了一些在嵌入式系统中常见的计算任务）</font>：</p>
+<p>1、矩阵运算（Matrix Manipulation）</p>
+<ul>
+<li>作用：测试 CPU 处理数学运算的能力（如加法、乘法）。</li>
+<li>现实应用：图像处理、信号处理、科学计算。</li>
+</ul>
+<p>2、链表操作（Linked List Manipulation）</p>
+<ul>
+<li>作用：测试指针操作和内存管理能力。</li>
+<li>现实应用：操作系统、数据库、动态数据结构（如哈希表、图）</li>
+</ul>
+<p>3、状态机操作（State Machine Operation）</p>
+<ul>
+<li>作用：测试 CPU 在不同条件下执行不同代码路径的能力（数据相关的分支）。</li>
+<li>现实应用：协议解析（如 TCP&#x2F;IP 协议栈）、控制系统（如电梯控制、嵌入式控制器）。</li>
+</ul>
+<p>4、循环冗余校验（CRC，Cyclic Redundancy Check）</p>
+<ul>
+<li>作用：测试 CPU 计算数据校验码的能力。</li>
+<li>现实应用：网络通信（数据包校验）、存储设备（数据完整性检查）。</li>
+</ul>
+</blockquote>
+<h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><blockquote>
+<p>Dhrystone 的问题：容易被编译器优化</p>
+<ul>
+<li>Dhrystone 的代码结构简单，其中许多计算的结果在编译时就可以被确定（称为 <code>compile-time constants</code>）。</li>
+<li><strong>现代编译器</strong>（如 GCC、LLVM）在优化时，会尝试<strong>消除不必要的计算</strong>（称为 <code>dead code elimination</code>）。</li>
+</ul>
+<p>Dhrystone程序容易受到编译器的影响，当这些发生的时候，其结果就不可相信；</p>
+<p>CoreMark 会避免被编译器优化：</p>
+<ul>
+<li><p>CoreMark需要计算的数值在编译时无法获取，只有在运行时才能得到；</p>
+</li>
+<li><p>因此编译器虽然会进行一定程度的优化，但是<strong>无法在编译阶段预计算结果</strong>，会强制让 CPU 运行完整的计算过程</p>
+</li>
+</ul>
+</blockquote>
+<p>✅ <strong>示例：Dhrystone 被优化的情况</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> result = a + b;  <span class="comment">// 编译时就知道 result = 15</span></span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>编译器优化后：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> result = <span class="number">15</span>;  <span class="comment">// 计算直接替换，CPU 实际没有做加法</span></span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>影响</strong>：Dhrystone 可能会得到<strong>虚高</strong>的性能分数，因为 CPU 可能根本没执行预期的计算！</p>
+<p>✅ <strong>示例：CoreMark 代码避免优化</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">c复制编辑int compute(int x, int y) &#123;</span><br><span class="line">    return x * y + (x - y);  // x, y 在运行时才知道</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int a = rand();  // 运行时随机生成</span><br><span class="line">    int b = rand();</span><br><span class="line">    int result = compute(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>编译器无法优化：</strong> <code>a</code> 和 <code>b</code> 只有在程序运行时才知道值，因此 CPU 仍然需要执行 <code>compute(a, b)</code> 的完整计算过程。</p>
+<p>➡ <strong>影响</strong>：CPU仍然会执行对应的运算；</p>
+<h2 id="计时部分库函数的调用"><a href="#计时部分库函数的调用" class="headerlink" title="计时部分库函数的调用"></a>计时部分库函数的调用</h2><blockquote>
+<p>Dhrystone 的问题:</p>
+<ul>
+<li><p>Dhrystone <strong>在计时阶段</strong> 调用了 <strong>标准库函数</strong>（如 <code>printf()</code>、<code>strcpy()</code> 等）</p>
+</li>
+<li><p>库函数的执行时间** 依赖于 <strong>编译器和库实现</strong>，不同平台上的 <strong>库函数性能可能差异很大</strong>。</p>
+</li>
+</ul>
+<p><strong>不同系统的 Dhrystone 分数可能受库函数影响，而不是 CPU 的真实计算能力</strong></p>
+<p>CoreMark 的改进：不在计时部分调用库函数</p>
+<ul>
+<li>CoreMark 设计时，<strong>所有计算都由基准测试代码自己实现</strong>，不依赖外部库函数。</li>
+<li>这样可以保证<strong>所有平台运行完全相同的计算工作负载</strong>，不会因库实现不同而影响结果。</li>
+</ul>
+</blockquote>
+<p>✅ <strong>示例：Dhrystone 受库函数影响</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void test() &#123;</span><br><span class="line">    char str1[] = &quot;Hello&quot;;</span><br><span class="line">    char str2[10];</span><br><span class="line">    strcpy(str2, str1);  // 调用了标准库函数</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>问题：</strong></p>
+<ul>
+<li><code>strcpy()</code> 的执行效率取决于 <strong>所用 C 标准库的实现</strong>，不同编译器可能优化程度不同。</li>
+<li><strong>测的可能是库的性能，而不是 CPU 本身的计算能力</strong>。</li>
+</ul>
+<p>✅ <strong>示例：CoreMark 避免库函数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void my_strcpy(char *dst, const char *src) &#123;</span><br><span class="line">    while ((*dst++ = *src++));  // 手动实现字符串复制</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>优点：</strong></p>
+<ul>
+<li><strong>确保所有 CPU 运行相同的代码</strong>，不受不同库函数实现的影响。</li>
+<li><strong>测试 CPU 计算能力，而不是测试库的优化程度</strong>。</li>
+</ul>
+<h2 id="版本问题"><a href="#版本问题" class="headerlink" title="版本问题"></a>版本问题</h2><p>Dhrystone没有一个固定的官方版本；</p>
+<p>CoreMark有官方版本：<a target="_blank" rel="noopener" href="http://www.coremark.org/">http://www.coremark.org/</a>  </p>
+<ul>
+<li>ANSI C 兼容性</li>
+</ul>
+<blockquote>
+<p> ANSI C（American National Standards Institute C）指的是<strong>标准化的 C 语言</strong>。</p>
+<p>CoreMark 代码严格遵循 ANSI C 标准，确保<strong>在所有符合 ANSI C 的编译器上都能正确编译和运行</strong>。</p>
+<ul>
+<li><strong>ANSI C（C89&#x2F;C90）</strong>：1989 年标准化，保证代码可以在不同编译器和系统上运行。</li>
+<li><strong>非 ANSI C 代码</strong> 可能会使用 <strong>编译器特定的语法</strong>，导致在某些平台上无法编译或运行。</li>
+</ul>
+<p>Dhrystone 的最早版本<strong>在 ANSI C 标准发布前编写</strong>，使用了一些 <strong>非标准 C 语法</strong></p>
+<p>CoreMark 代码严格遵循 ANSI C 标准，确保<strong>在所有符合 ANSI C 的编译器上都能正确编译和运行</strong>。</p>
+</blockquote>
+<h2 id="结果报告"><a href="#结果报告" class="headerlink" title="结果报告"></a>结果报告</h2><blockquote>
+<p>Dhrystone 的问题:</p>
+<p><strong>测试方法不统一</strong>：Dhrystone <strong>虽然提供了一些测试指南</strong>，但这些指南<strong>不是强制执行的</strong>，不同测试者可能会<strong>以不同方式运行基准测试</strong>。</p>
+<p>结果格式不统一：Dhrystones per second, DMIPS, or DMIPS&#x2F;MHz  </p>
+<p>CoreMark 的改进：</p>
+<p>统一的测试和报告标准</p>
+</blockquote>
+<p><font color=blue>ARM使用CoreMark 1.0版本的程序：</font></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CoreMark 1.0 : N / C [/ P] [/ M]</span><br><span class="line">where:</span><br><span class="line">N displays the number of iterations per second with seeds 0,0,0x66,size=2000.</span><br><span class="line">C displays the compiler version and flags specified when compiling the benchmark.</span><br><span class="line">P displays parameters such as data and code allocation specifics.</span><br><span class="line">• This parameter can be omitted if all data was allocated on the heap in RAM.</span><br><span class="line">• This parameter cannot be omitted when reporting CoreMark/MHz.</span><br><span class="line">M shows the type of parallel algorithm execution (if used) and number of contexts.</span><br><span class="line">• This parameter can be omitted if parallel execution is not used.</span><br><span class="line">For example:</span><br><span class="line">CoreMark 1.0 : 256.344527 / ARM C/C++ Compiler, 5.03 [Build 24] -O3 -Otime / STACK</span><br></pre></td></tr></table></figure>
+
+<p><font color=blue>ARM推荐运行10000次迭代或者30秒</font></p>
+<h1 id="编译CoreMark"><a href="#编译CoreMark" class="headerlink" title="编译CoreMark"></a>编译CoreMark</h1><p>CoreMark包含如下文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">• coremark.h</span><br><span class="line">• core_main.c</span><br><span class="line">• core_list_join.c</span><br><span class="line">• core_matrix.c</span><br><span class="line">• core_state.c</span><br><span class="line">• core_util.c</span><br><span class="line">• simple/core_portme.c</span><br><span class="line">• simple/core_portme.h</span><br></pre></td></tr></table></figure>
+
+<p>需要移植的话，就修改core_portme文件</p>
+<h2 id="使用到的库函数"><a href="#使用到的库函数" class="headerlink" title="使用到的库函数"></a>使用到的库函数</h2><ul>
+<li><code>printf()</code></li>
+<li>特定于平台的计时函数，用于计算benchmark执行时间，通常是C library的<code>clock()</code>函数，或者使用core_portme.c中的<code>start_time() </code>and <code>stop_time()  </code></li>
+</ul>
+<blockquote>
+<p>printf()函数以及clock()函数通常在如下的library中：</p>
+<ul>
+<li><code>standard C library </code> ，included with the ARM Compiler toolchain and the Keil™ MDK  </li>
+<li><code>microlib  （size-optimized C library ）</code>，included with the Keil MDK toolkit.</li>
+</ul>
+</blockquote>
+<p>当编译CoreMark的在bare-metal system时，就需要移植这两个函数，<code>printf() 和clock()</code></p>
+<p>现在和很多处理器中，包含性能计数器，可以重定向clock函数即精确的统计执行benchmark所需要的时间；</p>
+<h2 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h2><p>通过link文件，将代码和数据放在运行最高效的位置。通过使用link文件来进行内存布局；</p>
+<h2 id="编译命令行选项"><a href="#编译命令行选项" class="headerlink" title="编译命令行选项"></a>编译命令行选项</h2><p>优化执行速度：-Otime, -O3, and –loop_optimization_level&#x3D;2  </p>
+<p>优化代码size：use microlib instead of the standard C library  </p>
+<h3 id="Speed-optimized"><a href="#Speed-optimized" class="headerlink" title="Speed-optimized"></a>Speed-optimized</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">armcc -c -W &lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2</span><br><span class="line">-I./ -Isimple -DITERATIONS=0 -DSEED_METHOD=SEED_ARG</span><br><span class="line">-DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2\”</span><br><span class="line">core_main.c core_list_join.c core_matrix.c core_state.c core_util.c</span><br><span class="line">simple/core_portme.c</span><br><span class="line"></span><br><span class="line">armlink core_main.o core_list_join.o core_matrix.o core_state.o core_util.o</span><br><span class="line">core_portme.o -o coremark.axf</span><br><span class="line"></span><br><span class="line">The compiler switches used here are:</span><br><span class="line"></span><br><span class="line">-c Performs the compilation and link steps separately.</span><br><span class="line"></span><br><span class="line">-W Disables all warnings. This is optional.</span><br><span class="line"></span><br><span class="line">&lt;cflags&gt; Any additional compiler flags you require.</span><br><span class="line"></span><br><span class="line">--cpu=name Specifies the name of the target processor, for example --cpu=Cortex-M4.</span><br><span class="line"></span><br><span class="line">-O3 Applies maximum optimization.</span><br><span class="line"></span><br><span class="line">-Otime Optimizes for time.</span><br><span class="line"></span><br><span class="line">-I./ -Isimple</span><br><span class="line">Lists the directories to search for source files.</span><br><span class="line"></span><br><span class="line">--loop_optimization_level=2</span><br><span class="line">Specifies that the compiler performs high-level optimization, including</span><br><span class="line">aggressive loop optimization. This option is usually best for performance.</span><br><span class="line"></span><br><span class="line">-DSEED_METHOD=SEED_ARG</span><br><span class="line">Specifies that randomization seeds are passed as command-line arguments at</span><br><span class="line">runtime, rather than being automatically generated.</span><br><span class="line"></span><br><span class="line">-DITERATIONS=0</span><br><span class="line">Specifies that the number of iterations is passed as a command-line argument at</span><br><span class="line">runtime.</span><br><span class="line">Note</span><br><span class="line">If you prefer, you can specify the number of iterations here rather than passing the</span><br><span class="line">iteration count as an argument. See Running CoreMark on page 10 for more</span><br><span class="line">information.</span><br><span class="line"></span><br><span class="line">-DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2\”</span><br><span class="line">Specifies the compiler flags, as provided to the compiler earlier on the command</span><br><span class="line">line. This allows the compiler flags to be included in the output of the CoreMark</span><br><span class="line">results.</span><br><span class="line">This example uses UNIX-style escaped quotes. On Windows, use</span><br><span class="line">-DCOMPILER_FLAGS=”””&lt;cflags&gt; --cpu=name...”””</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Speed-optimized-with-microlib"><a href="#Speed-optimized-with-microlib" class="headerlink" title="Speed-optimized, with microlib"></a>Speed-optimized, with microlib</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">armcc -c -W &lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2</span><br><span class="line">--library_type=microlib -I./ -Isimple -DITERATIONS=0 -DSEED_METHOD=SEED_ARG</span><br><span class="line">-DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2</span><br><span class="line">--library_type=microlib\”</span><br><span class="line">core_main.c core_list_join.c core_matrix.c core_state.c core_util.c</span><br><span class="line">simple/core_portme.c</span><br><span class="line"></span><br><span class="line">armlink core_main.o core_list_join.o core_matrix.o core_state.o core_util.o</span><br><span class="line">core_portme.o -o coremark.axf</span><br><span class="line"></span><br><span class="line">The compiler and linker switches used here are the same as in the speed-optimized example,</span><br><span class="line">with the following difference:</span><br><span class="line">--library_type=microlib</span><br><span class="line">Links with the size-optimized library</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Size-optimized-with-microlib"><a href="#Size-optimized-with-microlib" class="headerlink" title="Size-optimized, with microlib"></a>Size-optimized, with microlib</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">armcc -c -W &lt;cflags&gt; --cpu=cpuname -O3 -Ospace -I./ -Isimple -DITERATIONS=0</span><br><span class="line">-DSEED_METHOD=SEED_ARG -DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=cpuname -O3 -Ospace\”</span><br><span class="line">--library_type=microlib --split_sections core_main.c core_list_join.c</span><br><span class="line">core_matrix.c core_state.c core_util.c simple/core_portme.c</span><br><span class="line"></span><br><span class="line">armlink core_main.o core_list_join.o core_matrix.o core_state.o core_util.o</span><br><span class="line">core_portme.o -o coremark.axf</span><br><span class="line"></span><br><span class="line">The compiler and linker switches used here are the same as in the speed-optimized example,</span><br><span class="line">with the following differences:</span><br><span class="line">--library_type=microlib</span><br><span class="line">Links with the size-optimized library.</span><br><span class="line">-Ospace Optimizes for size.</span><br><span class="line">--split_sections</span><br><span class="line">Generates one ELF section for each function in the source file.</span><br><span class="line">Compilers usually collect functions and data together and emit one section for</span><br><span class="line">each category. The linker can only eliminate a section if it is entirely unused. The</span><br><span class="line">--split_sections option ensures that each function is in a separate section, so that</span><br><span class="line">the linker can eliminate all unused functions.</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="运行CoreMark"><a href="#运行CoreMark" class="headerlink" title="运行CoreMark"></a>运行CoreMark</h1><p>CoreMark是一个小的benchmark程序，必须要运行多次才能获得可复制的分数</p>
+<ol>
+<li><strong>减少处理器状态不一致带来的影响</strong></li>
+</ol>
+<ul>
+<li><strong>问题描述</strong>：<br>处理器的状态（如缓存状态、分支预测状态等）可能会影响测试结果。如果每次运行 CoreMark 时处理器的初始状态不一致，测试结果可能会有较大波动。</li>
+<li><strong>解决方法</strong>：<br>ARM 建议按照以下步骤运行 CoreMark：<ol>
+<li><strong>两次验证运行（Validation Runs）</strong>：<br>在正式测试之前，先运行两次 CoreMark，以确保测试环境正确设置，并且处理器状态趋于稳定。</li>
+<li><strong>至少十次性能运行（Profile Runs）</strong>：<br>在验证运行之后，至少运行十次 CoreMark，以收集足够的数据。</li>
+<li><strong>计算平均值</strong>：<br>对十次性能运行的结果取平均值，作为最终的测试结果。</li>
+</ol>
+</li>
+<li><strong>目的</strong>：<br>通过多次运行和取平均值，可以减少处理器状态不一致带来的波动，提高测试结果的可靠性。</li>
+</ul>
+<hr>
+<ol start="2">
+<li><strong>最小执行时间要求</strong></li>
+</ol>
+<ul>
+<li><strong>CoreMark 要求</strong>：<br>CoreMark 的官方要求是，每次运行的执行时间至少为 <strong>10 秒</strong>，以确保测试结果的准确性。</li>
+<li><strong>ARM 建议</strong>：<br>ARM 建议将最小执行时间延长至 <strong>30 秒</strong>，以进一步减少测试结果的波动性。</li>
+<li><strong>原因</strong>：<ul>
+<li>较长的执行时间可以平滑短时间内的性能波动（如中断、缓存未命中等）。</li>
+<li>较长的执行时间还可以更好地反映处理器的持续性能。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="3">
+<li><strong>执行时间与处理器频率的关系</strong></li>
+</ol>
+<ul>
+<li><strong>执行时间的影响因素</strong>：<br>CoreMark 的执行时间取决于处理器的频率和性能。频率越高，执行时间越短；频率越低，执行时间越长。</li>
+<li><strong>示例</strong>：<br>ARM 提供了一个参考示例：<ul>
+<li>在 <strong>Cortex-M4 处理器</strong> 上，运行频率为 <strong>168 MHz</strong> 时，<strong>15000 次迭代</strong> 的执行时间约为 <strong>30 秒</strong>。</li>
+</ul>
+</li>
+<li><strong>如何调整迭代次数</strong>：<br>如果处理器的频率不同，可以通过调整迭代次数来控制执行时间。例如：<ul>
+<li>如果处理器频率较低，可以增加迭代次数以达到 30 秒的执行时间。</li>
+<li>如果处理器频率较高，可以减少迭代次数以避免执行时间过长。</li>
+</ul>
+</li>
+</ul>
+<h1 id="测量特性"><a href="#测量特性" class="headerlink" title="测量特性"></a>测量特性</h1><p>The CoreMark benchmark number is the number of iterations per second  。</p>
+<p>A commonly reported figure is CoreMarks &#x2F; MHz.  </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TBD/" rel="tag"># TBD</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/" rel="prev" title="DFT AU fault report分析">
+      <i class="fa fa-chevron-left"></i> DFT AU fault report分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/06/ARM-Dhrystone/" rel="next" title="ARM Dhrystone">
+      ARM Dhrystone <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CoreMark%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">CoreMark简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD%E7%9A%84%E7%8E%B0%E5%AE%9E%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">工作负载的现实性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E6%97%B6%E9%83%A8%E5%88%86%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">计时部分库函数的调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">版本问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%8A%A5%E5%91%8A"><span class="nav-number">1.5.</span> <span class="nav-text">结果报告</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91CoreMark"><span class="nav-number">2.</span> <span class="nav-text">编译CoreMark</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84%E5%BA%93%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">使用到的库函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="nav-number">2.2.</span> <span class="nav-text">内存布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4%E8%A1%8C%E9%80%89%E9%A1%B9"><span class="nav-number">2.3.</span> <span class="nav-text">编译命令行选项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Speed-optimized"><span class="nav-number">2.3.1.</span> <span class="nav-text">Speed-optimized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Speed-optimized-with-microlib"><span class="nav-number">2.3.2.</span> <span class="nav-text">Speed-optimized, with microlib</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Size-optimized-with-microlib"><span class="nav-number">2.3.3.</span> <span class="nav-text">Size-optimized, with microlib</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CCoreMark"><span class="nav-number">3.</span> <span class="nav-text">运行CoreMark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E9%87%8F%E7%89%B9%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">测量特性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

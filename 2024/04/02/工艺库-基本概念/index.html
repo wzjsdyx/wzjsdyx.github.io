@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="HDC50和HDC40 数字表示channel length沟道长度 沟道长度越短，速度越快，功耗越高 PMK 是低功耗相关的库，例如ISO&#x2F;power switch，level shift等">
+  <meta name="description" content="阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比      NOTE: 实际使用的时候，LVT和HVT的stand cell的面积几乎没什么区别； 之所以说使用LVT综合出来的面积比HVT综合出来的面积小，是因为一个LVT在驱动能力上可能比几个HVT好，所以用LVT之后，整体的cell数量就会降低； 工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV由于半导体制造过程中存在工">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工艺库-基本概念">
 <meta property="og:url" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="芯青年">
-<meta property="og:description" content="HDC50和HDC40 数字表示channel length沟道长度 沟道长度越短，速度越快，功耗越高 PMK 是低功耗相关的库，例如ISO&#x2F;power switch，level shift等">
+<meta property="og:description" content="阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比      NOTE: 实际使用的时候，LVT和HVT的stand cell的面积几乎没什么区别； 之所以说使用LVT综合出来的面积比HVT综合出来的面积小，是因为一个LVT在驱动能力上可能比几个HVT好，所以用LVT之后，整体的cell数量就会降低； 工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV由于半导体制造过程中存在工">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/QJ3MPH5XhH.jpg">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403102041767.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403152530125.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403155048516.png">
 <meta property="article:published_time" content="2024-04-02T05:13:46.000Z">
-<meta property="article:modified_time" content="2024-04-02T05:37:57.239Z">
+<meta property="article:modified_time" content="2025-04-03T08:05:43.596Z">
 <meta property="article:author" content="Youngster">
 <meta property="article:tag" content="工艺库基本概念">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/QJ3MPH5XhH.jpg">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403102041767.png">
 
 <link rel="canonical" href="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
 
@@ -190,10 +192,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-04-02 13:13:46 / 修改时间：13:37:57" itemprop="dateCreated datePublished" datetime="2024-04-02T13:13:46+08:00">2024-04-02</time>
+              <time title="创建时间：2024-04-02 13:13:46" itemprop="dateCreated datePublished" datetime="2024-04-02T13:13:46+08:00">2024-04-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-03 16:05:43" itemprop="dateModified" datetime="2025-04-03T16:05:43+08:00">2025-04-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -236,15 +244,113 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/QJ3MPH5XhH.jpg" class="">
+        <h1 id="阈值电压HVT-RVT-LVT-PPA对比"><a href="#阈值电压HVT-RVT-LVT-PPA对比" class="headerlink" title="阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比"></a>阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比</h1><img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403102041767.png" class="">
 
 
 
-<p><code>HDC50和HDC40</code></p>
-<p>数字表示channel length沟道长度</p>
-<p>沟道长度越短，速度越快，功耗越高</p>
+
+
+<p>NOTE:</p>
+<p><font color=blue>实际使用的时候，LVT和HVT的stand cell的面积几乎没什么区别；</font></p>
+<p><font color=blue>之所以说使用LVT综合出来的面积比HVT综合出来的面积小，是因为一个LVT在驱动能力上可能比几个HVT好，所以用LVT之后，整体的cell数量就会降低；</font></p>
+<h1 id="工艺角SS-TT-FF和片上误差OCV"><a href="#工艺角SS-TT-FF和片上误差OCV" class="headerlink" title="工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV"></a>工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV</h1><p>由于半导体制造过程中存在<strong>工艺波动</strong>，相同设计的芯片在不同批次中会有<strong>性能差异</strong>。</p>
+<ul>
+<li><strong>工艺角</strong>用来表示芯片在<strong>不同制造条件下</strong>的<strong>性能变化范围</strong>。</li>
+<li>常用的工艺角有：<ul>
+<li><strong>SS</strong>：Slow-Slow</li>
+<li><strong>FF</strong>：Fast-Fast</li>
+<li><strong>TT</strong>：Typical-Typical</li>
+<li><strong>SF&#x2F;FS</strong>：Slow-Fast &#x2F; Fast-Slow（P管和N管速度不匹配）</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403152530125.png" class="">
+
+<p>同一个批次的wafer其corner是相同的，例如下订单之后，其所有的wafer都是相同的corner；</p>
+<p>然后同一片wafer上，不同的位置，其性能有可能也是不同的，这就是OCV的概念；</p>
+<p><font color=blue>OCV的全称是On Chip Variation，用于描述在一块芯片上不同管子间由于工艺偏差、电压降以及温度变化（PVT）等引起的delay变化</font></p>
+<h1 id="standard-cell-命名含义"><a href="#standard-cell-命名含义" class="headerlink" title="standard cell 命名含义"></a>standard cell 命名含义</h1><img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403155048516.png" class="">
+
+<blockquote>
+<pre><code>   IP Code       : SCC40NEFAG1_HDC40_HVT
+   Product Type  : Standard Cell Library
+   Technology    : 40nm CMOS EFAG1(Split Gate Flash Ultra Low Power Auto Platform 0.9/1.1/1.2/1.8/2.5/5.0/12V Grade1),
+                   core cell library,
+                   High Vt,
+                   8-track High Density, Gate-Length 40nm,
+                   tapless cell layout structure
+
+
+
+   IP Code       : SCC40NEFAG1_VHSC40_HVT
+   Product Type  : Standard Cell Library
+   Technology    : 40nm CMOS EFAG1(Split Gate Flash Ultra Low Power Auto Platform 0.9/1.1/1.2/1.8/2.5/5.0/12V Grade1),
+                   core cell library,
+                   High Vt,
+                   12-track Very High Speed, Gate-Length 40nm,
+                   tapless cell layout structure
+</code></pre>
 <p><code>PMK</code></p>
 <p>是低功耗相关的库，例如ISO&#x2F;power switch，level shift等</p>
+</blockquote>
+<h1 id="栅极长度"><a href="#栅极长度" class="headerlink" title="栅极长度"></a>栅极长度</h1><p><code>HDC50和HDC40</code></p>
+<p>数字表示栅极长度；</p>
+<p>沟道长度越短，速度越快，功耗越高</p>
+<h1 id="Track"><a href="#Track" class="headerlink" title="Track"></a>Track</h1><p> <strong>1. Track的含义</strong></p>
+<ul>
+<li>基本定义：<ul>
+<li>一个Track通常表示一个金属布线层的宽度和间距之和，即布线间隔的单位长度。</li>
+<li>单元高度通常是以Track数来表示的，例如8-Track、9-Track、12-Track等。</li>
+</ul>
+</li>
+<li>标准单元高度：<ul>
+<li>单元高度 &#x3D; Track数 × 单一轨道高度。</li>
+<li>一般情况下，1个Track约等于工艺栅极长度（Gate Length），比如40nm工艺中，1个Track大约是40nm。</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. Track对PPA的影响</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Track数</strong></th>
+<th><strong>面积（Area）</strong></th>
+<th><strong>性能（Performance）</strong></th>
+<th><strong>功耗（Power）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>低Track</strong></td>
+<td><strong>面积小，密度高</strong></td>
+<td><strong>性能较低</strong></td>
+<td><strong>功耗低</strong></td>
+</tr>
+<tr>
+<td><strong>高Track</strong></td>
+<td><strong>面积大，密度低</strong></td>
+<td><strong>性能较高</strong></td>
+<td><strong>功耗高</strong></td>
+</tr>
+</tbody></table>
+<p>分析：</p>
+<ul>
+<li>低Track数（如8-Track）：<ul>
+<li>面积小：标准单元较矮，布局密度高。</li>
+<li>性能低：单元较矮，驱动能力受限，不适合高速逻辑。</li>
+<li>功耗低：由于短导线和小驱动器，功耗较低。</li>
+</ul>
+</li>
+<li>高Track数（如12-Track）：<ul>
+<li>面积大：标准单元较高，导致芯片面积增大。</li>
+<li>性能高：更大的单元高度允许更强的驱动能力，有助于高频电路。</li>
+<li>功耗高：驱动能力增强的同时，漏电流和动态功耗增加。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>参考博客：</strong></p>
+<p><strong><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianbinbin/p/17604494.html">静态时序分析 - OCV</a></strong></p>
+<p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq570437459/article/details/133693417">MOS管各种概念</a></strong></p>
 
     </div>
 
@@ -263,8 +369,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/04/02/XRUN%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/" rel="prev" title="XRUN仿真工具">
-      <i class="fa fa-chevron-left"></i> XRUN仿真工具
+    <a href="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="prev" title="基础知识-移位器的实现">
+      <i class="fa fa-chevron-left"></i> 基础知识-移位器的实现
     </a></div>
       <div class="post-nav-item">
     <a href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="next" title="gvim实用技巧">
@@ -329,6 +435,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%88%E5%80%BC%E7%94%B5%E5%8E%8BHVT-RVT-LVT-PPA%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E8%89%BA%E8%A7%92SS-TT-FF%E5%92%8C%E7%89%87%E4%B8%8A%E8%AF%AF%E5%B7%AEOCV"><span class="nav-number">2.</span> <span class="nav-text">工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#standard-cell-%E5%91%BD%E5%90%8D%E5%90%AB%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">standard cell 命名含义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%85%E6%9E%81%E9%95%BF%E5%BA%A6"><span class="nav-number">4.</span> <span class="nav-text">栅极长度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Track"><span class="nav-number">5.</span> <span class="nav-text">Track</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -344,20 +451,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">225</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">138</span>
+        <span class="site-state-item-count">165</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -383,8 +490,8 @@
 
 <div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

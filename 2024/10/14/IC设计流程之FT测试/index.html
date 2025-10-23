@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="补充FT pattern  AC7843需要对ATPG AU fault补充function pattern AU的fault都是ATPG在test_mode下面受自身或者mode限制无法达到的fault FT打不到的fault，则考虑由SFT去测试  FT和SFT的区别： SFT pattern需要将bin给写入到eFlash中去执行；   STEP1：fault list分析基本概念理解&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IC设计流程之FT测试">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="补充FT pattern  AC7843需要对ATPG AU fault补充function pattern AU的fault都是ATPG在test_mode下面受自身或者mode限制无法达到的fault FT打不到的fault，则考虑由SFT去测试  FT和SFT的区别： SFT pattern需要将bin给写入到eFlash中去执行；   STEP1：fault list分析基本概念理解&amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017150915497.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017164100730.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017164110275.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017112421572.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016164654023.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016171920121.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016172208661.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016164155748.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017101008619.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017101313991.png">
+<meta property="article:published_time" content="2024-10-14T07:41:19.000Z">
+<meta property="article:modified_time" content="2024-10-17T08:43:56.526Z">
+<meta property="article:author" content="Youngster">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017150915497.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>IC设计流程之FT测试 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IC设计流程之FT测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-14 15:41:19" itemprop="dateCreated datePublished" datetime="2024-10-14T15:41:19+08:00">2024-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-17 16:43:56" itemprop="dateModified" datetime="2024-10-17T16:43:56+08:00">2024-10-17</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>补充FT pattern</p>
+</blockquote>
+<p>AC7843需要对<code>ATPG AU fault</code>补充function pattern</p>
+<p>AU的fault都是ATPG在test_mode下面受自身或者mode限制无法达到的fault</p>
+<p>FT打不到的fault，则考虑由SFT去测试</p>
+<blockquote>
+<p>FT和SFT的区别：</p>
+<p>SFT pattern需要将bin给写入到eFlash中去执行；</p>
+</blockquote>
+<hr>
+<h1 id="STEP1：fault-list分析"><a href="#STEP1：fault-list分析" class="headerlink" title="STEP1：fault list分析"></a>STEP1：fault list分析</h1><h2 id="基本概念理解"><a href="#基本概念理解" class="headerlink" title="基本概念理解"></a>基本概念理解</h2><p>&#x3D;&#x3D;》fault？AU fault？</p>
+<p>Tool能够检测到fault，如果某一个fault是<code>可控制</code>并且<code>可观测</code>的，那么ATPG的test pattern可以覆盖这个可能的故障点（检测出stuck错误，从而筛除）</p>
+<blockquote>
+<p>可控制：</p>
+<p>某一个CELL的输入信号需要是能够toggle的；</p>
+<p>电信的错误是：一个或门，其中一个输入逻辑是test scan mode，那么ATPG下，其输出结果永远是1，就无法检测到stuck 0的错误；</p>
+<p>可观测：</p>
+<p>摸一个CELL的输出可以传递到另外一个CELL</p>
+<p>典型的错误是：mux的选择信号被test scan mode控制；另外一路就无法传播到后一级</p>
+</blockquote>
+<p>必须同时满足<font color=blue>可控制</font>和<font color=blue>可观测</font>，否则就为AU(ATPG Untestable) fault，需要DE来补function pattern</p>
+<h2 id="方法学"><a href="#方法学" class="headerlink" title="方法学"></a>方法学</h2><p>&#x3D;&#x3D;》分析report上 fault没有被ATPG覆盖的原因</p>
+<h3 id="report报告："><a href="#report报告：" class="headerlink" title="report报告："></a>report报告：</h3><p>1、report上很多的fault可以不用去看</p>
+<ul>
+<li>Netlist 里面被tie 0 或者tie1, dont care</li>
+<li>sram的output fault在目前的atpg里面是不测试的，但是会被mbist cover，dont care</li>
+</ul>
+<p>2、需要补FT function pattern</p>
+<ul>
+<li>Analog output signal，这部分的fault点因为没有办法控制，所以没能被atpg cover，需要补充funciton pattern</li>
+<li>Pinmux内部的很多的fault是由于scan_mode. Test_mode, scan_en 等信号被固定了input . output，需要补一下其他mode的FT来cover.</li>
+<li>Gpio相关的和Pinmux的fault点类似，也是mode选择固定的了PAD的一些控制信号，需要补FT来cover其他mode</li>
+<li>Flash output related, 这部分CP和SFT都会cover，dont care</li>
+<li>Reset在scan的时候被换到Scan_reset，normal reset需要update FT cover</li>
+<li>Spm内部出的analog input 信号，在test mode的时候是被tie固定值的，update FT去cover别的case.</li>
+</ul>
+<p><font color=blue>常见的AU report 类型</font></p>
+<h4 id="case1-AU-SEQ"><a href="#case1-AU-SEQ" class="headerlink" title="case1:AU.SEQ"></a>case1:AU.SEQ</h4><blockquote>
+<p>&#x2F;&#x2F;  command: analyze_fault -display -stuck_at 0 &#x2F;MTCMOS_wrap&#x2F;MTCMOS&#x2F;PLACE_SETUP_FE_OFC117487_sru_secure_boot&#x2F;I<br>&#x2F;&#x2F;  —————————————————————————<br>&#x2F;&#x2F;  Fault analysis for &#x2F;MTCMOS_wrap&#x2F;MTCMOS&#x2F;PLACE_SETUP_FE_OFC117487_sru_secure_boot (995634) input I (0) stuck at 0<br>&#x2F;&#x2F;  —————————————————————————<br>&#x2F;&#x2F;  Fault is not currently in fault list.<br>&#x2F;&#x2F;  Fault site sequential depth: Control_0 &#x3D; 255, Control_1 &#x3D; 255, Observe &#x3D; 0.<br>&#x2F;&#x2F;  Analyze if the fault can be activated …<br>&#x2F;&#x2F;      The fault site failed to be set to 1 (ATPG status &#x3D; atpg_untestable).<br>&#x2F;&#x2F;  Analysis summary:<br>&#x2F;&#x2F;    The fault site cannot be set to 1.</p>
+<p><strong>报告解释</strong></p>
+<ol>
+<li><strong>命令</strong>：<ul>
+<li><code>analyze_fault -display -stuck_at 0 /MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/U740/ZN</code><br>这条命令用于分析指定故障，即**&#x2F;MTCMOS_wrap&#x2F;protsys&#x2F;u_mpu_top_0&#x2F;i_mpu_core_h&#x2F;U740单元输出端ZN卡0**的故障状态。</li>
+</ul>
+</li>
+<li><strong>故障描述</strong>：<ul>
+<li>Fault analysis for &#x2F;MTCMOS_wrap&#x2F;protsys&#x2F;u_mpu_top_0&#x2F;i_mpu_core_h&#x2F;U740 (1439325) output ZN stuck at 0<ul>
+<li>分析的故障是模块<code>/MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/U740</code>中，输出端<strong>ZN</strong>被卡住为0的情况（stuck-at-0）。括号中的<code>1439325</code>表示U740单元在工具中的内部ID号。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>故障列表状态</strong>：<ul>
+<li>Fault is not currently in fault list.<ul>
+<li>这个故障并不在当前的故障列表中。这通常意味着该故障还没有被列为要测试的目标，或者已经被判定为不可测试。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>顺序深度（Sequential Depth）</strong>：<ul>
+<li>Fault site sequential depth: Control_0 &#x3D; 0, Control_1 &#x3D; 255, Observe &#x3D; 0.<ul>
+<li><strong>Control_0 &#x3D; 0</strong>：将故障点设为0的控制深度为0，表示可以直接将ZN置为0。</li>
+<li><strong>Control_1 &#x3D; 255</strong>：将故障点设为1的控制深度为255，表示需要经过255个时钟周期（状态转换）才能将ZN设为1。</li>
+<li><strong>Observe &#x3D; 0</strong>：观察点深度为0，说明可以在不需要多余的时钟周期下直接观察到故障的影响。</li>
+<li>这些值表示该故障点需要较长的时钟周期去控制ZN输出为1，这会影响测试覆盖。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>激活故障的分析</strong>：<ul>
+<li>The fault site failed to be set to 1 (ATPG status &#x3D; atpg_untestable).<ul>
+<li>分析表明<strong>ZN端无法被设为1</strong>。工具无法找到能让故障节点从0切换到1的有效向量，因此被判定为不可测试（atpg_untestable）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>分析总结</strong>：<ul>
+<li>The fault site cannot be set to 1.<ul>
+<li>总结说明<strong>ZN卡0故障无法被激活为1</strong>，也就是说，该故障被认为是<strong>顺序不可测试的故障（AU.SEQ）</strong>。这种情况下，ZN端在卡0的状态下无法通过输入控制实现1的状态，从而不能通过测试来检测到该故障。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017150915497.png" class="">
+
+
+
+<blockquote>
+<p><strong>针对AU.SEQ错误类型的说明：</strong></p>
+<p>假设我们有一个简单的时序电路，包含两个触发器（Flip-Flops），FF1 和 FF2，连接到一个与非门（NAND gate）。这个与非门的输出连接到FF2的输入。ZN是与非门的输出端。</p>
+<p><strong>假设的情况</strong>：</p>
+<ol>
+<li><strong>ZN 卡0故障</strong>：在正常情况下，与非门的输出 ZN 会根据 FF1 和 FF2 的状态进行逻辑运算输出。但是，由于这个卡0故障，ZN被固定为逻辑0，即无论输入什么值，它的输出永远是0。</li>
+<li><strong>激活故障的挑战</strong>：<ul>
+<li>为了检测 ZN 的卡0故障，需要找到一种方法让 ZN 理论上应输出1，但因为卡0故障实际输出为0。这样可以通过观察 FF2 的输出来检测到错误。</li>
+<li>根据顺序深度控制的值，报告指出需要 <strong>255 个时钟周期</strong> 才能让 ZN 理论上输出1。</li>
+</ul>
+</li>
+</ol>
+<p><strong>测试和不可测的原因</strong></p>
+<p>在这个例子中，如果要让 ZN 应输出1，可能需要：</p>
+<ul>
+<li><strong>设定 FF1 和 FF2 在特定的状态</strong>。这需要多个时钟周期去设置 FF1 和 FF2 的输入，以便达到这种组合。</li>
+<li>如果要达到 ZN &#x3D; 1 的情况，需要让 FF1 和 FF2 在一个特定时序下相互作用，但这可能非常复杂，或者测试工具无法生成这样的序列（如需要 255 个时钟周期的控制），导致测试覆盖不足。</li>
+</ul>
+<p><strong>为什么测试工具会标记为不可测试？</strong></p>
+<p>因为在实际测试中，Tessent工具在设定和观测时序电路的特定状态时，可能会因为状态复杂性和循环数超出工具极限而无法设定 ZN 为1。因此，它标记这个故障为不可测试。</p>
+<p><strong>summary</strong></p>
+<p><font color =blue>逻辑链过深，如果知道这部分的逻辑，就比较好补充pattern，例如secure_boot 信号的stuck 错误；虽然逻辑链比较深，但是知道怎么配置能让他toggle</font></p>
+<p><font color =blue>如果不知道，其实没办法补。。。。</font></p>
+</blockquote>
+<h4 id="case2-AU-TC"><a href="#case2-AU-TC" class="headerlink" title="case2:AU.TC"></a>case2:AU.TC</h4><img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017164100730.png" class="">
+
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017164110275.png" class="">
+
+<blockquote>
+<p><strong>summary</strong></p>
+<p>这种错误分析起来比较简单；</p>
+</blockquote>
+<h4 id="case3-AU"><a href="#case3-AU" class="headerlink" title="case3:AU"></a>case3:AU</h4><h3 id="分析工具："><a href="#分析工具：" class="headerlink" title="分析工具："></a>分析工具：</h3><ul>
+<li><p>简单的可以直接用verdi看netlist</p>
+</li>
+<li><p>复杂的不好分析的可以调用tessent tool(注意版本)</p>
+</li>
+</ul>
+<h3 id="分析方法："><a href="#分析方法：" class="headerlink" title="分析方法："></a>分析方法：</h3><ol>
+<li>AU.TC&#x2F; AU.PC的部分有可能和tie cell相关。这部分的就不需要看。</li>
+<li>AU.BB 的部分是和sram, flash, analog的output相关的，这部分看一下是否有CP， SFT, mbist去cover, 如果没有的话需要补FT</li>
+</ol>
+<h2 id="AC7843项目各模块fault分析"><a href="#AC7843项目各模块fault分析" class="headerlink" title="AC7843项目各模块fault分析"></a>AC7843项目各模块fault分析</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyze_fault -display -stuck_at x xxxx</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="CORE-Coresight-–done"><a href="#CORE-Coresight-–done" class="headerlink" title="CORE&#x2F;Coresight –done"></a>CORE&#x2F;Coresight –done</h3><p>1、覆盖率足够高，99.59%，未覆盖的部分基本都是和WIC以及SWD相关的。</p>
+<p>2、cpu model无法访问CPU</p>
+<p>3、有SFT pattern（覆盖CORE，WIC，SWD）</p>
+<h3 id="MCM–done"><a href="#MCM–done" class="headerlink" title="MCM–done"></a>MCM–done</h3><p>CPU Model没有访问MCM的path，通过SFT去覆盖对应的<code>uncover fault</code></p>
+<blockquote>
+<pre><code>  1    AU.TC    /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/u_ICG_ins/E
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/u_ICG_ins/TE
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC2215_ltest_to_en/ZN
+  0    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC2215_ltest_to_en/I
+  0    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC9825_ltest_to_en/ZN
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC9825_ltest_to_en/I
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC321052_n/Z
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC321052_n/I
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC9823_ltest_to_en/Z
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC9823_ltest_to_en/I
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC312357_n/Z
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC312357_n/I
+  1    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC9821_ltest_to_en/ZN
+  0    EQ       /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC9821_ltest_to_en/I
+  
+//  command: analyze_fault -display -stuck_at 1 /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/u_ICG_ins/E
+//  ---------------------------------------------------------------------------
+//  Fault analysis for /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/u_ICG_ins (1184576) input E (0) stuck at 1
+//  ---------------------------------------------------------------------------
+//  Fault is not currently in fault list.
+//  Fault site sequential depth: Control_0 = 0, Control_1 = 0, Observe = 255.
+//  Analyze if the fault can be activated ...
+//      The fault site was set to 0 successfully (data in parallel_pattern 0).
+//      Pattern type: Clock_sequential (cycles = 1).
+//  Search potential observation point...
+//      Fault is blocked at /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/u_ICG_ins (1184576) due to /MTCMOS_wrap/protsys/u_cm4_mcm/gate_mcm_clk/PLACE_SETUP_FE_OFC2215_ltest_to_en (825986) unable to set to 0.
+//      Tied gate source: 1  /top_scan_design/ac7843x_dft_ip_tessent_tdr_sri_ctrl_inst/ltest_en_latch_reg (2171594)
+//  Analysis summary:
+//    The fault site cannot propagate to any observation point.
+</code></pre>
+</blockquote>
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017112421572.png" class="">
+
+<p>ICG的E端无法传播，是因为test mode下，TE为1；</p>
+<h3 id="PBR–done"><a href="#PBR–done" class="headerlink" title="PBR–done"></a>PBR–done</h3><img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016164654023.png" class="">
+
+<p>ICG在shift阶段被enable</p>
+<h3 id="infra-ctl-EIM-E2E-bootrom-sram"><a href="#infra-ctl-EIM-E2E-bootrom-sram" class="headerlink" title="infra_ctl&#x2F;EIM&#x2F;E2E&#x2F;bootrom&#x2F;sram"></a>infra_ctl&#x2F;EIM&#x2F;E2E&#x2F;bootrom&#x2F;sram</h3><img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016171920121.png" class="">
+
+
+
+<blockquote>
+<p>1    AU.SEQ   &#x2F;MTCMOS_wrap&#x2F;MTCMOS&#x2F;i_i_MTCMOS&#x2F;cm4_MTCMOS&#x2F;cm4_infra_ctl&#x2F;U38&#x2F;A1</p>
+<p>&#x2F;&#x2F;  Analysis summary:<br>&#x2F;&#x2F;    The fault site cannot be set to 0.</p>
+<p>trapping mode不上chain，</p>
+</blockquote>
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016172208661.png" class="">
+
+
+
+<blockquote>
+<p>1    AU.TC    &#x2F;MTCMOS_wrap&#x2F;MTCMOS&#x2F;i_i_MTCMOS&#x2F;cm4_MTCMOS&#x2F;cm4_infra_ctl&#x2F;u_code_sram_up&#x2F;code_sram_u_bist_con&#x2F;PLACE_SETUP_FE_OFC8213_ts_0_tpecs0&#x2F;ZN</p>
+<p>&#x2F;&#x2F;  Fault is not currently in fault list.<br>&#x2F;&#x2F;  Fault site sequential depth: Control_0 &#x3D; 255, Control_1 &#x3D; 0, Observe &#x3D; 0.<br>&#x2F;&#x2F;      Fault site is tied to 1 due to constrained logic.<br>&#x2F;&#x2F;      Tied gate source: 1  &#x2F;top_scan_design&#x2F;ac7843x_dft_ip_tessent_tdr_sri_ctrl_inst&#x2F;control_test_point_en_latch_reg (2171589)</p>
+</blockquote>
+<p>DFT插入的逻辑将这个port tie 1</p>
+<blockquote>
+<pre><code>  1    AU.TC    /MTCMOS_wrap/MTCMOS/i_i_MTCMOS/cm4_MTCMOS/cm4_infra_ctl/u_ahb_bootrom/u_TMVROMS040VAA_V1L0B2_2048X39M8F1C0_interface_inst/U99/ZN
+  0    EQ       /MTCMOS_wrap/MTCMOS/i_i_MTCMOS/cm4_MTCMOS/cm4_infra_ctl/u_ahb_bootrom/u_TMVROMS040VAA_V1L0B2_2048X39M8F1C0_interface_inst/U99/I
+  1    EQ       /MTCMOS_wrap/MTCMOS/i_i_MTCMOS/cm4_MTCMOS/cm4_infra_ctl/u_ahb_bootrom/u_TMVROMS040VAA_V1L0B2_2048X39M8F1C0_interface_inst/BIST_INPUT_SELECT_reg/E
+</code></pre>
+</blockquote>
+<p>MIBST相关</p>
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241016164155748.png" class="">
+
+
+
+<blockquote>
+<pre><code>  0    AU.SEQ   /MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/U_PTECO_HOLD_BUF696/Z
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/U_PTECO_HOLD_BUF696/I
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/postcts_hold_holdoptFE_PHC140225_RGD2_WORD2_20/Z
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/postcts_hold_holdoptFE_PHC140225_RGD2_WORD2_20/I
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/postcts_hold_holdoptFE_PHC141037_RGD2_WORD2_20/Z
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/postcts_hold_holdoptFE_PHC141037_RGD2_WORD2_20/I
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/POSTROUTE_SETUPHOLD_FE_PHC7420_RGD2_WORD2_20/Z
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/POSTROUTE_SETUPHOLD_FE_PHC7420_RGD2_WORD2_20/I
+  0    EQ       /MTCMOS_wrap/protsys/u_mpu_top_0/i_mpu_core_h/U740/A2
+  
+//  Analyze if the fault can be propagated to any observation point...
+//      Fault was not observed successfully (ATPG status = atpg_untestable).
+//  Analysis summary:
+//    The fault site cannot propagate to any observation point.
+</code></pre>
+</blockquote>
+<p>scan mux导致</p>
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017101008619.png" class="">
+
+<p>floating导致</p>
+<img src="/2024/10/14/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B%E4%B9%8BFT%E6%B5%8B%E8%AF%95/image-20241017101313991.png" class="">
+
+
+
+
+
+<hr>
+<p>STEP2：确定FT pattern，并生成TST文件</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/10/14/%E6%B1%89%E6%98%8E%E7%A0%81%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/" rel="prev" title="汉明码工作原理">
+      <i class="fa fa-chevron-left"></i> 汉明码工作原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/10/15/chip%E4%B8%AD%E7%9A%84dft%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/" rel="next" title="chip中的dft实现机制">
+      chip中的dft实现机制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#STEP1%EF%BC%9Afault-list%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">STEP1：fault list分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E7%90%86%E8%A7%A3"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%AD%A6"><span class="nav-number">1.2.</span> <span class="nav-text">方法学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#report%E6%8A%A5%E5%91%8A%EF%BC%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">report报告：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#case1-AU-SEQ"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">case1:AU.SEQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#case2-AU-TC"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">case2:AU.TC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#case3-AU"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">case3:AU</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%EF%BC%9A"><span class="nav-number">1.2.2.</span> <span class="nav-text">分析工具：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">分析方法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AC7843%E9%A1%B9%E7%9B%AE%E5%90%84%E6%A8%A1%E5%9D%97fault%E5%88%86%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">AC7843项目各模块fault分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CORE-Coresight-%E2%80%93done"><span class="nav-number">1.3.1.</span> <span class="nav-text">CORE&#x2F;Coresight –done</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MCM%E2%80%93done"><span class="nav-number">1.3.2.</span> <span class="nav-text">MCM–done</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PBR%E2%80%93done"><span class="nav-number">1.3.3.</span> <span class="nav-text">PBR–done</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#infra-ctl-EIM-E2E-bootrom-sram"><span class="nav-number">1.3.4.</span> <span class="nav-text">infra_ctl&#x2F;EIM&#x2F;E2E&#x2F;bootrom&#x2F;sram</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

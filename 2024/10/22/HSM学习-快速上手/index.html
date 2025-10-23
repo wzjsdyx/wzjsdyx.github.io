@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="With using this manual, you will know what it is and how to integrate it into a target SOC； Audience This manual is written for hardware and software engineers with experience and knowledge of impleme">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HSM学习-快速上手">
+<meta property="og:url" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="With using this manual, you will know what it is and how to integrate it into a target SOC； Audience This manual is written for hardware and software engineers with experience and knowledge of impleme">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022142935631.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022144937281.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022144354988.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022145551287.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022145807577.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152529691.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152841916.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152903816.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152949707.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022160817475.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022162819839.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022160950542.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022161221032.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022161958915.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022162528049.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022165347457.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022165848566.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022170102288.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022171845795.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022170942242.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022171123552.png">
+<meta property="article:published_time" content="2024-10-22T06:10:55.000Z">
+<meta property="article:modified_time" content="2024-10-23T01:29:28.866Z">
+<meta property="article:author" content="Youngster">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022142935631.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HSM学习-快速上手 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HSM学习-快速上手
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-22 14:10:55" itemprop="dateCreated datePublished" datetime="2024-10-22T14:10:55+08:00">2024-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-23 09:29:28" itemprop="dateModified" datetime="2024-10-23T09:29:28+08:00">2024-10-23</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><font color=blue>With using this manual, you will know what it is and how to integrate it into a target SOC；</font></p>
+<p><strong>Audience</strong></p>
+<p>This manual is written for hardware and software engineers with experience and knowledge of implementingSOC(whit security system) designs. Before using this manual, you should be familiar with the following topics:</p>
+<ul>
+<li><p>Cryptography Standards, such as GM&#x2F;T</p>
+</li>
+<li><p>Security System, such as Arm Platform Security Architecture</p>
+</li>
+</ul>
+<p><font color=blue>注重基本概念理解</font></p>
+<h1 id="eHSM简介"><a href="#eHSM简介" class="headerlink" title="eHSM简介"></a>eHSM简介</h1><p><strong>eHSM是设备的“根信任”</strong>：在信息安全中，<strong>根信任</strong>是整个系统的信任基础。eHSM作为设备的根信任，负责确保关键的安全功能（如加密、密钥管理）与设备的其他部分硬件隔离开来，从而防止未经授权的访问或篡改。</p>
+<p><strong>完整的硬件单元</strong>：eHSM拥有独立的硬件模块，包括：</p>
+<ul>
+<li>时钟（clock）：控制eHSM操作的时序。</li>
+<li>复位（reset）：在系统启动或重启时重置硬件状态。</li>
+<li>启动（boot）和总线系统（bus system）：负责管理系统的初始化和各硬件模块之间的数据传输。</li>
+<li>CPU和内存：内置的CPU和内存专门用于处理与安全相关的任务。</li>
+<li>加密算法引擎系统：高性能的加密引擎，用于执行复杂的加密算法（如TRNG、HASH、SKE和PKE）。</li>
+</ul>
+<p>每次eHSM被重置（例如设备启动时），它都会对自身的硬件系统进行自检，确保所有的硬件组件运行正常。这是为了确保eHSM自身的可靠性和安全性。</p>
+<p><strong>安全服务</strong>：eHSM为设备（如SoC，系统级芯片）提供多种信息安全相关的服务，包括：</p>
+<ul>
+<li>安全存储：保护敏感信息（如密钥、证书等）的存储。</li>
+<li>安全启动：确保设备从启动到运行的过程中不受未经授权的干扰。</li>
+<li>安全生命周期管理：管理设备的不同安全状态（例如设备的制造、部署、使用和退役阶段）。</li>
+<li>密钥管理：安全生成、存储和分发加密密钥。</li>
+</ul>
+<p><strong>通信机制</strong>：设备（SoC）通过<strong>邮箱（mailbox）机制</strong>与eHSM通信，使用其提供的加密服务（如TRNG随机数生成、哈希计算、对称和非对称加密）。此外，eHSM还提供了其他硬件接口，允许设备传输传感器数据、状态信号（例如警告和错误信号）等。</p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022142935631.png" class="">
+
+
+
+<h2 id="Feature-List"><a href="#Feature-List" class="headerlink" title="Feature List"></a>Feature List</h2><p>The eHSM has the following features:</p>
+<ul>
+<li><p>Secure Storage</p>
+<ul>
+<li><p>Sensitive Information Storage</p>
+</li>
+<li><p>Firmware image Storage</p>
+</li>
+</ul>
+</li>
+<li><p>Security Lifecycle</p>
+</li>
+<li><p>Secure Boot</p>
+</li>
+<li><p>Secure Debug</p>
+</li>
+<li><p>Cryptographic Service</p>
+<ul>
+<li>TRNG</li>
+<li>HASH</li>
+<li>SKE</li>
+<li>PKE</li>
+</ul>
+</li>
+<li><p>Self Check</p>
+</li>
+<li><p>System CSR</p>
+</li>
+<li><p>Error Management Unit</p>
+</li>
+<li><p>Mailbox</p>
+</li>
+<li><p>Peripherals</p>
+<ul>
+<li>Random Clock</li>
+<li>UART</li>
+<li>Watchdog Timer</li>
+<li>General Timer</li>
+<li>UTC Timer</li>
+<li>Monotonic Counter</li>
+<li>CRC</li>
+</ul>
+</li>
+<li><p>Bus Parity Check</p>
+</li>
+</ul>
+<h2 id="eHSM系统架构"><a href="#eHSM系统架构" class="headerlink" title="eHSM系统架构"></a>eHSM系统架构</h2><ul>
+<li><p>OTP and NVM in different storage</p>
+</li>
+<li><p>OTP and NVM in same storage (emurate OTP w&#x2F; NVM)</p>
+</li>
+<li><p>Only has OTP</p>
+</li>
+</ul>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022144937281.png" class="">
+
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022144354988.png" class="">
+
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022145551287.png" class="">
+
+<h2 id="Storage-Requirement"><a href="#Storage-Requirement" class="headerlink" title="Storage Requirement"></a>Storage Requirement</h2><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022145807577.png" class="">
+
+
+
+<h1 id="secure-storage"><a href="#secure-storage" class="headerlink" title="secure storage"></a>secure storage</h1><p>The eHSM provides a complete secure storage solution for storing <code>keys</code>, <code>sensitive information</code>, and <code>firmwareimages</code>.</p>
+<h2 id="sensitive-information"><a href="#sensitive-information" class="headerlink" title="sensitive information"></a>sensitive information</h2><p>使用OTP去存储敏感信息，如下所示：</p>
+<p>1.Life cycle</p>
+<p>2.UID</p>
+<p>3.HW&#x2F;FW control options</p>
+<p>4.eHSM error response control options</p>
+<p>5.eHSM firmware version counter</p>
+<p>6.SoC firmware version counter</p>
+<p>7.OTP keys</p>
+<p>The OTP could be a real OTP&#x2F;eFuse or be emulated by the NVM which doesn’t support erase</p>
+<h3 id="OTP-Memory-Map"><a href="#OTP-Memory-Map" class="headerlink" title="OTP Memory Map"></a>OTP Memory Map</h3><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152529691.png" class="">
+
+
+
+<h3 id="OTP-HW-FW-Control-Fields"><a href="#OTP-HW-FW-Control-Fields" class="headerlink" title="OTP HW&#x2F;FW Control Fields"></a>OTP HW&#x2F;FW Control Fields</h3><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152841916.png" class="">
+
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152903816.png" class="">
+
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022152949707.png" class="">
+
+
+
+<h3 id="Sensor-Response"><a href="#Sensor-Response" class="headerlink" title="Sensor Response"></a>Sensor Response</h3><p>在信息安全领域，<code>传感器</code>通常指用于检测环境或系统中异常情况的设备。具体到eHSM或SoC（系统级芯片），传感器可以监测温度、电压、物理入侵或其他异常状态。当某个传感器检测到异常时，系统可以根据这些位的设置做出不同的响应，比如重置系统、清除密钥或停止加密服务。这些响应的设置确保系统在受到攻击或发生故障时能够采取保护措施。</p>
+<h3 id="Key-Manager"><a href="#Key-Manager" class="headerlink" title="Key Manager"></a>Key Manager</h3><p>存放在OTP中的加密key，包含attributes和crc_code。</p>
+<p>eHSM 硬件会自动读取key并check crc，通过之后会调用eHSM的CPU进行解密。</p>
+<h4 id="eHSM-Keys"><a href="#eHSM-Keys" class="headerlink" title="eHSM Keys"></a>eHSM Keys</h4><p><strong>层次结构</strong></p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022160817475.png" class="">
+
+<p><strong>key说明</strong></p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022162819839.png" class="">
+
+
+
+<h4 id="OTP-Key-Fields"><a href="#OTP-Key-Fields" class="headerlink" title="OTP Key Fields"></a>OTP Key Fields</h4><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022160950542.png" class="">
+
+<p><strong>crc code</strong></p>
+<p><font color=blue>There is a special hardware CRC module(not the CRC peripheral) to compare the CRC results of thekeys when the eHSM is booting</font></p>
+<p><strong>key attributes</strong></p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022161221032.png" class="">
+
+<p><font color=blue>Only valid OTP keys will be decrypted and saved to DRAM , otherwise, saved meaningless number.</font></p>
+<p> <font color=red>#Q:key attributes和crc code是怎么生成?</font></p>
+<h4 id="OTP-Keys-Installation"><a href="#OTP-Keys-Installation" class="headerlink" title="OTP Keys Installation"></a>OTP Keys Installation</h4><p><font color=blue>It’s strongly recommended to generate and maintain all the OTP keys with a hardware secure module (eHSM).</font></p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022161958915.png" class="">
+
+<h2 id="Firmware-image"><a href="#Firmware-image" class="headerlink" title="Firmware image"></a>Firmware image</h2><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022162528049.png" class="">
+
+<h1 id="Security-Lifecycle"><a href="#Security-Lifecycle" class="headerlink" title="Security Lifecycle"></a>Security Lifecycle</h1><p>eHSM lifecycle定义了设备的整个生命周期。lifecycle state定义了security properties。</p>
+<p>lifecycle的state会影响：</p>
+<ul>
+<li>eHSM的内部资源的访问和更新；</li>
+<li>硬件错误状态的处理；</li>
+</ul>
+<h1 id="secure-Boot"><a href="#secure-Boot" class="headerlink" title="secure Boot"></a>secure Boot</h1><h2 id="Boot-Requirement"><a href="#Boot-Requirement" class="headerlink" title="Boot Requirement"></a>Boot Requirement</h2><ul>
+<li>The OTP keys</li>
+<li>The current security lifecycle state</li>
+<li>Boot parameters</li>
+<li>Boot ROM code</li>
+</ul>
+<h2 id="Hardware-Boot-Flow"><a href="#Hardware-Boot-Flow" class="headerlink" title="Hardware Boot Flow"></a>Hardware Boot Flow</h2><p> the hardware boot flow after eHSM’s reset released by SoC</p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022165347457.png" class="">
+
+<blockquote>
+<ul>
+<li><p>Hardware read the OTP fields  and save the value to the corresponding CSRfor firmware reading</p>
+</li>
+<li><p>When TRNG fails, inlcuding hardware self-test failure or waiting for RNG data ready timeout, the boot controller will reset the TRNG untill the reset times timeout, </p>
+</li>
+<li><p>”Key Error” includes OTP Key CRC Error or invalid Error(refer to4.2.5)</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="Software-boot-flow"><a href="#Software-boot-flow" class="headerlink" title="Software boot flow"></a>Software boot flow</h2><h3 id="boot-flow"><a href="#boot-flow" class="headerlink" title="boot flow"></a>boot flow</h3><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022165848566.png" class="">
+
+<p><font color=red>#Q:AI11923A使用的是什么组合？</font></p>
+<p>Internal NVM + IRAM?</p>
+<h3 id="install-update-flow"><a href="#install-update-flow" class="headerlink" title="install&#x2F;update flow"></a>install&#x2F;update flow</h3><img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022170102288.png" class="">
+
+<p><font color=red>#Q:AI11923A使用的是什么组合？</font></p>
+<h1 id="secure-Debug"><a href="#secure-Debug" class="headerlink" title="secure Debug"></a>secure Debug</h1><p>eHSM secure debug architecture如下图所示：</p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022171845795.png" class="">
+
+
+
+<p>eHSM通过o_ehsm_status[17:16]控制eHSM和SoC的debug port;</p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022170942242.png" class="">
+
+<p>eHSM和SoC的debug port enable&#x2F;disable依赖于lifecycle</p>
+<img src="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/image-20241022171123552.png" class="">
+
+
+
+
+
+<p>如果eHSM或者SoC debug port处于disable的时候（因为lifecycle的states），需要鉴权才能打开，此鉴权操作可以通过UART或者mailbox进行。</p>
+<p>具体鉴权流程如下：</p>
+<blockquote>
+<p>The secure debug authentication supports either asymmetric or symmectric algorithm.</p>
+<p>1.asymmetric: SHA256-SECP256R1, SM3-SM2</p>
+<p>2.symmetric: AES-CMAC, SM4-CMAC</p>
+</blockquote>
+<p>The secure debug flow is</p>
+<p>1.Host sends debug request to eHSMthrough either UART or mailbox</p>
+<p>2.eHSMsends challenge (UID + random number) toHost</p>
+<p>3.Host sign the challenge with the debug key, and send back toeHSM</p>
+<p>​	(a)asymmetric: sign with corresponding private key of ehsm debug key&#x2F;soc debug key</p>
+<p>​	(b)symmetric: calculate the CMAC value with ehsm debug key&#x2F;soc debug key</p>
+<p>4.eHSM verify the signiture with ehsm debug key&#x2F;soc debug key</p>
+<p>5.eHSM assert the o_ehsm_status corresponding bit to enable the eHSM&#x2F;SoC debug port if verify pass.</p>
+<p><font color=red>#Q:鉴权分成eHSM鉴权和SoC鉴权两类？</font></p>
+<p><font color=red>hsm有debug口？cm4有debug口？共用一个？</font></p>
+<p><font color=red>文档中，host发送debug请求？？host是指？</font></p>
+<hr>
+<h1 id="术语解释："><a href="#术语解释：" class="headerlink" title="术语解释："></a>术语解释：</h1><p>root of trust :</p>
+<blockquote>
+<p><strong>根信任</strong>是整个系统的信任基础。</p>
+<p>eHSM作为设备的根信任，负责确保关键的安全功能（如加密、密钥管理）与设备的其他部分硬件隔离开来，从而防止未经授权的访问或篡改。</p>
+</blockquote>
+<p> cryptographic services(TRNG,HASH, SKE and PKE) ：</p>
+<blockquote>
+<p>高性能的加密引擎，用于执行复杂的加密算法（如TRNG、HASH、SKE和PKE）</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/10/22/HSM%E5%AD%A6%E4%B9%A0-key-management/" rel="prev" title="HSM学习-key management">
+      <i class="fa fa-chevron-left"></i> HSM学习-key management
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/10/23/Cortex-M4-under-reset%E7%9A%84%E5%8A%9F%E8%83%BD/" rel="next" title="Cortex-M4 under reset的功能">
+      Cortex-M4 under reset的功能 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#eHSM%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">eHSM简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-List"><span class="nav-number">1.1.</span> <span class="nav-text">Feature List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eHSM%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">eHSM系统架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Storage-Requirement"><span class="nav-number">1.3.</span> <span class="nav-text">Storage Requirement</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#secure-storage"><span class="nav-number">2.</span> <span class="nav-text">secure storage</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sensitive-information"><span class="nav-number">2.1.</span> <span class="nav-text">sensitive information</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OTP-Memory-Map"><span class="nav-number">2.1.1.</span> <span class="nav-text">OTP Memory Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OTP-HW-FW-Control-Fields"><span class="nav-number">2.1.2.</span> <span class="nav-text">OTP HW&#x2F;FW Control Fields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sensor-Response"><span class="nav-number">2.1.3.</span> <span class="nav-text">Sensor Response</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Key-Manager"><span class="nav-number">2.1.4.</span> <span class="nav-text">Key Manager</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#eHSM-Keys"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">eHSM Keys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OTP-Key-Fields"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">OTP Key Fields</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OTP-Keys-Installation"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">OTP Keys Installation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firmware-image"><span class="nav-number">2.2.</span> <span class="nav-text">Firmware image</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Security-Lifecycle"><span class="nav-number">3.</span> <span class="nav-text">Security Lifecycle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#secure-Boot"><span class="nav-number">4.</span> <span class="nav-text">secure Boot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Boot-Requirement"><span class="nav-number">4.1.</span> <span class="nav-text">Boot Requirement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hardware-Boot-Flow"><span class="nav-number">4.2.</span> <span class="nav-text">Hardware Boot Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Software-boot-flow"><span class="nav-number">4.3.</span> <span class="nav-text">Software boot flow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#boot-flow"><span class="nav-number">4.3.1.</span> <span class="nav-text">boot flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#install-update-flow"><span class="nav-number">4.3.2.</span> <span class="nav-text">install&#x2F;update flow</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#secure-Debug"><span class="nav-number">5.</span> <span class="nav-text">secure Debug</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">术语解释：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
