@@ -3,18 +3,20 @@ title: glitch free clock mux
 date: 2025-08-07 14:27:26
 categories:
 - SoC设计
+- Common_Cell
 tags:
+- TBD
 ---
 
 
 
 
 
-
+# 实现方式1-不太推荐
 
 > 核心思想是将有glitch的那段时间gating掉
 
-# 接口
+## 接口
 
 {% asset_img image-20250807142929081.png %}
 
@@ -107,4 +109,10 @@ dtc_icg clk_sync_icg(.TE(1'b0), .E(~chg_2d|test_mode), .CP(mux_clk), .Q(clkout))
 endmodule
 
 ```
+
+# 实现方式2
+
+TBD
+
+参考文档：
 
