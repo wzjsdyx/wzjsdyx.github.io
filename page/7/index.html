@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/02/GPIO-PAD/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/03/06/ARM-coremark/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/01/02/GPIO-PAD/" class="post-title-link" itemprop="url">GPIO/PAD</a>
+            <a href="/2025/03/06/ARM-coremark/" class="post-title-link" itemprop="url">ARM Coremark</a>
         </h2>
 
         <div class="post-meta">
@@ -186,15 +186,416 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-01-02 11:08:35" itemprop="dateCreated datePublished" datetime="2025-01-02T11:08:35+08:00">2025-01-02</time>
+              <time title="创建时间：2025-03-06 13:41:01" itemprop="dateCreated datePublished" datetime="2025-03-06T13:41:01+08:00">2025-03-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-04 19:14:41" itemprop="dateModified" datetime="2025-08-04T19:14:41+08:00">2025-08-04</time>
+                <time title="修改时间：2026-03-22 18:14:41" itemprop="dateModified" datetime="2026-03-22T18:14:41+08:00">2026-03-22</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">ISA和处理器</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/%E5%A4%84%E7%90%86%E5%99%A8%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E8%AE%A1%E7%AE%97%E5%8D%95%E5%85%83/" itemprop="url" rel="index"><span itemprop="name">处理器性能指标和计算单元</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/03/06/ARM-coremark/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/03/06/ARM-coremark/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CoreMark简介"><a href="#CoreMark简介" class="headerlink" title="CoreMark简介"></a>CoreMark简介</h1><p>CoreMark是更加复杂的benchmark程序用于衡量现代处理的性能；</p>
+<p>CoreMark是在2009年开发，非常容易获取以及非常容易移植；<font color=blue>其开发的初衷就是为了替代Dhrystone benckmark。</font></p>
+<p>Dhrystone是在1984年开发，在很多方面都存在问题，CoreMark可以进行弥补，具体如下：</p>
+<h2 id="工作负载的现实性"><a href="#工作负载的现实性" class="headerlink" title="工作负载的现实性"></a>工作负载的现实性</h2><blockquote>
+<p>Dhrystone 是一个<strong>合成基准测试</strong>（synthetic benchmark）：</p>
+<p>它通过执行一系列简单的整数运算和字符串操作来测试处理器的性能；<font color=blue>是人为设计的一组计算任务，不包含实际应用中的关键算法，它的测试结果与现实应用的性能关联度较低。</font></p>
+<p>CoreMark 提供更真实的工作负载<font color=blue>（采用了一些在嵌入式系统中常见的计算任务）</font>：</p>
+<p>1、矩阵运算（Matrix Manipulation）</p>
+<ul>
+<li>作用：测试 CPU 处理数学运算的能力（如加法、乘法）。</li>
+<li>现实应用：图像处理、信号处理、科学计算。</li>
+</ul>
+<p>2、链表操作（Linked List Manipulation）</p>
+<ul>
+<li>作用：测试指针操作和内存管理能力。</li>
+<li>现实应用：操作系统、数据库、动态数据结构（如哈希表、图）</li>
+</ul>
+<p>3、状态机操作（State Machine Operation）</p>
+<ul>
+<li>作用：测试 CPU 在不同条件下执行不同代码路径的能力（数据相关的分支）。</li>
+<li>现实应用：协议解析（如 TCP&#x2F;IP 协议栈）、控制系统（如电梯控制、嵌入式控制器）。</li>
+</ul>
+<p>4、循环冗余校验（CRC，Cyclic Redundancy Check）</p>
+<ul>
+<li>作用：测试 CPU 计算数据校验码的能力。</li>
+<li>现实应用：网络通信（数据包校验）、存储设备（数据完整性检查）。</li>
+</ul>
+</blockquote>
+<h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><blockquote>
+<p>Dhrystone 的问题：容易被编译器优化</p>
+<ul>
+<li>Dhrystone 的代码结构简单，其中许多计算的结果在编译时就可以被确定（称为 <code>compile-time constants</code>）。</li>
+<li><strong>现代编译器</strong>（如 GCC、LLVM）在优化时，会尝试<strong>消除不必要的计算</strong>（称为 <code>dead code elimination</code>）。</li>
+</ul>
+<p>Dhrystone程序容易受到编译器的影响，当这些发生的时候，其结果就不可相信；</p>
+<p>CoreMark 会避免被编译器优化：</p>
+<ul>
+<li><p>CoreMark需要计算的数值在编译时无法获取，只有在运行时才能得到；</p>
+</li>
+<li><p>因此编译器虽然会进行一定程度的优化，但是<strong>无法在编译阶段预计算结果</strong>，会强制让 CPU 运行完整的计算过程</p>
+</li>
+</ul>
+</blockquote>
+<p>✅ <strong>示例：Dhrystone 被优化的情况</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> result = a + b;  <span class="comment">// 编译时就知道 result = 15</span></span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>编译器优化后：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> result = <span class="number">15</span>;  <span class="comment">// 计算直接替换，CPU 实际没有做加法</span></span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>影响</strong>：Dhrystone 可能会得到<strong>虚高</strong>的性能分数，因为 CPU 可能根本没执行预期的计算！</p>
+<p>✅ <strong>示例：CoreMark 代码避免优化</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">c复制编辑int compute(int x, int y) &#123;</span><br><span class="line">    return x * y + (x - y);  // x, y 在运行时才知道</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int a = rand();  // 运行时随机生成</span><br><span class="line">    int b = rand();</span><br><span class="line">    int result = compute(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>编译器无法优化：</strong> <code>a</code> 和 <code>b</code> 只有在程序运行时才知道值，因此 CPU 仍然需要执行 <code>compute(a, b)</code> 的完整计算过程。</p>
+<p>➡ <strong>影响</strong>：CPU仍然会执行对应的运算；</p>
+<h2 id="计时部分库函数的调用"><a href="#计时部分库函数的调用" class="headerlink" title="计时部分库函数的调用"></a>计时部分库函数的调用</h2><blockquote>
+<p>Dhrystone 的问题:</p>
+<ul>
+<li><p>Dhrystone <strong>在计时阶段</strong> 调用了 <strong>标准库函数</strong>（如 <code>printf()</code>、<code>strcpy()</code> 等）</p>
+</li>
+<li><p>库函数的执行时间** 依赖于 <strong>编译器和库实现</strong>，不同平台上的 <strong>库函数性能可能差异很大</strong>。</p>
+</li>
+</ul>
+<p><strong>不同系统的 Dhrystone 分数可能受库函数影响，而不是 CPU 的真实计算能力</strong></p>
+<p>CoreMark 的改进：不在计时部分调用库函数</p>
+<ul>
+<li>CoreMark 设计时，<strong>所有计算都由基准测试代码自己实现</strong>，不依赖外部库函数。</li>
+<li>这样可以保证<strong>所有平台运行完全相同的计算工作负载</strong>，不会因库实现不同而影响结果。</li>
+</ul>
+</blockquote>
+<p>✅ <strong>示例：Dhrystone 受库函数影响</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void test() &#123;</span><br><span class="line">    char str1[] = &quot;Hello&quot;;</span><br><span class="line">    char str2[10];</span><br><span class="line">    strcpy(str2, str1);  // 调用了标准库函数</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>问题：</strong></p>
+<ul>
+<li><code>strcpy()</code> 的执行效率取决于 <strong>所用 C 标准库的实现</strong>，不同编译器可能优化程度不同。</li>
+<li><strong>测的可能是库的性能，而不是 CPU 本身的计算能力</strong>。</li>
+</ul>
+<p>✅ <strong>示例：CoreMark 避免库函数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void my_strcpy(char *dst, const char *src) &#123;</span><br><span class="line">    while ((*dst++ = *src++));  // 手动实现字符串复制</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➡ <strong>优点：</strong></p>
+<ul>
+<li><strong>确保所有 CPU 运行相同的代码</strong>，不受不同库函数实现的影响。</li>
+<li><strong>测试 CPU 计算能力，而不是测试库的优化程度</strong>。</li>
+</ul>
+<h2 id="版本问题"><a href="#版本问题" class="headerlink" title="版本问题"></a>版本问题</h2><p>Dhrystone没有一个固定的官方版本；</p>
+<p>CoreMark有官方版本：<a target="_blank" rel="noopener" href="http://www.coremark.org/">http://www.coremark.org/</a>  </p>
+<ul>
+<li>ANSI C 兼容性</li>
+</ul>
+<blockquote>
+<p> ANSI C（American National Standards Institute C）指的是<strong>标准化的 C 语言</strong>。</p>
+<p>CoreMark 代码严格遵循 ANSI C 标准，确保<strong>在所有符合 ANSI C 的编译器上都能正确编译和运行</strong>。</p>
+<ul>
+<li><strong>ANSI C（C89&#x2F;C90）</strong>：1989 年标准化，保证代码可以在不同编译器和系统上运行。</li>
+<li><strong>非 ANSI C 代码</strong> 可能会使用 <strong>编译器特定的语法</strong>，导致在某些平台上无法编译或运行。</li>
+</ul>
+<p>Dhrystone 的最早版本<strong>在 ANSI C 标准发布前编写</strong>，使用了一些 <strong>非标准 C 语法</strong></p>
+<p>CoreMark 代码严格遵循 ANSI C 标准，确保<strong>在所有符合 ANSI C 的编译器上都能正确编译和运行</strong>。</p>
+</blockquote>
+<h2 id="结果报告"><a href="#结果报告" class="headerlink" title="结果报告"></a>结果报告</h2><blockquote>
+<p>Dhrystone 的问题:</p>
+<p><strong>测试方法不统一</strong>：Dhrystone <strong>虽然提供了一些测试指南</strong>，但这些指南<strong>不是强制执行的</strong>，不同测试者可能会<strong>以不同方式运行基准测试</strong>。</p>
+<p>结果格式不统一：Dhrystones per second, DMIPS, or DMIPS&#x2F;MHz  </p>
+<p>CoreMark 的改进：</p>
+<p>统一的测试和报告标准</p>
+</blockquote>
+<p><font color=blue>ARM使用CoreMark 1.0版本的程序：</font></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CoreMark 1.0 : N / C [/ P] [/ M]</span><br><span class="line">where:</span><br><span class="line">N displays the number of iterations per second with seeds 0,0,0x66,size=2000.</span><br><span class="line">C displays the compiler version and flags specified when compiling the benchmark.</span><br><span class="line">P displays parameters such as data and code allocation specifics.</span><br><span class="line">• This parameter can be omitted if all data was allocated on the heap in RAM.</span><br><span class="line">• This parameter cannot be omitted when reporting CoreMark/MHz.</span><br><span class="line">M shows the type of parallel algorithm execution (if used) and number of contexts.</span><br><span class="line">• This parameter can be omitted if parallel execution is not used.</span><br><span class="line">For example:</span><br><span class="line">CoreMark 1.0 : 256.344527 / ARM C/C++ Compiler, 5.03 [Build 24] -O3 -Otime / STACK</span><br></pre></td></tr></table></figure>
+
+<p><font color=blue>ARM推荐运行10000次迭代或者30秒</font></p>
+<h1 id="编译CoreMark"><a href="#编译CoreMark" class="headerlink" title="编译CoreMark"></a>编译CoreMark</h1><p>CoreMark包含如下文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">• coremark.h</span><br><span class="line">• core_main.c</span><br><span class="line">• core_list_join.c</span><br><span class="line">• core_matrix.c</span><br><span class="line">• core_state.c</span><br><span class="line">• core_util.c</span><br><span class="line">• simple/core_portme.c</span><br><span class="line">• simple/core_portme.h</span><br></pre></td></tr></table></figure>
+
+<p>需要移植的话，就修改core_portme文件</p>
+<h2 id="使用到的库函数"><a href="#使用到的库函数" class="headerlink" title="使用到的库函数"></a>使用到的库函数</h2><ul>
+<li><code>printf()</code></li>
+<li>特定于平台的计时函数，用于计算benchmark执行时间，通常是C library的<code>clock()</code>函数，或者使用core_portme.c中的<code>start_time() </code>and <code>stop_time()  </code></li>
+</ul>
+<blockquote>
+<p>printf()函数以及clock()函数通常在如下的library中：</p>
+<ul>
+<li><code>standard C library </code> ，included with the ARM Compiler toolchain and the Keil™ MDK  </li>
+<li><code>microlib  （size-optimized C library ）</code>，included with the Keil MDK toolkit.</li>
+</ul>
+</blockquote>
+<p>当编译CoreMark的在bare-metal system时，就需要移植这两个函数，<code>printf() 和clock()</code></p>
+<p>现在和很多处理器中，包含性能计数器，可以重定向clock函数即精确的统计执行benchmark所需要的时间；</p>
+<h2 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h2><p>通过link文件，将代码和数据放在运行最高效的位置。通过使用link文件来进行内存布局；</p>
+<h2 id="编译命令行选项"><a href="#编译命令行选项" class="headerlink" title="编译命令行选项"></a>编译命令行选项</h2><p>优化执行速度：-Otime, -O3, and –loop_optimization_level&#x3D;2  </p>
+<p>优化代码size：use microlib instead of the standard C library  </p>
+<h3 id="Speed-optimized"><a href="#Speed-optimized" class="headerlink" title="Speed-optimized"></a>Speed-optimized</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">armcc -c -W &lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2</span><br><span class="line">-I./ -Isimple -DITERATIONS=0 -DSEED_METHOD=SEED_ARG</span><br><span class="line">-DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2\”</span><br><span class="line">core_main.c core_list_join.c core_matrix.c core_state.c core_util.c</span><br><span class="line">simple/core_portme.c</span><br><span class="line"></span><br><span class="line">armlink core_main.o core_list_join.o core_matrix.o core_state.o core_util.o</span><br><span class="line">core_portme.o -o coremark.axf</span><br><span class="line"></span><br><span class="line">The compiler switches used here are:</span><br><span class="line"></span><br><span class="line">-c Performs the compilation and link steps separately.</span><br><span class="line"></span><br><span class="line">-W Disables all warnings. This is optional.</span><br><span class="line"></span><br><span class="line">&lt;cflags&gt; Any additional compiler flags you require.</span><br><span class="line"></span><br><span class="line">--cpu=name Specifies the name of the target processor, for example --cpu=Cortex-M4.</span><br><span class="line"></span><br><span class="line">-O3 Applies maximum optimization.</span><br><span class="line"></span><br><span class="line">-Otime Optimizes for time.</span><br><span class="line"></span><br><span class="line">-I./ -Isimple</span><br><span class="line">Lists the directories to search for source files.</span><br><span class="line"></span><br><span class="line">--loop_optimization_level=2</span><br><span class="line">Specifies that the compiler performs high-level optimization, including</span><br><span class="line">aggressive loop optimization. This option is usually best for performance.</span><br><span class="line"></span><br><span class="line">-DSEED_METHOD=SEED_ARG</span><br><span class="line">Specifies that randomization seeds are passed as command-line arguments at</span><br><span class="line">runtime, rather than being automatically generated.</span><br><span class="line"></span><br><span class="line">-DITERATIONS=0</span><br><span class="line">Specifies that the number of iterations is passed as a command-line argument at</span><br><span class="line">runtime.</span><br><span class="line">Note</span><br><span class="line">If you prefer, you can specify the number of iterations here rather than passing the</span><br><span class="line">iteration count as an argument. See Running CoreMark on page 10 for more</span><br><span class="line">information.</span><br><span class="line"></span><br><span class="line">-DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2\”</span><br><span class="line">Specifies the compiler flags, as provided to the compiler earlier on the command</span><br><span class="line">line. This allows the compiler flags to be included in the output of the CoreMark</span><br><span class="line">results.</span><br><span class="line">This example uses UNIX-style escaped quotes. On Windows, use</span><br><span class="line">-DCOMPILER_FLAGS=”””&lt;cflags&gt; --cpu=name...”””</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Speed-optimized-with-microlib"><a href="#Speed-optimized-with-microlib" class="headerlink" title="Speed-optimized, with microlib"></a>Speed-optimized, with microlib</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">armcc -c -W &lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2</span><br><span class="line">--library_type=microlib -I./ -Isimple -DITERATIONS=0 -DSEED_METHOD=SEED_ARG</span><br><span class="line">-DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=name -O3 -Otime --loop_optimization_level=2</span><br><span class="line">--library_type=microlib\”</span><br><span class="line">core_main.c core_list_join.c core_matrix.c core_state.c core_util.c</span><br><span class="line">simple/core_portme.c</span><br><span class="line"></span><br><span class="line">armlink core_main.o core_list_join.o core_matrix.o core_state.o core_util.o</span><br><span class="line">core_portme.o -o coremark.axf</span><br><span class="line"></span><br><span class="line">The compiler and linker switches used here are the same as in the speed-optimized example,</span><br><span class="line">with the following difference:</span><br><span class="line">--library_type=microlib</span><br><span class="line">Links with the size-optimized library</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Size-optimized-with-microlib"><a href="#Size-optimized-with-microlib" class="headerlink" title="Size-optimized, with microlib"></a>Size-optimized, with microlib</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">armcc -c -W &lt;cflags&gt; --cpu=cpuname -O3 -Ospace -I./ -Isimple -DITERATIONS=0</span><br><span class="line">-DSEED_METHOD=SEED_ARG -DCOMPILER_FLAGS=\”&lt;cflags&gt; --cpu=cpuname -O3 -Ospace\”</span><br><span class="line">--library_type=microlib --split_sections core_main.c core_list_join.c</span><br><span class="line">core_matrix.c core_state.c core_util.c simple/core_portme.c</span><br><span class="line"></span><br><span class="line">armlink core_main.o core_list_join.o core_matrix.o core_state.o core_util.o</span><br><span class="line">core_portme.o -o coremark.axf</span><br><span class="line"></span><br><span class="line">The compiler and linker switches used here are the same as in the speed-optimized example,</span><br><span class="line">with the following differences:</span><br><span class="line">--library_type=microlib</span><br><span class="line">Links with the size-optimized library.</span><br><span class="line">-Ospace Optimizes for size.</span><br><span class="line">--split_sections</span><br><span class="line">Generates one ELF section for each function in the source file.</span><br><span class="line">Compilers usually collect functions and data together and emit one section for</span><br><span class="line">each category. The linker can only eliminate a section if it is entirely unused. The</span><br><span class="line">--split_sections option ensures that each function is in a separate section, so that</span><br><span class="line">the linker can eliminate all unused functions.</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="运行CoreMark"><a href="#运行CoreMark" class="headerlink" title="运行CoreMark"></a>运行CoreMark</h1><p>CoreMark是一个小的benchmark程序，必须要运行多次才能获得可复制的分数</p>
+<ol>
+<li><strong>减少处理器状态不一致带来的影响</strong></li>
+</ol>
+<ul>
+<li><strong>问题描述</strong>：<br>处理器的状态（如缓存状态、分支预测状态等）可能会影响测试结果。如果每次运行 CoreMark 时处理器的初始状态不一致，测试结果可能会有较大波动。</li>
+<li><strong>解决方法</strong>：<br>ARM 建议按照以下步骤运行 CoreMark：<ol>
+<li><strong>两次验证运行（Validation Runs）</strong>：<br>在正式测试之前，先运行两次 CoreMark，以确保测试环境正确设置，并且处理器状态趋于稳定。</li>
+<li><strong>至少十次性能运行（Profile Runs）</strong>：<br>在验证运行之后，至少运行十次 CoreMark，以收集足够的数据。</li>
+<li><strong>计算平均值</strong>：<br>对十次性能运行的结果取平均值，作为最终的测试结果。</li>
+</ol>
+</li>
+<li><strong>目的</strong>：<br>通过多次运行和取平均值，可以减少处理器状态不一致带来的波动，提高测试结果的可靠性。</li>
+</ul>
+<hr>
+<ol start="2">
+<li><strong>最小执行时间要求</strong></li>
+</ol>
+<ul>
+<li><strong>CoreMark 要求</strong>：<br>CoreMark 的官方要求是，每次运行的执行时间至少为 <strong>10 秒</strong>，以确保测试结果的准确性。</li>
+<li><strong>ARM 建议</strong>：<br>ARM 建议将最小执行时间延长至 <strong>30 秒</strong>，以进一步减少测试结果的波动性。</li>
+<li><strong>原因</strong>：<ul>
+<li>较长的执行时间可以平滑短时间内的性能波动（如中断、缓存未命中等）。</li>
+<li>较长的执行时间还可以更好地反映处理器的持续性能。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="3">
+<li><strong>执行时间与处理器频率的关系</strong></li>
+</ol>
+<ul>
+<li><strong>执行时间的影响因素</strong>：<br>CoreMark 的执行时间取决于处理器的频率和性能。频率越高，执行时间越短；频率越低，执行时间越长。</li>
+<li><strong>示例</strong>：<br>ARM 提供了一个参考示例：<ul>
+<li>在 <strong>Cortex-M4 处理器</strong> 上，运行频率为 <strong>168 MHz</strong> 时，<strong>15000 次迭代</strong> 的执行时间约为 <strong>30 秒</strong>。</li>
+</ul>
+</li>
+<li><strong>如何调整迭代次数</strong>：<br>如果处理器的频率不同，可以通过调整迭代次数来控制执行时间。例如：<ul>
+<li>如果处理器频率较低，可以增加迭代次数以达到 30 秒的执行时间。</li>
+<li>如果处理器频率较高，可以减少迭代次数以避免执行时间过长。</li>
+</ul>
+</li>
+</ul>
+<h1 id="测量特性"><a href="#测量特性" class="headerlink" title="测量特性"></a>测量特性</h1><p>The CoreMark benchmark number is the number of iterations per second  。</p>
+<p>A commonly reported figure is CoreMarks &#x2F; MHz.  </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">DFT AU fault report分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-03-05 09:42:13 / 修改时间：14:22:06" itemprop="dateCreated datePublished" datetime="2025-03-05T09:42:13+08:00">2025-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">IC设计流程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="打开Tessent工具"><a href="#打开Tessent工具" class="headerlink" title="打开Tessent工具"></a>打开Tessent工具</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">ANALYSIS&gt;</span><span class="language-bash">open_visualizer</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="查看某一个模块的覆盖率"><a href="#查看某一个模块的覆盖率" class="headerlink" title="查看某一个模块的覆盖率"></a>查看某一个模块的覆盖率</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Instance Browser界面查看</span><br><span class="line">tab：</span><br><span class="line">	Total</span><br><span class="line">	Test Coverage</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="根据AU-report在图形化界面分析"><a href="#根据AU-report在图形化界面分析" class="headerlink" title="根据AU report在图形化界面分析"></a>根据AU report在图形化界面分析</h1><p>report</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1    AU.TC    /cpusys_par_wrap_0/TestAndSet_0/ts_0_cp_206621and_tpecs0_no201142_i/A1</span><br><span class="line">1    AU.TC    /cpusys_par_wrap_0/TestAndSet_0/PLACE_SETUP_FE_RC_1405_0/A1</span><br><span class="line">1    AU.TC    /cpusys_par_wrap_0/TestAndSet_0/PLACE_SETUP_FE_RC_1599_0/A1</span><br><span class="line">0    AU.TC    /PLACE_SETUP_FE_OFC1761041_ts_0_tpecs0/ZN</span><br></pre></td></tr></table></figure>
+
+<p>alalyze</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyze_fault -display -stuck_at 1 /cpusys_par_wrap_0/TestAndSet_0/ts_0_cp_206621and_tpecs0_no201142_i/A1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Note:</p>
+<p>可能需要open -&gt; Hierarchical Schematic或者open-&gt; Flat Schematic</p>
+<p>然后在对应的界面下方输入instance路径，</p>
+<p>例如&#x2F;cpusys_par_wrap_0&#x2F;TestAndSet_0&#x2F;ts_0_cp_206621and_tpecs0_no201142_i&#x2F;A1</p>
+</blockquote>
+<img src="/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/image-20250305101356484.png" class="">
+
+<blockquote>
+<p>针对上面的case做出分析：</p>
+<p>向前trace，发现是DFT插入的function寄存器，用于提高coverage，</p>
+<p>这对此case，可能是为了与门后面的逻辑可控、可观测，因此将A1 tie了一个DFT function寄存器，然后再推理ATPG pattern的时候，将此寄存器输出配置为1‘b1；</p>
+</blockquote>
+<h1 id="DFT-suppor-logic"><a href="#DFT-suppor-logic" class="headerlink" title="DFT suppor logic"></a>DFT suppor logic</h1><ul>
+<li>利用scan逻辑切换clock和reset</li>
+</ul>
+<p>针对一些<font color=blue>慢速时钟</font>，可以使用scan_mode切换scan clock和function clock；（<font color=blue>此时的scan clock的速度能满足stuck-at测试和at-speed测试</font>）</p>
+<p>针对一些<font color=blue>快速时钟</font>，需要进行at_speed测试（即transient fault测试），此时无需使用scan enable逻辑进行切换，直接使用occ的输出；</p>
+<p>（occ IP会自己处理scan clock和function clock，本质上可以理解为一个mux）</p>
+<p><font color=blue>这种需要补充FT pattern进行测试下；</font></p>
+<ul>
+<li>ICG</li>
+</ul>
+<p>ICG的TE端口，连接的是<code>scan_en_cg_ctl IP</code></p>
+<p><font color=blue>不需要补充FT pattern进行测试；</font></p>
+<ul>
+<li>Note：</li>
+</ul>
+<p>另外针对ATPG测试的时候，希望使用scan clock的同一个上升沿；</p>
+<p>因此，红色框体的部分添加了一个clock mux，在scan_test（连接的是trapping test_mode）的时候，bypass flash_clk_inv；</p>
+<p>缺点就是，此时只能对flash_clk_inv后面的逻辑进行stuck-at测试（因为使用的是scan_clock慢速时钟），无法进行at-speed测试；</p>
+<p>7805 flash_clk_inv后面的逻辑仅有一个寄存器，因此影响不大；</p>
+<img src="/2025/03/05/DFT-AU-fault-report%E5%88%86%E6%9E%90/image-20250305141650138.png" class="">
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/21/QSPI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/21/QSPI/" class="post-title-link" itemprop="url">QSPI</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-21 10:53:33 / 修改时间：11:02:09" itemprop="dateCreated datePublished" datetime="2025-01-21T10:53:33+08:00">2025-01-21</time>
+            </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -203,10 +604,6 @@
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
                 </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/PAD/" itemprop="url" rel="index"><span itemprop="name">PAD</span></a>
-                </span>
             </span>
 
           
@@ -218,8 +615,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2025/01/02/GPIO-PAD/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/02/GPIO-PAD/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/01/21/QSPI/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/21/QSPI/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -234,14 +631,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="PAD-IP接口"><a href="#PAD-IP接口" class="headerlink" title="PAD IP接口"></a>PAD IP接口</h1><img src="/2025/01/02/GPIO-PAD/image-20250102155310749.png" class="">
+          <p>Quad SPI接口（QSPI）是一种同步串行数据链路，在主模式下提供与外部设备的通信。它类似于SPI协议，只是它有额外的数据线。</p>
+<p>普通SPI有四条通信线路：芯片选择、时钟、MOSI和MISO。对于QSPI，可提供额外的数据线。因此，命令&#x2F;数据&#x2F;地址是根据所选模式通过单、四或双IO发送的。由于数据是通过多条线路发送的，与标准SPI传输相比，它有助于增加带宽。</p>
+<img src="/2025/01/21/QSPI/image-20250121110142297.png" class="">
 
-<img src="/2025/01/02/GPIO-PAD/image-20250102155347741.png" class="">
-
-<img src="/2025/01/02/GPIO-PAD/image-20250708144648287.png" class="">
-
-
-
+<hr>
+<p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://download.csdn.net/blog/column/11402005/138536925"><strong>嵌入式工程师必学（49）：QSPI的使用</strong></a></li>
+</ol>
 
       
     </div>
@@ -261,7 +659,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/27/Makefile%E8%84%9A%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/17/benchmark%E8%B7%91%E5%88%86%E7%A8%8B%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -275,7 +673,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/12/27/Makefile%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">Makefile脚本</a>
+            <a href="/2025/01/17/benchmark%E8%B7%91%E5%88%86%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">benchmark跑分程序</a>
         </h2>
 
         <div class="post-meta">
@@ -285,85 +683,353 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-12-27 12:12:10" itemprop="dateCreated datePublished" datetime="2024-12-27T12:12:10+08:00">2024-12-27</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/12/27/Makefile%E8%84%9A%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/27/Makefile%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/16/xrun%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/16/xrun%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">xrun常见问题及解决方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-16 16:45:42" itemprop="dateCreated datePublished" datetime="2024-12-16T16:45:42+08:00">2024-12-16</time>
+              <time title="创建时间：2025-01-17 10:56:32" itemprop="dateCreated datePublished" datetime="2025-01-17T10:56:32+08:00">2025-01-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-29 14:07:54" itemprop="dateModified" datetime="2025-05-29T14:07:54+08:00">2025-05-29</time>
+                <time title="修改时间：2026-03-22 18:14:22" itemprop="dateModified" datetime="2026-03-22T18:14:22+08:00">2026-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">ISA和处理器</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/%E5%A4%84%E7%90%86%E5%99%A8%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E8%AE%A1%E7%AE%97%E5%8D%95%E5%85%83/" itemprop="url" rel="index"><span itemprop="name">处理器性能指标和计算单元</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/17/benchmark%E8%B7%91%E5%88%86%E7%A8%8B%E5%BA%8F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/17/benchmark%E8%B7%91%E5%88%86%E7%A8%8B%E5%BA%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<h3 id="Dhrystone"><a href="#Dhrystone" class="headerlink" title="Dhrystone"></a><strong>Dhrystone</strong></h3><p>Dhrystone 是一种<strong>综合性基准测试</strong>，由 Reinhold P. Weicker 于 1980 年代早期开发，旨在客观地测量和比较微处理器的性能。当时，微处理器行业发展迅速，不同厂商之间竞争激烈，各自声称其产品性能更优。为了提供一种统一的、客观的性能评估方法，Dhrystone 应运而生。</p>
+<p>Dhrystone 的主要特点包括：</p>
+<ol>
+<li><strong>综合性测试</strong>：通过模拟的工作负载测试处理器的计算性能，而非依赖实际应用程序。</li>
+<li><strong>使用 C 语言编写</strong>：C 语言在当时被广泛支持，具有良好的可移植性和跨平台能力。</li>
+<li><strong>简单易用</strong>：Dhrystone 设计简洁，易于在各种微处理器上实现和执行。</li>
+</ol>
+<p>Dhrystone 的简单性和可移植性使其成为当时开发者和用户的热门选择，并广泛用于评估微处理器的性能。</p>
+<hr>
+<h3 id="CoreMark"><a href="#CoreMark" class="headerlink" title="CoreMark"></a><strong>CoreMark</strong></h3><p>CoreMark 是一种基准测试工具，于 2000 年代早期开发，旨在适应微控制器领域的不断变化。相比早期的 Dhrystone 基准测试，CoreMark 针对更复杂、更强大的微控制器进行了优化，特别是为了评估多线程和多核处理器的性能。</p>
+<p>CoreMark 的主要特点包括：</p>
+<ol>
+<li><strong>支持多线程和多核处理器</strong>：CoreMark 提供了专门的测试场景，能够评估处理器的并行处理效率和性能扩展能力，适应当时多核架构的趋势。</li>
+<li><strong>广泛的操作范围</strong>：CoreMark 包含整数运算、位操作、控制流和内存访问等多种操作，模拟嵌入式系统和实时应用中的典型任务。</li>
+<li><strong>更贴近实际应用</strong>：通过更复杂的内存访问模式和多样化的操作，CoreMark 更能反映处理器在嵌入式和实时应用领域的实际性能。</li>
+</ol>
+<p>CoreMark 的引入使得处理器性能评估更加全面和准确，尤其在多核并行计算能力和嵌入式系统性能优化方面具有重要意义。</p>
+<hr>
+<h3 id="Dhrystone和CoreMark的区别"><a href="#Dhrystone和CoreMark的区别" class="headerlink" title="Dhrystone和CoreMark的区别"></a><strong>Dhrystone和CoreMark的区别</strong></h3><p>基准测试在被测试的微控制器上执行，其结果通过测量微控制器执行指令所需的时间来评估性能。以下是 <strong>Dhrystone</strong> 和 <strong>CoreMark</strong> 的区别和特点：</p>
+<p><strong>Dhrystone</strong></p>
+<ul>
+<li><p>评估方式</p>
+<p>：通过执行一系列操作来测量性能，包括：</p>
+<ul>
+<li>字符串操作</li>
+<li>整数算术运算（如加法、减法）</li>
+<li>位移操作</li>
+<li>逻辑运算</li>
+</ul>
+</li>
+<li><p><strong>特点</strong>：适合评估基本处理器性能，但测试内容相对简单，更偏向整数运算。</p>
+</li>
+</ul>
+<p> <strong>CoreMark</strong></p>
+<ul>
+<li><p>评估方式</p>
+<p>：使用多种复杂的工作负载来测量性能，包括：</p>
+<ul>
+<li>矩阵操作（Matrix Manipulation）</li>
+<li>链表操作（Linked List Manipulation）</li>
+<li>状态机仿真（State Machine Emulation）</li>
+</ul>
+</li>
+<li><p><strong>特点</strong>：测试更全面，能反映处理器在复杂任务中的性能，特别是在嵌入式和实时系统中的实际表现。</p>
+</li>
+</ul>
+<p> <strong>总结</strong></p>
+<ul>
+<li><strong>Dhrystone</strong> 偏向于基本性能的测量，适合单线程、简单操作的处理器。</li>
+<li><strong>CoreMark</strong> 提供更复杂的测试场景，更适用于评估现代微控制器的多任务处理能力和整体性能。</li>
+</ul>
+<hr>
+<h3 id="基准测试的局限性"><a href="#基准测试的局限性" class="headerlink" title="基准测试的局限性"></a><strong>基准测试的局限性</strong></h3><p>尽管基准测试（如 Dhrystone 和 CoreMark）在评估微控制器性能方面提供了有价值的见解，但它们存在一些基本的局限性，需要在解读结果时加以注意：</p>
+<h4 id="主要问题："><a href="#主要问题：" class="headerlink" title="主要问题："></a><strong>主要问题：</strong></h4><ol>
+<li><strong>编译器优化</strong><ul>
+<li>编译器的优化选项、内联决策等设置会显著影响基准测试结果。</li>
+<li>不同的编译器和配置可能使结果偏离实际应用性能。</li>
+</ul>
+</li>
+<li><strong>性能侧重点</strong><ul>
+<li>基准测试通常聚焦于微控制器的某些特定方面，如整数运算、控制流和内存访问。</li>
+<li>然而，这些测试无法涵盖实际应用中所有影响性能的因素（如浮点运算、I&#x2F;O 性能等）。</li>
+</ul>
+</li>
+<li><strong>代码规模有限</strong><ul>
+<li>基准测试的代码规模较小，通常仅测试处理器缓存的性能，而对内存层次结构（如 DRAM）影响有限。</li>
+<li>因此，无法全面反映复杂应用的真实性能。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="推荐方法："><a href="#推荐方法：" class="headerlink" title="推荐方法："></a><strong>推荐方法：</strong></h4><ul>
+<li><strong>补充真实应用分析</strong><br>结合基准测试结果与实际应用的性能分析，评估微控制器在具体场景中的表现。</li>
+<li><strong>使用领域特定的基准测试</strong><br>针对目标应用领域（如嵌入式、汽车电子）的特定基准测试，提供更相关的性能数据。</li>
+<li><strong>综合性能评估技术</strong><br>借助多种评估方法（如实时调试和运行时分析），获得微控制器性能的全面理解。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/16/%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/16/%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/" class="post-title-link" itemprop="url">问题收集</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-16 19:57:05 / 修改时间：19:59:34" itemprop="dateCreated datePublished" datetime="2025-01-16T19:57:05+08:00">2025-01-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%85%E6%95%B4%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">待整理</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/16/%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/16/%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>AHB-Lite lock传输？？</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/15/RISC-V%E6%8C%87%E4%BB%A4%E9%9B%86%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/15/RISC-V%E6%8C%87%E4%BB%A4%E9%9B%86%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">RISC-V指令集概述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-15 19:24:54 / 修改时间：19:32:03" itemprop="dateCreated datePublished" datetime="2025-01-15T19:24:54+08:00">2025-01-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">ISA和处理器</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/RISC-V/" itemprop="url" rel="index"><span itemprop="name">RISC-V</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ISA%E5%92%8C%E5%A4%84%E7%90%86%E5%99%A8/RISC-V/RISC-V%E6%8C%87%E4%BB%A4%E9%9B%86/" itemprop="url" rel="index"><span itemprop="name">RISC-V指令集</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/15/RISC-V%E6%8C%87%E4%BB%A4%E9%9B%86%E6%A6%82%E8%BF%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/15/RISC-V%E6%8C%87%E4%BB%A4%E9%9B%86%E6%A6%82%E8%BF%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/13/xrun-tcl%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/13/xrun-tcl%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">xrun tcl脚本控制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-13 10:04:53" itemprop="dateCreated datePublished" datetime="2025-01-13T10:04:53+08:00">2025-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-05-29 14:06:34" itemprop="dateModified" datetime="2025-05-29T14:06:34+08:00">2025-05-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -388,8 +1054,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/12/16/xrun%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/16/xrun%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/01/13/xrun-tcl%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/13/xrun-tcl%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -404,30 +1070,50 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Q1：没有找到snapshot文件"><a href="#Q1：没有找到snapshot文件" class="headerlink" title="Q1：没有找到snapshot文件"></a>Q1：没有找到snapshot文件</h2><blockquote>
-<p>&lt;&lt;Waiting for dispatch …&gt;&gt;<br>&lt;<Starting on jkhfhlx001>&gt;<br>TOOL:	xrun	23.09-s003: Started on Dec 16, 2024 at 16:45:58 CST<br>xrun: 23.09-s003: (c) Copyright 1995-2023 Cadence Design Systems, Inc.<br>xrun: *E,NOSTUPR: A problem was detected in the setup for simulation. </p>
-<p>-R&#x2F;-r <name> was used but the scratch directory (.&#x2F;xcelium.d&#x2F;test_snapshot.lnx86.23.09.d) created from a successful design compilation and elaboration is missing.  </p>
-<p>Check the command line for any unintentional errors, like omission of the -snapshot or the -xmlibdirname option, if it was used for parsing, earlier.<br>TOOL:	xrun	23.09-s003: Exiting on Dec 16, 2024 at 16:45:58 CST  (total: 00:00:00)</p>
+          <blockquote>
+<p>Xcelium仿真器命令语言是基于TCL，能够对模拟器中的对象执行各种操作。</p>
 </blockquote>
-<p>没有找到snapshot文件；</p>
-<p>使用的选项是-r还是-R？</p>
-<p>snapshot name是否正确？</p>
-<p>执行路径是否为仿真路径？</p>
-<h2 id="Q2-VHDL和verilog边界问题"><a href="#Q2-VHDL和verilog边界问题" class="headerlink" title="Q2:VHDL和verilog边界问题"></a>Q2:VHDL和verilog边界问题</h2><h2 id="Q3-posim仿真速度巨慢"><a href="#Q3-posim仿真速度巨慢" class="headerlink" title="Q3:posim仿真速度巨慢"></a>Q3:posim仿真速度巨慢</h2><p>AC7843在没有dump 波形的情况下，仿真速度非常慢！</p>
-<p>debug方式：</p>
-<p>添加仿真&amp;编译选项：</p>
-<blockquote>
-<p>-profile -rdprofile -prof_dump_interval 7200</p>
-</blockquote>
-<p><code>-profile</code></p>
-<p>This option generates a run-time profile of the design.The -profile option generates an output file called <font color=blue>xmprof.out</font> in the current working directory by default. This file contains simulation run-time information that is useful for finding performance bottlenecks and for tuning a design description for better simulation performance.</p>
-<p><code>-rdprofile</code></p>
-<p><font color=red>??</font></p>
-<p><code>-prof_dump_interval</code></p>
-<p>CPU经过固定时间抓取运行的数据</p>
-<h2 id="Q4-RTL仿真出现异常X态"><a href="#Q4-RTL仿真出现异常X态" class="headerlink" title="Q4: RTL仿真出现异常X态"></a>Q4: RTL仿真出现异常X态</h2><p>wire wire #(上升延迟, 下降延迟) 延时语句</p>
-<img src="/2024/12/16/xrun%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/image-20241204102123861.png" class="">
+<h1 id="The-Tcl-Command-Line-Interface"><a href="#The-Tcl-Command-Line-Interface" class="headerlink" title="The Tcl Command-Line Interface"></a>The Tcl Command-Line Interface</h1><h2 id="Tcl-Command-Syntax"><a href="#Tcl-Command-Syntax" class="headerlink" title="Tcl Command Syntax"></a>Tcl Command Syntax</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcelium&gt; command [-modifier] [-options] [arguments]</span><br></pre></td></tr></table></figure>
 
+<h2 id="Tcl-Command-Rules"><a href="#Tcl-Command-Rules" class="headerlink" title="Tcl Command Rules"></a>Tcl Command Rules</h2><ul>
+<li><p>命令的名称必须小写</p>
+</li>
+<li><p>可以使用略缩表达</p>
+</li>
+<li><p>一行可以有多个tcl命令，使用<code>;</code>分割</p>
+</li>
+</ul>
+<h2 id="Command-Description-Conventions"><a href="#Command-Description-Conventions" class="headerlink" title="Command Description Conventions"></a>Command Description Conventions</h2><ul>
+<li><strong>格式符号</strong> 的作用是规范 Tcl 命令的书写和使用，方便用户理解命令中的必填和可选部分。</li>
+<li>核心规则：<ol>
+<li><strong>必须输入的部分</strong>: 使用字面量。</li>
+<li><strong>可选部分</strong>: 用方括号 <code>[ ]</code> 标注。</li>
+<li><strong>选择其中一个</strong>: 用竖线 <code>|</code> 和大括号 <code>&#123; &#125;</code> 表示。</li>
+<li><strong>重复参数</strong>: 用省略号 <code>...</code> 表示，方括号则标明是否可以完全省略。</li>
+</ol>
+</li>
+</ul>
+<p>通过这些符号的配合，Tcl 命令的表达既清晰又灵活，适应多种使用场景。</p>
+<h2 id="TCL-Basics"><a href="#TCL-Basics" class="headerlink" title="TCL Basics"></a>TCL Basics</h2><ul>
+<li>Comments <code>#</code></li>
+<li>Tcl Variables</li>
+<li>Variable Substitution</li>
+<li>Tcl Commands</li>
+<li>Command Substitution</li>
+<li>Backslash Substitution</li>
+<li>Quoting Words in a Command</li>
+</ul>
+<h1 id="Xcelium-Simulator-Tcl-Commands"><a href="#Xcelium-Simulator-Tcl-Commands" class="headerlink" title="Xcelium Simulator Tcl Commands"></a>Xcelium Simulator Tcl Commands</h1><h2 id="database"><a href="#database" class="headerlink" title="database"></a>database</h2><p>The Tcl <code>database</code> command controls an <code>SHM, VCD, EVCD </code>.</p>
+<blockquote>
+<p>database -open -shm top_sim -default -incsize 500M</p>
+<p>probe -create top_sim                                                          -depth 1<br>probe -create top_sim.ac7843x                                                  -depth 1<br>probe -create top_sim.ac7843x.MTCMOS_wrap                                      -depth 1<br>probe -create top_sim.ac7843x.cm4_core                                         -depth 1<br>probe -create top_sim.ac7843x.u_flash_whole_top                                -depth 1<br>probe -create top_sim.ac7843x.u_flash_whole_top.u_pflash_top.u_pf_bank0_state  -depth all -all -memories<br>probe -create top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1     -depth all -all -memories<br>probe -create top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1            -depth all -all -memories<br>probe -create top_sim.ac7843x.top_design_ctl                                   -depth all -all -memories<br>probe -create top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                    -depth all -all -memories</p>
+<p>run</p>
+</blockquote>
+<h2 id="deposit"><a href="#deposit" class="headerlink" title="deposit"></a>deposit</h2><h2 id="drivers"><a href="#drivers" class="headerlink" title="drivers"></a>drivers</h2><h2 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h2><h2 id="finish"><a href="#finish" class="headerlink" title="finish"></a>finish</h2><h2 id="force"><a href="#force" class="headerlink" title="force"></a>force</h2><h2 id="ida-probe"><a href="#ida-probe" class="headerlink" title="ida_probe"></a>ida_probe</h2><h2 id="input"><a href="#input" class="headerlink" title="input"></a>input</h2><h2 id="memory"><a href="#memory" class="headerlink" title="memory"></a>memory</h2><h2 id="probe"><a href="#probe" class="headerlink" title="probe"></a>probe</h2><p>he Tcl  <code>probe</code>  command controls the values of certain simulation objects that you can then save to a <code>SHM, VCD, EVCD</code>. Verilog, VHDL, and mixed-language designs are supported.</p>
+<h2 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h2><h2 id="restart"><a href="#restart" class="headerlink" title="restart"></a>restart</h2><h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><h2 id="save"><a href="#save" class="headerlink" title="save"></a>save</h2><h2 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h2><h2 id="value"><a href="#value" class="headerlink" title="value"></a>value</h2><p>-xmlibdirname xcelium_nwcl.d</p>
+<h1 id="使用举例"><a href="#使用举例" class="headerlink" title="使用举例"></a>使用举例</h1><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">run <span class="number">610</span>ms</span><br><span class="line"></span><br><span class="line"><span class="comment"># VWDB format</span></span><br><span class="line"><span class="comment"># Consider a  database  command that opens a default SHM database called  waves .</span></span><br><span class="line">ida_database -<span class="keyword">open</span> -name top_sim</span><br><span class="line"></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim                       -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x               -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.MTCMOS_wrap   -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.cm4_core      -all -depth 1 -memories&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ida_probe -wave -wave_probe_args=&quot;top_sim.ac7843x.u_flash_whole_top.u_dflash_top                            -all -depth all -memories&quot; -start_time=610ms -end_time=630ms</span></span><br><span class="line"><span class="comment"># ida_probe -wave -wave_probe_args=&quot;top_sim.ac7843x.u_flash_whole_top.u_pflash_top                            -all -depth all -memories&quot; -start_time=610ms -end_time=630ms</span></span><br><span class="line"><span class="comment"># ida_probe -wave -wave_probe_args=&quot;top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1              -all -depth all -memories&quot; -start_time=610ms -end_time=630ms</span></span><br><span class="line"><span class="comment"># ida_probe -wave -wave_probe_args=&quot;top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1                     -all -depth all -memories&quot; -start_time=610ms -end_time=630ms</span></span><br><span class="line"><span class="comment"># ida_probe -wave -wave_probe_args=&quot;top_sim.ac7843x.top_design_ctl                                            -all -depth all -memories&quot; -start_time=610ms -end_time=630ms</span></span><br><span class="line"><span class="comment"># ida_probe -wave -wave_probe_args=&quot;top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                             -all -depth all -memories&quot; -start_time=610ms -end_time=630ms</span></span><br><span class="line"></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_flash_whole_top.u_dflash_top                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_flash_whole_top.u_pflash_top                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1              -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1                     -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.top_design_ctl                                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                             -all -depth all -memories&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><p>&#x2F;atctools&#x2F;VERISIUMDEBUG&#x2F;23.09-S001_T&#x2F;doc&#x2F;VDebugQSG&#x2F;titlecopy.html<br>&#x2F;atctools&#x2F;VERISIUMDEBUG&#x2F;23.09-S001_T&#x2F;doc&#x2F;VDebugGUIUG&#x2F;titlecopy.html<br>&#x2F;atctools&#x2F;VERISIUMDEBUG&#x2F;23.09-S001_T&#x2F;doc&#x2F;IDAUser&#x2F;titlecopy.html<br>&#x2F;atctools&#x2F;XCELIUM&#x2F;23.09.003_T&#x2F;doc&#x2F;xceliumSCUG&#x2F;xceliumSCUGTOC.html<br>&#x2F;atctools&#x2F;XCELIUM&#x2F;23.09.003_T&#x2F;doc&#x2F;tclcmdref&#x2F;tclcmdrefTOC.html<br>&#x2F;atctools&#x2F;XCELIUM&#x2F;23.09.003_T&#x2F;doc&#x2F;XceliumSC_Ref&#x2F;XceliumSC_RefTOC.html<br>&#x2F;atctools&#x2F;XCELIUM&#x2F;20.06.001_T&#x2F;doc&#x2F;xrun&#x2F;xrunTOC.html<br>&#x2F;atctools&#x2F;XCELIUM&#x2F;20.06.001_T&#x2F;doc&#x2F;VlogTimingChecks&#x2F;VlogTimingChecksTOC.html</p>
 
       
     </div>
@@ -447,7 +1133,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/11/C%E8%AF%AD%E8%A8%80%E5%9C%A8terminal%E6%89%93%E5%8D%B0color%E6%96%87%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -461,7 +1147,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/12/11/C%E8%AF%AD%E8%A8%80%E5%9C%A8terminal%E6%89%93%E5%8D%B0color%E6%96%87%E6%9C%AC/" class="post-title-link" itemprop="url">C语言在terminal打印color文本</a>
+            <a href="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">xrun dump vwdb波形文件</a>
         </h2>
 
         <div class="post-meta">
@@ -470,21 +1156,27 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-12-11 15:51:44 / 修改时间：15:55:58" itemprop="dateCreated datePublished" datetime="2024-12-11T15:51:44+08:00">2024-12-11</time>
+              <time title="创建时间：2025-01-07 13:33:34" itemprop="dateCreated datePublished" datetime="2025-01-07T13:33:34+08:00">2025-01-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-05-29 14:08:06" itemprop="dateModified" datetime="2025-05-29T14:08:06+08:00">2025-05-29</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式C程序</span></a>
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/C-C-%E8%AF%AD%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">C/C++语法</span></a>
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
                 </span>
             </span>
 
@@ -497,8 +1189,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/12/11/C%E8%AF%AD%E8%A8%80%E5%9C%A8terminal%E6%89%93%E5%8D%B0color%E6%96%87%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/11/C%E8%AF%AD%E8%A8%80%E5%9C%A8terminal%E6%89%93%E5%8D%B0color%E6%96%87%E6%9C%AC/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -513,87 +1205,55 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="常见颜色设置"><a href="#常见颜色设置" class="headerlink" title="常见颜色设置"></a><strong>常见颜色设置</strong></h3><p>ANSI 颜色代码分为两部分：<strong>前景色（文字颜色）</strong> 和 <strong>背景色</strong>。</p>
-<table>
-<thead>
-<tr>
-<th><strong>颜色</strong></th>
-<th><strong>代码（前景色）</strong></th>
-<th><strong>代码（背景色）</strong></th>
-<th><strong>示例</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>黑色</td>
-<td><code>30</code></td>
-<td><code>40</code></td>
-<td><code>\033[1;30m</code> 黑色文字</td>
-</tr>
-<tr>
-<td>红色</td>
-<td><code>31</code></td>
-<td><code>41</code></td>
-<td><code>\033[1;31m</code> 红色文字</td>
-</tr>
-<tr>
-<td>绿色</td>
-<td><code>32</code></td>
-<td><code>42</code></td>
-<td><code>\033[1;32m</code> 绿色文字</td>
-</tr>
-<tr>
-<td>黄色</td>
-<td><code>33</code></td>
-<td><code>43</code></td>
-<td><code>\033[1;33m</code> 黄色文字</td>
-</tr>
-<tr>
-<td>蓝色</td>
-<td><code>34</code></td>
-<td><code>44</code></td>
-<td><code>\033[1;34m</code> 蓝色文字</td>
-</tr>
-<tr>
-<td>品红色</td>
-<td><code>35</code></td>
-<td><code>45</code></td>
-<td><code>\033[1;35m</code> 品红文字</td>
-</tr>
-<tr>
-<td>青色</td>
-<td><code>36</code></td>
-<td><code>46</code></td>
-<td><code>\033[1;36m</code> 青色文字</td>
-</tr>
-<tr>
-<td>白色</td>
-<td><code>37</code></td>
-<td><code>47</code></td>
-<td><code>\033[1;37m</code> 白色文字</td>
-</tr>
-</tbody></table>
-<h3 id="设置方法示例"><a href="#设置方法示例" class="headerlink" title="设置方法示例"></a><strong>设置方法示例</strong></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\033[1;31m This is red text 	\033[0m\n&quot;</span>);   	<span class="comment">// 红色</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\033[1;32m This is green text 	\033[0m\n&quot;</span>); 	<span class="comment">// 绿色</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\033[1;33m This is yellow text 	\033[0m\n&quot;</span>); 	<span class="comment">// 黄色</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\033[1;34m This is blue text 	\033[0m\n&quot;</span>);   	<span class="comment">// 蓝色</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\033[1;35m This is magenta text \033[0m\n&quot;</span>);	<span class="comment">// 品红</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\033[1;36m This is cyan text 	\033[0m\n&quot;</span>);   	<span class="comment">// 青色</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="SHM格式波形及其dump方式-允许自动切分成多个波形"><a href="#SHM格式波形及其dump方式-允许自动切分成多个波形" class="headerlink" title="SHM格式波形及其dump方式- 允许自动切分成多个波形"></a>SHM格式波形及其dump方式- 允许自动切分成多个波形</h1><h2 id="方式一：TCL脚本"><a href="#方式一：TCL脚本" class="headerlink" title="方式一：TCL脚本"></a>方式一：TCL脚本</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Consider a  database  command that opens a default SHM database called  waves .</span></span><br><span class="line"></span><br><span class="line">database -<span class="keyword">open</span> -shm top_sim -default</span><br><span class="line"></span><br><span class="line"><span class="comment"># probe -create top_sim -depth all -all -memories</span></span><br><span class="line"></span><br><span class="line">probe -create top_sim                                                          -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x                                                  -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x.MTCMOS_wrap                                      -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x.cm4_core                                         -depth <span class="number">1</span></span><br><span class="line"></span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top                                -depth <span class="number">1</span></span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_pflash_top.u_pf_bank0_state  -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_dflash_top.u_df_bank1_state  -depth all -all -memories</span><br><span class="line"></span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_dflash_top -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_flash_whole_top.u_pflash_top -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1     -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1            -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.top_design_ctl                                   -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                    -depth all -all -memories</span><br><span class="line"></span><br><span class="line">probe -create top_sim.ac7843x.pad                                              -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.pinmux                                           -depth all -all -memories</span><br><span class="line">probe -create top_sim.ac7843x.imux                                             -depth all -all -memories</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="代码说明"><a href="#代码说明" class="headerlink" title="代码说明"></a><strong>代码说明</strong></h3><ol>
-<li><code>\033</code> 或 <code>\x1B</code>：<ul>
-<li>ANSI 转义序列的起始符，告诉终端接下来是控制命令。</li>
-</ul>
+<p>NOTE:</p>
+<ol>
+<li>仿真的是时候添加选项：<code>-input probe_pattern.tcl</code></li>
+</ol>
+<h3 id="波形切分"><a href="#波形切分" class="headerlink" title="波形切分"></a>波形切分</h3><img src="/2025/01/07/dump-vwdb%E6%B3%A2%E5%BD%A2%E6%96%87%E4%BB%B6/image-20250314163617169.png" class="">
+
+
+
+<h2 id="方式二：system-task"><a href="#方式二：system-task" class="headerlink" title="方式二：system task"></a>方式二：system task</h2><p>波形文件达到500MB的时候，会自动切换到下一个文件进行存储；</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">	$shm_open(<span class="string">&quot;top_sim.shm&quot;</span>, , , , <span class="number">500</span>, );</span><br><span class="line">	<span class="comment">// $shm_probe(top_sim.ac7843x.cm4_core, &quot;ACMTF&quot;, top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS.cm4_MTCMOS.cm4_infra_ctl, &quot;AMTF&quot;);</span></span><br><span class="line">	$shm_probe(top_sim , <span class="string">&quot;ACMTF&quot;</span>);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>NOTE:</p>
+<p><font color=blue> 这种dump方式有使用缺陷，只能dump verilog格式文件，无法dump VHDL格式文件</font></p>
+<h1 id="VWDB格式波形及其dump方式-不允许自动切分波形"><a href="#VWDB格式波形及其dump方式-不允许自动切分波形" class="headerlink" title="VWDB格式波形及其dump方式-不允许自动切分波形"></a>VWDB格式波形及其dump方式-不允许自动切分波形</h1><h2 id="方式一：TCL脚本-1"><a href="#方式一：TCL脚本-1" class="headerlink" title="方式一：TCL脚本"></a>方式一：TCL脚本</h2><figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ida_database -<span class="keyword">open</span> -name top_sim</span><br><span class="line"></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim                       -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x               -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.MTCMOS_wrap   -all -depth 1 -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.cm4_core      -all -depth 1 -memories&quot;</span></span><br><span class="line"></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_flash_whole_top.u_dflash_top                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_flash_whole_top.u_pflash_top                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_hsm_top_pwr_wrap.hsm_top_pwr_wrap_woiso_u1              -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.u_standby_ctl_pwr_wrap.standby_ctl_u1                     -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.top_design_ctl                                            -all -depth all -memories&quot;</span></span><br><span class="line">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x.MTCMOS_wrap.MTCMOS.i_i_MTCMOS                             -all -depth all -memories&quot;</span></span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+
+
+<p><font color=blue> VWDB波形结果确认</font>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">xcelium&gt; </span><span class="language-bash">ida_probe -wave -wave_probe_args=<span class="string">&quot;top_sim.ac7843x               -all -depth 1 -memories&quot;</span></span></span><br><span class="line">xmsim: *W,MEMPC: Some or all load-on-demand optimizations will get disabled due to IDA/Probe.</span><br><span class="line">database -open top_sim/top_sim.shm </span><br><span class="line">Created SHM database top_sim/top_sim.shm</span><br><span class="line"></span><br><span class="line">database -setdefault top_sim/top_sim.shm</span><br><span class="line">top_sim/top_sim.shm is set as default SHM database</span><br><span class="line"></span><br><span class="line">probe top_sim.ac7843x -all -depth 1 -memories -emptyok</span><br><span class="line">xmsim: Loading /atctools/XCELIUM/23.09.003_T/tools.lnx86/inca/lib/64bit/libxdump.so</span><br><span class="line">xmsim: *W,VEATUP: Auto update is enabled by default.</span><br><span class="line">xmsim: *I: VWDB Dumper, Linux x86_64/64bit, 11/21/2023 12:58:03</span><br><span class="line">xmsim: *I: Create VWDB top_sim/top_sim.shm/waves_ida.vwdb</span><br><span class="line">xmsim: *I: Enabled dumping strength</span><br><span class="line">xmsim: *W,VNPLDN: The design contains living-dead signals. To improve simulation performance these signals are excluded.</span><br><span class="line">xmsim: *W,PRHOPT: The design contains optimized signals. To improve simulation performance these signals are excluded.</span><br><span class="line">Created probe 1</span><br></pre></td></tr></table></figure>
+
+
+
+<p><font color=blue> vwdb波形文件位置</font>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*/top_sim/top_sim.shm:</span><br><span class="line">-rw-r--r-- 1 atc0288 atc0288 7312 Jan  7 15:47 top_sim.dsn</span><br><span class="line">-rw-r--r-- 1 atc0288 atc0288 1096 Jan  7 15:47 top_sim.trn</span><br><span class="line">drwxr-xr-x 5 atc0288 atc0288 4096 Jan  7 15:46 waves_ida.vwdb</span><br></pre></td></tr></table></figure>
+
+
+
+<p>NOTE:</p>
+<ol>
+<li><p>编译仿真的时候需要添加选项：<code>+vwdb+shm2vwdb=1</code></p>
 </li>
-<li><code>[1;36m</code>：<ul>
-<li><code>1</code>：设置文本为高亮（粗体）。</li>
-<li><code>36</code>：颜色代码，表示青色（cyan）。</li>
-</ul>
+<li><p>仿真的是时候添加选项：<code>-input probe_pattern.tcl</code></p>
 </li>
-<li><code>*******************************************************</code>：<ul>
-<li>打印的实际文本。</li>
-</ul>
+<li><p><font color=blue> 这种dump方式有使用缺陷：无法对波形进行切割</font></p>
 </li>
-<li><code>\033[0m</code>：<ul>
-<li>终止颜色控制，将后续文本恢复到默认颜色</li>
-</ul>
-</li>
+</ol>
+<h2 id="方式二：system-task-1"><a href="#方式二：system-task-1" class="headerlink" title="方式二：system task"></a>方式二：system task</h2><p>NOTE:</p>
+<p><font color=red>&#x3D;&#x3D;》TBD</font></p>
+<h1 id="减少波形文件size以及GUI-loading的常用方法"><a href="#减少波形文件size以及GUI-loading的常用方法" class="headerlink" title="减少波形文件size以及GUI loading的常用方法"></a>减少波形文件size以及GUI loading的常用方法</h1><ol>
+<li>使用VWDB格式文件（相比SHM格式，存储占用更小）</li>
+<li>设置单个波形文件上限，超过上限之后，自动存储到下一个文件</li>
+<li>dump hier instance</li>
+<li>只在需要的时间段dump波形</li>
 </ol>
 
       
@@ -614,7 +1274,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/09/Cortex-M-Byte-Half-Word-Word%E8%AE%BF%E9%97%AE/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/06/verilog%E6%89%93%E5%8D%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -628,7 +1288,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/12/09/Cortex-M-Byte-Half-Word-Word%E8%AE%BF%E9%97%AE/" class="post-title-link" itemprop="url">Cortex-M Byte/Half_Word/Word访问</a>
+            <a href="/2025/01/06/verilog%E6%89%93%E5%8D%B0/" class="post-title-link" itemprop="url">verilog打印</a>
         </h2>
 
         <div class="post-meta">
@@ -638,346 +1298,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-12-09 17:02:40" itemprop="dateCreated datePublished" datetime="2024-12-09T17:02:40+08:00">2024-12-09</time>
+              <time title="创建时间：2025-01-06 10:47:16" itemprop="dateCreated datePublished" datetime="2025-01-06T10:47:16+08:00">2025-01-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:48:03" itemprop="dateModified" datetime="2025-03-14T16:48:03+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/12/09/Cortex-M-Byte-Half-Word-Word%E8%AE%BF%E9%97%AE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/09/Cortex-M-Byte-Half-Word-Word%E8%AE%BF%E9%97%AE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>Cortex-M4 是基于 ARM 架构的处理器，支持字节（Byte）、半字（Half-word）和全字（Word）类型的数据访问。具体操作可以通过 <strong>C 语言的指针类型</strong> 来实现。</p>
-</blockquote>
-<h3 id="访问类型定义"><a href="#访问类型定义" class="headerlink" title="访问类型定义"></a>访问类型定义</h3><table>
-<thead>
-<tr>
-<th><strong>访问类型</strong></th>
-<th><strong>数据大小</strong></th>
-<th><strong>C 语言类型</strong></th>
-<th><strong>访问说明</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Byte</td>
-<td>8 位</td>
-<td><code>uint8_t</code> 或 <code>char</code></td>
-<td>访问一个字节</td>
-</tr>
-<tr>
-<td>Half-word</td>
-<td>16 位</td>
-<td><code>uint16_t</code> 或 <code>short</code></td>
-<td>访问两个字节</td>
-</tr>
-<tr>
-<td>Word</td>
-<td>32 位</td>
-<td><code>uint32_t</code> 或 <code>int</code></td>
-<td>访问四个字节</td>
-</tr>
-</tbody></table>
-<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><p>通过指针类型来实现不同的访问大小。例如，假设一个外设寄存器地址为 <code>0x40000000</code>。</p>
-<h4 id="1-Byte-访问"><a href="#1-Byte-访问" class="headerlink" title="1. Byte 访问"></a><strong>1. Byte 访问</strong></h4><p>使用 <code>uint8_t</code> 指针：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> REGISTER_ADDR 0x40000000</span></span><br><span class="line"><span class="type">uint8_t</span> *byte_ptr = (<span class="type">uint8_t</span> *)REGISTER_ADDR;</span><br><span class="line">*byte_ptr = <span class="number">0xFF</span>;  <span class="comment">// 写入一个字节</span></span><br><span class="line"><span class="type">uint8_t</span> value = *byte_ptr;  <span class="comment">// 读取一个字节</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-Half-word-访问"><a href="#2-Half-word-访问" class="headerlink" title="2. Half-word 访问"></a><strong>2. Half-word 访问</strong></h4><p>使用 <code>uint16_t</code> 指针：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> REGISTER_ADDR 0x40000000</span></span><br><span class="line"><span class="type">uint16_t</span> *halfword_ptr = (<span class="type">uint16_t</span> *)REGISTER_ADDR;</span><br><span class="line">*halfword_ptr = <span class="number">0xFFFF</span>;  <span class="comment">// 写入两个字节</span></span><br><span class="line"><span class="type">uint16_t</span> value = *halfword_ptr;  <span class="comment">// 读取两个字节</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="3-Word-访问"><a href="#3-Word-访问" class="headerlink" title="3. Word 访问"></a><strong>3. Word 访问</strong></h4><p>使用 <code>uint32_t</code> 指针：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> REGISTER_ADDR 0x40000000</span></span><br><span class="line"><span class="type">uint32_t</span> *word_ptr = (<span class="type">uint32_t</span> *)REGISTER_ADDR;</span><br><span class="line">*word_ptr = <span class="number">0xFFFFFFFF</span>;  <span class="comment">// 写入四个字节</span></span><br><span class="line"><span class="type">uint32_t</span> value = *word_ptr;  <span class="comment">// 读取四个字节</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>Cortex-M4 允许非对齐访问，但性能可能会受到影响，建议确保地址对齐到数据大小的边界（1 字节、2 字节或 4 字节）。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/09/AHB-lite-%E4%BF%9D%E6%8A%A4%E6%8E%A7%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/09/AHB-lite-%E4%BF%9D%E6%8A%A4%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">AHB-lite 保护控制</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-09 10:57:49" itemprop="dateCreated datePublished" datetime="2024-12-09T10:57:49+08:00">2024-12-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:45:30" itemprop="dateModified" datetime="2025-03-14T16:45:30+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/AMBA/" itemprop="url" rel="index"><span itemprop="name">AMBA</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/AMBA/AHB-Lite/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/12/09/AHB-lite-%E4%BF%9D%E6%8A%A4%E6%8E%A7%E5%88%B6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/09/AHB-lite-%E4%BF%9D%E6%8A%A4%E6%8E%A7%E5%88%B6/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/09/AHB-Lite-lock%E4%BC%A0%E8%BE%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/09/AHB-Lite-lock%E4%BC%A0%E8%BE%93/" class="post-title-link" itemprop="url">AHB-Lite lock传输</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-09 10:46:52" itemprop="dateCreated datePublished" datetime="2024-12-09T10:46:52+08:00">2024-12-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:45:34" itemprop="dateModified" datetime="2025-03-14T16:45:34+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/AMBA/" itemprop="url" rel="index"><span itemprop="name">AMBA</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/AMBA/AHB-Lite/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/12/09/AHB-Lite-lock%E4%BC%A0%E8%BE%93/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/09/AHB-Lite-lock%E4%BC%A0%E8%BE%93/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Cortex-M4 Master 怎么发出lock传输？</p>
-<p>是由Slave去实现lock传输功能；</p>
-<p>多个Master同时访问同一个share memory的时候，一般会实现此功能，防止数据不同步；</p>
-<blockquote>
-<p> 典型的使用场景是多个Master访问信号量</p>
-<p>处理器使用SWP指令</p>
-</blockquote>
-<p>Q&amp;A:</p>
-<p>indivisiable不可分割怎么理解？</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/12/04/verilog-timescale/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/04/verilog-timescale/" class="post-title-link" itemprop="url">verilog timescale</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-04 13:52:28" itemprop="dateCreated datePublished" datetime="2024-12-04T13:52:28+08:00">2024-12-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-05 15:09:29" itemprop="dateModified" datetime="2024-12-05T15:09:29+08:00">2024-12-05</time>
+                <time title="修改时间：2025-07-01 13:39:56" itemprop="dateModified" datetime="2025-07-01T13:39:56+08:00">2025-07-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -998,8 +1326,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/12/04/verilog-timescale/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/12/04/verilog-timescale/" itemprop="commentCount"></span>
+    <a title="valine" href="/2025/01/06/verilog%E6%89%93%E5%8D%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/06/verilog%E6%89%93%E5%8D%B0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1014,447 +1342,117 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <img src="/2024/12/04/verilog-timescale/image-20241205133128279.png" class="">
+          <h1 id="系统任务"><a href="#系统任务" class="headerlink" title="系统任务"></a>系统任务</h1><h2 id="time"><a href="#time" class="headerlink" title="$time"></a>$time</h2><h2 id="realtime"><a href="#realtime" class="headerlink" title="$realtime"></a>$realtime</h2><h2 id="timeformat"><a href="#timeformat" class="headerlink" title="$timeformat"></a>$timeformat</h2><h2 id="display"><a href="#display" class="headerlink" title="$display"></a>$display</h2><h1 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h1><p>分别打印在默认格式下和设置时间格式为单位1ns，精度小数点后3位，打印字符串 ns，最小打印长度10的情况下的仿真时间</p>
+<p>$timeformat(-9,3,” ns”,20);</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="keyword">timescale</span> 1ns/1ps</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">    <span class="comment">// 设置时间格式为 纳秒，3位小数，单位后缀为 ns，字段宽度 20</span></span><br><span class="line">    <span class="built_in">$timeformat</span>(-<span class="number">9</span>, <span class="number">3</span>, <span class="string">&quot; ns&quot;</span>, <span class="number">20</span>);</span><br><span class="line">    <span class="built_in">$display</span>(<span class="string">&quot;Start simulation&quot;</span>);</span><br><span class="line">    <span class="comment">// 无限打印</span></span><br><span class="line">    <span class="keyword">forever</span> <span class="keyword">begin</span></span><br><span class="line">        #<span class="number">1</span>ms;  <span class="comment">// 延迟 1ms</span></span><br><span class="line">        <span class="built_in">$display</span>(<span class="string">&quot;Time: %t - Looping log...&quot;</span>, <span class="built_in">$time</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
 
 
-
-
-
-
-<p><font color=blue>xrun工具编译的文件一定要有timescale的设置</font></p>
-<ul>
-<li><p>如果    有-timescale编译选项：如果verilog文件没有timescale定义，会使用-timescale指定的默认timescale配置；</p>
-</li>
-<li><p>如果没有-timescale编译选项：后面的verilog文件如果没有timescale定义，会继承前面verilog文件的timescale配置；</p>
-</li>
-</ul>
-<p><font color=blue>xrun工具相关的命令选项：</font></p>
-<p><code>-timescale</code>：</p>
-<p>xrun -timescale ‘&lt;time_unit&#x2F;time_precision&gt;’</p>
-<p>如果verilog文件没有timescale定义，会使用-timescale指定的默认timescale配置</p>
-<p><code>-override_timescale</code>：</p>
-<p>xrun -timescale &lt;time_unit&#x2F;time_precision&gt; -override_timescale</p>
-<p><code>-vtimescale</code>:</p>
-<p>xrun -vtimescale time_unit&#x2F;time_precision</p>
-<p><font color=blue>xrun工具timescale配置优先级</font></p>
-<p>文件定义&gt;-timescale编译命令&gt;-vtimescale编译命令</p>
-<p><font color=blue>编译器timescale和module timescale</font></p>
-<p>编译器是以design中最小的timescale作为仿真精度；</p>
-<p>但是模块内部还是以模块自身的timescale进行计算；</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li>[Verilog基础：编译指令&#96;timescale](<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45791458/article/details/134804982">https://blog.csdn.net/weixin_45791458/article/details/134804982</a>)</li>
-<li><a target="_blank" rel="noopener" href="https://bbs.eetop.cn/thread-886985-1-1.html">不同module中的timescale问题</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/" class="post-title-link" itemprop="url">xrun常用option</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-28 11:12:18" itemprop="dateCreated datePublished" datetime="2024-11-28T11:12:18+08:00">2024-11-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-04 19:21:03" itemprop="dateModified" datetime="2025-08-04T19:21:03+08:00">2025-08-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/11/28/xrun%E5%B8%B8%E7%94%A8option/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="compile-elaborate-simulate命令行选项"><a href="#compile-elaborate-simulate命令行选项" class="headerlink" title="compile&#x2F;elaborate&#x2F;simulate命令行选项"></a>compile&#x2F;elaborate&#x2F;simulate命令行选项</h1><h2 id="default-ext-verilog"><a href="#default-ext-verilog" class="headerlink" title="-default_ext verilog"></a>-default_ext verilog</h2><blockquote>
-<p>Functional Description：<br>xrun generates an error if it encounters a file with an extension that it does not recognize. Use the -default_ext option to specify the file type for files with unrecognized file extensions.</p>
-<p>For example, the following specifies that all files with unrecognized extensions are to be treated as Verilog files:</p>
-<p>-default_ext verilog</p>
-</blockquote>
-<h2 id="vlog-ext"><a href="#vlog-ext" class="headerlink" title="-vlog_ext"></a>-vlog_ext</h2><blockquote>
-<p>Syntax</p>
-<p>% xrun *_ext [+].<extension>[,.<extension>…]</p>
-<p>Example 1</p>
-<p>% xrun -vlog_ext .v,.rtl,.vg</p>
-<p>This example specifies that .v, .rtl, and .vg are valid extensions for Verilog files. The default file extensions for Verilog files are .v, .vp, .vs, .V, .VP, and .VS. With the command used in this example, the list of built-in, predefined extensions is<font color=blue> replaced </font> with a new list that is provided in the command.</p>
-<p>Example 2</p>
-<p>% xrun -vlog_ext +.rtl,.vg</p>
-<p>This example <font color=blue>adds extensions</font> to the list of built-in, predefined extensions by using a plus sign (+) argument. Two new options, .rtl and .vg, are added.<br>This is same as using:</p>
-<p>% xrun -vlog_ext .v,.vp,.vs,.V,.VP,.VS,.rtl,.vg</p>
-<p>Example 3</p>
-<p>% xrun -sysv_ext +, mysvtop</p>
-<p>This example specifies the file type SystemVerilog for file mysvtop, <font color=blue>which does not have any extension.</font></p>
-</blockquote>
-<h2 id="nowarn"><a href="#nowarn" class="headerlink" title="-nowarn"></a>-nowarn</h2><p>关闭不感兴趣的log打印</p>
-<blockquote>
-<p>% xmvhdl -nowarn INTOVF:CUVWSP source.vhd</p>
-</blockquote>
-<h2 id="r-R"><a href="#r-R" class="headerlink" title="-r&#x2F;-R"></a>-r&#x2F;-R</h2><blockquote>
-<p>-r | -R</p>
-<p>The -r option loads and simulates the specified snapshot.</p>
-<p>The -R option simulates the last snapshot generated by an xrun command.<br>Syntax</p>
-<p>% xrun -r <snapshot_name> [other_options]</p>
-<p>% xrun -R [other_options]</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"></span><br><span class="line">-libext &lt;ext&gt;   </span><br><span class="line">Functional Description：</span><br><span class="line">Specify extensions to be used <span class="keyword">for</span> the -y search</span><br><span class="line"></span><br><span class="line">-nowarn BIDANA:LIBNOU:PMBMDV:ILIOPT:RMVANAL</span><br><span class="line">关闭指定的warning信息</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-xmlibdirname</span><br><span class="line">Functional Description：</span><br><span class="line">This option specifies an alternative name <span class="keyword">for</span> the directory <span class="keyword">in</span> <span class="built_in">which</span> the snapshot, libraries, and other generated objects are stored after invoking a simulation with xrun. By default, xrun uses the directory name xcelium.d <span class="keyword">for</span> storing this information.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-allowredefinition         </span><br><span class="line">Functional Description：</span><br><span class="line">Allow multiple files to define the same object</span><br><span class="line"></span><br><span class="line">-nontcglitch</span><br><span class="line">Functional Description：</span><br><span class="line">In a design that contains negative timing checks, the default negative timing check algorithm will calculate, when needed, delays with two values (rise and fall) <span class="keyword">for</span> the different nets. When a delay with two values is calculated, there is the possibility that an event on the input net may cancel a scheduled event on the internal signal driven by the delay. This is called glitch suppression. Because glitch suppression can hide input events from a timing check<span class="string">&#x27;s input, the simulator generates a glitch suppression timing violation if an event on a delayed signal is canceled.</span></span><br><span class="line"><span class="string">Glitch suppression messages are displayed by default. </span></span><br><span class="line"><span class="string">Use the xmsim -nontcglitch option if you want to suppress these messages.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-loadpli1</span></span><br><span class="line"><span class="string">Functional Description：</span></span><br><span class="line"><span class="string">If a PLI application has already been compiled into a dynamic shared library, you can use -loadpli1 to load the library and to register the system tasks defined in the application at run time.</span></span><br><span class="line"><span class="string">The argument to this option is the name or full path of the shared library that contains the PLI application followed by the name of the function that registers the new system tasks. This function, called the bootstrap function, is part of the PLI application, and is defined in the shared library.</span></span><br><span class="line"><span class="string">You can load any number of applications in the same statement by separating the names of the bootstrap functions with a comma. No spaces are allowed in the argument.</span></span><br><span class="line"><span class="string">The file extension of the shared library is optional. The elaborator appends a suffix that is consistent with the OS that you are running. For example, if you are running on the SUN4v platform and enter the following command, the elaborator searches for a library called SSI.so .</span></span><br><span class="line"><span class="string">% xmelab -loadpli1 SSI:ssi_boot top</span></span><br><span class="line"><span class="string">For PLI1.0 applications, the simulator always loads the shared library and executes any bootstrap function(s) that is passed to the elaborator.</span></span><br><span class="line"><span class="string">通过 -loadpli1 指定共享库的同时，必须提供该引导函数的名称</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-wreal  &lt;wreal1driver|wreal4state|wrealmin|wrealmax|wrealsum|wrealavg&gt; </span></span><br><span class="line"><span class="string">Enable wreal AMS datatype</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-wreal_resolution &lt;default|4state|sum|avg|max|min&gt; </span></span><br><span class="line"><span class="string">Set the global wreal resolution function</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>-loadpli1选项说明：</p>
-<p>背景知识</p>
-<p><code>PLI（Programming Language Interface）</code> 是 Verilog 仿真中的一种扩展机制，允许用户通过 C 语言编写自定义的系统任务或函数。这些任务或函数可以在仿真运行时被调用，用于执行仿真器本身无法直接实现的特殊功能。</p>
-<hr>
-<p>关键点解析</p>
-<ol>
-<li><strong>动态共享库加载</strong>：</li>
-</ol>
-<ul>
-<li>如果一个 PLI 应用程序已经被编译为动态共享库（比如 <code>.so</code> 或 <code>.dll</code> 文件），可以通过 <code>-loadpli1</code> 选项在运行时加载这个共享库。</li>
-<li>加载的同时，这个选项还会注册 PLI 应用程序中定义的新系统任务。</li>
-</ul>
-<ol start="2">
-<li><strong>引导函数（Bootstrap Function）</strong>：</li>
-</ol>
-<ul>
-<li>每个 PLI 应用程序共享库中包含一个<strong>引导函数</strong>，负责将该应用程序中的新系统任务注册到仿真器。</li>
-<li>通过 <code>-loadpli1</code> 指定共享库的同时，必须提供该引导函数的名称。</li>
-<li>格式：<code>库名称:引导函数名</code>。</li>
-</ul>
-<ol start="3">
-<li><strong>支持多个共享库</strong>：</li>
-</ol>
-<ul>
-<li>可以一次性加载多个 PLI 应用程序。</li>
-<li>用逗号分隔多个引导函数名，<strong>注意</strong>：逗号之间不能有空格。</li>
-</ul>
-<ol start="4">
-<li><strong>文件扩展名处理</strong>：</li>
-</ol>
-<ul>
-<li>动态共享库的文件扩展名（如 <code>.so</code> 或 <code>.dll</code>）可以省略。</li>
-<li>仿真器会根据操作系统自动补充扩展名。例如：<ul>
-<li>在 Linux 或 Solaris 上扩展为 <code>.so</code>。</li>
-<li>在 Windows 上扩展为 <code>.dll</code>。</li>
-</ul>
-</li>
-</ul>
-<ol start="5">
-<li><strong>PLI1.0 应用</strong>：</li>
-</ol>
-<ul>
-<li>对于 PLI 1.0 应用，仿真器总是按照上述流程加载共享库并执行提供的引导函数。</li>
-</ul>
-</blockquote>
-<h2 id="disableopt"><a href="#disableopt" class="headerlink" title="-disableopt"></a>-disableopt</h2><p>Disable elaboration optimizations</p>
-<h2 id="linedebug"><a href="#linedebug" class="headerlink" title="-linedebug"></a>-linedebug</h2><blockquote>
-<p>By default, models are compiled with performance optimizations turned on. Some of these optimizations disable the ability to set line breakpoints and to single-step though source code. Use -linedebug to override this behavior. Running the simulator with the SimVision debug environment (xmsim -gui) then lets you look at the source code and see where the simulator has stopped for a line breakpoint or when you are stepping through the code.</p>
-<p>Using this option sets the default access to simulation objects to read&#x2F;write&#x2F;connectivity when the design is elaborated. Do not use this option if you want to run in regression mode.</p>
-</blockquote>
-<p><font color=red>set line breakpoints and to single-step though source code</font></p>
-<p>什么是set line breakpoints？</p>
-<p>什么是step though source code？</p>
-<h2 id="xmlibdirname"><a href="#xmlibdirname" class="headerlink" title="-xmlibdirname"></a>-xmlibdirname</h2><p>能够改变xrun工作目录的name</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xrun -xmlibdirname xcelium_nwcl.d -input probe_pattern_nwcl.tcl -l top_sim_nwcl.log </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">probe_pattern_nwcl.tcl：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">database -open -shm top_sim_nbch -default</span></span><br><span class="line">可以同时在一个目录下运行多个仿真，而不会导致冲突</span><br></pre></td></tr></table></figure>
-
-<h2 id="loadpli1"><a href="#loadpli1" class="headerlink" title="-loadpli1"></a>-loadpli1</h2><blockquote>
-<p>This option dynamically loads the specified PLI1.0 application.</p>
-<p><strong>Syntax</strong></p>
-<p>xrun -loadpli1 &lt;shared_lib_name:boot_func_name</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">一般用于加载verdi的接口，来使用dump fsdb相关的task</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、配置环境变量，debpli库在./boot/debpli.so中</span></span><br><span class="line">setenv LD_LIBRARY_PATH $&#123;LD_LIBRARY_PATH&#125;:$&#123;NOVAS_HOME&#125;/share/PLI/VCS/LINUX64:$&#123;NOVAS_HOME&#125;/share/PLI/IUS/LINUX64</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2、添加xrun编译仿真选项</span></span><br><span class="line">xrun +access+rwc -loadpli1 debpli:novas_pli_boot</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3、testbench中添加dump fsdb相关的task</span></span><br><span class="line">initial begin</span><br><span class="line">    $fsdbAutoSwitchDumpfile(500,&quot;top_sim.fsdb&quot;,150);</span><br><span class="line">    $fsdbDumpvars(0, top_sim,&quot;+mda&quot;);</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<h2 id="nontcglitch"><a href="#nontcglitch" class="headerlink" title="-nontcglitch"></a>-nontcglitch</h2><blockquote>
-<p>Functional Description</p>
-<p>In a design that contains negative timing checks, the default negative timing check algorithm will calculate, when needed, delays with two values (rise and fall) for the different nets. When a delay with two values is calculated, there is the possibility that an event on the input net may cancel a scheduled event on the internal signal driven by the delay. This is called glitch suppression. Because glitch suppression can hide input events from a timing check’s input, the simulator generates a glitch suppression timing violation if an event on a delayed signal is canceled.</p>
-<p>Glitch suppression messages are displayed by default. Use the xmsim -nontcglitch option if you want to suppress these messages.</p>
-</blockquote>
-<p>一般用于网表后仿的时候，抑制<code>Warning! Glitch suppression</code>log输出</p>
-<h1 id="TCL命令"><a href="#TCL命令" class="headerlink" title="TCL命令"></a>TCL命令</h1><h2 id="drives"><a href="#drives" class="headerlink" title="drives"></a>drives</h2><blockquote>
-<p>You can use the scope -drivers [scope_name] command to display the drivers of each object that is declared within a specified scope. </p>
-</blockquote>
-<h2 id="value"><a href="#value" class="headerlink" title="value"></a>value</h2><blockquote>
-<p>The Tcl value command prints the current value of the specified objects using the last format specifier preceding the object name argument. If no format is specified, a default format is used.</p>
-</blockquote>
-<h2 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h2><blockquote>
-<p>The Tcl stop command creates or operates on a breakpoint.</p>
-<p><code>-object object_name</code></p>
-<p>Sets a breakpoint that triggers when the specified object changes value (wires, signals, registers, and variables) or is written to (memories). You can also set a breakpoint on an assertion.</p>
-<p><code>-continue</code></p>
-<p>Resumes the simulation after executing the breakpoint. The simulator does not go into interactive mode.</p>
-</blockquote>
-<h2 id="ida-probe-probe"><a href="#ida-probe-probe" class="headerlink" title="ida_probe&#x2F;probe"></a>ida_probe&#x2F;probe</h2><p>使用ida_probe的-wave</p>
-<h1 id="VCS选项的替换"><a href="#VCS选项的替换" class="headerlink" title="VCS选项的替换"></a>VCS选项的替换</h1><h2 id="编译选项"><a href="#编译选项" class="headerlink" title="编译选项"></a>编译选项</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">vcs </span><br><span class="line">+v2k </span><br><span class="line">-sverilog </span><br><span class="line">+verilog2001ext+.vp </span><br><span class="line">-timescale=1ns/10ps </span><br><span class="line">-q </span><br><span class="line">-notice </span><br><span class="line">+lint=all,noSVA-NSVU,noPCTIO-L,noVCDE,noUI,noSVA-CE,noSVA-DIU,noPORTFRC,noSVA-ICP,noNS </span><br><span class="line">+warn=noPHNE </span><br><span class="line">-debug_access+all </span><br><span class="line">-debug_region=cell+lib </span><br><span class="line">-j16 </span><br><span class="line">-full64 </span><br><span class="line">-kdb </span><br><span class="line">+vpi /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/common_vpi/vpi_user.c </span><br><span class="line">-LDFLAGS <span class="string">&quot;-z muldefs&quot;</span> </span><br><span class="line">-o simv </span><br><span class="line">-l simv_compile.log </span><br><span class="line">-P  /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/jtag_vpi/jtag_vpi.tab </span><br><span class="line">-CC <span class="string">&quot;-DVCS_VPI&quot;</span> /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/jtag_vpi/jtag_vpi.c /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/jtag_model/debug_init.c </span><br><span class="line">+vcs+initreg+config+/proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/config_file  </span><br><span class="line">+define+ASSERT_ON </span><br><span class="line">+define+ENABLE_UART_FWRITE </span><br><span class="line">+define+SERIAL_EXECU </span><br><span class="line">+define+VIRAGE_FAST_VERILOG </span><br><span class="line">+define+ADD_DDR_PHY_SIM_DLY  </span><br><span class="line">+define+FAST_SIM </span><br><span class="line">-top tb_top </span><br><span class="line">-f /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/rtl/rtl.vf </span><br><span class="line">-f /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/rtl/macro.vf </span><br><span class="line">-f /proj/AI11923A/atc0288/central/sim/na900_subsystem/autochip_rls_pkg/autochip/testbench/tb.vf ;</span><br></pre></td></tr></table></figure>
-
-<h3 id="主要选项"><a href="#主要选项" class="headerlink" title="主要选项"></a>主要选项</h3><p><strong><code>+v2k</code></strong></p>
-<ul>
-<li>启用 Verilog-2001 语言特性。</li>
-</ul>
-<p><strong><code>-sverilog</code></strong></p>
-<ul>
-<li>启用 SystemVerilog 支持。</li>
-</ul>
-<p><strong><code>+verilog2001ext+.vp</code></strong></p>
-<ul>
-<li>指定 Verilog-2001 的文件扩展名为 <code>.vp</code>。</li>
-</ul>
-<p><strong><code>-timescale=1ns/10ps</code></strong></p>
-<ul>
-<li>指定仿真时间精度为 1ns 和最小时间单位为 10ps。</li>
-</ul>
-<p><strong><code>-q</code></strong></p>
-<ul>
-<li>安静模式，减少非必要的日志输出。</li>
-</ul>
-<p><strong><code>-notice</code></strong></p>
-<ul>
-<li>启用 VCS 通知信息的输出。</li>
-</ul>
-<p><strong><code>+lint=...</code></strong></p>
-<ul>
-<li>开启 lint 检查以报告潜在的问题：<ul>
-<li><code>all</code>：启用所有 lint 检查。</li>
-<li><code>noSVA-NSVU</code> 等：禁用特定类型的检查。</li>
-<li>例如，<code>noVCDE</code> 表示禁用对未使用的变量的警告。</li>
-</ul>
-</li>
-</ul>
-<p><strong><code>+warn=noPHNE</code></strong></p>
-<ul>
-<li>禁用特定的警告，如未连接的端口。</li>
-</ul>
-<p><strong><code>-debug_access+all</code></strong></p>
-<ul>
-<li>启用所有调试访问功能（例如变量值、波形信号）。</li>
-</ul>
-<p><strong><code>-debug_region=cell+lib</code></strong></p>
-<ul>
-<li>指定调试级别，包括 <code>cell</code> 和 <code>lib</code> 范围内的信号。</li>
-</ul>
-<p><strong><code>-j16</code></strong></p>
-<ul>
-<li>启用多线程编译，设置线程数为 16。</li>
-</ul>
-<p><strong><code>-full64</code></strong></p>
-<ul>
-<li>启用 64 位模式。</li>
-</ul>
-<p><strong><code>-kdb</code></strong></p>
-<ul>
-<li>启用 Kernel Database（KDB）功能，用于动态调试。</li>
-</ul>
-<h3 id="VPI-相关选项"><a href="#VPI-相关选项" class="headerlink" title="VPI 相关选项"></a>VPI 相关选项</h3><p><strong><code>+vpi</code></strong></p>
-<ul>
-<li>使能vpi</li>
-</ul>
-<p><strong><code>-LDFLAGS &quot;-z muldefs&quot;</code></strong></p>
-<ul>
-<li>链接器选项，允许多重定义的符号（<code>-z muldefs</code> 是 Linux 链接选项）。</li>
-</ul>
-<p><strong><code>-P .../jtag_vpi.tab</code></strong></p>
-<ul>
-<li>指定 VPI 的模块定义表（.tab 文件），用于配置 VPI。</li>
-</ul>
-<p><strong><code>-CC &quot;-DVCS_VPI&quot; ...</code></strong></p>
-<ul>
-<li>向 C 预处理器传递宏定义选项 <code>-DVCS_VPI</code>，并编译指定的 C 文件。</li>
-</ul>
-<h2 id="仿真选项"><a href="#仿真选项" class="headerlink" title="仿真选项"></a>仿真选项</h2><hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_48731721/article/details/127773239">RUN无法识别$fsdbDumpfile函数的解决办法</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/11/06/xrun%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/06/xrun%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">xrun仿真工具</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-06 20:00:36" itemprop="dateCreated datePublished" datetime="2024-11-06T20:00:36+08:00">2024-11-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-29 14:07:38" itemprop="dateModified" datetime="2025-05-29T14:07:38+08:00">2025-05-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/11/06/xrun%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/11/06/xrun%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p>single-core or multi-core engine</p>
-</li>
-<li><p>xrun takes files from different simulation languages, such as Verilog, SystemVerilog, VHDL, Verilog AMS, VHDL AMS, Specman e, and files written in general programming languages like C and C++</p>
-</li>
-</ul>
-<p>xrun:</p>
-<p>  xmvlog<br>  xmvhdl<br>  xmelab<br>  xmsim</p>
-<hr>
-<p>Q&amp;A:</p>
-<p><font color=blue>snapshot??</font></p>
-<p><font color=blue>compile, elaborator, simulator?</font></p>
-<p><font color=red>-y and -v file changes, -incdir changes, -makelib changes, and precompiled library changes.??</font></p>
-<p><font color=red>Displaying and Replaying the xrun History</font></p>
-<p><font color=red> single-core engine&#x2F;  multi-core engine</font></p>
-<p><font color=red>design unit</font></p>
-<p><font color=red>Q:为什么需要Multi-Step ?</font></p>
-<p>和re-compile和re-elaborate有关联吗?</p>
-<p><font color=red>Q:cds.lib ?</font></p>
-<p>用来定义什么东西？</p>
-<p>define?something？</p>
-<p><font color=red>SimVision</font></p>
-<p><font color=red>hdl.var??</font></p>
 <hr>
 <p>参考博客:</p>
+<p>1.<a target="_blank" rel="noopener" href="https://blog.eetop.cn/blog-1260220-6904705.html">systemverilog 中关于时间值的设置</a></p>
+<p>2.<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33300585/article/details/132327908">SystemVerilog中$timeformat的用法</a></p>
+<p>3.<a target="_blank" rel="noopener" href="https://blog.csdn.net/wuzhikaidetb/article/details/125998654">Verilog的时间格式系统任务</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/01/04/WSL%E5%8A%9F%E8%83%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/04/WSL%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">WSL功能</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-04 18:13:32 / 修改时间：18:45:07" itemprop="dateCreated datePublished" datetime="2025-01-04T18:13:32+08:00">2025-01-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/linux-shell%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">linux&shell脚本</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/01/04/WSL%E5%8A%9F%E8%83%BD/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/01/04/WSL%E5%8A%9F%E8%83%BD/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="WSL安装"><a href="#WSL安装" class="headerlink" title="WSL安装"></a>WSL安装</h1><h1 id="软件源配置"><a href="#软件源配置" class="headerlink" title="软件源配置"></a>软件源配置</h1><h2 id="libc-so-6丢失"><a href="#libc-so-6丢失" class="headerlink" title="libc.so.6丢失"></a>libc.so.6丢失</h2><p><strong>libc.so.6</strong>是一个动态链接库文件，是GNU C Library的一个共享函数库</p>
+<p>可以这么说，Ubuntu下有个问题，好多文件都在&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;下，弄得很麻烦，需要做软连接才可以使用。更巧的是，这个libc.so.6需要手动链接一下。</p>
+<p>知道咋回事了，就开始做吧：</p>
+<p>1、查找libc.so.6文件的具体路径</p>
+<p>通常情况下Ubuntu下是这样的：</p>
+<p>32bit: &#x2F;lib&#x2F;i386-linux-gnu&#x2F;libc.so.6</p>
+<p>64bit: &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;libc.so.6</p>
+<p>此外使用命令查看：</p>
+<p>#dpkg -L libc6</p>
+<p>2、软链接</p>
+<p>ln -s &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;libc.so.6  &#x2F;lib&#x2F;libc.so.6</p>
+<hr>
+<p>参考博客：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/punkchang88/article/details/122221296">compilation&#x2F;elaboration&#x2F;simulation</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuezhimou/p/14063419.html">strings: ‘&#x2F;lib&#x2F;libc.so.6’:No such file</a></li>
 </ol>
 
       
@@ -1474,7 +1472,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1542,20 +1540,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-count">235</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-count">167</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1582,7 +1580,7 @@
 <div class="copyright">
   
   &copy; 2024 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

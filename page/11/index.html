@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/19/verilog%E4%B9%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -176,127 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">dft基础概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-26 15:44:34" itemprop="dateCreated datePublished" datetime="2024-07-26T15:44:34+08:00">2024-07-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-30 20:18:14" itemprop="dateModified" datetime="2024-07-30T20:18:14+08:00">2024-07-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DFT%E5%8F%AF%E6%B5%8B%E6%80%A7%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">DFT可测性设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>芯片</p>
-<h1 id="寄存器的测试"><a href="#寄存器的测试" class="headerlink" title="寄存器的测试"></a>寄存器的测试</h1><p><font color=blue>寄存器的测试需要插入一条scan链，将所有的寄存器连接起来。</font></p>
-<p>1、原来的function逻辑</p>
-<img src="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/image-20240727112627887.png" class="">
-
-<p>2、插入scan链需要使用scan寄存器</p>
-<img src="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/image-20240727112828088.png" class="">
-
-<p>3、插入扫描链的示意图</p>
-<img src="/2024/07/26/dft%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/image-20240727112943729.png" class="">
-
-
-
-
-
-
-
-<p>SCAN链和ATPG测试向量</p>
-<p>ATPG主要是覆盖两种错误：</p>
-<p>1、stuck at 错误</p>
-<p>2、transition错误</p>
-<p>其中：</p>
-<p>stuck at的错误可以通过scan测试来解决，其使用的是低速时钟；</p>
-<p>transition错误可以通过transition测试来解决，需要低速scan时钟和高速at speed时钟的切换，会使用OCC IP；</p>
-<p>OCC的用途</p>
-<p>OCC是片内时钟控制器，在DFT模式下可以进行低速scan时钟和高速at speed时钟的切换</p>
-<h1 id="SRAM-ROM-Macro的测试"><a href="#SRAM-ROM-Macro的测试" class="headerlink" title="SRAM&#x2F;ROM Macro的测试"></a>SRAM&#x2F;ROM Macro的测试</h1><p>Memory bist</p>
-<h1 id="Flash-Macro的测试"><a href="#Flash-Macro的测试" class="headerlink" title="Flash Macro的测试"></a>Flash Macro的测试</h1><ul>
-<li><p>使用vendor专门提供的的BIST IP（具有专门的JTAG接口）进行测试</p>
-</li>
-<li><p>需要开发Flash测试pattern</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/26/JTAG-SWD-ACK-error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/26/JTAG-SWD-ACK-error/" class="post-title-link" itemprop="url">JTAG/SWD ACK=error</a>
+            <a href="/2024/08/19/verilog%E4%B9%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">verilog之状态机设计</a>
         </h2>
 
         <div class="post-meta">
@@ -307,7 +187,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-07-26 13:52:50 / 修改时间：15:42:14" itemprop="dateCreated datePublished" datetime="2024-07-26T13:52:50+08:00">2024-07-26</time>
+              <time title="创建时间：2024-08-19 16:36:19 / 修改时间：16:39:41" itemprop="dateCreated datePublished" datetime="2024-08-19T16:36:19+08:00">2024-08-19</time>
             </span>
 
           
@@ -319,8 +199,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/26/JTAG-SWD-ACK-error/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/26/JTAG-SWD-ACK-error/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/08/19/verilog%E4%B9%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/19/verilog%E4%B9%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -336,13 +216,14 @@
 
       
           <blockquote>
-<p>在对JTAG&#x2F;SWD仿真的时候，经常会遇到ACK error的情况，现在对一些会导致ACK error的场景做总结；</p>
-<p>一般来说不是IP本身的问题，需要对时钟，timing等等做check</p>
+<p>介绍状态机设计的方法，以及设计技巧</p>
 </blockquote>
-<p>错误case1：判断DAP是否有时钟</p>
-<p>错误case2：判断DP是否有transaction到AP</p>
-<p>错误case3：判断AP是否有transaction通过总线打出</p>
-<p>错误case4：判断JTAG&#x2F;SWD的约束timing是否满足</p>
+<h1 id="状态跳转"><a href="#状态跳转" class="headerlink" title="状态跳转"></a>状态跳转</h1><p>通常情况下的设计：</p>
+<p>改进&#x3D;&#x3D;》比较节省功耗的设计：</p>
+<p>只在状态机转换的时候，才进行寄存器翻转；</p>
+<p>其他情况下，综合工具会生成寄存器级别的clock gating（可能作用在寄存器clock pin，也可能作用在寄存器enable pin），从而节省功耗；</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cur status machine</span></span><br><span class="line"><span class="keyword">wire</span> itf_st_change = (cur_itf_st != nxt_itf_st);</span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> flash_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rst_n) <span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rst_n)</span><br><span class="line">        cur_itf_st &lt;= <span class="number">6&#x27;b000000</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(itf_st_change)</span><br><span class="line">        cur_itf_st &lt;= nxt_itf_st;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -362,7 +243,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -376,7 +257,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/" class="post-title-link" itemprop="url">verilog之奇奇怪怪的注意点</a>
+            <a href="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="post-title-link" itemprop="url">eFlash controller学习路线</a>
         </h2>
 
         <div class="post-meta">
@@ -386,15 +267,28 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-07-23 17:53:00" itemprop="dateCreated datePublished" datetime="2024-07-23T17:53:00+08:00">2024-07-23</time>
+              <time title="创建时间：2024-08-15 09:21:22" itemprop="dateCreated datePublished" datetime="2024-08-15T09:21:22+08:00">2024-08-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-24 14:34:11" itemprop="dateModified" datetime="2024-07-24T14:34:11+08:00">2024-07-24</time>
+                <time title="修改时间：2024-08-16 13:53:15" itemprop="dateModified" datetime="2024-08-16T13:53:15+08:00">2024-08-16</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/tsmc-auot-eflash-controller/" itemprop="url" rel="index"><span itemprop="name">tsmc auot eflash controller</span></a>
+                </span>
+            </span>
 
           
   
@@ -405,8 +299,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -421,31 +315,786 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="force语句"><a href="#force语句" class="headerlink" title="force语句"></a>force语句</h2><p>如果对wire就行force，那么整个wire逻辑都会是被传递；</p>
-<h2 id="判断语句"><a href="#判断语句" class="headerlink" title="&#x3D;&#x3D; 判断语句"></a>&#x3D;&#x3D; 判断语句</h2><p>如果32bits data中，高bit是Z或者X，那么在进行比较的时候，就可能出现问题；</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wait</span>(top_sim<span class="variable">.ac7843x</span><span class="variable">.MTCMOS_wrap</span><span class="variable">.protsys</span><span class="variable">.pbr_right_inf_u</span><span class="variable">.master3_right</span>[<span class="number">31</span>:<span class="number">0</span>] == <span class="number">32&#x27;h6</span>);</span><br><span class="line"># 在上述语句中，如果只有低<span class="number">3</span>bits有效，高<span class="number">29</span>bits是Z态，那么上面的比较就不会成立，可能会一直比较，修改进行如下的修改：</span><br><span class="line"><span class="keyword">wait</span>(top_sim<span class="variable">.ac7843x</span><span class="variable">.MTCMOS_wrap</span><span class="variable">.protsys</span><span class="variable">.pbr_right_inf_u</span><span class="variable">.master3_right</span>[<span class="number">2</span>:<span class="number">0</span>] == <span class="number">3&#x27;b110</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="波形dump"><a href="#波形dump" class="headerlink" title="波形dump"></a>波形dump</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$fsdbAutoSwitchDumpfile(<span class="number">100</span>,<span class="string">&quot;top_sim.fsdb&quot;</span>,<span class="number">200</span>);</span><br><span class="line">$fsdbDumpvars(<span class="number">0</span>, top_sim,<span class="string">&quot;+mda&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<img src="/2024/07/23/verilog%E4%B9%8B%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84%E7%82%B9/image-20240724121740011.png" class="">
-
-
-
-<p>$fsdbDumpvars</p>
-<p>depth表示要加载波形的层次；0表示当前instance下的所有变量一级其他module实例的波形，1表示当前instance中的变量的波形，不包括当前instance中的其他module实例的波形，2表示包含当前instance以及其中的第一级子instance的波形；以此类推。</p>
-<p>$fsdbAutoSwitchDumpfile(File_Size,”file_name”, Max_file_number[, log_file_name])</p>
-<p>file_size的单位是M。log file是可选的，建议加上。</p>
-<h2 id="反标延时"><a href="#反标延时" class="headerlink" title="反标延时"></a>反标延时</h2><p>$sdf_annotate</p>
+          <p>1、eFlash user mode</p>
+<p>各种工作机制 &amp; RTL仿真</p>
+<p>RTL详细分析</p>
+<p>2、eFlash test mode</p>
+<h1 id="design-review学习整理"><a href="#design-review学习整理" class="headerlink" title="design review学习整理"></a>design review学习整理</h1><p>DRS文档；</p>
+<p>详细设计文档；</p>
+<p>design review PPT；</p>
 <hr>
-<p>参考博客：</p>
+<h2 id="DRS"><a href="#DRS" class="headerlink" title="DRS"></a>DRS</h2><p>pflash drs</p>
+<p>1、软件的verify命令是：</p>
+<p>page erase verify；</p>
+<p>mass erase verify；</p>
+<p>2、</p>
+<p>page program可以配置的长度（最大长度是一个page，最小长度是一个word）</p>
+<p>page erase verify命令可以配置的长度（最大长度是一个page，最小长度是一个word）</p>
+<p>3、page program</p>
+<p>program之前会有verify命令执行，可以通过软件寄存器配置关闭，但是关闭之后，无法保证program是否成功；</p>
+<p>4、读写保护规则</p>
+<p>可以通过option byte区域，也可以通过寄存器配置</p>
+<p>5、external reset pin control</p>
+<p>dflash DRS和pflash DRS基本相同</p>
+<h2 id="Flash-IP"><a href="#Flash-IP" class="headerlink" title="Flash IP"></a>Flash IP</h2><p>PFlash  256KB, DFlash 128KB</p>
+<img src="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815201154560.png" class="">
+
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller学习路线\image-20240815201154560.png" alt="image-20240815201154560"></p>
+<h3 id="read操作"><a href="#read操作" class="headerlink" title="read操作"></a>read操作</h3><p>电压范围有要求：正常工作电压0.81V~1.21V</p>
+<p>以0.99为档位：</p>
+<ul>
+<li>小于0.99V，Tcyc&#x3D;40ns</li>
+<li>大于0.99V，Tcyc&#x3D;25ns；</li>
+</ul>
+<blockquote>
+<p>项目中eFlash的使用场景是大于0.99V的（ss corner）；</p>
+<p>进入低功耗mode的时候，eFlash controller和eFlash Macro都会掉电；</p>
+</blockquote>
+<h3 id="program操作"><a href="#program操作" class="headerlink" title="program操作"></a>program操作</h3><p>Macro的program操作每次支持的是36bits</p>
+<p>因此一个word program需要执行两次macro program</p>
+<h3 id="page-erase"><a href="#page-erase" class="headerlink" title="page erase"></a>page erase</h3><h3 id="mass-erase"><a href="#mass-erase" class="headerlink" title="mass erase"></a>mass erase</h3><p>mass erase和page erase的主要区别是需要将WHV参数设置成0xC</p>
+<h3 id="RECALL操作"><a href="#RECALL操作" class="headerlink" title="RECALL操作"></a>RECALL操作</h3><p>flash实际上可以看成是一个模拟的macro，recall操作就是将flash 的trim值读取出来</p>
+<h3 id="reference-cell-erase操作"><a href="#reference-cell-erase操作" class="headerlink" title="reference cell erase操作"></a>reference cell erase操作</h3><p>针对样片进行操作；</p>
+<h1 id="smart-write-IP"><a href="#smart-write-IP" class="headerlink" title="smart-write IP"></a>smart-write IP</h1><p>可以直接实现page program和page_erase操作</p>
+<p>可以提高endurance</p>
+<img src="/2024/08/15/eFlash-controller%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image-20240815203928579.png" class="">
+
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller学习路线\image-20240815203928579.png" alt="image-20240815203928579"></p>
+<blockquote>
+<p>思考：</p>
+<p><font color=red>为什么只用这几种smart-write算法？</font></p>
+<p>可能是直接follow原来项目的做法，也可能是有其他原因；</p>
+</blockquote>
+<h2 id="workspaceflow"><a href="#workspaceflow" class="headerlink" title="workspaceflow"></a>workspaceflow</h2><p>SME、SMP</p>
+<h1 id="BIST-IP"><a href="#BIST-IP" class="headerlink" title="BIST IP"></a>BIST IP</h1><h1 id="Architecture-Design"><a href="#Architecture-Design" class="headerlink" title="Architecture Design"></a>Architecture Design</h1><p><font color=red>flash组织中，info0的page3 ？？</font></p>
+<h2 id="eFlash组织规划"><a href="#eFlash组织规划" class="headerlink" title="eFlash组织规划"></a>eFlash组织规划</h2><h2 id="PFlash-Info规划"><a href="#PFlash-Info规划" class="headerlink" title="PFlash Info规划"></a>PFlash Info规划</h2><h2 id="DFlash-Info规划"><a href="#DFlash-Info规划" class="headerlink" title="DFlash Info规划"></a>DFlash Info规划</h2><p>dflash info区域更多的是和HSM相关，首先看HSM对Flash的要求：</p>
+<p>1、hsm在Flash中会占用一些区域</p>
+<ul>
+<li><p>OTP：</p>
+<ul>
+<li>存放一些key，校验参数（image start ，image size）以及chip lock state；</li>
+<li>存放在dflash info0 page0区域</li>
+</ul>
+</li>
+<li><p>Key area：</p>
+<ul>
+<li>存放一些custormer key</li>
+<li>存放在dflash info0 page1和page2</li>
+</ul>
+</li>
+<li><p>romcode area：PFlash main array</p>
+</li>
+<li><p>image area：PFlash main array</p>
+</li>
+</ul>
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-15-eFlash-controller学习路线\image-20240815210009026.png" alt="image-20240815210009026"></p>
+<p>2、这些区域，在不同的生命周期中，对各个Master有着不同的访问要求</p>
+<p>3、mass erase</p>
+<p>如果pflash中存放了romcode以及image area，如果执行mass erase：</p>
+<ul>
+<li>RAW生命周期，mass erase命令可以通过执行macro 的mass erase实现</li>
+<li>其他life cycle，mass erase命令可以通过macro的page erase实现（因为pflash存放的rom以及image区域不能被擦除）</li>
+</ul>
+<blockquote>
+<p>各个生命周期是什么意思？</p>
+</blockquote>
+<p>romcode起始地址always是0地址；</p>
+<p>key area有两个，通过valid flag标记有效位，</p>
+<h2 id="Flash支持的命令"><a href="#Flash支持的命令" class="headerlink" title="Flash支持的命令"></a>Flash支持的命令</h2><h2 id="读写保护机制"><a href="#读写保护机制" class="headerlink" title="读写保护机制"></a>读写保护机制</h2><p>核心就是防止jtag修改或者读取flash main区域的内容</p>
+<h2 id="Flash-FS（function-support）"><a href="#Flash-FS（function-support）" class="headerlink" title="Flash FS（function support）"></a>Flash FS（function support）</h2><ul>
+<li>命令支持</li>
+<li><h2 id="读写保护机制-写保护可寄存器配置-读保护-》非读保护：触发Dflash-Pflash-mass-erase"><a href="#读写保护机制-写保护可寄存器配置-读保护-》非读保护：触发Dflash-Pflash-mass-erase" class="headerlink" title="读写保护机制- 写保护可寄存器配置- 读保护-》非读保护：触发Dflash&#x2F;Pflash mass erase"></a>读写保护机制<br>- 写保护可寄存器配置<br>- 读保护-》非读保护：触发Dflash&#x2F;Pflash mass erase</h2></li>
+<li>read while write<ul>
+<li>读pflash的时候可以写dflash</li>
+<li>反之也可</li>
+</ul>
+</li>
+<li>flash size可配置<ul>
+<li>pflash：256&#x2F;128&#x2F;64KB</li>
+<li>dflash：128&#x2F;64KB</li>
+</ul>
+</li>
+<li>LVD检测，低电压检测，当SPM给flash一个低电压信号的话，<font color=red>当前的program或者erase的操作会直接结束，因为这些操作对电压有要求；datasheet有要求</font></li>
+<li>abort command</li>
+<li>HSM相关区域权限管控</li>
+<li>cache，硬件自动清除cache（当发生flash write操作的时候）</li>
+<li>ECC</li>
+<li>EIM</li>
+<li>BIST</li>
+</ul>
+<blockquote>
+<p>思考：</p>
+<p>当LVD的时候，状态机需要停止当前的操作，因为Macro database上，program或者erase操作，对工作电压是有要求的；</p>
+</blockquote>
+<h2 id="硬件架构"><a href="#硬件架构" class="headerlink" title="硬件架构"></a>硬件架构</h2><p>flash是放在MTCMOS电源域，因此在vlps或者standy mode的时候会断电（controller和Macro都会断电）</p>
+<p>flash top ctrl：主要是处理顶层的信息</p>
+<p>AHB itf：处理bus的transaction，主要有两个cache</p>
+<p>apb itf：控制和状态寄存器</p>
+<p>pflash_ctrl主要是处理除了flash接口时序相关的之外的所有控制（读写管控，命令控制）</p>
+<p>pflash_itf主要是实现macro级别的时序</p>
+<h2 id="Design-and-Implementation"><a href="#Design-and-Implementation" class="headerlink" title="Design and Implementation"></a>Design and Implementation</h2><p>cache是2路组相连的设计？</p>
+<p>自研？添加了很多断言？</p>
+<p>flash寄存器读写都是脚本生成的？</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/09/secure-debug%E5%92%8Csecure-boot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/09/secure-debug%E5%92%8Csecure-boot/" class="post-title-link" itemprop="url">secure-debug和secure-boot</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-08-09 15:39:55 / 修改时间：15:42:29" itemprop="dateCreated datePublished" datetime="2024-08-09T15:39:55+08:00">2024-08-09</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/09/secure-debug%E5%92%8Csecure-boot/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/09/secure-debug%E5%92%8Csecure-boot/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>secure debug</p>
+</blockquote>
+<p>在hsm enable的时候，此时必须要等到hsm debug en信号assert之后，外部调试器才能访问MCU资源；</p>
+<p>hsm debug en assert的条件是调用hsm算法完成鉴权；</p>
+<p>这部分鉴权操作和secure boot中，利用hsm算法对pflash usercode进行校验是独立的；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/08/verilog%E7%9A%84task-function%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/08/verilog%E7%9A%84task-function%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">verilog的task & function使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-08 15:29:23" itemprop="dateCreated datePublished" datetime="2024-08-08T15:29:23+08:00">2024-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-28 22:44:27" itemprop="dateModified" datetime="2024-08-28T22:44:27+08:00">2024-08-28</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/08/verilog%E7%9A%84task-function%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/08/verilog%E7%9A%84task-function%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>funciton的输出是函数名本身；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/08/Design-of-bus-infrastructure-components%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/08/Design-of-bus-infrastructure-components%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">Design of bus infrastructure components（1）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-08-08 08:55:04 / 修改时间：09:31:37" itemprop="dateCreated datePublished" datetime="2024-08-08T08:55:04+08:00">2024-08-08</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/08/Design-of-bus-infrastructure-components%EF%BC%881%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/08/Design-of-bus-infrastructure-components%EF%BC%881%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>在这个章节，需要初步掌握使用如下组件搭建AMBA系统架构的基本知识：</p>
+<ul>
+<li><p>Cortex-M3（AHB-Lite接口）</p>
+</li>
+<li><p>AMBA 5 AHB</p>
+</li>
+<li><p>AMBA 3 APB</p>
+</li>
+</ul>
+<blockquote>
+<p>虽然 Cortex-M3 处理器在设计时使用了 AMBA 中 AHB 协议的 AHB Lite 版本，但在这里的示例中使用的是 AHB5 协议，因为它是最新的协议，更具有未来适应性。</p>
+</blockquote>
+<p><font color=blue>AMBA 5 AHB中和TrustZone 相关的机制并不会被使用，因为Cortex-M3处理器不支持；</font></p>
+<p><font color=blue>如果AHB-Lite的Master想要使用AHB5总线的话，需要对总线加一层额外的wrapper，为了处理一些不需要的端口，例如互斥访问操作；</font></p>
+<h2 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h2><img src="/2024/08/08/Design-of-bus-infrastructure-components%EF%BC%881%EF%BC%89/image-20240808090825499.png" class="">
+
+<blockquote>
+<p>1、有两个AHB5 wrapper，因此需要两个default slave</p>
+<p>2、DNOTITRAN设置为1，IBUS和DBUS不会同时发出transaction，因此可以使用code_mux组件，无需arbiter</p>
+<p>3、访问NVIC以及debug组件不会通过系统bus 进行路由route</p>
+</blockquote>
+<h2 id="memory-map"><a href="#memory-map" class="headerlink" title="memory map"></a>memory map</h2><img src="/2024/08/08/Design-of-bus-infrastructure-components%EF%BC%881%EF%BC%89/image-20240808091509023.png" class="">
+
+<blockquote>
+<p>每个外设模块分配的空间是4KB是比较常用的做法，因为在multiplex 的做法比较简单，统一用[15:12]进行decode</p>
+</blockquote>
+<p><font color=blue>另外需要注意，Cortex-M3和Cortex-M4处理器具有bitband特性，在利用这些特性的时候，注意冲突；</font></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/07/eflash-controller-Q-A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/07/eflash-controller-Q-A/" class="post-title-link" itemprop="url">eflash controller Q&A</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-07 14:16:15" itemprop="dateCreated datePublished" datetime="2024-08-07T14:16:15+08:00">2024-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-16 09:34:43" itemprop="dateModified" datetime="2024-08-16T09:34:43+08:00">2024-08-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/tsmc-auot-eflash-controller/" itemprop="url" rel="index"><span itemprop="name">tsmc auot eflash controller</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/07/eflash-controller-Q-A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/07/eflash-controller-Q-A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>记录Q&amp;A</p>
+</blockquote>
+<hr>
+<p>IP名字理解？</p>
+<hr>
+<p>array选择？</p>
+<hr>
+<p>地址译码？</p>
+<hr>
+<p>&#x3D;&#x3D;》Flash Macro的array是如何组织的？以及col-mux的作用？XADDR和YADDR寻址某一个WORD的过程</p>
+<hr>
+<p>&#x3D;&#x3D;》Flash Macro的erase操作如何实现？直接调用smart-write IP？具体如何实现？</p>
+<blockquote>
+<p>The smart write soft IP is need for this Flash IP. Smart write (word program &amp; page erase) is a must for user’s application mode, including both 10K and 100K endurance array.  </p>
+</blockquote>
+<p><font color=blue>使用TSMC的eFlash Macro一定需要配合SMWR IP使用；因为word program以及page erase需要使用到SMWR IP</font></p>
+<p>当使用smart write&#x2F;program算法的时候需要erase write&#x2F;program操作</p>
+<hr>
+<p>&#x3D;&#x3D;》smart-write IP支持哪些write操作？以及这些操作对应的array？</p>
+<ul>
+<li>page erase</li>
+<li><font color=red>word program？half-word program？</font></li>
+</ul>
+<p>smart-write执行这些操作的过程中需要执行program verify &#x2F; erase verify</p>
+<p><font color=red>smart IP能够对那些array执行smart write</font></p>
+<hr>
+<p>Q3: 10K and 100K endurance array  这个怎么理解？</p>
+<p>使用smart-write算法，其使用寿命是100K；<br>不使用smart-write算法，其使用寿命是10K；</p>
+<p><font color=red>可以这么理解吗？</font></p>
+<hr>
+<p>FMCSR (Flash Memory Command Status Register)寄存器中的具体含义：</p>
+<ul>
+<li>FMCCF</li>
+<li>FMCCFTF</li>
+<li>DBUF_LST</li>
+<li>DBUF_RDY</li>
+<li>CMD_BUSY</li>
+</ul>
+<hr>
+<p>read &amp; write rule？</p>
+<p>1、通过option page配置</p>
+<p>2、能保护的范围只有main区域</p>
+<p>3、如果重新program option page区域，需要复位才能生效；</p>
+<p>4、读写保护的配置有两种：一个是option page，另外一个是直接操作读写保护寄存器；</p>
+<p>5、保护规则：</p>
+<ul>
+<li>主要是让debugger不能访问；</li>
+</ul>
+<hr>
+<p>smart write算法，比正常write的算法时间要长吗？</p>
+<hr>
+<p>3’b010: SME2, to run one-shot mass-erase on main(with reden), or ifren + main+reden array</p>
+<p>mass erase可以配置选择main或者main+reden<br>如何配置？</p>
+<hr>
+<p>为什么没有用smart IP的mass erase算法？</p>
+<p>为了节省功耗；</p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/07/eflash-controller-software-command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/07/eflash-controller-software-command/" class="post-title-link" itemprop="url">eflash controller software command</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-07 09:47:09" itemprop="dateCreated datePublished" datetime="2024-08-07T09:47:09+08:00">2024-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-14 16:46:38" itemprop="dateModified" datetime="2024-08-14T16:46:38+08:00">2024-08-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/tsmc-auot-eflash-controller/" itemprop="url" rel="index"><span itemprop="name">tsmc auot eflash controller</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/08/07/eflash-controller-software-command/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/07/eflash-controller-software-command/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="page-erase"><a href="#page-erase" class="headerlink" title="page erase"></a>page erase</h1><p>1、page erase操作会调用SMWR IP，SME操作会遵循SME操作流程图；</p>
+<blockquote>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/909f4d15a1c4">fsdbAutoSwitchDumpfile</a></li>
+<li><p><strong>开始擦除 (Start Erase)</strong>:</p>
+<ul>
+<li>流程开始，初始化擦除操作。</li>
+</ul>
+</li>
+<li><p><strong>初始化计数器</strong>:</p>
+<ul>
+<li>擦除脉冲计数器 NNN 被设为 0。</li>
+<li>后擦除计数器 MMM 被设为 0。</li>
+</ul>
+</li>
+<li><p><strong>设置擦除电压</strong>:</p>
+<ul>
+<li>擦除电压设置为高电平 (EV&#x3D;H)。</li>
+<li>设置写入电压寄存器 (WHV3:03:03:0)。</li>
+</ul>
+</li>
+<li><p><strong>执行擦除 (Do Erase)</strong>:</p>
+</li>
 </ol>
+<ul>
+<li>进行实际的擦除操作。</li>
+</ul>
+<ol start="5">
+<li><strong>执行后擦除读取 (Do Post-Erase Read)</strong>:</li>
+</ol>
+<ul>
+<li><font color=blue>初步读取和检查步骤，用于获得擦除后的数据状态，并为后续的擦除验证提供基础数据。</font></li>
+</ul>
+<ol start="6">
+<li><strong>增加擦除脉冲计数器</strong>:</li>
+</ol>
+<ul>
+<li>擦除脉冲计数器 N 增加 1。</li>
+</ul>
+<ol start="7">
+<li><strong>擦除验证 (Erase Verify)</strong>:</li>
+</ol>
+<ul>
+<li>验证擦除是否成功。</li>
+</ul>
+<ol start="8">
+<li><strong>验证成功</strong>:</li>
+</ol>
+<ul>
+<li><p><font color=blue>即使擦除验证通过，为了确保擦除的彻底性，可能还需要进行额外擦除操作。这可能是为了应对一些边缘情况，确保数据完全擦除。&#x3D;&#x3D;&gt;大概率和Macro的自身设计有关，Erase Verify并不能cover到所有的情况，因此需要足够的额外擦除操作（M &gt;&#x3D; POST_ERS ），以保证数据完全擦除。</font></p>
+</li>
+<li><p>如果 M 大于等于 POST_ERS，流程结束。</p>
+</li>
+<li><p>如果 M 小于 POST_ERS，执行额外擦除操作，后擦除计数器 MMM 增加 1，然后返回步骤 4 继续擦除。</p>
+</li>
+</ul>
+<ol start="9">
+<li><strong>失败处理</strong>:</li>
+</ol>
+<ul>
+<li>如果擦除失败，检查擦除脉冲计数器 N 是否大于 N_me。<ul>
+<li>如果 N 大于 N_me，擦除操作失败，流程结束。</li>
+<li>如果 N 小于 N_me，返回步骤 4 继续擦除。</li>
+</ul>
+</li>
+</ul>
+<p>术语解释</p>
+<ul>
+<li><strong>N_me</strong>: 最大擦除脉冲次数，通常是基于特定芯片的耐久性限制。</li>
+<li><strong>T_erase</strong>: 总擦除时间。</li>
+<li><strong>T_sme</strong>: 智能擦除操作的时间。</li>
+</ul>
+</blockquote>
+<p>2、SWMR的工作状态可以通过端口信号判断；</p>
+<blockquote>
+<p>1、User assert <code>SMW_OP</code></p>
+<ul>
+<li>SME2：3’b010, one-shot mass-erase on MAIN array or MAIN, IFREN, and REDEN arrays, Tme is fixed based on macro specs</li>
+<li>SME3：3’b011, smart-page-erase on selected array</li>
+</ul>
+<p>2、TSMWR asserts </p>
+<ul>
+<li><code>SMWR_BUSY</code> signal high until smart-erase cycle is completed.   </li>
+<li><code>SMWR_ERR</code> indicates PASS(0) or FAIL(1) of the cycle, </li>
+<li><code>SMWR_LASTSET</code>, and <code>SMWR_LOOP</code> indicate detailed internal setting to complete the “smart-write” cycle.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Q&amp;A：</p>
+<p>Q1、page erase operation，到底是什么信号触发了是让SMWR动起来？SMWR动起来之后，会拉高swm_busy信号，使得smw_mux输出的是smw_top的信号而不是user信号；</p>
+<p>A1：通过SME操作时序图，可以判断是因为前一级触发了smw_op，然后让SMWR动起来；</p>
+<p>Q2、SME操作流程图怎么理解？</p>
+<p>A2：如上解释</p>
+</blockquote>
+<h1 id="mass-erase命令"><a href="#mass-erase命令" class="headerlink" title="mass erase命令"></a>mass erase命令</h1><p>pflash main区域和dflash main区域是分开操作的，需要不同的指令</p>
+<p>操作的地址只要是在对应的main区域中，即可？？？</p>
+<p>&#x2F;&#x2F; try遇到的问题</p>
+<p>eflash boot，debugger不能erase flash main区域？</p>
+<p>1、先确认读写保护寄存器；</p>
+<p>2、根据读写保护规则确定行为；</p>
+<h2 id="Macro-mass-erase的操作范围："><a href="#Macro-mass-erase的操作范围：" class="headerlink" title="Macro mass erase的操作范围："></a>Macro mass erase的操作范围：</h2><h1 id="reference-cell-erase"><a href="#reference-cell-erase" class="headerlink" title="reference cell erase"></a>reference cell erase</h1><p>空片必须要执行一次reference cell erase；</p>
+<h2 id="软件流程"><a href="#软件流程" class="headerlink" title="软件流程"></a>软件流程</h2><p>首先写FMUKR 0x00ac7805 -&gt;  0x01234567 unlock；</p>
+<p>然后针对FMSPCLCK写32’h3322 1100 -&gt; 32’hffee ddcc；</p>
+<p>最后写FMCCR寄存器，执行reference erase 命令；</p>
+<h2 id="硬件流程"><a href="#硬件流程" class="headerlink" title="硬件流程"></a>硬件流程</h2><p>仿真流程</p>
+<p>1、user logic控制pflash Macro执行reference cell erase</p>
+<p>2、user logic控制dflash Macro执行reference cell erase</p>
+<p>3、user logic控制pflash Macro执行mass erase&#x3D;&#x3D;》pflash main array</p>
+<p>4、smart-write IP采用SM3对pflash Macro区域执行page erase&#x3D;&#x3D;》pflash info page0和page1</p>
+<p>5、user logic控制dflash Macro执行mass erase&#x3D;&#x3D;》dflash main array</p>
+<p>实际芯片的流程</p>
+<p>时序图</p>
+<p>遇到的问题</p>
+<img src="/2024/08/07/eflash-controller-software-command/image-20240809141508322.png" class="">
 
+<p>解决思路</p>
+<ul>
+<li>reference cell erase执行完之后，怎么判断有没有执行成功</li>
+</ul>
+<p>没办法判断，只能按照时序图来，最好多添加一些余量；</p>
+<ul>
+<li>对pflash info区域进行erase操作（利用smart ip）：</li>
+</ul>
+<p>1、smart-ip flow怎么和波形对应？&#x3D;&#x3D;》这个其实可以不用管，只要给command到smwr IP，其能够正确执行page erase操作即可；</p>
+<p>2、怎么看是对应哪一个page进行操作？&#x3D;&#x3D;》通过地址解码table</p>
+<ul>
+<li>reference cell erase命令，执行的范围怎么定？</li>
+</ul>
+<h1 id="page-program"><a href="#page-program" class="headerlink" title="page program"></a>page program</h1><h2 id="software-page-program的使用方式"><a href="#software-page-program的使用方式" class="headerlink" title="software page program的使用方式"></a>software page program的使用方式</h2><img src="/2024/08/07/eflash-controller-software-command/image-20240809103335826.png" class="">
+
+<blockquote>
+<p>NOTE：</p>
+<p>1、硬件首先会verify判断当前地址是否有valid data</p>
+<p>2、如果有valid data的话，需要先erase；</p>
+</blockquote>
+<h2 id="硬件执行机制"><a href="#硬件执行机制" class="headerlink" title="硬件执行机制"></a>硬件执行机制</h2><h3 id="SMP-flow-chart"><a href="#SMP-flow-chart" class="headerlink" title="SMP flow chart"></a>SMP flow chart</h3><img src="/2024/08/07/eflash-controller-software-command/image-20240814134414239.png" class="">
+
+
+
+<blockquote>
+<p>Note: Once “prog_mask” is set to’1’ for existing ‘0’ bit, it will keep at ‘1’ till end of SMP by<br>default.</p>
+</blockquote>
+<h3 id="Smart-Program-Operation"><a href="#Smart-Program-Operation" class="headerlink" title="Smart-Program Operation"></a>Smart-Program Operation</h3><img src="/2024/08/07/eflash-controller-software-command/image-20240814135309547.png" class="">
+
+
+
+<blockquote>
+<p>NOTE：</p>
+<p>SMW_OP</p>
+<p>SWM_BUSY</p>
+<p>SMW_ERR</p>
+<p>SMW_LATESET</p>
+<p>SMW_LOOP</p>
+<p>思考：</p>
+<p><font color=red>SMWR burst-write??</font></p>
+</blockquote>
+<h2 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h2><h1 id="option-page-program"><a href="#option-page-program" class="headerlink" title="option page program"></a>option page program</h1><h2 id="software-option-page-program的使用方式"><a href="#software-option-page-program的使用方式" class="headerlink" title="software option page program的使用方式"></a>software option page program的使用方式</h2><p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152102767.png" alt="image-20240814152102767"></p>
+<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-08-07-eflash-controller-software-command\image-20240814152118901.png" alt="image-20240814152118901"></p>
+<blockquote>
+<p>NOTE：</p>
+<p>1、当SEGWREN是enable的时候，pflash info page2 和option page的属性相同；</p>
+<p>2、当做read protect&#x3D;&#x3D;》non read protect，此SW命令会对pflash main 和 dflash main做mass erase；</p>
+<p>3、program之后，SMWR IP会做program verify操作；</p>
+</blockquote>
+<h2 id="硬件执行机制-1"><a href="#硬件执行机制-1" class="headerlink" title="硬件执行机制"></a>硬件执行机制</h2><h1 id="page-verify"><a href="#page-verify" class="headerlink" title="page verify"></a>page verify</h1>
       
     </div>
 
@@ -464,7 +1113,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -478,7 +1127,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" class="post-title-link" itemprop="url">trace时序约束</a>
+            <a href="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/" class="post-title-link" itemprop="url">Cortex-M4的时钟/复位/Power control</a>
         </h2>
 
         <div class="post-meta">
@@ -488,98 +1137,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-07-23 16:27:47" itemprop="dateCreated datePublished" datetime="2024-07-23T16:27:47+08:00">2024-07-23</time>
+              <time title="创建时间：2024-08-06 15:45:26" itemprop="dateCreated datePublished" datetime="2024-08-06T15:45:26+08:00">2024-08-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-26 14:00:22" itemprop="dateModified" datetime="2024-07-26T14:00:22+08:00">2024-07-26</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="时序约束原则"><a href="#时序约束原则" class="headerlink" title="时序约束原则"></a>时序约束原则</h1><img src="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240726135903139.png" class="">
-
-<img src="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240726135930695.png" class="">
-
-<img src="/2024/07/23/trace%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F/image-20240726135943324.png" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">WIC原理图&工作机制</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-22 20:38:51" itemprop="dateCreated datePublished" datetime="2024-07-22T20:38:51+08:00">2024-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:53:26" itemprop="dateModified" datetime="2025-03-14T16:53:26+08:00">2025-03-14</time>
+                <time title="修改时间：2025-03-14 16:52:29" itemprop="dateModified" datetime="2025-03-14T16:52:29+08:00">2025-03-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -604,8 +1169,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -620,24 +1185,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="demo-WIC原理图"><a href="#demo-WIC原理图" class="headerlink" title="demo WIC原理图"></a>demo WIC原理图</h1><img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093513039.png" class="">
-
-<img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093701230.png" class="">
+          <h1 id="demo时钟结构"><a href="#demo时钟结构" class="headerlink" title="demo时钟结构"></a>demo时钟结构</h1><img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806155104547.png" class="">
 
 
 
-<blockquote>
-<p>1、WIC CLEAR的时候写0<br>2、WIC active以及有中断的时候，写1</p>
-</blockquote>
-<h1 id="修改后的WIC原理图"><a href="#修改后的WIC原理图" class="headerlink" title="修改后的WIC原理图"></a>修改后的WIC原理图</h1><img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093612230.png" class="">
-
-<img src="/2024/07/22/WIC%E5%8E%9F%E7%90%86%E5%9B%BE-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/image-20240807093729352.png" class="">
+<h1 id="demo复位结构"><a href="#demo复位结构" class="headerlink" title="demo复位结构"></a>demo复位结构</h1><img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806154906930.png" class="">
 
 
 
-<blockquote>
-<p>1、WIC LOAD时，wic_active寄存器拉高；wic_pend_we也会拉高;<br>此时中断没有到来，WICPEND寄存器没有时钟；<br>2、当某个中断[i]到来的时候，此时寄存器有时钟，对应的WICPEND[i]会写1<br>3、当WIC_CLEAR或者复位的时候，WICPEND[i]会被清除</p>
-</blockquote>
+<h1 id="demo-power-control"><a href="#demo-power-control" class="headerlink" title="demo power control"></a>demo power control</h1><img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806154942748.png" class="">
+
+<img src="/2024/08/06/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F-%E5%A4%8D%E4%BD%8D-Power-control/image-20240806155007236.png" class="">
+
 
       
     </div>
@@ -657,7 +1216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -671,7 +1230,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/" class="post-title-link" itemprop="url">Cortex-M4特权级转换</a>
+            <a href="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">Cortex-M4的时钟和复位设计实战</a>
         </h2>
 
         <div class="post-meta">
@@ -681,183 +1240,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-07-22 11:11:28" itemprop="dateCreated datePublished" datetime="2024-07-22T11:11:28+08:00">2024-07-22</time>
+              <time title="创建时间：2024-08-01 19:57:54" itemprop="dateCreated datePublished" datetime="2024-08-01T19:57:54+08:00">2024-08-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:56:37" itemprop="dateModified" datetime="2025-03-14T16:56:37+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/22/Cortex-M4%E7%89%B9%E6%9D%83%E7%BA%A7%E8%BD%AC%E6%8D%A2/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/18/posim%E4%BB%BF%E7%9C%9Ftiming-violation%E5%88%86%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/18/posim%E4%BB%BF%E7%9C%9Ftiming-violation%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">posim仿真timing violation分析</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-18 14:23:53" itemprop="dateCreated datePublished" datetime="2024-07-18T14:23:53+08:00">2024-07-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-26 14:00:44" itemprop="dateModified" datetime="2024-07-26T14:00:44+08:00">2024-07-26</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/18/posim%E4%BB%BF%E7%9C%9Ftiming-violation%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/18/posim%E4%BB%BF%E7%9C%9Ftiming-violation%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">Cortex-M4 SoC设计实战-系统低功耗设计</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-18 09:39:40" itemprop="dateCreated datePublished" datetime="2024-07-18T09:39:40+08:00">2024-07-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-06 15:58:22" itemprop="dateModified" datetime="2024-08-06T15:58:22+08:00">2024-08-06</time>
+                <time title="修改时间：2024-08-06 15:55:59" itemprop="dateModified" datetime="2024-08-06T15:55:59+08:00">2024-08-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -882,8 +1272,107 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="core时钟结构"><a href="#core时钟结构" class="headerlink" title="core时钟结构"></a>core时钟结构</h1><img src="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/image-20240806155352379.png" class="">
+
+
+
+<h1 id="core复位结构"><a href="#core复位结构" class="headerlink" title="core复位结构"></a>core复位结构</h1><img src="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/image-20240806155512611.png" class="">
+
+
+
+<h1 id="core-power-control"><a href="#core-power-control" class="headerlink" title="core power control"></a>core power control</h1><img src="/2024/08/01/Cortex-M4%E7%9A%84%E6%97%B6%E9%92%9F%E5%92%8C%E5%A4%8D%E4%BD%8D%E8%AE%BE%E8%AE%A1/image-20240806155534555.png" class="">
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">IP之dft设计</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-29 20:53:07" itemprop="dateCreated datePublished" datetime="2024-07-29T20:53:07+08:00">2024-07-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-06 16:39:52" itemprop="dateModified" datetime="2024-08-06T16:39:52+08:00">2024-08-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DFT%E5%8F%AF%E6%B5%8B%E6%80%A7%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">DFT可测性设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -899,285 +1388,70 @@
 
       
           <blockquote>
-<p>基于Cortex-M4的系统低功耗设计：</p>
-<p>注意进入VLPS mode以及Standby mode的时候，除了关闭时钟和掉电之外，工作电压也从1.1V降低到0.9V</p>
-</blockquote>
-<h1 id="电源域以及低功耗模式"><a href="#电源域以及低功耗模式" class="headerlink" title="电源域以及低功耗模式"></a>电源域以及低功耗模式</h1><img src="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/image-20240729172635279.png" class="">
-
+<p>数字电路最常用的 DFT 技术就是加 scan chain。 用 ATPG 工具产生 scan pattern 可以很高效地判断片子内部是否有缺陷。</p>
+<p>能够测试的缺陷一般是：</p>
 <ul>
-<li><p>数字部分有4个电源域：PD_VDD&#x2F;TOP_VDD&#x2F;AO_VDD&#x2F;FLASH</p>
-</li>
-<li><p>有3种系统低功耗模式：RUN&#x2F;VLPS&#x2F;STANDBY</p>
-</li>
+<li>stuck at 错误</li>
+<li>transition错误</li>
 </ul>
-<blockquote>
-<p>当处于VLPS模式的时候，此时唤醒的机制是使用WIC；</p>
-<p>当处于STANDBY模式的时候，此时唤醒的机制是使用外部的PMU；</p>
-<p><font color=blue>WIC是放在TOP power  domain</font></p>
-<p>思考：</p>
-<p><font color=red>电源情况？时钟情况？复位情况？</font></p>
+<p>DFT技术的核心就两个词：</p>
+<p>1、Controllability 可控性</p>
+<p> 2、Observability 可观察性</p>
+<p>Design中需要实现可控性以支持DFT技术；</p>
+<p>ATPG的test coverage可以用来评估可观察性好坏；</p>
 </blockquote>
-<h1 id="VLPS模式下的低功耗唤醒机制"><a href="#VLPS模式下的低功耗唤醒机制" class="headerlink" title="VLPS模式下的低功耗唤醒机制"></a>VLPS模式下的低功耗唤醒机制</h1><h2 id="软件流程"><a href="#软件流程" class="headerlink" title="软件流程"></a>软件流程</h2><p>0、使能中断唤醒源（有哪些唤醒源是由什么决定？？）</p>
-<p>1、配置PMU寄存器，使能WIC</p>
-<p>2、配置DEEPSLEEP，执行WFI</p>
-<p>3、中断唤醒并处理</p>
-<blockquote>
-<p>思考：</p>
-<p><font color=red>有哪些唤醒源？</font></p>
-<p>第一点是看，在进入低功耗的时候，该模块是否是active；</p>
-<p>第二点是看，中断是否使能；</p>
-</blockquote>
-<h2 id="硬件实现"><a href="#硬件实现" class="headerlink" title="硬件实现"></a>硬件实现</h2><h3 id="WIC-handshake"><a href="#WIC-handshake" class="headerlink" title="WIC handshake"></a>WIC handshake</h3><img src="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/image-20240729201435271.png" class="">
-
-<img src="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/image-20240729201549271.png" class="">
-
-<h3 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h3><img src="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/image-20240730113951925.png" class="">
-
-<blockquote>
-<p>Q&amp;A:<br>1、1&#x3D;&#x3D;》2的过程<br>在这两个动作之间，PMU有做其他操作吗？PMU和各个外设的REQ&#x2F;ACK是在什么阶段做的？<br>如果在这个ACK期间，有中断到来，是什么行为？会进入唤醒流程吗？<br>&#x3D;&#x3D;》在这两个动作之间，PMU不会有其他操作<br>&#x3D;&#x3D;》PMU和各个外设的sleep_req和sleep_ack是在PMU接收到DEEPSLEEPING之后做的；<br>&#x3D;&#x3D;》如果在进入低功耗mode的过程中，有中断到来，其行为取决于这时候PMU的state machine在哪一个状态：</p>
-<ul>
-<li>有可能直接唤醒，</li>
-<li>也有可能会先忽略这个中断，然后等到进入睡眠状态之后再去处理中断</li>
+<h1 id="可控性"><a href="#可控性" class="headerlink" title="可控性"></a>可控性</h1><h2 id="时钟可控"><a href="#时钟可控" class="headerlink" title="时钟可控"></a>时钟可控</h2><ul>
+<li>每一个时钟都应该加上 scan mux。在 ATPG mode 下，scan mux 切换到 scan clock 替换功能时钟 (functional clock) 驱动 flip flop。</li>
+<li>如果设计中用到 ICG (integrated clock gating) cell， 在 ATPG mode 下 ICG 保持“透明” transparent， 即 scan clock 要畅通无阻通过 ICG。 通常 ICG 会有一个 TE pin，连上 atpg_mode 信号就可以保证每个 scan clock pulse 都通过了。</li>
 </ul>
-<p>2、4&#x3D;&#x3D;》5的过程？<br>PMU接收到WAKEUP，内部状态机跳转进入唤醒流程，de-assert WICENREQ<br>3、5&#x3D;&#x3D;》6的过程？<br>PMU内部状态机跳转，active FCLK</p>
-<p>4、时钟和WICDSREQ怎么释放的？<br>&#x3D;&#x3D;》WICDSREQ怎么释放？<br>来自PMU的WICENREQ deassert之后，理论上WICDSREQn就应该同样de-assert，但是这时候没有时钟，需要等待FCLK时钟到来才能完成这个动作<br>FCLK的时钟<br>&#x3D;&#x3D;》时钟怎么释放？<br>在PMU那边控制；</p>
-<p>5、SLEEP如何拉低？<br>CORE的行为</p>
+<p>&#x3D;&#x3D;》bypass 内部时钟</p>
+<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730202209695.png" class="">
+
+<p>&#x3D;&#x3D;》bypass data当做clock的case</p>
+<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730202119127.png" class="">
+
+<h2 id="复位可控"><a href="#复位可控" class="headerlink" title="复位可控"></a>复位可控</h2><ul>
+<li>每一个复位都应该加上 scan mux。在 ATPG mode 下，scan mux 切换到 scan reset 替换功能复位。</li>
+<li>如果因为pin 紧张，无法提供 scan reset，可以在 ATPG mode 下把复位 tie 到 1。</li>
+</ul>
+<p><font color=blue>模块的clock和复位都需要在ATPG mode的时候切换成scan的clock和reset</font></p>
+<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730201957255.png" class="">
+
+
+
+<h1 id="可观察性"><a href="#可观察性" class="headerlink" title="可观察性"></a>可观察性</h1><p>如果电路内部某个 gate 有 stuck at fault，是否都能观察到。 绝大部分 gate 如果有 stuck at fault， 都会被 scan chain 捕捉到。输出的 scan pattern 与预期不一致，就说明片子内部有缺陷了。</p>
+<p>ATPG 工具报告中的 test coverage可用来评估可观察性好坏。 如果test coverage % 比较低，就要研究如何让内部更多的信号可以被 scan chain 观察到了。 具体要看是哪部分电路覆盖率低，分析是否设计中有错造成部分 flip flop 没有加到 scan chain 里。 有些 gate 是无法完全覆盖的，如 scan mux, scan tie off。</p>
+<p><font color=blue>综合工具插入 scan chain 后通常可以生成 DFT DRC 报告。 要看一下。 如果 DFT DRC 过不了，就是scan有些地方出错了，例如出现不可控的path；</font></p>
+<h1 id="项目中的实操"><a href="#项目中的实操" class="headerlink" title="项目中的实操"></a>项目中的实操</h1><p>一般来说，实际项目中会在clock module以及reset module使用scan mux对时钟和复位进行切换；</p>
+<h2 id="添加时钟scan-mux-clock-mux"><a href="#添加时钟scan-mux-clock-mux" class="headerlink" title="添加时钟scan mux(clock mux)"></a>添加时钟scan mux(clock mux)</h2><h3 id="case1：模块内部有多个时钟需要切换"><a href="#case1：模块内部有多个时钟需要切换" class="headerlink" title="case1：模块内部有多个时钟需要切换"></a>case1：模块内部有多个时钟需要切换</h3><p>如果一个模块中只有一个时钟，那么模块内部一般就不用scan mux（clock mux）进行切换</p>
+<p>如果一个模块内部需要多个时钟，并且需要对其切换进行工作，那么就需要使用scan mux，如下图所示：</p>
+<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730203811707.png" class="">
+
+<blockquote>
+<p>原因是，clk_sel信号来自于某个寄存器，其在scan的过程中是不可控的；</p>
+<p>方式一：直接做一个scan mux</p>
+<p>方式二：源头上已经对fun_clock1以及fun_clock2做了切换，因此可以对原来的clock select进行控制即可；</p>
 </blockquote>
-<h3 id="WIC-PMU交互"><a href="#WIC-PMU交互" class="headerlink" title="WIC &amp; PMU交互"></a>WIC &amp; PMU交互</h3><img src="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/image-20240730114034786.png" class="">
+<h3 id="case2：data当做clock"><a href="#case2：data当做clock" class="headerlink" title="case2：data当做clock"></a>case2：data当做clock</h3><p>WIC中data当做clock，就需要进行切换，如下图所示：</p>
+<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730204220520.png" class="">
 
 
 
-<h1 id="STANDBY模式下的低功耗唤醒机制"><a href="#STANDBY模式下的低功耗唤醒机制" class="headerlink" title="STANDBY模式下的低功耗唤醒机制"></a>STANDBY模式下的低功耗唤醒机制</h1><h2 id="软件流程-1"><a href="#软件流程-1" class="headerlink" title="软件流程"></a>软件流程</h2><p>0、使能中断唤醒源（有哪些唤醒源是由什么决定？？）</p>
-<p>1、配置DEEPSLEEP，执行WFI；（WFI处于TOP电源域，在standby模式下，也会掉电）</p>
-<p>2、中断唤醒并通过PMU处理；</p>
-<h2 id="硬件流程"><a href="#硬件流程" class="headerlink" title="硬件流程"></a>硬件流程</h2><img src="/2024/07/18/Cortex-M4-SoC%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98-%E7%B3%BB%E7%BB%9F%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/image-20240806153805333.png" class="">
+<h2 id="添加复位scan-mux-clock-mux"><a href="#添加复位scan-mux-clock-mux" class="headerlink" title="添加复位scan mux(clock mux)"></a>添加复位scan mux(clock mux)</h2><h3 id="case1：data当做reset"><a href="#case1：data当做reset" class="headerlink" title="case1：data当做reset"></a>case1：data当做reset</h3><blockquote>
+<p>因为是异步复位同步释放之后的电路；</p>
+<p>属于是data当做reset的情况，因此需要添加scan mux；</p>
+</blockquote>
+<img src="/2024/07/29/IP%E4%B9%8Bdft%E8%AE%BE%E8%AE%A1/image-20240730204805385.png" class="">
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/17/posim%E4%BB%BF%E7%9C%9F-sdf-annotate%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/17/posim%E4%BB%BF%E7%9C%9F-sdf-annotate%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">posim仿真_sdf_annotate使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-17 16:45:11" itemprop="dateCreated datePublished" datetime="2024-07-17T16:45:11+08:00">2024-07-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-18 14:27:30" itemprop="dateModified" datetime="2024-07-18T14:27:30+08:00">2024-07-18</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/17/posim%E4%BB%BF%E7%9C%9F-sdf-annotate%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/17/posim%E4%BB%BF%E7%9C%9F-sdf-annotate%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>参考博客</p>
+<hr>
+<p>参考博客：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://bbs.eetop.cn/thread-840279-1-1.html"> ncverilog带SDF后仿反标delay的问题？</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/verilog2-sdf.html">Verilog 延迟反标注</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.eetop.cn/blog-1592-6946129.html">数字电路DFT</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ip-soc.com/magazine/229.html">DFT的最佳设计实践</a></li>
 </ol>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/07/17/ARM-v7-M%E6%8C%87%E4%BB%A4%E9%9B%86-isb-dsb%E6%8C%87%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/17/ARM-v7-M%E6%8C%87%E4%BB%A4%E9%9B%86-isb-dsb%E6%8C%87%E4%BB%A4/" class="post-title-link" itemprop="url">ARM-v7 M指令集-isb/dsb指令</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-17 16:43:18" itemprop="dateCreated datePublished" datetime="2024-07-17T16:43:18+08:00">2024-07-17</time>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/07/17/ARM-v7-M%E6%8C%87%E4%BB%A4%E9%9B%86-isb-dsb%E6%8C%87%E4%BB%A4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/07/17/ARM-v7-M%E6%8C%87%E4%BB%A4%E9%9B%86-isb-dsb%E6%8C%87%E4%BB%A4/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -1195,7 +1469,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1263,20 +1537,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-count">235</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-count">167</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1303,7 +1577,7 @@
 <div class="copyright">
   
   &copy; 2024 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

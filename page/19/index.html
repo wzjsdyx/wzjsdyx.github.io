@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">工艺库-基本概念</a>
+            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/" class="post-title-link" itemprop="url">基础知识-常用数字电路verilog描述</a>
         </h2>
 
         <div class="post-meta">
@@ -186,208 +186,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-04-02 13:13:46" itemprop="dateCreated datePublished" datetime="2024-04-02T13:13:46+08:00">2024-04-02</time>
+              <time title="创建时间：2024-04-08 12:05:56" itemprop="dateCreated datePublished" datetime="2024-04-08T12:05:56+08:00">2024-04-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-03 16:05:43" itemprop="dateModified" datetime="2025-04-03T16:05:43+08:00">2025-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E8%89%BA%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">工艺库</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="阈值电压HVT-RVT-LVT-PPA对比"><a href="#阈值电压HVT-RVT-LVT-PPA对比" class="headerlink" title="阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比"></a>阈值电压HVT&#x2F;RVT&#x2F;LVT PPA对比</h1><img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403102041767.png" class="">
-
-
-
-
-
-<p>NOTE:</p>
-<p><font color=blue>实际使用的时候，LVT和HVT的stand cell的面积几乎没什么区别；</font></p>
-<p><font color=blue>之所以说使用LVT综合出来的面积比HVT综合出来的面积小，是因为一个LVT在驱动能力上可能比几个HVT好，所以用LVT之后，整体的cell数量就会降低；</font></p>
-<h1 id="工艺角SS-TT-FF和片上误差OCV"><a href="#工艺角SS-TT-FF和片上误差OCV" class="headerlink" title="工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV"></a>工艺角SS&#x2F;TT&#x2F;FF和片上误差OCV</h1><p>由于半导体制造过程中存在<strong>工艺波动</strong>，相同设计的芯片在不同批次中会有<strong>性能差异</strong>。</p>
-<ul>
-<li><strong>工艺角</strong>用来表示芯片在<strong>不同制造条件下</strong>的<strong>性能变化范围</strong>。</li>
-<li>常用的工艺角有：<ul>
-<li><strong>SS</strong>：Slow-Slow</li>
-<li><strong>FF</strong>：Fast-Fast</li>
-<li><strong>TT</strong>：Typical-Typical</li>
-<li><strong>SF&#x2F;FS</strong>：Slow-Fast &#x2F; Fast-Slow（P管和N管速度不匹配）</li>
-</ul>
-</li>
-</ul>
-<img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403152530125.png" class="">
-
-<p>同一个批次的wafer其corner是相同的，例如下订单之后，其所有的wafer都是相同的corner；</p>
-<p>然后同一片wafer上，不同的位置，其性能有可能也是不同的，这就是OCV的概念；</p>
-<p><font color=blue>OCV的全称是On Chip Variation，用于描述在一块芯片上不同管子间由于工艺偏差、电压降以及温度变化（PVT）等引起的delay变化</font></p>
-<h1 id="standard-cell-命名含义"><a href="#standard-cell-命名含义" class="headerlink" title="standard cell 命名含义"></a>standard cell 命名含义</h1><img src="/2024/04/02/%E5%B7%A5%E8%89%BA%E5%BA%93-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/image-20250403155048516.png" class="">
-
-<blockquote>
-<pre><code>   IP Code       : SCC40NEFAG1_HDC40_HVT
-   Product Type  : Standard Cell Library
-   Technology    : 40nm CMOS EFAG1(Split Gate Flash Ultra Low Power Auto Platform 0.9/1.1/1.2/1.8/2.5/5.0/12V Grade1),
-                   core cell library,
-                   High Vt,
-                   8-track High Density, Gate-Length 40nm,
-                   tapless cell layout structure
-
-
-
-   IP Code       : SCC40NEFAG1_VHSC40_HVT
-   Product Type  : Standard Cell Library
-   Technology    : 40nm CMOS EFAG1(Split Gate Flash Ultra Low Power Auto Platform 0.9/1.1/1.2/1.8/2.5/5.0/12V Grade1),
-                   core cell library,
-                   High Vt,
-                   12-track Very High Speed, Gate-Length 40nm,
-                   tapless cell layout structure
-</code></pre>
-<p><code>PMK</code></p>
-<p>是低功耗相关的库，例如ISO&#x2F;power switch，level shift等</p>
-</blockquote>
-<h1 id="栅极长度"><a href="#栅极长度" class="headerlink" title="栅极长度"></a>栅极长度</h1><p><code>HDC50和HDC40</code></p>
-<p>数字表示栅极长度；</p>
-<p>沟道长度越短，速度越快，功耗越高</p>
-<h1 id="Track"><a href="#Track" class="headerlink" title="Track"></a>Track</h1><p> <strong>1. Track的含义</strong></p>
-<ul>
-<li>基本定义：<ul>
-<li>一个Track通常表示一个金属布线层的宽度和间距之和，即布线间隔的单位长度。</li>
-<li>单元高度通常是以Track数来表示的，例如8-Track、9-Track、12-Track等。</li>
-</ul>
-</li>
-<li>标准单元高度：<ul>
-<li>单元高度 &#x3D; Track数 × 单一轨道高度。</li>
-<li>一般情况下，1个Track约等于工艺栅极长度（Gate Length），比如40nm工艺中，1个Track大约是40nm。</li>
-</ul>
-</li>
-</ul>
-<p><strong>4. Track对PPA的影响</strong></p>
-<table>
-<thead>
-<tr>
-<th><strong>Track数</strong></th>
-<th><strong>面积（Area）</strong></th>
-<th><strong>性能（Performance）</strong></th>
-<th><strong>功耗（Power）</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>低Track</strong></td>
-<td><strong>面积小，密度高</strong></td>
-<td><strong>性能较低</strong></td>
-<td><strong>功耗低</strong></td>
-</tr>
-<tr>
-<td><strong>高Track</strong></td>
-<td><strong>面积大，密度低</strong></td>
-<td><strong>性能较高</strong></td>
-<td><strong>功耗高</strong></td>
-</tr>
-</tbody></table>
-<p>分析：</p>
-<ul>
-<li>低Track数（如8-Track）：<ul>
-<li>面积小：标准单元较矮，布局密度高。</li>
-<li>性能低：单元较矮，驱动能力受限，不适合高速逻辑。</li>
-<li>功耗低：由于短导线和小驱动器，功耗较低。</li>
-</ul>
-</li>
-<li>高Track数（如12-Track）：<ul>
-<li>面积大：标准单元较高，导致芯片面积增大。</li>
-<li>性能高：更大的单元高度允许更强的驱动能力，有助于高频电路。</li>
-<li>功耗高：驱动能力增强的同时，漏电流和动态功耗增加。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<p><strong>参考博客：</strong></p>
-<p><strong><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianbinbin/p/17604494.html">静态时序分析 - OCV</a></strong></p>
-<p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq570437459/article/details/133693417">MOS管各种概念</a></strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">基础知识-移位器的实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-01 09:32:51" itemprop="dateCreated datePublished" datetime="2024-04-01T09:32:51+08:00">2024-04-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-15 09:21:14" itemprop="dateModified" datetime="2024-04-15T09:21:14+08:00">2024-04-15</time>
+                <time title="修改时间：2024-04-16 09:04:27" itemprop="dateModified" datetime="2024-04-16T09:04:27+08:00">2024-04-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -408,8 +214,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -424,39 +230,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>CPU的设计中需要移位器，因此这里补充下移位器的实现方法</p>
-</blockquote>
-<h1 id="移位运算的实现原理"><a href="#移位运算的实现原理" class="headerlink" title="移位运算的实现原理"></a>移位运算的实现原理</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 举例说明：</span></span><br><span class="line">a[<span class="number">3</span>:<span class="number">0</span>],b[<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">c[<span class="number">3</span>:<span class="number">0</span>] = a &gt;&gt;  b;</span><br><span class="line"></span><br><span class="line">c[<span class="number">0</span>] = a[<span class="number">0</span>]/a[<span class="number">1</span>]/a[<span class="number">2</span>]/a[<span class="number">3</span>]</span><br><span class="line">c[<span class="number">1</span>] = a[<span class="number">1</span>]/a[<span class="number">2</span>]/a[<span class="number">3</span>]/   <span class="number">0</span></span><br><span class="line">c[<span class="number">2</span>] = a[<span class="number">2</span>]/a[<span class="number">3</span>]/   <span class="number">0</span>/   <span class="number">0</span></span><br><span class="line">c[<span class="number">3</span>] = a[<span class="number">3</span>]/   <span class="number">0</span>/   <span class="number">0</span>/   <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// c[x]都是b[1:0]进行译码然后MUX输出</span></span><br></pre></td></tr></table></figure>
+          <h1 id="基础逻辑门"><a href="#基础逻辑门" class="headerlink" title="基础逻辑门"></a>基础逻辑门</h1><h1 id="运算符的优先级"><a href="#运算符的优先级" class="headerlink" title="运算符的优先级"></a>运算符的优先级</h1><h1 id="译码器"><a href="#译码器" class="headerlink" title="译码器"></a>译码器</h1><h2 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// one-hot</span></span><br><span class="line"><span class="keyword">module</span> decoder_2_4(</span><br><span class="line">    <span class="keyword">input</span>  [<span class="number">1</span>:<span class="number">0</span>] in,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">3</span>:<span class="number">0</span>] out</span><br><span class="line">)</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">0</span>] = (in == <span class="number">2&#x27;d0</span>);</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">1</span>] = (in == <span class="number">2&#x27;d1</span>);</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">2</span>] = (in == <span class="number">2&#x27;d2</span>);</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">3</span>] = (in == <span class="number">2&#x27;d3</span>);</span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="移位运算的硬件原理图"><a href="#移位运算的硬件原理图" class="headerlink" title="移位运算的硬件原理图"></a>移位运算的硬件原理图</h1><p> 如下所示是上述运算的FPGA综合原理图，其中<code>LUT是不同的逻辑函数：实现的是译码器+多路选择器</code></p>
-<img src="/2024/04/01/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%A7%BB%E4%BD%8D%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/image-20240406212002986.png" class="">
 
-<p><code>移位逻辑本质上是译码逻辑和多路选择逻辑</code></p>
-<h1 id="CPU内部的移位操作实现方式"><a href="#CPU内部的移位操作实现方式" class="headerlink" title="CPU内部的移位操作实现方式"></a>CPU内部的移位操作实现方式</h1><p>CPU内部存在逻辑左移，逻辑右移，算数右移三种移位操作，最直观的方式是直接使用<code>&lt;&lt; &gt;&gt; &gt;&gt;&gt;</code>，最后三个结果根据运算符进行三选一mux操作输出。</p>
-<p>但是通过上面的移位运算的实现原理知道，这样实现的方式面积大消耗比较大</p>
-<p>这里采用面积优化的移位逻辑实现。</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assign</span> shft_src = op_sll ? &#123;</span><br><span class="line">                            src[ <span class="number">0</span>], src[ <span class="number">1</span>], src[ <span class="number">2</span>], src[ <span class="number">3</span>],</span><br><span class="line">                            src[ <span class="number">4</span>], src[ <span class="number">5</span>], src[ <span class="number">6</span>], src[ <span class="number">7</span>],</span><br><span class="line">                            src[ <span class="number">8</span>], src[ <span class="number">9</span>], src[<span class="number">10</span>], src[<span class="number">11</span>],</span><br><span class="line">                            src[<span class="number">12</span>], src[<span class="number">13</span>], src[<span class="number">14</span>], src[<span class="number">15</span>],</span><br><span class="line">                            src[<span class="number">16</span>], src[<span class="number">17</span>], src[<span class="number">18</span>], src[<span class="number">19</span>],</span><br><span class="line">                            src[<span class="number">20</span>], src[<span class="number">21</span>], src[<span class="number">22</span>], src[<span class="number">23</span>],</span><br><span class="line">                            src[<span class="number">24</span>], src[<span class="number">25</span>], src[<span class="number">26</span>], src[<span class="number">27</span>],</span><br><span class="line">                            src[<span class="number">28</span>], src[<span class="number">29</span>], src[<span class="number">30</span>], src[<span class="number">31</span>]</span><br><span class="line">                            &#125;</span><br><span class="line">                         : src[<span class="number">31</span>:<span class="number">0</span>];</span><br><span class="line">                         </span><br><span class="line"><span class="keyword">assign</span> shft_res = shft_src[<span class="number">31</span>:<span class="number">0</span>] &gt;&gt; shft_amt [<span class="number">4</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> sra_mask = ~(<span class="number">32&#x27;hFFFF_FFFF</span> &gt;&gt; shft_amt[<span class="number">4</span>:<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> srl_res = shft_res; <span class="comment">// 逻辑右移</span></span><br><span class="line"><span class="keyword">assign</span> sra_res = (&#123;<span class="number">32</span>&#123;src[<span class="number">31</span>]&#125;&#125; &amp; sra_mask) | shft_res;<span class="comment">// 算术右移</span></span><br><span class="line"><span class="keyword">assign</span> sll_res =    &#123;</span><br><span class="line">                            shft_res[ <span class="number">0</span>], shft_res[ <span class="number">1</span>], shft_res[ <span class="number">2</span>], shft_res[ <span class="number">3</span>],</span><br><span class="line">                            shft_res[ <span class="number">4</span>], shft_res[ <span class="number">5</span>], shft_res[ <span class="number">6</span>], shft_res[ <span class="number">7</span>],</span><br><span class="line">                            shft_res[ <span class="number">8</span>], shft_res[ <span class="number">9</span>], shft_res[<span class="number">10</span>], shft_res[<span class="number">11</span>],</span><br><span class="line">                            shft_res[<span class="number">12</span>], shft_res[<span class="number">13</span>], shft_res[<span class="number">14</span>], shft_res[<span class="number">15</span>],</span><br><span class="line">                            shft_res[<span class="number">16</span>], shft_res[<span class="number">17</span>], shft_res[<span class="number">18</span>], shft_res[<span class="number">19</span>],</span><br><span class="line">                            shft_res[<span class="number">20</span>], shft_res[<span class="number">21</span>], shft_res[<span class="number">22</span>], shft_res[<span class="number">23</span>],</span><br><span class="line">                            shft_res[<span class="number">24</span>], shft_res[<span class="number">25</span>], shft_res[<span class="number">26</span>], shft_res[<span class="number">27</span>],</span><br><span class="line">                            shft_res[<span class="number">28</span>], shft_res[<span class="number">29</span>], shft_res[<span class="number">30</span>], shft_res[<span class="number">31</span>]</span><br><span class="line">					&#125;;<span class="comment">// 逻辑左移</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>逻辑左移实现<ul>
-<li>逆序排列</li>
-<li>左移即可变成右移</li>
-<li>再逆序得到结果</li>
-</ul>
-</li>
-<li>逻辑右移<ul>
-<li>直接右移得到结果</li>
-</ul>
-</li>
-<li>算数右移<ul>
-<li>先右移</li>
-<li>高位补充符号位</li>
-</ul>
-</li>
-</ul>
-<p>思路是，所以的移位操作只使用一个移位运算符。</p>
-<p>上面的实现方式只有一个shft_res逻辑是一个完整的32位移位操作（被移位的数值和移位量都是变量）；sra_mask的逻辑被移位的数值是常量，综合工具会做优化，因此实际消耗的逻辑资源远远少于一个完整的32位移位操作。缺点是时序延迟会有所增加。</p>
+<h2 id="schematic"><a href="#schematic" class="headerlink" title="schematic"></a>schematic</h2><p><font color=red>待补充</font></p>
+<h2 id="译码器在CPU设计中的使用场景"><a href="#译码器在CPU设计中的使用场景" class="headerlink" title="译码器在CPU设计中的使用场景"></a>译码器在CPU设计中的使用场景</h2><img src="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/image-20240415105631238.png" class="">
+
+<h1 id="编码器"><a href="#编码器" class="headerlink" title="编码器"></a>编码器</h1><p><font color=red>补充完整</font></p>
+<h2 id="RTL-1"><a href="#RTL-1" class="headerlink" title="RTL"></a>RTL</h2><h3 id="非at-most-one-hot的写法"><a href="#非at-most-one-hot的写法" class="headerlink" title="非at-most-one-hot的写法"></a>非at-most-one-hot的写法</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">module</span> encoder_4_2</span><br><span class="line">    (</span><br><span class="line">        <span class="keyword">input</span>  [<span class="number">3</span>:<span class="number">0</span>] in,</span><br><span class="line">        <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] out,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">assign</span> out = in[<span class="number">0</span>] ? <span class="number">2&#x27;d0</span>:</span><br><span class="line">                 in[<span class="number">1</span>] ? <span class="number">2&#x27;d1</span>:</span><br><span class="line">                 in[<span class="number">2</span>] ? <span class="number">2&#x27;d2</span>:</span><br><span class="line">                       ? <span class="number">3&#x27;d3</span>;</span><br><span class="line"><span class="keyword">endmodule</span>   </span><br></pre></td></tr></table></figure>
+
+<p>带有优先级结构</p>
+<h3 id="at-most-one-hot的写法"><a href="#at-most-one-hot的写法" class="headerlink" title="at-most-one-hot的写法"></a>at-most-one-hot的写法</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> encoder_4_2</span><br><span class="line">    (</span><br><span class="line">        <span class="keyword">input</span>  [<span class="number">3</span>:<span class="number">0</span>] in,</span><br><span class="line">        <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] out,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">assign</span> out = (&#123;<span class="number">2</span>&#123;in[<span class="number">0</span>]&#125;&#125; &amp; <span class="number">2&#x27;d0</span>)</span><br><span class="line">                |(&#123;<span class="number">2</span>&#123;in[<span class="number">1</span>]&#125;&#125; &amp; <span class="number">2&#x27;d1</span>)</span><br><span class="line">                |(&#123;<span class="number">2</span>&#123;in[<span class="number">2</span>]&#125;&#125; &amp; <span class="number">2&#x27;d2</span>)</span><br><span class="line">                |(&#123;<span class="number">2</span>&#123;in[<span class="number">3</span>]&#125;&#125; &amp; <span class="number">2&#x27;d3</span>);</span><br><span class="line"><span class="keyword">endmodule</span>   </span><br></pre></td></tr></table></figure>
+
+<h2 id="schematic-1"><a href="#schematic-1" class="headerlink" title="schematic"></a>schematic</h2><h2 id="编码器在CPU设计中的使用场景"><a href="#编码器在CPU设计中的使用场景" class="headerlink" title="编码器在CPU设计中的使用场景"></a>编码器在CPU设计中的使用场景</h2><p>根据指令译码后的结果生成ALU模块的操作码alu_op。由于处理器中的译码部件在任何时刻只处理一条指令，因此alu_op的编码可以采用<code>at-most-one-hot</code></p>
+<p>这样做的好处是：</p>
+<p>MIPS的多条指令可能对应的只是ALU的同一种操作，将不同指令间相同的操作提取出来，可以生成相同的ALU操作码，这样在设计</p>
+<img src="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/image-20240415111559687.png" class="">
+
 
       
     </div>
@@ -476,7 +267,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -490,7 +281,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/" class="post-title-link" itemprop="url">基础知识-有符号移位和无符号移位</a>
+            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/" class="post-title-link" itemprop="url">基础知识-数字(1)计算机中数的表示</a>
         </h2>
 
         <div class="post-meta">
@@ -500,14 +291,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-04-01 09:27:35" itemprop="dateCreated datePublished" datetime="2024-04-01T09:27:35+08:00">2024-04-01</time>
+              <time title="创建时间：2024-04-08 10:00:48" itemprop="dateCreated datePublished" datetime="2024-04-08T10:00:48+08:00">2024-04-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 10:19:21" itemprop="dateModified" datetime="2024-04-08T10:19:21+08:00">2024-04-08</time>
+                <time title="修改时间：2024-09-25 09:16:23" itemprop="dateModified" datetime="2024-09-25T09:16:23+08:00">2024-09-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -528,8 +319,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/01/%E6%9C%89%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%A7%BB%E4%BD%8D/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -545,112 +336,19 @@
 
       
           <blockquote>
-<p>实际的移位运算中，不区分是有符号数移位和无符号移位，而是通过算术移位和逻辑移位来表示移位运算</p>
-<p>–》有符号数和无符号数都可以使用算术移位和逻辑移位</p>
+<p>数字，主要按照三方面内容来介绍</p>
+<ol>
+<li>计算机中数的表示</li>
+<li>计算机中数的运算方法</li>
+<li>计算机中运算器的设计</li>
+</ol>
 </blockquote>
-<h1 id="逻辑左移和算术左移"><a href="#逻辑左移和算术左移" class="headerlink" title="逻辑左移和算术左移"></a>逻辑左移和算术左移</h1><p>作用是相同的，都是在最低位置补充0；</p>
-<p>MIPS指令集没有算术左移，因为没对逻辑左移和算术左移做特殊区分</p>
-<p>其他指令集有算术左移，是考虑了指令的一致性和完整性</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/31/python%E8%84%9A%E6%9C%AC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/31/python%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">python脚本</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-31 12:06:01" itemprop="dateCreated datePublished" datetime="2024-03-31T12:06:01+08:00">2024-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-01-04 18:25:24" itemprop="dateModified" datetime="2025-01-04T18:25:24+08:00">2025-01-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/python%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">python脚本</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/31/python%E8%84%9A%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/31/python%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><h2 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h2><h3 id="空白字符"><a href="#空白字符" class="headerlink" title="空白字符"></a>空白字符</h3><p><code>\s</code></p>
-<h3 id="任意字符"><a href="#任意字符" class="headerlink" title="任意字符"></a>任意字符</h3><p><code>.</code></p>
-<h2 id="字符数量"><a href="#字符数量" class="headerlink" title="字符数量"></a>字符数量</h2><h3 id="0个或1个"><a href="#0个或1个" class="headerlink" title="0个或1个"></a>0个或1个</h3><p><code>?</code>匹配0或1个正好在它之前的那个字符</p>
-<h3 id="0个或者多个"><a href="#0个或者多个" class="headerlink" title="0个或者多个"></a>0个或者多个</h3><p><code>*</code>匹配0或多个正好在它之前的那个字符</p>
-<p><code>.*</code>是指任何字符0个或多个，<code>.?</code>是指任何字符0个或1个。</p>
+<p>什么是数的表示？</p>
+<p>能够直接被硬件识别、处理的数据类型–》在指令集中对不同数据类型的运算，都必须用硬件实现</p>
 <hr>
 <p>参考博客：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/maohuidong/p/16352492.html">[正则表达式 (.*?) 含义]</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1176157">定点数的表示方法</a></li>
 </ol>
 
       
@@ -671,7 +369,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -685,7 +383,89 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">presim环境搭建</a>
+            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">基础知识-补码加法器的实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-08 09:46:08 / 修改时间：10:16:35" itemprop="dateCreated datePublished" datetime="2024-04-08T09:46:08+08:00">2024-04-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>TBD</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">实践-git pull 本地和远程文件冲突</a>
         </h2>
 
         <div class="post-meta">
@@ -695,14 +475,639 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-29 16:21:43" itemprop="dateCreated datePublished" datetime="2024-03-29T16:21:43+08:00">2024-03-29</time>
+              <time title="创建时间：2024-04-06 21:40:50" itemprop="dateCreated datePublished" datetime="2024-04-06T21:40:50+08:00">2024-04-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-07-18 15:12:55" itemprop="dateModified" datetime="2025-07-18T15:12:55+08:00">2025-07-18</time>
+                <time title="修改时间：2024-04-08 09:09:33" itemprop="dateModified" datetime="2024-04-08T09:09:33+08:00">2024-04-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>从远程仓库更新hexo源文件时，发生本地和远程仓库冲突的错误</p>
+</blockquote>
+<img src="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/image-20240406214059383.png" class="">
+
+<h1 id="错误原因"><a href="#错误原因" class="headerlink" title="错误原因"></a>错误原因</h1><p>这个错误信息是 Git 版本控制系统在执行 <code>git pull</code> 操作时遇到的。<code>git pull</code> 是用来从远程仓库获取最新的变更并合并到你的本地仓库中。错误信息说明的是：</p>
+<ol>
+<li><p>在本地仓库中，你对以下文件做了修改：</p>
+<ul>
+<li><code>source/_posts/2024-03-13-Cortex-M4-WIC.md</code></li>
+<li><code>source/_posts/2024-03-24-有符号数和无符号数加减法运算.md</code></li>
+<li><code>source/_posts/2024-03-25-Cortex-M4-debug寄存器.md</code></li>
+</ul>
+</li>
+<li><p>远程仓库中这些文件也有更新。如果直接合并（即执行 <code>git pull</code>），你在本地做的更改会被覆盖。</p>
+</li>
+<li><p>Git 阻止了合并操作（pull），因为它会导致你的本地更改丢失。</p>
+</li>
+<li><p>这条信息最后的 <code>Updating 35e13a1..127c09a</code> 指的是，远程仓库中的分支相对于你的本地分支有更新，<code>35e13a1</code> 是你本地仓库当前的提交哈希值，而 <code>127c09a</code> 是远程仓库中最新的提交哈希值</p>
+</li>
+</ol>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><ol>
+<li>想保留你的本地更改，你可以先将更改提交到你的本地仓库，然后再次尝试 <code>git pull</code>。这可以通过以下命令完成：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git pull</span><br><span class="line">git stash pop  <span class="comment"># 当你想要重新应用这些更改时</span></span><br></pre></td></tr></table></figure>
+
+<p>这将会创建一个新的提交包含你的更改，并尝试将远程更改合并进来。如果合并有冲突，你需要手动解决这些冲突。</p>
+<ol start="2">
+<li>不想保留你的本地更改，可以使用 <code>git stash</code> 来临时存储这些更改，并在以后需要时再应用（或者丢弃）它们：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git pull</span><br><span class="line">git stash pop  <span class="comment"># 当你想要重新应用这些更改时</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>git stash pop</code> 将存储的更改应用回来可能也会遇到冲突，需要手动解决。</p>
+<ol start="3">
+<li>如果确定想丢弃本地更改，可以使用 <code>git reset</code> 命令强制重置到远程分支的状态：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：<code>git reset --hard</code> 会丢失所有未提交的更改，所以在使用前请确保你不需要这些更改。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/" class="post-title-link" itemprop="url">项目实践-timing exception</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-06 16:07:36 / 修改时间：16:14:06" itemprop="dateCreated datePublished" datetime="2024-04-06T16:07:36+08:00">2024-04-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>实际的项目中，默认都是单周期时序约束，单周期约束之外的情况就称为时序异常，通常包括</p>
+<ul>
+<li>set flase path</li>
+<li>set multi cylce</li>
+<li>set case analysis等等</li>
+</ul>
+</blockquote>
+<p><font color=red>TBD：实际案例</font></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/" class="post-title-link" itemprop="url">项目实践-special timing</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-06 15:58:39" itemprop="dateCreated datePublished" datetime="2024-04-06T15:58:39+08:00">2024-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-07 11:15:14" itemprop="dateModified" datetime="2025-08-07T11:15:14+08:00">2025-08-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>有些时序是DC SDC约束不到的，称为special timing，项目中通常分成两类：</p>
+<ul>
+<li>skew</li>
+<li>delay</li>
+</ul>
+<p>涉及到PAD，analog等模块时，需要进行special timing的约束。</p>
+</blockquote>
+<h1 id="skew和delay"><a href="#skew和delay" class="headerlink" title="skew和delay"></a>skew和delay</h1><p><code>skew</code>就是多个信号到PAD上的时钟偏斜</p>
+<p><code>delay</code>的含义就是信号到PAD的延时</p>
+<h1 id="delay固定的情况下，分析最大波特率"><a href="#delay固定的情况下，分析最大波特率" class="headerlink" title="delay固定的情况下，分析最大波特率"></a>delay固定的情况下，分析最大波特率</h1><h2 id="Master-模式"><a href="#Master-模式" class="headerlink" title="Master 模式"></a>Master 模式</h2><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101009297.png" class="">
+
+<blockquote>
+<p>Master模式<br>下最大波特率受RX限制，Master需要正确采到slave发来的数据<br>T1 + T2 + T3 + Tfclk<em>2  &lt; Tclock_out&#x2F;2 + T4<br>不考虑延时的情况下，单纯从设计的角度考虑， Tfclk</em>4 &lt; Tclock_out  ，PLL没有5分频，因此最小6分频<br>考虑延时的情况相爱，最大同样为为6分频</p>
+</blockquote>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101045479.png" class="">
+
+<h2 id="Slave-模式"><a href="#Slave-模式" class="headerlink" title="Slave 模式"></a>Slave 模式</h2><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101114808.png" class="">
+
+<blockquote>
+<p>Slave模式<br>下最大波特率受TX限制，Slave需要保证发送的数据能让master采到<br>T1 + T2 + T3 + Tfclk*3(2sync+1edge det) + T4 &lt; Tclock_in&#x2F;2<br>PLL没有奇数分频最大为8分频</p>
+</blockquote>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101159633.png" class="">
+
+<h1 id="设计上，优化时序的方法"><a href="#设计上，优化时序的方法" class="headerlink" title="设计上，优化时序的方法"></a>设计上，优化时序的方法</h1><h2 id="将外部时钟作为data的方式"><a href="#将外部时钟作为data的方式" class="headerlink" title="将外部时钟作为data的方式"></a>将外部时钟作为data的方式</h2><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101627214.png" class="">
+
+<blockquote>
+<p>假设T3和T4已经包括了信号在slave芯片内部的延迟<br>T1已经除去SCK到CLK_SP的延迟</p>
+<p>假设主从设备都是上升沿发送数据，下降沿采样数据</p>
+<p>双方约定配置为<br>CPHA &#x3D; 1, CPOL &#x3D; 0, LSB, 4bit传输，传输值为0x5（0101）<br>如下图，奇数cycle为发送沿，偶数cycle为采样沿<br>以下以第二个bit传输为例，3为发送沿，4为采样</p>
+<p>几段delay是真实固定存在的：</p>
+<p>如图中由于delay过大，用原本的采样点（蓝线）去采会采错（slave实际发送的是0，Master采样到1）</p>
+<p>时钟延时+数据延时（总延时）&lt;Tsck&#x2F;2</p>
+<p>special timing约束：<br>T1+T2&lt;Tsck&#x2F;4<br>MCU外部device各站一半的margin</p>
+</blockquote>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101832157.png" class="">
+
+<blockquote>
+<p>解决方法：（从设计上缓解Timing上的压力，但是仍然需要卡specila timing进行约束）<br>将采样点delay（绿线）一个apb clk后能正确采到数据</p>
+</blockquote>
+<h2 id="直接使用外部时钟的方式"><a href="#直接使用外部时钟的方式" class="headerlink" title="直接使用外部时钟的方式"></a>直接使用外部时钟的方式</h2><p>针对I2S这种协议，<font color=blue>外部时钟一直是toggle的</font>，设计上比较好处理；</p>
+<p>但是针对SPI这种，<font color=blue>只有数据传输的时候，外部时钟才是toggle</font>，设计上比较好处理</p>
+<h1 id="special-timing约束举例说明："><a href="#special-timing约束举例说明：" class="headerlink" title="special timing约束举例说明："></a>special timing约束举例说明：</h1><h2 id="SPI接口"><a href="#SPI接口" class="headerlink" title="SPI接口"></a>SPI接口</h2><p>会有SCLK, MISO, MOSI, CS信号</p>
+<p>假设内部上升沿发送，外部下降沿接收</p>
+<p><code>skew要求</code>：时钟边沿和信号边沿到PAD上时序要对齐，不然外部设备采样可能会出现问题；</p>
+<p><code>delay要求</code>：</p>
+<h2 id="Trace接口"><a href="#Trace接口" class="headerlink" title="Trace接口"></a>Trace接口</h2><p>会有Trace_clk以及Trace data，外部设备上升沿接收数据</p>
+<p><code>skew要求</code>：clk要在data中间，保证外部时钟采样数据正确；</p>
+<p><code>delay要求</code>：无delay要求</p>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20240419143152809.png" class="">
+
+
+
+<h2 id="JTAG接口"><a href="#JTAG接口" class="headerlink" title="JTAG接口"></a>JTAG接口</h2><p>CDC check report会有Error</p>
+<p>错误如下：</p>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20240419144437661.png" class="">
+
+<p>代码追踪：</p>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/img_v3_02a3_14bfe2d7-14a0-4306-bb92-239c72d7b0ag.jpg" class="">
+
+<p>PA4是TMS端口，TCK是已经进行了时钟约束；</p>
+<p>CDC在做check的时候，会认为PAD上的TMS和TCK不是同一个domain</p>
+<p><font color=blue>实际解决方法就是做special timing约束，保证TCK能够采样到TMS即可</font></p>
+<p>master和slave规定好：</p>
+<ul>
+<li><p>从上升沿还是下降沿采样</p>
+</li>
+<li><p>从PAD上送进来的数据信号的时序</p>
+</li>
+</ul>
+<p>JTAG内部是上升沿采样，外部数据送进来会保证tck和tdi的相位正确，即TCK能采样到TDI，这样</p>
+<p><code>skew要求</code>：</p>
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20240419155458371.png" class="">
+
+
+
+<p><code>delay要求</code>：</p>
+<p><font color=red>TBD</font></p>
+<h2 id="SWD接口"><a href="#SWD接口" class="headerlink" title="SWD接口"></a>SWD接口</h2><blockquote>
+<p>special timing约束的时候，注意：</p>
+<ul>
+<li>时钟周期： 按照10MHz去约束；</li>
+<li><code>主机和从机</code>的<code>采样沿/发送沿</code></li>
+<li>外部调试器的实际行为、仿真模型的实际行为；</li>
+</ul>
+</blockquote>
+<h3 id="CHIP-SWD作为RX"><a href="#CHIP-SWD作为RX" class="headerlink" title="CHIP SWD作为RX"></a>CHIP SWD作为RX</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110208514.png" class="">
+
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110214627.png" class="">
+
+
+
+<blockquote>
+<p><code>外部调试器</code>：下降沿发送数据<br>内部芯片：上升沿采样数据<br>&#x3D;&#x3D;》有0.5T的时间</p>
+<p><code>仿真模型</code>：下降沿发送数据??-TBD<br>内部芯片：上升沿采样数据<br>&#x3D;&#x3D;》有0.5T的时间</p>
+<p>chip SWD read：<br>卡skew<br>PA13_SWDCLK -&gt; reg&#x2F;CK ≈ PA10_SWDIO-&gt;reg&#x2F;D</p>
+</blockquote>
+<h3 id="CHIP-SWD作为TX"><a href="#CHIP-SWD作为TX" class="headerlink" title="CHIP SWD作为TX"></a>CHIP SWD作为TX</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110401287.png" class="">
+
+<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110406178.png" class="">
+
+
+
+<blockquote>
+<p><code>内部芯片</code>：上升沿发送数据<br>外部调试器：上升沿采样<br>&#x3D;&#x3D;》有1T的时间</p>
+<p><code>仿真模型</code>：上升沿发送数据？？-TBD<br>外部调试器：上升沿采样<br>&#x3D;&#x3D;》有1T的时间</p>
+<p>chip SWD write：<br>卡skew：<br>sw_data_reg_0_&#x2F;Q-&gt;PAD ≈ swdoen_reg&#x2F;Q-&gt;PAD</p>
+<p>卡latency<br>PA13_SWDCLK -&gt; reg&#x2F;CK + reg&#x2F;D-&gt;PA10_SWDIO &lt; 1T（实际）<br>PA13_SWDCLK -&gt; reg&#x2F;CK + reg&#x2F;D-&gt;PA10_SWDIO &lt; 1T（严格）<br>实际是1T的delay；<br>这里约束的严格点，可以约束为0.5T</p>
+</blockquote>
+<h3 id="special-timing"><a href="#special-timing" class="headerlink" title="special timing"></a>special timing</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"><span class="comment"># SWD releated</span></span><br><span class="line"><span class="comment"># PAD_PA13: SWDCLK</span></span><br><span class="line"><span class="comment"># PAD_PA14: SWDIO</span></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># debugger  launch data on the falling edge of SWDCLK,  capture data from SWDIO on the rising edge of SWDCLK.</span></span><br><span class="line"><span class="comment"># chip      launch data on the  rising edge of SWDCLK,  capture data from SWDIO on the rising edge of SWDCLK.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as SWD RX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed and rounted to obtain the same delay path, skew between the following paths should be less than 3ns</span><br><span class="line">-from PAD_PA13 -to MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/gen_swdi_sw_0_u_dp_sw_swdi_capture/iregdo_reg/CK</span><br><span class="line">-from PAD_PA14 -to MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/gen_swdi_sw_0_u_dp_sw_swdi_capture/iregdo_reg/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as SWD TX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS : the following signals should be placed and routed to obtain the small delay, the total latency SWDCLK <span class="keyword">in</span> + SWDO/SWDOE OUT requirement is less than 33ns</span><br><span class="line">-from PAD_PA13 -to MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/gen_swdi_sw_0_u_dp_sw_swdi_capture/iregdo_reg/CK</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/swdoen_reg/Q     -to PAD_PA14</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/sw_data_reg_0_/Q -to PAD_PA14</span><br><span class="line"></span><br><span class="line">REQUIREMENTS : the following signals should be placed and rounted to obtain the same delay path, skew between the following paths should be less than 3ns</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/swdoen_reg/Q     -to PAD_PA14        <span class="comment"># SWDO</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/sw_data_reg_0_/Q -to PAD_PA14        <span class="comment"># SWDO EN</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CPU-Model接口"><a href="#CPU-Model接口" class="headerlink" title="CPU Model接口"></a>CPU Model接口</h2><blockquote>
+<ul>
+<li><p>时钟周期10MHz</p>
+</li>
+<li><p><code>主机和从机</code>的<code>发送沿/接收沿</code></p>
+</li>
+<li><p>仿真模型和外部机台的行为</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="相关的PAD"><a href="#相关的PAD" class="headerlink" title="相关的PAD"></a>相关的PAD</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807111416689.png" class="">
+
+
+
+<h3 id="CPUM-Write"><a href="#CPUM-Write" class="headerlink" title="CPUM Write"></a>CPUM Write</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807111139410.png" class="">
+
+
+
+<blockquote>
+<p>write<br>地址和数据全是输入，因此只需要卡skew，skew尽量小(3ns);<br>PAD_CLK-&gt;register.CK<br>PAD_DATA-&gt;register.D</p>
+</blockquote>
+<h3 id="CPUM-Read"><a href="#CPUM-Read" class="headerlink" title="CPUM Read"></a>CPUM Read</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807111159175.png" class="">
+
+
+
+<blockquote>
+<p>read<br>地址是输入，数据是输出<br>PAD_CLK-&gt;register.CK<br>PAD_DATA-&gt;register.D;</p>
+<p>register.D-&gt;PAD_DATA;<br>需要卡latency<br>需要卡skew</p>
+</blockquote>
+<h3 id="special-timing-1"><a href="#special-timing-1" class="headerlink" title="special timing"></a>special timing</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"><span class="comment"># CPUM0 releated</span></span><br><span class="line"><span class="comment"># PAD_PA14: cpum0_clk</span></span><br><span class="line"><span class="comment"># PAD_PA10: D3</span></span><br><span class="line"><span class="comment"># PAD_PA11: D2</span></span><br><span class="line"><span class="comment"># PAD_PC8 : D1</span></span><br><span class="line"><span class="comment"># PAD_PC9 : D0</span></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM0 RX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA11  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA10  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA11 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA10 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, latency is less than 10ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA11  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA10  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA11 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA10 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM0 TX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PC9 </span><br><span class="line"></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PC9 </span><br><span class="line"></span><br><span class="line">REQUIREMENTS : the following signals should be placed and routed to obtain the small delay, the delay (0 + 1) requirement is less than 25ns/</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PC9 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PC9 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"><span class="comment"># CPUM1 releated</span></span><br><span class="line"><span class="comment"># PAD_PB14: cpum1_clk</span></span><br><span class="line"><span class="comment"># PAD_PB4: D3</span></span><br><span class="line"><span class="comment"># PAD_PB5: D2</span></span><br><span class="line"><span class="comment"># PAD_PA4: D1</span></span><br><span class="line"><span class="comment"># PAD_PA5: D0</span></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM1 RX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB5 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB4 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, latency is less than 10ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB5 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB4 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM1 TX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA5 </span><br><span class="line"></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA5 </span><br><span class="line"></span><br><span class="line">REQUIREMENTS : the following signals should be placed and routed to obtain the small delay, the delay (0 + 1) requirement is less than 25ns/</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA5 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA5 </span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/" class="post-title-link" itemprop="url">项目实践-时序处理的术语</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-03 18:01:25" itemprop="dateCreated datePublished" datetime="2024-04-03T18:01:25+08:00">2024-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-08 09:09:33" itemprop="dateModified" datetime="2024-04-08T09:09:33+08:00">2024-04-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/CoreSight-DAP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/02/CoreSight-DAP/" class="post-title-link" itemprop="url">CoreSight-DAP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-02 23:13:24" itemprop="dateCreated datePublished" datetime="2024-04-02T23:13:24+08:00">2024-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-14 16:46:36" itemprop="dateModified" datetime="2025-03-14T16:46:36+08:00">2025-03-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/CoreSight/" itemprop="url" rel="index"><span itemprop="name">CoreSight</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/02/CoreSight-DAP/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/CoreSight-DAP/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">PTPX功耗评估</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-02 19:03:50" itemprop="dateCreated datePublished" datetime="2024-04-02T19:03:50+08:00">2024-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-18 17:13:24" itemprop="dateModified" datetime="2024-10-18T17:13:24+08:00">2024-10-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -723,8 +1128,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -739,46 +1144,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>针对综合后的网表（无delay），需要bulid 动态仿真环境</p>
+          <h1 id="step1：posim仿真"><a href="#step1：posim仿真" class="headerlink" title="step1：posim仿真"></a>step1：posim仿真</h1><h1 id="step2：截取波形"><a href="#step2：截取波形" class="headerlink" title="step2：截取波形"></a>step2：截取波形</h1><blockquote>
+<p>&#x2F;nobackup&#x2F;AH11722A&#x2F;atc0288&#x2F;sim&#x2F;semf_multi_core_access+POSIM+NBCH<br>top_sim_011.fsdb<br>401123 401623<br>401123ns 401623ns<br>top_sim.u_ah11722a.cpusys_par_wrap_0.TestAndSet_0<br>top_sim&#x2F;u_ah11722a&#x2F;cpusys_par_wrap_0&#x2F;TestAndSet_0<br>fsdbextract top_sim_011.fsdb -bt 401123ns -et 401623ns -s top_sim&#x2F;u_ah11722a&#x2F;cpusys_par_wrap_0&#x2F;TestAndSet_0 -level 0 -o TestAndSet.peak.401123-401623.fsdb</p>
 </blockquote>
-<h1 id="常见问题及其解决方法"><a href="#常见问题及其解决方法" class="headerlink" title="常见问题及其解决方法"></a>常见问题及其解决方法</h1><p>一般会遇到</p>
-<ul>
-<li><p>PAD未pull值</p>
-</li>
-<li><p>sram未初始化</p>
-</li>
-<li><p>ROM未初始化</p>
-</li>
-<li><p>Flash未初始化</p>
-</li>
-<li><p>ro环形振荡电路</p>
-</li>
-</ul>
-<h2 id="ro环形振荡电路"><a href="#ro环形振荡电路" class="headerlink" title="ro环形振荡电路"></a>ro环形振荡电路</h2><p>特殊的设计中，可能还会有组合逻辑回环（例如TRNG的环形振荡器电路）</p>
-<img src="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/v2-6fa48d65ac3a1a40c30824cdbdb3d90d_720w.webp" class="">
-
-<img src="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/v2-a09600fa58984739e659694d81711a78_720w.webp" class="">
-
-<img src="/2024/03/29/presim%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/image-20240331160158291.png" class="">
-
-
-
-<blockquote>
-<p><strong>仿真惊奇地停滞在：200ns(参考testbench延时)</strong></p>
-<p>在环形振荡器原理图中，假设第一级反相器的输入端为低电平，经过5级反相之后，第5级反相器输出端必为高电平。在t&#x3D;0时刻，此时电源(VDD)通过第5级反相器输出端对第1级反相器的输入电容充电，第一级反相器经过一级平均延迟时间Tdelay1之后，其输出状态发生转换。经过(Tdelay1+ Tdelay2+ Tdelay3+ Tdelay4+ Tdelay5)之后，第5级反相器输出端由高电平转换为低电平。接着第一级的输入电容将通过第5级的输出端放电，经过(Tdelay1+ Tdelay2+ Tdelay3+ Tdelay4+ Tdelay5)之后状态再次发生转换，完成一个振荡周期输出，如下图的方波信号。如果反相器各级的平均延迟时间相等，为Tdelay，</p>
-<p>即：多个反相器组成环形振荡器的一个脉冲周期为T&#x3D;10 Tdelay</p>
-<p>如果想要不停滞，可以在任何一级加一个delay，例如u1和u2之间delay 5ns</p>
-</blockquote>
-<h1 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h1><p>出现问题时的debug方法，首先看模块的端口有无X态</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/619644287">什么是真随机数发生器（TRNG）</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56259957">环形振荡器：数字IC和软件思维的天壤之别</a></p>
-</li>
+<h1 id="step3-PTPX环境配置"><a href="#step3-PTPX环境配置" class="headerlink" title="step3:PTPX环境配置"></a>step3:PTPX环境配置</h1><ol>
+<li>将fsdb 放在work&#x2F;fsdb下面</li>
+<li>修改.&#x2F;scr&#x2F;input_setup.tcl</li>
 </ol>
+<blockquote>
+<p>set vars(STD_CELL_TRACK)    	 7T     </p>
+<p>set vars(netlist)           				 &#x2F;proj&#x2F;AH11722A&#x2F;share&#x2F;central&#x2F;backend&#x2F;pr&#x2F;data_release&#x2F;ECO&#x2F;eco1_20240923&#x2F;ah11722a&#x2F;netlist&#x2F;ah11722a.pr.v </p>
+<p>set vars(sdc_func0p9v)       		&#x2F;proj&#x2F;AH11722A&#x2F;atc3024&#x2F;ptpx&#x2F;run_power_script&#x2F;KITE_norm.sdc </p>
+<p>set vars(design)            			  ah11722a</p>
+<p>set vars(design_hier)        		top_sim&#x2F;u_ah11722a</p>
+</blockquote>
+<p><font color=blue>总的来说，TCL中的分号用于将多个命令放在同一行时区分命令，不是每条命令都必须使用分号。</font></p>
+<p><font color=blue>不添加sdc运行PTPX，针对Macro的功耗影响比较大；</font></p>
+<ol start="3">
+<li>修改.&#x2F;work&#x2F;run.csh</li>
+</ol>
+<blockquote>
+<p>setenv conditions      	“ffg0p99v150c ffg0p99v125c tt0p9v25c”<br>setenv sim_version      “tdi_0809”<br>setenv read_fsdb        1</p>
+</blockquote>
+<ol start="4">
+<li>source .&#x2F;work&#x2F;run.csh</li>
+</ol>
+<h1 id="结果确认"><a href="#结果确认" class="headerlink" title="结果确认"></a>结果确认</h1><ol>
+<li>跑完PTPX之后，需要确认结果是否正确，看下log</li>
+</ol>
+<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402190614115.png" class="">
+
+<p>最前面一列的百分比表示反标率</p>
+<p>我是core的波形对 whole chip design的反标，因此反标率很低，但是是正常的。</p>
+<ol start="2">
+<li>可以进一步在log中确认看fsdb2vcd是否错误</li>
+</ol>
+<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402192537542.png" class="">
+
+
+
+
+
+
+
 
       
     </div>
@@ -798,7 +1206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -812,7 +1220,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">linux实用命令</a>
+            <a href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">gvim实用技巧</a>
         </h2>
 
         <div class="post-meta">
@@ -822,14 +1230,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-03-29 09:36:02" itemprop="dateCreated datePublished" datetime="2024-03-29T09:36:02+08:00">2024-03-29</time>
+              <time title="创建时间：2024-04-02 18:41:09" itemprop="dateCreated datePublished" datetime="2024-04-02T18:41:09+08:00">2024-04-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-30 10:29:51" itemprop="dateModified" datetime="2025-05-30T10:29:51+08:00">2025-05-30</time>
+                <time title="修改时间：2025-01-04 18:24:26" itemprop="dateModified" datetime="2025-01-04T18:24:26+08:00">2025-01-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -854,8 +1262,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -870,483 +1278,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><font color=red>TBD：待补充</font></p>
-<h1 id="加解压"><a href="#加解压" class="headerlink" title="加解压"></a>加解压</h1><h1 id="diff文件"><a href="#diff文件" class="headerlink" title="diff文件"></a>diff文件</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gvimdiff file1 file2</span><br></pre></td></tr></table></figure>
-
-<h1 id="内存空间查询"><a href="#内存空间查询" class="headerlink" title="内存空间查询"></a>内存空间查询</h1><h2 id="详细的report"><a href="#详细的report" class="headerlink" title="详细的report"></a>详细的report</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前用户</span></span><br><span class="line">user=<span class="variable">$USER</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前时间</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;===== 当前用户内存使用报告 =====&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;用户: <span class="variable">$user</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;时间: <span class="subst">$(date)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取系统总物理内存（单位 GB）</span></span><br><span class="line">total_phys_mem=$(free -g | awk <span class="string">&#x27;/^Mem:/ &#123;print $2&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前用户物理/虚拟内存总和（GB）</span></span><br><span class="line"><span class="built_in">read</span> user_rss_gb user_vsz_gb &lt;&lt;&lt; $(ps -u <span class="variable">$user</span> -o rss=,vsz= | \</span><br><span class="line">  awk <span class="string">&#x27;&#123;rss_sum+=$1; vsz_sum+=$2&#125; END &#123;printf &quot;%.2f %.2f&quot;, rss_sum/1024/1024, vsz_sum/1024/1024&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 系统所有进程的虚拟内存总和（GB）</span></span><br><span class="line">total_vsz_gb=$(ps -eo vsz= | awk <span class="string">&#x27;&#123;vsz_sum+=$1&#125; END &#123;printf &quot;%.2f&quot;, vsz_sum/1024/1024&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;===== 🧠 内存总览（单位 GB） =====&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统总物理内存:        <span class="variable">$total_phys_mem</span> GB&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前用户物理内存总和:  <span class="variable">$user_rss_gb</span> GB&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前用户虚拟内存总和:  <span class="variable">$user_vsz_gb</span> GB&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;系统全部虚拟内存总和:  <span class="variable">$total_vsz_gb</span> GB&quot;</span></span><br><span class="line"><span class="built_in">echo</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印表头</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;%-8s %-20s %-12s %-12s\n&quot;</span> <span class="string">&quot;PID&quot;</span> <span class="string">&quot;COMMAND&quot;</span> <span class="string">&quot;RSS(MB)&quot;</span> <span class="string">&quot;VSZ(MB)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印当前用户每个进程的内存信息，按VSZ从大到小排序</span></span><br><span class="line">ps -u <span class="variable">$user</span> -o pid,<span class="built_in">comm</span>,rss,vsz --<span class="built_in">sort</span>=-vsz | \</span><br><span class="line">awk <span class="string">&#x27;</span></span><br><span class="line"><span class="string">NR &gt; 1 &#123;</span></span><br><span class="line"><span class="string">    rss_mb = $3 / 1024</span></span><br><span class="line"><span class="string">    vsz_mb = $4 / 1024</span></span><br><span class="line"><span class="string">    total_rss += rss_mb</span></span><br><span class="line"><span class="string">    total_vsz += vsz_mb</span></span><br><span class="line"><span class="string">    printf &quot;%-8s %-20s %-12.2f %-12.2f\n&quot;, $1, $2, rss_mb, vsz_mb</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">END &#123;</span></span><br><span class="line"><span class="string">    print &quot;------------------------------------------------------------&quot;</span></span><br><span class="line"><span class="string">    printf &quot;%-8s %-20s %-12.2f %-12.2f\n&quot;, &quot;TOTAL&quot;, &quot;&quot;, total_rss, total_vsz</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<hr>
-<p><code>ps</code>：process status显示当前运行中的进程</p>
-<p><code>-u $USER</code>：只列出当前用户的进程</p>
-<p><code>-o pid,comm,rss</code>：只输出这三列</p>
-<ul>
-<li><code>pid</code>：进程 ID</li>
-<li><code>comm</code>：命令名称（程序名）</li>
-<li><code>rss</code>：实际使用的物理内存（单位：KB)</li>
-</ul>
-<p><code>--sort=-rss</code>：按内存使用量从大到小排序</p>
-<p><code>awk</code>：文本处理工具</p>
-</blockquote>
-<h1 id="磁盘空间查询"><a href="#磁盘空间查询" class="headerlink" title="磁盘空间查询"></a>磁盘空间查询</h1><h2 id="用户磁盘配额"><a href="#用户磁盘配额" class="headerlink" title="用户磁盘配额"></a>用户磁盘配额</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">quota -s</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看配额并以易读的方式显示</span></span><br></pre></td></tr></table></figure>
-
-<p><code>quota</code>命令用于显示用户的磁盘使用量和限制</p>
-<h2 id="当前目录磁盘占用空间"><a href="#当前目录磁盘占用空间" class="headerlink" title="当前目录磁盘占用空间"></a>当前目录磁盘占用空间</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -h --max-depth=1</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>这个命令的作用是：</p>
-<ul>
-<li><code>du</code>: 是 disk usage 的缩写，用于查看目录或文件所占用的磁盘空间大小。</li>
-<li><code>-h</code>: 以人类可读的格式显示文件大小，例如 GB、MB 等。</li>
-<li><code>--max-depth=1</code>: 限制显示的深度，即只显示当前目录下直接子目录的信息。</li>
-</ul>
-<p>运行这个命令后，会列出当前目录下每个子目录的总大小，并以人类可读的方式显示（如 GB、MB 等）。</p>
-</blockquote>
-<p> <strong>按大小排序显示</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh * | sort -h</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><code>sort -h</code>：按人类可读的格式排序，从小到大排列</p>
-</blockquote>
-<h1 id="文件名查找"><a href="#文件名查找" class="headerlink" title="文件名查找"></a>文件名查找</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find ./ -name &#x27;*.pdf&#x27;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用通配符</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="管道命令"><a href="#管道命令" class="headerlink" title="管道命令"></a>管道命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &quot;搜索内容&quot; 文件名 | tee 搜索结果.txt</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><code>grep &quot;搜索内容&quot; 文件名</code>：这是用于搜索的命令。你可以替换 <code>&quot;搜索内容&quot;</code> 和 <code>文件名</code> 为你想要的内容和文件。</p>
-<p><code>|</code>：管道符，将前一个命令的输出传递给下一个命令。</p>
-<p><code>tee 搜索结果.txt</code>：<code>tee</code> 命令会将接收到的输出同时写入 <code>搜索结果.txt</code> 文件并显示在屏幕上。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">verdi实用技巧</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-29 09:24:15" itemprop="dateCreated datePublished" datetime="2024-03-29T09:24:15+08:00">2024-03-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-06-03 17:59:25" itemprop="dateModified" datetime="2025-06-03T17:59:25+08:00">2025-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>IC设计人员目前最常用的一款调试工具是Synopsys公司的Verdi，下面介绍一下使用技巧</p>
-</blockquote>
-<h1 id="reload操作"><a href="#reload操作" class="headerlink" title="reload操作"></a>reload操作</h1><p><code>Shift + L</code></p>
-<h1 id="信号列表"><a href="#信号列表" class="headerlink" title="信号列表"></a>信号列表</h1><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329092849873.png" class="">
-
-<h1 id="参数以及信号value标注"><a href="#参数以及信号value标注" class="headerlink" title="参数以及信号value标注"></a>参数以及信号value标注</h1><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329093035289.png" class="">
-
-<h1 id="波形记录文件保存"><a href="#波形记录文件保存" class="headerlink" title="波形记录文件保存"></a>波形记录文件保存</h1><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329093221427.png" class="">
-
-<h1 id="显示信号完整路径"><a href="#显示信号完整路径" class="headerlink" title="显示信号完整路径"></a>显示信号完整路径</h1><p><code>h</code></p>
-<h1 id="Bus-Operation"><a href="#Bus-Operation" class="headerlink" title="Bus Operation"></a>Bus Operation</h1><h2 id="Adjust-Bus"><a href="#Adjust-Bus" class="headerlink" title="Adjust Bus"></a>Adjust Bus</h2><img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100018553.png" class="">
-
-<h3 id="Shift"><a href="#Shift" class="headerlink" title="Shift"></a>Shift</h3><p>从<code>direction</code> shift <code>value</code></p>
-<p>如下的配置表示，从右侧shift滑入一个0</p>
-<img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329095938642.png" class="">
-
-<img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20240329100425460.png" class="">
-
-<h1 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h1><h2 id="代码view搜索"><a href="#代码view搜索" class="headerlink" title="代码view搜索"></a>代码view搜索</h2><p>文本</p>
-<p>模块</p>
-<p>instance</p>
-<h2 id="原理图view搜索"><a href="#原理图view搜索" class="headerlink" title="原理图view搜索"></a>原理图view搜索</h2><p><code>A</code></p>
-<h1 id="状态机助记符"><a href="#状态机助记符" class="headerlink" title="状态机助记符"></a>状态机助记符</h1><p>选择具有状态机的模块选中，然后在主工具栏选择Tools&gt;Extract interative FSM</p>
-<img src="/2024/03/29/verdi%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/image-20250603175808724.png" class="">
-
-
-
-<p><font color=red>TBD：待补充</font></p>
-<hr>
-<p>参考博客：</p>
+          <h1 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h1><h2 id="某个字符开头搜索"><a href="#某个字符开头搜索" class="headerlink" title="某个字符开头搜索"></a>某个字符开头搜索</h2><p><code>:</code>进入命令行</p>
+<p><code>/</code>开启搜索功能</p>
+<p><code>^</code>表示行的开头，正则表达式中表示一行的开始位置</p>
+<p><code>Err</code>搜索的文本字符</p>
+<p>结合起来<code>:/^Err</code>表示从当前位置向下搜索所有以Err开头的行</p>
+<h2 id="打开光标下的文件"><a href="#打开光标下的文件" class="headerlink" title="打开光标下的文件"></a>打开光标下的文件</h2><p>gvim中，<code>gf</code>命令会打开光标下的文件名，</p>
+<p>使用gf跳转之后，返回原来的文件可以使用如下两种方式：</p>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TybD2VdqyMxLS6LI7t8D6w">Verdi实用技巧</a></li>
+<li><code>ctrl+o</code></li>
+<li><code>:bp</code></li>
 </ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/28/main%E4%B9%8B%E5%89%8D%E6%89%A7%E8%A1%8C%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/28/main%E4%B9%8B%E5%89%8D%E6%89%A7%E8%A1%8C%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">main之前执行其他函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-28 20:29:43" itemprop="dateCreated datePublished" datetime="2024-03-28T20:29:43+08:00">2024-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-26 10:52:28" itemprop="dateModified" datetime="2024-06-26T10:52:28+08:00">2024-06-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式C程序</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5/" itemprop="url" rel="index"><span itemprop="name">编译链接</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/28/main%E4%B9%8B%E5%89%8D%E6%89%A7%E8%A1%8C%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/28/main%E4%B9%8B%E5%89%8D%E6%89%A7%E8%A1%8C%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>需要在main函数之前统一执行system init等操作</p>
-</blockquote>
-<p><code>只需要在reset_handler，跳转到main之前，执行对应的函数即可</code></p>
-<p>需要注意：</p>
-<ol>
-<li>编译器有关（例如gcc和armcc编译器，汇编调用C函数的语法不同）</li>
-<li>函数是否有参数调用（有无参数调用写法也不相同）</li>
-</ol>
-<p>如下图所示是gcc编译器，函数无参数的使用方法。</p>
-<p>其在main之前，统一执行sys_pll_180MHz的配置</p>
-<img src="/2024/03/28/main%E4%B9%8B%E5%89%8D%E6%89%A7%E8%A1%8C%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0/image-20240329091658534.png" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/28/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-readmem%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/28/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-readmem%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">IC设计经验-readmem函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-28 15:42:52" itemprop="dateCreated datePublished" datetime="2024-03-28T15:42:52+08:00">2024-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-07-17 14:16:55" itemprop="dateModified" datetime="2025-07-17T14:16:55+08:00">2025-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/verilog%E8%AF%AD%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">verilog语法</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/28/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-readmem%E5%87%BD%E6%95%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/28/IC%E8%AE%BE%E8%AE%A1%E7%BB%8F%E9%AA%8C-readmem%E5%87%BD%E6%95%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>在做RTL仿真的时候，需要对RAM以及ROM 设置初始值</p>
-</blockquote>
-<h1 id="基本使用方法"><a href="#基本使用方法" class="headerlink" title="基本使用方法"></a>基本使用方法</h1><p>txt文件中是十六进制数字就要用readmemh</p>
-<p>txt文件中是二进制数字就要用readmemb</p>
-<h1 id="文件数据个数和mem深度不同"><a href="#文件数据个数和mem深度不同" class="headerlink" title="文件数据个数和mem深度不同"></a>文件数据个数和mem深度不同</h1><h1 id="文件位宽和mem位宽不同"><a href="#文件位宽和mem位宽不同" class="headerlink" title="文件位宽和mem位宽不同"></a>文件位宽和mem位宽不同</h1><h2 id="文件数据位宽-mem位宽"><a href="#文件数据位宽-mem位宽" class="headerlink" title="文件数据位宽&gt;mem位宽"></a>文件数据位宽&gt;mem位宽</h2><p>如果txt中的数字位宽大于mem的位宽，使用readmem函数时会自动从txt的低位开始填充mem，高位舍弃</p>
-<h2 id="文件数据位宽"><a href="#文件数据位宽" class="headerlink" title="文件数据位宽&lt;mem位宽"></a>文件数据位宽&lt;mem位宽</h2><hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wuzhikaidetb/article/details/125728219">Verilog的系统任务—-$readmemh和$readmemb</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/" class="post-title-link" itemprop="url">Cortex-M4 debug寄存器</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-25 15:14:00" itemprop="dateCreated datePublished" datetime="2024-03-25T15:14:00+08:00">2024-03-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:55:10" itemprop="dateModified" datetime="2025-03-14T16:55:10+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/03/25/Cortex-M4-debug%E5%AF%84%E5%AD%98%E5%99%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>介绍Cortex-M4内部的debug寄存器</p>
-</blockquote>
-<p><font color=red>TBD：待补充</font></p>
 
       
     </div>
@@ -1365,7 +1307,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1433,20 +1375,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-count">235</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-count">167</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1473,7 +1415,7 @@
 <div class="copyright">
   
   &copy; 2024 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

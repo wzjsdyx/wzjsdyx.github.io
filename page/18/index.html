@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/12/DFT%E7%94%B5%E8%B7%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -176,214 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/" class="post-title-link" itemprop="url">基础知识-常用数字电路verilog描述</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-08 12:05:56" itemprop="dateCreated datePublished" datetime="2024-04-08T12:05:56+08:00">2024-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-16 09:04:27" itemprop="dateModified" datetime="2024-04-16T09:04:27+08:00">2024-04-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基础逻辑门"><a href="#基础逻辑门" class="headerlink" title="基础逻辑门"></a>基础逻辑门</h1><h1 id="运算符的优先级"><a href="#运算符的优先级" class="headerlink" title="运算符的优先级"></a>运算符的优先级</h1><h1 id="译码器"><a href="#译码器" class="headerlink" title="译码器"></a>译码器</h1><h2 id="RTL"><a href="#RTL" class="headerlink" title="RTL"></a>RTL</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// one-hot</span></span><br><span class="line"><span class="keyword">module</span> decoder_2_4(</span><br><span class="line">    <span class="keyword">input</span>  [<span class="number">1</span>:<span class="number">0</span>] in,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">3</span>:<span class="number">0</span>] out</span><br><span class="line">)</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">0</span>] = (in == <span class="number">2&#x27;d0</span>);</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">1</span>] = (in == <span class="number">2&#x27;d1</span>);</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">2</span>] = (in == <span class="number">2&#x27;d2</span>);</span><br><span class="line">    <span class="keyword">assign</span> out[<span class="number">3</span>] = (in == <span class="number">2&#x27;d3</span>);</span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="schematic"><a href="#schematic" class="headerlink" title="schematic"></a>schematic</h2><p><font color=red>待补充</font></p>
-<h2 id="译码器在CPU设计中的使用场景"><a href="#译码器在CPU设计中的使用场景" class="headerlink" title="译码器在CPU设计中的使用场景"></a>译码器在CPU设计中的使用场景</h2><img src="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/image-20240415105631238.png" class="">
-
-<h1 id="编码器"><a href="#编码器" class="headerlink" title="编码器"></a>编码器</h1><p><font color=red>补充完整</font></p>
-<h2 id="RTL-1"><a href="#RTL-1" class="headerlink" title="RTL"></a>RTL</h2><h3 id="非at-most-one-hot的写法"><a href="#非at-most-one-hot的写法" class="headerlink" title="非at-most-one-hot的写法"></a>非at-most-one-hot的写法</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">module</span> encoder_4_2</span><br><span class="line">    (</span><br><span class="line">        <span class="keyword">input</span>  [<span class="number">3</span>:<span class="number">0</span>] in,</span><br><span class="line">        <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] out,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">assign</span> out = in[<span class="number">0</span>] ? <span class="number">2&#x27;d0</span>:</span><br><span class="line">                 in[<span class="number">1</span>] ? <span class="number">2&#x27;d1</span>:</span><br><span class="line">                 in[<span class="number">2</span>] ? <span class="number">2&#x27;d2</span>:</span><br><span class="line">                       ? <span class="number">3&#x27;d3</span>;</span><br><span class="line"><span class="keyword">endmodule</span>   </span><br></pre></td></tr></table></figure>
-
-<p>带有优先级结构</p>
-<h3 id="at-most-one-hot的写法"><a href="#at-most-one-hot的写法" class="headerlink" title="at-most-one-hot的写法"></a>at-most-one-hot的写法</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> encoder_4_2</span><br><span class="line">    (</span><br><span class="line">        <span class="keyword">input</span>  [<span class="number">3</span>:<span class="number">0</span>] in,</span><br><span class="line">        <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] out,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">assign</span> out = (&#123;<span class="number">2</span>&#123;in[<span class="number">0</span>]&#125;&#125; &amp; <span class="number">2&#x27;d0</span>)</span><br><span class="line">                |(&#123;<span class="number">2</span>&#123;in[<span class="number">1</span>]&#125;&#125; &amp; <span class="number">2&#x27;d1</span>)</span><br><span class="line">                |(&#123;<span class="number">2</span>&#123;in[<span class="number">2</span>]&#125;&#125; &amp; <span class="number">2&#x27;d2</span>)</span><br><span class="line">                |(&#123;<span class="number">2</span>&#123;in[<span class="number">3</span>]&#125;&#125; &amp; <span class="number">2&#x27;d3</span>);</span><br><span class="line"><span class="keyword">endmodule</span>   </span><br></pre></td></tr></table></figure>
-
-<h2 id="schematic-1"><a href="#schematic-1" class="headerlink" title="schematic"></a>schematic</h2><h2 id="编码器在CPU设计中的使用场景"><a href="#编码器在CPU设计中的使用场景" class="headerlink" title="编码器在CPU设计中的使用场景"></a>编码器在CPU设计中的使用场景</h2><p>根据指令译码后的结果生成ALU模块的操作码alu_op。由于处理器中的译码部件在任何时刻只处理一条指令，因此alu_op的编码可以采用<code>at-most-one-hot</code></p>
-<p>这样做的好处是：</p>
-<p>MIPS的多条指令可能对应的只是ALU的同一种操作，将不同指令间相同的操作提取出来，可以生成相同的ALU操作码，这样在设计</p>
-<img src="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E5%B8%B8%E7%94%A8%E6%95%B0%E5%AD%97%E7%94%B5%E8%B7%AFverilog%E6%8F%8F%E8%BF%B0/image-20240415111559687.png" class="">
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/" class="post-title-link" itemprop="url">基础知识-数字(1)计算机中数的表示</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-08 10:00:48" itemprop="dateCreated datePublished" datetime="2024-04-08T10:00:48+08:00">2024-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-09-25 09:16:23" itemprop="dateModified" datetime="2024-09-25T09:16:23+08:00">2024-09-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E6%95%B0%E5%AD%97-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>数字，主要按照三方面内容来介绍</p>
-<ol>
-<li>计算机中数的表示</li>
-<li>计算机中数的运算方法</li>
-<li>计算机中运算器的设计</li>
-</ol>
-</blockquote>
-<p>什么是数的表示？</p>
-<p>能够直接被硬件识别、处理的数据类型–》在指令集中对不同数据类型的运算，都必须用硬件实现</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1176157">定点数的表示方法</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">基础知识-补码加法器的实现</a>
+            <a href="/2024/04/12/DFT%E7%94%B5%E8%B7%AF/" class="post-title-link" itemprop="url">DFT电路</a>
         </h2>
 
         <div class="post-meta">
@@ -394,721 +187,8 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-04-08 09:46:08 / 修改时间：10:16:35" itemprop="dateCreated datePublished" datetime="2024-04-08T09:46:08+08:00">2024-04-08</time>
+              <time title="创建时间：2024-04-12 09:25:54 / 修改时间：13:16:01" itemprop="dateCreated datePublished" datetime="2024-04-12T09:25:54+08:00">2024-04-12</time>
             </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>TBD</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">实践-git pull 本地和远程文件冲突</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-06 21:40:50" itemprop="dateCreated datePublished" datetime="2024-04-06T21:40:50+08:00">2024-04-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 09:09:33" itemprop="dateModified" datetime="2024-04-08T09:09:33+08:00">2024-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>从远程仓库更新hexo源文件时，发生本地和远程仓库冲突的错误</p>
-</blockquote>
-<img src="/2024/04/06/git-pull-%E6%9C%AC%E5%9C%B0%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81/image-20240406214059383.png" class="">
-
-<h1 id="错误原因"><a href="#错误原因" class="headerlink" title="错误原因"></a>错误原因</h1><p>这个错误信息是 Git 版本控制系统在执行 <code>git pull</code> 操作时遇到的。<code>git pull</code> 是用来从远程仓库获取最新的变更并合并到你的本地仓库中。错误信息说明的是：</p>
-<ol>
-<li><p>在本地仓库中，你对以下文件做了修改：</p>
-<ul>
-<li><code>source/_posts/2024-03-13-Cortex-M4-WIC.md</code></li>
-<li><code>source/_posts/2024-03-24-有符号数和无符号数加减法运算.md</code></li>
-<li><code>source/_posts/2024-03-25-Cortex-M4-debug寄存器.md</code></li>
-</ul>
-</li>
-<li><p>远程仓库中这些文件也有更新。如果直接合并（即执行 <code>git pull</code>），你在本地做的更改会被覆盖。</p>
-</li>
-<li><p>Git 阻止了合并操作（pull），因为它会导致你的本地更改丢失。</p>
-</li>
-<li><p>这条信息最后的 <code>Updating 35e13a1..127c09a</code> 指的是，远程仓库中的分支相对于你的本地分支有更新，<code>35e13a1</code> 是你本地仓库当前的提交哈希值，而 <code>127c09a</code> 是远程仓库中最新的提交哈希值</p>
-</li>
-</ol>
-<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><ol>
-<li>想保留你的本地更改，你可以先将更改提交到你的本地仓库，然后再次尝试 <code>git pull</code>。这可以通过以下命令完成：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git pull</span><br><span class="line">git stash pop  <span class="comment"># 当你想要重新应用这些更改时</span></span><br></pre></td></tr></table></figure>
-
-<p>这将会创建一个新的提交包含你的更改，并尝试将远程更改合并进来。如果合并有冲突，你需要手动解决这些冲突。</p>
-<ol start="2">
-<li>不想保留你的本地更改，可以使用 <code>git stash</code> 来临时存储这些更改，并在以后需要时再应用（或者丢弃）它们：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git pull</span><br><span class="line">git stash pop  <span class="comment"># 当你想要重新应用这些更改时</span></span><br></pre></td></tr></table></figure>
-
-<p>使用 <code>git stash pop</code> 将存储的更改应用回来可能也会遇到冲突，需要手动解决。</p>
-<ol start="3">
-<li>如果确定想丢弃本地更改，可以使用 <code>git reset</code> 命令强制重置到远程分支的状态：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：<code>git reset --hard</code> 会丢失所有未提交的更改，所以在使用前请确保你不需要这些更改。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/" class="post-title-link" itemprop="url">项目实践-timing exception</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-06 16:07:36 / 修改时间：16:14:06" itemprop="dateCreated datePublished" datetime="2024-04-06T16:07:36+08:00">2024-04-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-timing-exception/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>实际的项目中，默认都是单周期时序约束，单周期约束之外的情况就称为时序异常，通常包括</p>
-<ul>
-<li>set flase path</li>
-<li>set multi cylce</li>
-<li>set case analysis等等</li>
-</ul>
-</blockquote>
-<p><font color=red>TBD：实际案例</font></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/" class="post-title-link" itemprop="url">项目实践-special timing</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-06 15:58:39" itemprop="dateCreated datePublished" datetime="2024-04-06T15:58:39+08:00">2024-04-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-07 11:15:14" itemprop="dateModified" datetime="2025-08-07T11:15:14+08:00">2025-08-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>有些时序是DC SDC约束不到的，称为special timing，项目中通常分成两类：</p>
-<ul>
-<li>skew</li>
-<li>delay</li>
-</ul>
-<p>涉及到PAD，analog等模块时，需要进行special timing的约束。</p>
-</blockquote>
-<h1 id="skew和delay"><a href="#skew和delay" class="headerlink" title="skew和delay"></a>skew和delay</h1><p><code>skew</code>就是多个信号到PAD上的时钟偏斜</p>
-<p><code>delay</code>的含义就是信号到PAD的延时</p>
-<h1 id="delay固定的情况下，分析最大波特率"><a href="#delay固定的情况下，分析最大波特率" class="headerlink" title="delay固定的情况下，分析最大波特率"></a>delay固定的情况下，分析最大波特率</h1><h2 id="Master-模式"><a href="#Master-模式" class="headerlink" title="Master 模式"></a>Master 模式</h2><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101009297.png" class="">
-
-<blockquote>
-<p>Master模式<br>下最大波特率受RX限制，Master需要正确采到slave发来的数据<br>T1 + T2 + T3 + Tfclk<em>2  &lt; Tclock_out&#x2F;2 + T4<br>不考虑延时的情况下，单纯从设计的角度考虑， Tfclk</em>4 &lt; Tclock_out  ，PLL没有5分频，因此最小6分频<br>考虑延时的情况相爱，最大同样为为6分频</p>
-</blockquote>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101045479.png" class="">
-
-<h2 id="Slave-模式"><a href="#Slave-模式" class="headerlink" title="Slave 模式"></a>Slave 模式</h2><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101114808.png" class="">
-
-<blockquote>
-<p>Slave模式<br>下最大波特率受TX限制，Slave需要保证发送的数据能让master采到<br>T1 + T2 + T3 + Tfclk*3(2sync+1edge det) + T4 &lt; Tclock_in&#x2F;2<br>PLL没有奇数分频最大为8分频</p>
-</blockquote>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101159633.png" class="">
-
-<h1 id="设计上，优化时序的方法"><a href="#设计上，优化时序的方法" class="headerlink" title="设计上，优化时序的方法"></a>设计上，优化时序的方法</h1><h2 id="将外部时钟作为data的方式"><a href="#将外部时钟作为data的方式" class="headerlink" title="将外部时钟作为data的方式"></a>将外部时钟作为data的方式</h2><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101627214.png" class="">
-
-<blockquote>
-<p>假设T3和T4已经包括了信号在slave芯片内部的延迟<br>T1已经除去SCK到CLK_SP的延迟</p>
-<p>假设主从设备都是上升沿发送数据，下降沿采样数据</p>
-<p>双方约定配置为<br>CPHA &#x3D; 1, CPOL &#x3D; 0, LSB, 4bit传输，传输值为0x5（0101）<br>如下图，奇数cycle为发送沿，偶数cycle为采样沿<br>以下以第二个bit传输为例，3为发送沿，4为采样</p>
-<p>几段delay是真实固定存在的：</p>
-<p>如图中由于delay过大，用原本的采样点（蓝线）去采会采错（slave实际发送的是0，Master采样到1）</p>
-<p>时钟延时+数据延时（总延时）&lt;Tsck&#x2F;2</p>
-<p>special timing约束：<br>T1+T2&lt;Tsck&#x2F;4<br>MCU外部device各站一半的margin</p>
-</blockquote>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807101832157.png" class="">
-
-<blockquote>
-<p>解决方法：（从设计上缓解Timing上的压力，但是仍然需要卡specila timing进行约束）<br>将采样点delay（绿线）一个apb clk后能正确采到数据</p>
-</blockquote>
-<h2 id="直接使用外部时钟的方式"><a href="#直接使用外部时钟的方式" class="headerlink" title="直接使用外部时钟的方式"></a>直接使用外部时钟的方式</h2><p>针对I2S这种协议，<font color=blue>外部时钟一直是toggle的</font>，设计上比较好处理；</p>
-<p>但是针对SPI这种，<font color=blue>只有数据传输的时候，外部时钟才是toggle</font>，设计上比较好处理</p>
-<h1 id="special-timing约束举例说明："><a href="#special-timing约束举例说明：" class="headerlink" title="special timing约束举例说明："></a>special timing约束举例说明：</h1><h2 id="SPI接口"><a href="#SPI接口" class="headerlink" title="SPI接口"></a>SPI接口</h2><p>会有SCLK, MISO, MOSI, CS信号</p>
-<p>假设内部上升沿发送，外部下降沿接收</p>
-<p><code>skew要求</code>：时钟边沿和信号边沿到PAD上时序要对齐，不然外部设备采样可能会出现问题；</p>
-<p><code>delay要求</code>：</p>
-<h2 id="Trace接口"><a href="#Trace接口" class="headerlink" title="Trace接口"></a>Trace接口</h2><p>会有Trace_clk以及Trace data，外部设备上升沿接收数据</p>
-<p><code>skew要求</code>：clk要在data中间，保证外部时钟采样数据正确；</p>
-<p><code>delay要求</code>：无delay要求</p>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20240419143152809.png" class="">
-
-
-
-<h2 id="JTAG接口"><a href="#JTAG接口" class="headerlink" title="JTAG接口"></a>JTAG接口</h2><p>CDC check report会有Error</p>
-<p>错误如下：</p>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20240419144437661.png" class="">
-
-<p>代码追踪：</p>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/img_v3_02a3_14bfe2d7-14a0-4306-bb92-239c72d7b0ag.jpg" class="">
-
-<p>PA4是TMS端口，TCK是已经进行了时钟约束；</p>
-<p>CDC在做check的时候，会认为PAD上的TMS和TCK不是同一个domain</p>
-<p><font color=blue>实际解决方法就是做special timing约束，保证TCK能够采样到TMS即可</font></p>
-<p>master和slave规定好：</p>
-<ul>
-<li><p>从上升沿还是下降沿采样</p>
-</li>
-<li><p>从PAD上送进来的数据信号的时序</p>
-</li>
-</ul>
-<p>JTAG内部是上升沿采样，外部数据送进来会保证tck和tdi的相位正确，即TCK能采样到TDI，这样</p>
-<p><code>skew要求</code>：</p>
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20240419155458371.png" class="">
-
-
-
-<p><code>delay要求</code>：</p>
-<p><font color=red>TBD</font></p>
-<h2 id="SWD接口"><a href="#SWD接口" class="headerlink" title="SWD接口"></a>SWD接口</h2><blockquote>
-<p>special timing约束的时候，注意：</p>
-<ul>
-<li>时钟周期： 按照10MHz去约束；</li>
-<li><code>主机和从机</code>的<code>采样沿/发送沿</code></li>
-<li>外部调试器的实际行为、仿真模型的实际行为；</li>
-</ul>
-</blockquote>
-<h3 id="CHIP-SWD作为RX"><a href="#CHIP-SWD作为RX" class="headerlink" title="CHIP SWD作为RX"></a>CHIP SWD作为RX</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110208514.png" class="">
-
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110214627.png" class="">
-
-
-
-<blockquote>
-<p><code>外部调试器</code>：下降沿发送数据<br>内部芯片：上升沿采样数据<br>&#x3D;&#x3D;》有0.5T的时间</p>
-<p><code>仿真模型</code>：下降沿发送数据??-TBD<br>内部芯片：上升沿采样数据<br>&#x3D;&#x3D;》有0.5T的时间</p>
-<p>chip SWD read：<br>卡skew<br>PA13_SWDCLK -&gt; reg&#x2F;CK ≈ PA10_SWDIO-&gt;reg&#x2F;D</p>
-</blockquote>
-<h3 id="CHIP-SWD作为TX"><a href="#CHIP-SWD作为TX" class="headerlink" title="CHIP SWD作为TX"></a>CHIP SWD作为TX</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110401287.png" class="">
-
-<img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807110406178.png" class="">
-
-
-
-<blockquote>
-<p><code>内部芯片</code>：上升沿发送数据<br>外部调试器：上升沿采样<br>&#x3D;&#x3D;》有1T的时间</p>
-<p><code>仿真模型</code>：上升沿发送数据？？-TBD<br>外部调试器：上升沿采样<br>&#x3D;&#x3D;》有1T的时间</p>
-<p>chip SWD write：<br>卡skew：<br>sw_data_reg_0_&#x2F;Q-&gt;PAD ≈ swdoen_reg&#x2F;Q-&gt;PAD</p>
-<p>卡latency<br>PA13_SWDCLK -&gt; reg&#x2F;CK + reg&#x2F;D-&gt;PA10_SWDIO &lt; 1T（实际）<br>PA13_SWDCLK -&gt; reg&#x2F;CK + reg&#x2F;D-&gt;PA10_SWDIO &lt; 1T（严格）<br>实际是1T的delay；<br>这里约束的严格点，可以约束为0.5T</p>
-</blockquote>
-<h3 id="special-timing"><a href="#special-timing" class="headerlink" title="special timing"></a>special timing</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"><span class="comment"># SWD releated</span></span><br><span class="line"><span class="comment"># PAD_PA13: SWDCLK</span></span><br><span class="line"><span class="comment"># PAD_PA14: SWDIO</span></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># debugger  launch data on the falling edge of SWDCLK,  capture data from SWDIO on the rising edge of SWDCLK.</span></span><br><span class="line"><span class="comment"># chip      launch data on the  rising edge of SWDCLK,  capture data from SWDIO on the rising edge of SWDCLK.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as SWD RX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed and rounted to obtain the same delay path, skew between the following paths should be less than 3ns</span><br><span class="line">-from PAD_PA13 -to MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/gen_swdi_sw_0_u_dp_sw_swdi_capture/iregdo_reg/CK</span><br><span class="line">-from PAD_PA14 -to MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/gen_swdi_sw_0_u_dp_sw_swdi_capture/iregdo_reg/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as SWD TX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS : the following signals should be placed and routed to obtain the small delay, the total latency SWDCLK <span class="keyword">in</span> + SWDO/SWDOE OUT requirement is less than 33ns</span><br><span class="line">-from PAD_PA13 -to MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/gen_swdi_sw_0_u_dp_sw_swdi_capture/iregdo_reg/CK</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/swdoen_reg/Q     -to PAD_PA14</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/sw_data_reg_0_/Q -to PAD_PA14</span><br><span class="line"></span><br><span class="line">REQUIREMENTS : the following signals should be placed and rounted to obtain the same delay path, skew between the following paths should be less than 3ns</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/swdoen_reg/Q     -to PAD_PA14        <span class="comment"># SWDO</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0p_core_top/u_cm0pintegration/gen_dap_u_dap/u_dap_top/u_dp/gen_sw_dp_u_cm0p_dap_dp_sw/sw_data_reg_0_/Q -to PAD_PA14        <span class="comment"># SWDO EN</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="CPU-Model接口"><a href="#CPU-Model接口" class="headerlink" title="CPU Model接口"></a>CPU Model接口</h2><blockquote>
-<ul>
-<li><p>时钟周期10MHz</p>
-</li>
-<li><p><code>主机和从机</code>的<code>发送沿/接收沿</code></p>
-</li>
-<li><p>仿真模型和外部机台的行为</p>
-</li>
-</ul>
-</blockquote>
-<h3 id="相关的PAD"><a href="#相关的PAD" class="headerlink" title="相关的PAD"></a>相关的PAD</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807111416689.png" class="">
-
-
-
-<h3 id="CPUM-Write"><a href="#CPUM-Write" class="headerlink" title="CPUM Write"></a>CPUM Write</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807111139410.png" class="">
-
-
-
-<blockquote>
-<p>write<br>地址和数据全是输入，因此只需要卡skew，skew尽量小(3ns);<br>PAD_CLK-&gt;register.CK<br>PAD_DATA-&gt;register.D</p>
-</blockquote>
-<h3 id="CPUM-Read"><a href="#CPUM-Read" class="headerlink" title="CPUM Read"></a>CPUM Read</h3><img src="/2024/04/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-special-timing/image-20250807111159175.png" class="">
-
-
-
-<blockquote>
-<p>read<br>地址是输入，数据是输出<br>PAD_CLK-&gt;register.CK<br>PAD_DATA-&gt;register.D;</p>
-<p>register.D-&gt;PAD_DATA;<br>需要卡latency<br>需要卡skew</p>
-</blockquote>
-<h3 id="special-timing-1"><a href="#special-timing-1" class="headerlink" title="special timing"></a>special timing</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"><span class="comment"># CPUM0 releated</span></span><br><span class="line"><span class="comment"># PAD_PA14: cpum0_clk</span></span><br><span class="line"><span class="comment"># PAD_PA10: D3</span></span><br><span class="line"><span class="comment"># PAD_PA11: D2</span></span><br><span class="line"><span class="comment"># PAD_PC8 : D1</span></span><br><span class="line"><span class="comment"># PAD_PC9 : D0</span></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM0 RX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA11  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA10  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA11 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA10 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, latency is less than 10ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA11  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA10  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PC9  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PC8  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA11 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA10 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM0 TX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PC9 </span><br><span class="line"></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PC9 </span><br><span class="line"></span><br><span class="line">REQUIREMENTS : the following signals should be placed and routed to obtain the small delay, the delay (0 + 1) requirement is less than 25ns/</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/CK</span><br><span class="line">-from PAD_PA14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PC9 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA10</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA11</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PC8 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PC9 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"><span class="comment"># CPUM1 releated</span></span><br><span class="line"><span class="comment"># PAD_PB14: cpum1_clk</span></span><br><span class="line"><span class="comment"># PAD_PB4: D3</span></span><br><span class="line"><span class="comment"># PAD_PB5: D2</span></span><br><span class="line"><span class="comment"># PAD_PA4: D1</span></span><br><span class="line"><span class="comment"># PAD_PA5: D0</span></span><br><span class="line"><span class="comment">#=====================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM1 RX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB5 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB4 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, latency is less than 10ns</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; addr+write_en</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/D</span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line">-from PAD_PB4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/D</span><br><span class="line"></span><br><span class="line"><span class="comment">#2&gt; wdata</span></span><br><span class="line">-from PAD_PA5  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PA4  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB5 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line">-from PAD_PB4 -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/D</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line"><span class="comment"># chip as CPUM1 TX</span></span><br><span class="line"><span class="comment">#----------------</span></span><br><span class="line">REQUIREMENTS: the following signals should be placed as near as possible and to obtain the same delay path, skew is less than 3ns</span><br><span class="line"><span class="comment">#0&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to PAD_PA5 </span><br><span class="line"></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to PAD_PA5 </span><br><span class="line"></span><br><span class="line">REQUIREMENTS : the following signals should be placed and routed to obtain the small delay, the delay (0 + 1) requirement is less than 25ns/</span><br><span class="line"><span class="comment">#0&gt; ck</span></span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/cpum_write_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_addr_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/test_wdata_reg_*/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/CK</span><br><span class="line">-from PAD_PB14  -to MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/CK</span><br><span class="line"></span><br><span class="line"><span class="comment">#1&gt; dout+dout_en</span></span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/dout_reg_*_/Q -to  PAD_PA5 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PB4</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PB5</span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA4 </span><br><span class="line">-from MTCMOS_wrap/i_MTCMOS/cm0_MTCMOS/cm0_infra_ctl/cpumif/TD_en_reg/Q -to  PAD_PA5 </span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/" class="post-title-link" itemprop="url">项目实践-时序处理的术语</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-03 18:01:25" itemprop="dateCreated datePublished" datetime="2024-04-03T18:01:25+08:00">2024-04-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 09:09:33" itemprop="dateModified" datetime="2024-04-08T09:09:33+08:00">2024-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DC-synthesis/" itemprop="url" rel="index"><span itemprop="name">DC synthesis</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/03/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-%E6%97%B6%E5%BA%8F%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%AF%E8%AF%AD/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/CoreSight-DAP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/02/CoreSight-DAP/" class="post-title-link" itemprop="url">CoreSight-DAP</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-02 23:13:24" itemprop="dateCreated datePublished" datetime="2024-04-02T23:13:24+08:00">2024-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:46:36" itemprop="dateModified" datetime="2025-03-14T16:46:36+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/CoreSight/" itemprop="url" rel="index"><span itemprop="name">CoreSight</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/04/02/CoreSight-DAP/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/CoreSight-DAP/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">PTPX功耗评估</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-02 19:03:50" itemprop="dateCreated datePublished" datetime="2024-04-02T19:03:50+08:00">2024-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-18 17:13:24" itemprop="dateModified" datetime="2024-10-18T17:13:24+08:00">2024-10-18</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1128,8 +208,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/12/DFT%E7%94%B5%E8%B7%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/12/DFT%E7%94%B5%E8%B7%AF/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1144,49 +224,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="step1：posim仿真"><a href="#step1：posim仿真" class="headerlink" title="step1：posim仿真"></a>step1：posim仿真</h1><h1 id="step2：截取波形"><a href="#step2：截取波形" class="headerlink" title="step2：截取波形"></a>step2：截取波形</h1><blockquote>
-<p>&#x2F;nobackup&#x2F;AH11722A&#x2F;atc0288&#x2F;sim&#x2F;semf_multi_core_access+POSIM+NBCH<br>top_sim_011.fsdb<br>401123 401623<br>401123ns 401623ns<br>top_sim.u_ah11722a.cpusys_par_wrap_0.TestAndSet_0<br>top_sim&#x2F;u_ah11722a&#x2F;cpusys_par_wrap_0&#x2F;TestAndSet_0<br>fsdbextract top_sim_011.fsdb -bt 401123ns -et 401623ns -s top_sim&#x2F;u_ah11722a&#x2F;cpusys_par_wrap_0&#x2F;TestAndSet_0 -level 0 -o TestAndSet.peak.401123-401623.fsdb</p>
+          <blockquote>
+<p>数字前端设计人员在准备好RTL之后，会给中后端人员进行物理实现。接下来说明下DFT的角色。</p>
 </blockquote>
-<h1 id="step3-PTPX环境配置"><a href="#step3-PTPX环境配置" class="headerlink" title="step3:PTPX环境配置"></a>step3:PTPX环境配置</h1><ol>
-<li>将fsdb 放在work&#x2F;fsdb下面</li>
-<li>修改.&#x2F;scr&#x2F;input_setup.tcl</li>
-</ol>
-<blockquote>
-<p>set vars(STD_CELL_TRACK)    	 7T     </p>
-<p>set vars(netlist)           				 &#x2F;proj&#x2F;AH11722A&#x2F;share&#x2F;central&#x2F;backend&#x2F;pr&#x2F;data_release&#x2F;ECO&#x2F;eco1_20240923&#x2F;ah11722a&#x2F;netlist&#x2F;ah11722a.pr.v </p>
-<p>set vars(sdc_func0p9v)       		&#x2F;proj&#x2F;AH11722A&#x2F;atc3024&#x2F;ptpx&#x2F;run_power_script&#x2F;KITE_norm.sdc </p>
-<p>set vars(design)            			  ah11722a</p>
-<p>set vars(design_hier)        		top_sim&#x2F;u_ah11722a</p>
-</blockquote>
-<p><font color=blue>总的来说，TCL中的分号用于将多个命令放在同一行时区分命令，不是每条命令都必须使用分号。</font></p>
-<p><font color=blue>不添加sdc运行PTPX，针对Macro的功耗影响比较大；</font></p>
-<ol start="3">
-<li>修改.&#x2F;work&#x2F;run.csh</li>
-</ol>
-<blockquote>
-<p>setenv conditions      	“ffg0p99v150c ffg0p99v125c tt0p9v25c”<br>setenv sim_version      “tdi_0809”<br>setenv read_fsdb        1</p>
-</blockquote>
-<ol start="4">
-<li>source .&#x2F;work&#x2F;run.csh</li>
-</ol>
-<h1 id="结果确认"><a href="#结果确认" class="headerlink" title="结果确认"></a>结果确认</h1><ol>
-<li>跑完PTPX之后，需要确认结果是否正确，看下log</li>
-</ol>
-<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402190614115.png" class="">
-
-<p>最前面一列的百分比表示反标率</p>
-<p>我是core的波形对 whole chip design的反标，因此反标率很低，但是是正常的。</p>
-<ol start="2">
-<li>可以进一步在log中确认看fsdb2vcd是否错误</li>
-</ol>
-<img src="/2024/04/02/PTPX%E5%8A%9F%E8%80%97%E8%AF%84%E4%BC%B0/image-20240402192537542.png" class="">
-
-
-
-
-
-
-
+<p>首先会对RTL插入MBIST的DFT IP</p>
+<p>插入DFT之后，再进行综合</p>
+<p>综合之后，再插入scan</p>
+<p>TBD 补充一张流程图</p>
 
       
     </div>
@@ -1206,7 +250,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -1220,7 +264,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-title-link" itemprop="url">gvim实用技巧</a>
+            <a href="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/" class="post-title-link" itemprop="url">Cortex-M4内部关键信号</a>
         </h2>
 
         <div class="post-meta">
@@ -1230,14 +274,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-04-02 18:41:09" itemprop="dateCreated datePublished" datetime="2024-04-02T18:41:09+08:00">2024-04-02</time>
+              <time title="创建时间：2024-04-11 19:27:08" itemprop="dateCreated datePublished" datetime="2024-04-11T19:27:08+08:00">2024-04-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-01-04 18:24:26" itemprop="dateModified" datetime="2025-01-04T18:24:26+08:00">2025-01-04</time>
+                <time title="修改时间：2025-03-14 16:54:42" itemprop="dateModified" datetime="2025-03-14T16:54:42+08:00">2025-03-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1245,11 +289,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/linux-shell%E8%84%9A%E6%9C%AC/" itemprop="url" rel="index"><span itemprop="name">linux&shell脚本</span></a>
+                  <a href="/categories/ARM/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
                 </span>
             </span>
 
@@ -1262,8 +306,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/02/gvim%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1278,17 +322,962 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h1><h2 id="某个字符开头搜索"><a href="#某个字符开头搜索" class="headerlink" title="某个字符开头搜索"></a>某个字符开头搜索</h2><p><code>:</code>进入命令行</p>
-<p><code>/</code>开启搜索功能</p>
-<p><code>^</code>表示行的开头，正则表达式中表示一行的开始位置</p>
-<p><code>Err</code>搜索的文本字符</p>
-<p>结合起来<code>:/^Err</code>表示从当前位置向下搜索所有以Err开头的行</p>
-<h2 id="打开光标下的文件"><a href="#打开光标下的文件" class="headerlink" title="打开光标下的文件"></a>打开光标下的文件</h2><p>gvim中，<code>gf</code>命令会打开光标下的文件名，</p>
-<p>使用gf跳转之后，返回原来的文件可以使用如下两种方式：</p>
+          <h1 id="CPU内部状态信号"><a href="#CPU内部状态信号" class="headerlink" title="CPU内部状态信号"></a>CPU内部状态信号</h1><h2 id="PC"><a href="#PC" class="headerlink" title="PC"></a>PC</h2><p><code>rf_pc_ex</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203730596.png" class="">
+
+
+
+<h2 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h2><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203931848.png" class="">
+
+
+
+<h1 id="debug信号"><a href="#debug信号" class="headerlink" title="debug信号"></a>debug信号</h1><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200553804.png" class="">
+
+<h2 id="cpu-halt"><a href="#cpu-halt" class="headerlink" title="cpu halt"></a>cpu halt</h2><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200735486.png" class="">
+
+<h3 id="DHCSR-C-DEBUGEN"><a href="#DHCSR-C-DEBUGEN" class="headerlink" title="DHCSR: C_DEBUGEN"></a>DHCSR: C_DEBUGEN</h3><p>C_DEBUGEN信号只能由debugger写</p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411200841675.png" class="">
+
+<h3 id="DHCSR-C-HALT"><a href="#DHCSR-C-HALT" class="headerlink" title="DHCSR: C_HALT"></a>DHCSR: C_HALT</h3><p>C_DEBUGEN信号使能之后，配置C_HALT,CPU进入debug状态</p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201008580.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201048263.png" class="">
+
+<h3 id="DHCSR-S-HALT"><a href="#DHCSR-S-HALT" class="headerlink" title="DHCSR: S_HALT"></a>DHCSR: S_HALT</h3><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201118756.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411202225743.png" class="">
+
+
+
+<h2 id="复位捕获"><a href="#复位捕获" class="headerlink" title="复位捕获"></a>复位捕获</h2><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201617888.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201718635.png" class="">
+
+
+
+<h3 id="DEMCR-VC-CORERESET"><a href="#DEMCR-VC-CORERESET" class="headerlink" title="DEMCR: VC_CORERESET"></a>DEMCR: VC_CORERESET</h3><img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411201916512.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411203450200.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240730212724097.png" class="">
+
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240730212759280.png" class="">
+
+
+
+<h3 id="使用场景：under-reset"><a href="#使用场景：under-reset" class="headerlink" title="使用场景：under reset"></a>使用场景：under reset</h3><blockquote>
+<ul>
+<li>under reset功能</li>
+</ul>
+<p>under reset功能是指debugger会在芯片在reset状态下连接芯片，通过设置DEMCR寄存器的reset capture功能，在reset 释放之后，halt CPU；</p>
+<ul>
+<li>under reset的使用场景：</li>
+</ul>
+<p>在某些异常的情况下（jtag pin被复用为其他功能，芯片进入低功耗模式），芯片执行程序，debugger就会断开连接，此时是无法进行调试的；</p>
+<p>这种情况下就需要under reset功能，在程序执行前设置reset catch，使得reset释放后，程序pc停在一开始的地方，不会执行后面的程序。此时可以单步调试程序或者直接擦除程序。</p>
+</blockquote>
+<h1 id="trace信号"><a href="#trace信号" class="headerlink" title="trace信号"></a>trace信号</h1><h1 id="中断信号"><a href="#中断信号" class="headerlink" title="中断信号"></a>中断信号</h1><blockquote>
+<p>  &#x2F;&#x2F;—————————————————————————-<br>  &#x2F;&#x2F; Parameters<br>  &#x2F;&#x2F;—————————————————————————-<br>  parameter MPU_PRESENT     &#x3D; 0;  &#x2F;&#x2F; MPU present if 1<br>  parameter NUM_IRQ         &#x3D; 16; &#x2F;&#x2F; Number of interrupts. Between 1 and 240<br>  parameter LVL_WIDTH       &#x3D; 3;  &#x2F;&#x2F; Interrupt priority width. Between 3 and 8<br>  parameter TRACE_LVL       &#x3D; 1;  &#x2F;&#x2F; Trace support level. Between 0 and 3<br>  parameter DEBUG_LVL       &#x3D; 3;  &#x2F;&#x2F; Debug support level. Between 0 and 3<br>  parameter CLKGATE_PRESENT &#x3D; 0;  &#x2F;&#x2F; Architectural clock gating present if 1<br>  parameter RESET_ALL_REGS  &#x3D; 0;  &#x2F;&#x2F; Reset all registers if 1<br>  parameter WIC_PRESENT     &#x3D; 0;  &#x2F;&#x2F; WIC present if 1<br>  parameter WIC_LINES       &#x3D; 3;  &#x2F;&#x2F; Number of WIC lines. Between 3 and 243<br>  parameter BB_PRESENT      &#x3D; 1;  &#x2F;&#x2F; Bit banding present if 1<br>  parameter CONST_AHB_CTRL  &#x3D; 0;  &#x2F;&#x2F; Constant AHB control info if 1<br>  parameter FPU_PRESENT     &#x3D; 0;  &#x2F;&#x2F; FPU present if 1</p>
+</blockquote>
+<p><code>首先需要注意看NUM_IRQ参数</code></p>
+<h2 id="外部中断使能"><a href="#外部中断使能" class="headerlink" title="外部中断使能"></a>外部中断使能</h2><p><code>irq_en</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411193741518.png" class="">
+
+
+
+<h2 id="外部中断"><a href="#外部中断" class="headerlink" title="外部中断"></a>外部中断</h2><p><code>ext_irq_i</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411193833231.png" class="">
+
+
+
+<h2 id="hardfault"><a href="#hardfault" class="headerlink" title="hardfault"></a>hardfault</h2><p><code>int_fault</code></p>
+<img src="/2024/04/11/Cortex-M4%E5%86%85%E9%83%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E5%8F%B7/image-20240411204209957.png" class="">
+
+
+
+<hr>
+<p>参考博客：</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/10/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C%E5%92%8C%E6%BD%9C%E4%BC%8F%E6%95%85%E9%9A%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/10/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C%E5%92%8C%E6%BD%9C%E4%BC%8F%E6%95%85%E9%9A%9C/" class="post-title-link" itemprop="url">单点故障和潜伏故障</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-10 09:29:52 / 修改时间：21:21:40" itemprop="dateCreated datePublished" datetime="2024-04-10T09:29:52+08:00">2024-04-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/10/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C%E5%92%8C%E6%BD%9C%E4%BC%8F%E6%95%85%E9%9A%9C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/10/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C%E5%92%8C%E6%BD%9C%E4%BC%8F%E6%95%85%E9%9A%9C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>功能安全中，有单点故障和潜伏故障两种定义，先对其做区分</p>
+</blockquote>
+<p>ECC是SRAM的保护机制</p>
+<p>可以对ECC做lockstep，因此lockstep就是ECC的保护机制</p>
+<p>如果SRAM发生error，对ECC来说就是单点故障；对ECC Lockstep来说就是潜伏故障；</p>
+<p>如果ECC发生error，对ECC Lockstep来说就是单点故障；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/10/%E8%8A%AF%E7%89%87%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/10/%E8%8A%AF%E7%89%87%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">芯片测试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-10 09:29:03 / 修改时间：21:27:28" itemprop="dateCreated datePublished" datetime="2024-04-10T09:29:03+08:00">2024-04-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/10/%E8%8A%AF%E7%89%87%E6%B5%8B%E8%AF%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/10/%E8%8A%AF%E7%89%87%E6%B5%8B%E8%AF%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>TBD</p>
+<p>ATE测试？</p>
+<p>CP测试</p>
+<p>FT测试？</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/10/efuse%E5%92%8COTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/10/efuse%E5%92%8COTP/" class="post-title-link" itemprop="url">efuse和OTP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-10 09:28:17" itemprop="dateCreated datePublished" datetime="2024-04-10T09:28:17+08:00">2024-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-11 19:59:55" itemprop="dateModified" datetime="2024-04-11T19:59:55+08:00">2024-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/10/efuse%E5%92%8COTP/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/10/efuse%E5%92%8COTP/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>相关术语：（NVM）non-volatile memory</p>
+</blockquote>
+<p>满足如下两种功能属性的存储介质叫做<code>efuse和OTP</code>：</p>
+<ul>
+<li><p>只能烧录或者program一次；</p>
+</li>
+<li><p>掉电后数据不会消失；</p>
+</li>
+</ul>
+<p>MCU上有eflash，因此可以选择用eflash的info区域去实现efuse&#x2F;OTP的功能；</p>
+<p>SoC没有eflash，需要使用专门的存储介质（即efuse或者OTP）去实现；</p>
+<img src="/2024/04/10/efuse%E5%92%8COTP/image-20240411195658276.png" class="">
+
+<hr>
+<p>参考博客：</p>
 <ol>
-<li><code>ctrl+o</code></li>
-<li><code>:bp</code></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/585381096/answer/2925828385">芯片设计时，用到的efuse 和otp有什么区别？</a></li>
 </ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/10/ECO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/10/ECO/" class="post-title-link" itemprop="url">ECO</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-10 09:10:52 / 修改时间：21:11:42" itemprop="dateCreated datePublished" datetime="2024-04-10T09:10:52+08:00">2024-04-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IC%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">IC设计流程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/10/ECO/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/10/ECO/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>芯片设计流程中，ECO的含义</p>
+</blockquote>
+<p>芯片开发过程中，到了FDI节点（就是RTL freeze），中后端走最终版本的流程：</p>
+<p>如果此时IC开发人员又发现了BUG：</p>
+<ul>
+<li>如果是小bug，可以直接通过修改网表解决，即ECO</li>
+<li>如果是大bug，网表修改解决不了，只能重新再给中后端一个修正版本的RTL</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/09/AHB-Lite%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AEvalid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/09/AHB-Lite%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AEvalid/" class="post-title-link" itemprop="url">AHB-Lite总线上的数据valid</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-09 08:49:25" itemprop="dateCreated datePublished" datetime="2024-04-09T08:49:25+08:00">2024-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-14 16:45:10" itemprop="dateModified" datetime="2025-03-14T16:45:10+08:00">2025-03-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/AMBA/" itemprop="url" rel="index"><span itemprop="name">AMBA</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/AMBA/AHB-Lite/" itemprop="url" rel="index"><span itemprop="name">AHB-Lite</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/09/AHB-Lite%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AEvalid/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/09/AHB-Lite%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AEvalid/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>在做BUS E2E逻辑时，需要明确数据什么时候有效，数据包括haddr[31:0],hwdata[31:0],hrdata[31:0]</p>
+</blockquote>
+<img src="/2024/04/09/AHB-Lite%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AEvalid/image-20240409093444241.png" class="">
+
+<h1 id="Master侧发出的haddr在Slave侧做decode"><a href="#Master侧发出的haddr在Slave侧做decode" class="headerlink" title="Master侧发出的haddr在Slave侧做decode"></a>Master侧发出的haddr在Slave侧做decode</h1><ul>
+<li>*_hsel</li>
+<li>*_htrans[1]</li>
+<li>*_hreadyin</li>
+</ul>
+<p>同时拉高的时候，haddr valid</p>
+<h1 id="Master侧发出的hwdata在Slave侧做decode"><a href="#Master侧发出的hwdata在Slave侧做decode" class="headerlink" title="Master侧发出的hwdata在Slave侧做decode"></a>Master侧发出的hwdata在Slave侧做decode</h1><p>hwdata的data valid为什么要打拍？<br>Master侧，如果发出了AHB write transaction 请求，第一个address phase之后，wdata肯定会ready<br>IDLE，BUSY之类的只会在address阶段去插入，不会在data阶段去插入</p>
+<h1 id="Slave侧发出的hrdata在Master侧做decode"><a href="#Slave侧发出的hrdata在Master侧做decode" class="headerlink" title="Slave侧发出的hrdata在Master侧做decode"></a>Slave侧发出的hrdata在Master侧做decode</h1><p>hreadyout拉高的时候就认为，hrdata valid</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/" class="post-title-link" itemprop="url">Cortex-M4 IBUS/DBUS/SBUS的使用限制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-09 08:24:54" itemprop="dateCreated datePublished" datetime="2024-04-09T08:24:54+08:00">2024-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-14 16:54:50" itemprop="dateModified" datetime="2025-03-14T16:54:50+08:00">2025-03-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Cortex-M4 处理器中，有三个AHB-Lite总线接口，分别是IBUS，DBUS，SBUS。对其使用限制做描述</p>
+</blockquote>
+<h1 id="IBUS"><a href="#IBUS" class="headerlink" title="IBUS"></a>IBUS</h1><img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409082630403.png" class="">
+
+<ul>
+<li>IBUS只能发出core指令访问（外部调试器不能通过IBUS发出transatcion）</li>
+<li>访问空间是0x0000_0000 - 0x1FFF_FFFF</li>
+<li>Word对齐的访问，每次访问可能取出多条指令（Thumb-2指令集，支持16bit和32bit指令的混合使用）</li>
+</ul>
+<h1 id="DBUS"><a href="#DBUS" class="headerlink" title="DBUS"></a>DBUS</h1><img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409083158653.png" class="">
+
+<img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409083651092.png" class="">
+
+
+
+<ul>
+<li>DBUS能发出core数据访问和调试器访问</li>
+<li>访问优先级：core数据访问 &gt; debugger访问</li>
+<li>访问空间是0x0000_0000 - 0x1FFF_FFFF</li>
+<li>DBUS控制逻辑会将<code>非对齐的数据访问以及debugger访问转化为对齐的访问</code></li>
+<li>如果外部对DBUS和IBUS做仲裁，ARM强烈建议DBUS优先级高于IBUS优先级<font color=red>为什么要这样建议？有什么考量？发个mail，问问ARM</font></li>
+</ul>
+<img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409084132148.png" class="">
+
+
+
+<h1 id="SBUS"><a href="#SBUS" class="headerlink" title="SBUS"></a>SBUS</h1><img src="/2024/04/09/Cortex-M4-IBUS-DBUS-SBUS%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6/image-20240409084948169.png" class="">
+
+<ul>
+<li><p>SBUS能发出core的指令&#x2F;数据访问，以及debugger访问</p>
+</li>
+<li><p>访问地址空间0x2000_0000  - 0xDFFFFFFF 以及 0xE010_0000 - 0xFFFF_FFFF  (之间空缺的空间是私有外设空间，通过PPB访问)</p>
+</li>
+<li><p>访问优先级：core数据访问&gt; core指令访问以及vector fetches访问 &gt; debugger访问</p>
+</li>
+</ul>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li>Cortex®-M4 Technical Reference Manual</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/Cortex-M4-hmaster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/08/Cortex-M4-hmaster/" class="post-title-link" itemprop="url">Cortex-M4 hmaster</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-08 22:15:17" itemprop="dateCreated datePublished" datetime="2024-04-08T22:15:17+08:00">2024-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-14 16:55:02" itemprop="dateModified" datetime="2025-03-14T16:55:02+08:00">2025-03-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/Cortex-M4/" itemprop="url" rel="index"><span itemprop="name">Cortex-M4</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/08/Cortex-M4-hmaster/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/Cortex-M4-hmaster/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Cortex-M4 处理器中，有三个AHB-Lite总线接口，分别是IBUS，DBUS，SBUS。</p>
+<p>其中DBUS和SBUS接口有hmaster信号，对其可能的一个使用场景进行分析</p>
+</blockquote>
+<h1 id="IBUS的hmaster信号"><a href="#IBUS的hmaster信号" class="headerlink" title="IBUS的hmaster信号"></a>IBUS的hmaster信号</h1><p>无</p>
+<p><code>IBUS之所以没有hmaster信号，是因为IBUS只能发出core的指令访问</code></p>
+<h1 id="DBUS的hmaster信号"><a href="#DBUS的hmaster信号" class="headerlink" title="DBUS的hmaster信号"></a>DBUS的hmaster信号</h1><img src="/2024/04/08/Cortex-M4-hmaster/image-20240408222327461.png" class="">
+
+<p>Cortex-M4处理器的总线接口，hmaster[1:0]信号可以区分：</p>
+<ul>
+<li>core数据访问</li>
+<li>DAP访问</li>
+<li>core指令访问</li>
+</ul>
+<p><code>中断向量的读取有些特殊，虽然是为了抓取指令，但是总线层面上是数据访问，即HPROT[0]标记为数据访问</code></p>
+<p>从下图中可以看出是<code>通过DBUS读取中断向量表里面的中断向量</code></p>
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161637006.png" class="">
+
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161753066.png" class="">
+
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240409161707697.png" class="">
+
+
+
+<p><code>DBUS不能进行指令访问，因此hmasterd[1:0] value不可能是2</code></p>
+<h1 id="SBUS的hmaster信号"><a href="#SBUS的hmaster信号" class="headerlink" title="SBUS的hmaster信号"></a>SBUS的hmaster信号</h1><img src="/2024/04/08/Cortex-M4-hmaster/image-20240408223015766.png" class="">
+
+<p>Cortex-M4处理器的总线接口，hmaster[1:0]信号可以区分：</p>
+<ul>
+<li>core数据访问</li>
+<li>DAP访问</li>
+<li>core指令访问</li>
+</ul>
+<p><code>中断向量的读取有些特殊，虽然是为了抓取指令，但是总线层面上是数据访问，即HPROT[0]标记为数据访问</code></p>
+<p><font color=red>These include vector fetches that  are marked as data by HPROTS[0]. 这是什么意思？发个mail问问ARM</font></p>
+<blockquote>
+<p>&#x3D;&#x3D;&gt;chatgpt</p>
+<p>这里提到的“vector”指的是中断向量，它是在处理器的向量表中的条目，包含了中断服务例程（Interrupt Service Routine, ISR）的入口地址。当中断发生时，处理器会使用这些向量来快速定位到对应的中断服务例程并跳转到那里执行。</p>
+<p><font color=blue>在 ARM Cortex-M4 处理器的文档中，提到了“这些包括被 HPROT[0] 标记为数据的向量抓取”，</font></p>
+<p><font color=blue>这意味着这些访问虽然是为了抓取指令，但在总线层面上它们被标记为数据访问。</font></p>
+<p><font color=blue>这通常涉及到对于系统中断向量表的读取，因为它们不是普通的指令抓取，而是需要特别的处理。</font></p>
+<p>HMASTERS信号的作用是指示当前的系统总线主控单元。其中：</p>
+<ul>
+<li>0 表示核心的数据侧访问。</li>
+<li>1 表示调试访问端口（Debug Access Port, DAP）访问。</li>
+<li>2 表示核心的指令侧访问，包括被标记为数据的中断向量抓取。</li>
+<li>3 是保留值，不应出现在 HMASTERS 上。</li>
+</ul>
+<p>在设计中确保DCode（数据访问）比ICode（指令抓取）有更高的优先级，特别是当涉及到中断处理时，是为了保证中断处理的及时性和数据访问的高效性。中断向量的抓取是关键的一步，因为它指向中断服务例程的开始，必须快速且可靠地完成以确保系统能及时响应中断</p>
+</blockquote>
+<h1 id="使用场景-MPU"><a href="#使用场景-MPU" class="headerlink" title="使用场景-MPU"></a>使用场景-MPU</h1><p>系统MPU（不是Cortex-M4内部的MPU）可以根据hmaster做访问权限的管控</p>
+<img src="/2024/04/08/Cortex-M4-hmaster/image-20240408223606948.png" class="">
+
+<p>例如：</p>
+<ul>
+<li><p>hmaster &#x3D; 3’h0作为core访问（此处不区分是指令访问还是数据访问）</p>
+</li>
+<li><p>hmaster &#x3D; 3’h1作为debugger访问</p>
+</li>
+<li><p>hmaster &#x3D; 3’h2作为DMA访问</p>
+</li>
+<li><p>hmaster &#x3D; 3’h3作为HSM（包括hsm-host和hsm-dma）访问</p>
+</li>
+</ul>
+<p>针对上面的要求：</p>
+<p>hmaster的处理方式是</p>
+<ul>
+<li>总线连接IBUS端口的hmaster信号直接tie 4’h0(此处视情况而定，实践中BUS的hmaster位宽是4bits)</li>
+<li>总线连接DBUS端口的hmaster信号{hmasterd[1],2’b0,hmasterd[0]};</li>
+<li>总线连接SBUS端口的hmaster信号{hmasters[1],2’b0,hmasters[0]};</li>
+<li>总线连接DMA端口的hmaster信号tie 4’h2；</li>
+<li>总线连接hsm_host和hsm_dma端口的hmaster信号tie 4’h4；</li>
+</ul>
+<p>这样的话，MPU看低3bits:</p>
+<ul>
+<li>core访问的话，MPU看到的是3’h0；debugger访问的话，MPU看到的是3’h1；</li>
+<li>dma访问，MPU看到的是3’h2；</li>
+<li>hsm_host和hsm_dma访问，MPU看到的是3’h4；</li>
+</ul>
+<hr>
+<p>参考博客：</p>
+<ol>
+<li>Cortex®-M4  Integration and Implementation Manual</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-Verilog%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-Verilog%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" class="post-title-link" itemprop="url">基础知识-Verilog代码规范</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-08 13:28:14" itemprop="dateCreated datePublished" datetime="2024-04-08T13:28:14+08:00">2024-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-15 09:12:34" itemprop="dateModified" datetime="2024-04-15T09:12:34+08:00">2024-04-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPU%E8%AE%BE%E8%AE%A1%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">CPU设计实战</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-Verilog%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/04/08/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-Verilog%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="模块声明"><a href="#模块声明" class="headerlink" title="模块声明"></a>模块声明</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> bottom #</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">parameter</span> A_WIDTH = <span class="number">8</span>,</span><br><span class="line">    <span class="keyword">parameter</span> B_WIDTH = <span class="number">4</span>,</span><br><span class="line">    <span class="keyword">parameter</span> Y_WIDTH = <span class="number">2</span></span><br><span class="line">)</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span> [A_WIDTH-<span class="number">1</span>:<span class="number">0</span>] i_a,</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span> [B_WIDTH-<span class="number">1</span>:<span class="number">0</span>] i_b,</span><br><span class="line">    <span class="keyword">input</span>  <span class="keyword">wire</span> [        <span class="number">3</span>:<span class="number">0</span>] i_c,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">wire</span> [Y_WIDTH-<span class="number">1</span>:<span class="number">0</span>] o_y,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span>                o_z</span><br><span class="line">)</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<p><code>模块输入输出端口带有前缀</code></p>
+<ul>
+<li><code>i_</code></li>
+<li><code>o_</code></li>
+</ul>
+<h1 id="模块例化"><a href="#模块例化" class="headerlink" title="模块例化"></a>模块例化</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> top;</span><br><span class="line">    <span class="keyword">wire</span> [<span class="number">15</span>:<span class="number">0</span>] btm_a;</span><br><span class="line">    <span class="keyword">wire</span> [ <span class="number">7</span>:<span class="number">0</span>] btm_b;</span><br><span class="line">    <span class="keyword">wire</span> [ <span class="number">3</span>:<span class="number">0</span>] btm_c;</span><br><span class="line">    <span class="keyword">wire</span> [ <span class="number">3</span>:<span class="number">0</span>] btm_y;</span><br><span class="line">    <span class="keyword">wire</span>        btm_z;</span><br><span class="line"></span><br><span class="line">    bottom #</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.A_WIDTH</span>(<span class="number">16</span>),</span><br><span class="line">        <span class="variable">.B_WIDTH</span>( <span class="number">8</span>),</span><br><span class="line">        <span class="variable">.Y_WIDTH</span>( <span class="number">4</span>)</span><br><span class="line">    )u_bottom</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.i_a</span>(btm_a),</span><br><span class="line">        <span class="variable">.i_b</span>(btm_b),</span><br><span class="line">        <span class="variable">.i_c</span>(btm_c),</span><br><span class="line">        <span class="variable">.o_y</span>(btm_y),</span><br><span class="line">        <span class="variable">.o_z</span>(btm_z)</span><br><span class="line">    );</span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -1307,7 +1296,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1375,20 +1364,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-count">235</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-count">167</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1415,7 +1404,7 @@
 <div class="copyright">
   
   &copy; 2024 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/secure-boot/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/28/Debug-integration-with-Cortex-M-processor-systems%EF%BC%881%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/06/12/secure-boot/" class="post-title-link" itemprop="url">secure boot</a>
+            <a href="/2024/06/28/Debug-integration-with-Cortex-M-processor-systems%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">5 Debug integration with Cortex-M processor systems（1）</a>
         </h2>
 
         <div class="post-meta">
@@ -186,569 +186,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-06-12 09:52:42" itemprop="dateCreated datePublished" datetime="2024-06-12T09:52:42+08:00">2024-06-12</time>
+              <time title="创建时间：2024-06-28 17:13:03" itemprop="dateCreated datePublished" datetime="2024-06-28T17:13:03+08:00">2024-06-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-17 15:17:58" itemprop="dateModified" datetime="2024-06-17T15:17:58+08:00">2024-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/12/secure-boot/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/secure-boot/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>车规芯片中，有secure boot的选项，即对Flash中的user code进行校验，防止非法修改</p>
-</blockquote>
-<p>大致的工作流程如下:</p>
-<p>1、host romcode执行，此时的romcode会读取（dflash info&#x2F;OTP区域）<code>secure boot配置</code>（hsm enable，secure boot enable等）；</p>
-<p>2、如果secure boot enable，则读取（pflash info区域）<code>secure boot的校验参数</code>（verify size，boot address， HSM public key addr，HSM code signature addr等）与HSM交互，然后对Flash的特定区域进行校验；</p>
-<hr>
-<h1 id="同事1"><a href="#同事1" class="headerlink" title="同事1"></a>同事1</h1><h2 id="hsm的程序分成两个部分"><a href="#hsm的程序分成两个部分" class="headerlink" title="hsm的程序分成两个部分"></a>hsm的程序分成两个部分</h2><ul>
-<li><p>第一部分是hsm romcode程序（存放在hsm rom中）</p>
-</li>
-<li><p>第二部分是hsm firmware程序（存放在dflash bank1中）</p>
-</li>
-</ul>
-<p>工作机制大致是：hsm reset释放之后，先执行hsm romcode的程序，用来校验firmware中的code</p>
-<h2 id="build-secure-boot所需要的文件"><a href="#build-secure-boot所需要的文件" class="headerlink" title="build secure boot所需要的文件"></a>build secure boot所需要的文件</h2><ul>
-<li><p>host romcode &amp; hsm romcode</p>
-</li>
-<li><p>dflash info: OTP(存放秘钥)</p>
-</li>
-<li><p>dflash main: FW&#x2F;firmware&#x2F;hsm image&#x2F;</p>
-</li>
-</ul>
-<p>不同的算法，就会生成不同的fw和otp</p>
-<h2 id="想要测试的点"><a href="#想要测试的点" class="headerlink" title="想要测试的点"></a>想要测试的点</h2><ul>
-<li>能否正确等到HSM的状态&#x2F;ready信号</li>
-<li>能否下命令调动HSM</li>
-<li>host能否boot起来</li>
-</ul>
-<hr>
-<h1 id="同事2"><a href="#同事2" class="headerlink" title="同事2"></a>同事2</h1><h2 id="pflash-info区域的参数"><a href="#pflash-info区域的参数" class="headerlink" title="pflash info区域的参数"></a>pflash info区域的参数</h2><ul>
-<li><p>verify size[31:0]：hsm需要验证的代码大小</p>
-</li>
-<li><p>boot addr[31:0]：hsm需要验证的代码的起始地址</p>
-</li>
-<li><p>HSM public key address：如果使用非对称HSM算法，就需要提供公钥所在的地址</p>
-</li>
-<li><p>HSM code signature address：签名地址，将pflash usercode计算出来的MAC值（非对称，直接利用软件&#x2F;工具计算出来的结果） 存放在某一个地址处，例如pflash info或者pflash main等等</p>
-</li>
-</ul>
-<blockquote>
-<p>签名值：</p>
-<ul>
-<li><p>非对称HSM算法计算出来的签名值–&gt;签名</p>
-</li>
-<li><p>​     对称HSM算饭计算出来的签名值–&gt;MAC值</p>
-</li>
-</ul>
-</blockquote>
-<ul>
-<li><p>Header size：如果不需要osr处理之后的head参与计算，此size配置为0</p>
-</li>
-<li><p>Header address：</p>
-</li>
-</ul>
-<blockquote>
-<p>关于head的理解，一般编译之后，会生成pflash main区域的user code；OSR会对这个user code进行处理，</p>
-<p>然后会在签名值和code之间添加很多其他信息，例如Code public key，code size等等–》OSR 命名为head</p>
-<p>计算最终的code_Signature签名值的时候，有可能将head的一部分和usercode一起参与计算</p>
-</blockquote>
-<img src="/2024/06/12/secure-boot/image-20240613193648354.png" class="">
-
-
-
-<ul>
-<li>Version address</li>
-</ul>
-<blockquote>
-<p>head中会有一个版本号，如果head中的版本号小于pflash info中提供的版本号，<font color=red>就不会去更新版本号??</font></p>
-</blockquote>
-<ul>
-<li><p>reset disable</p>
-</li>
-<li><p>Version Update enable</p>
-</li>
-<li><p>CheckSum</p>
-</li>
-</ul>
-<img src="/2024/06/12/secure-boot/image-20240613192251191.png" class="">
-
-
-
-<h2 id="romcode需要将整个secure-boot框架搭建好，会调用HSM进行校验"><a href="#romcode需要将整个secure-boot框架搭建好，会调用HSM进行校验" class="headerlink" title="romcode需要将整个secure boot框架搭建好，会调用HSM进行校验"></a>romcode需要将整个secure boot框架搭建好，会调用HSM进行校验</h2><h2 id="测试步骤（FPGA侧）"><a href="#测试步骤（FPGA侧）" class="headerlink" title="测试步骤（FPGA侧）"></a>测试步骤（FPGA侧）</h2><ol>
-<li><p>确定使用rsa sm2 aes sm4使用哪种HSM算法</p>
-<p>首先确定使用rsa sm2 aes sm4使用哪种算法，此时需要配置OTP的FW control SoC</p>
-<img src="/2024/06/12/secure-boot/image-20240613202913302.png" class=""></li>
-</ol>
-<p>具体32bits对应的含义，如下：</p>
-<img src="/2024/06/12/secure-boot/image-20240613203755205.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240613204224175.png" class="">
-
-
-
-<ol start="2">
-<li>更新HSM的秘钥</li>
-</ol>
-<p><font color=red>这个秘钥是指？作用是什么？</font>我理解是OTP的KEY区域</p>
-<p>作用是让hsm romcode对hsm的firmware进行校验</p>
-<ol start="3">
-<li>更新固件</li>
-</ol>
-<p>因为HSM默认是没有固件的（dflash main区域的code）；可以backdoor的方式放进去</p>
-<ol start="4">
-<li>升级pflash usercode代码</li>
-</ol>
-<p>此时host的pflash侧是没有usercode，需要编译pflash usercode，并需要将此usercode烧录到pflash中；</p>
-<p>此时还需要利用OSR的工具计算出一个签名值（可以选择用什么算法 计算签名），得到一个<code>签名值+head+usercode</code>的pack,一起烧录到pflash 中；</p>
-<p>然后就能得到校验参数，需要烧写到pflash info区域；</p>
-<ol start="5">
-<li><p>烧写host romcode信息（烧写到flash进行模拟）</p>
-</li>
-<li><p>复位</p>
-</li>
-<li><p>读取pflash info校验参数</p>
-</li>
-<li><p>mail通信，调用hsm校验pflash user code</p>
-</li>
-<li><p>跳转到pflash user code执行</p>
-</li>
-</ol>
-<h1 id="doc-eHSM-secure-boot-TRM"><a href="#doc-eHSM-secure-boot-TRM" class="headerlink" title="doc-&gt;eHSM secure boot TRM"></a>doc-&gt;eHSM secure boot TRM</h1><h2 id="Secure-Boot-Install-and-Upgrade"><a href="#Secure-Boot-Install-and-Upgrade" class="headerlink" title="Secure Boot, Install and Upgrade"></a>Secure Boot, Install and Upgrade</h2><p>The eHSM supports firmware stored in ROM, internal NVM or external NVM, </p>
-<p>and also supports the firmware excuted in IROM, internal IRAM or internal NVM.  </p>
-<p><font color=blue>This section describs one of the combinations that eHSM firmware is stored and excuted in internal NVM.</font></p>
-<h3 id="eHSM-Secure-Boot-Install-and-Upgrade"><a href="#eHSM-Secure-Boot-Install-and-Upgrade" class="headerlink" title="eHSM Secure Boot, Install and Upgrade"></a>eHSM Secure Boot, Install and Upgrade</h3><p><font color=blue>eHSM Secure Boot: Verify eHSM firmware in NVM before excuting</font></p>
-<p>•Verify the eHSM firmware image w&#x2F; ”eHSM FW Verify Key”</p>
-<p>•Excute the code in NVM</p>
-<p><font color=blue>eHSM Secure Install: Install eHSM firmware to NVM</font></p>
-<p>•Decrypt and verify the eHSM firmware upgrade image w&#x2F; ”eHSM Upgrade Encrypt Key” and”eHSM Upgrade Verify Key”</p>
-<p>•Sign the eHSM firmware code w&#x2F; ”eHSM FW Verify Key”</p>
-<p>•Save the plaintext code image to NVM</p>
-<p><font color=blue>eHSM Secure Upgrade: Upgrade eHSM firmware to NVM</font></p>
-<p>•Similar flow as secure install</p>
-<blockquote>
-<p>一些思考：</p>
-<p><font color=red>或者说install和upgrade的区别是什么?</font></p>
-</blockquote>
-<img src="/2024/06/12/secure-boot/image-20240614134053043.png" class="">
-
-
-
-<h4 id="eHSM-Code-Location"><a href="#eHSM-Code-Location" class="headerlink" title="eHSM Code Location"></a>eHSM Code Location</h4><img src="/2024/06/12/secure-boot/image-20240614134651421.png" class="">
-
-
-
-<h4 id="Encryption-Algorithm"><a href="#Encryption-Algorithm" class="headerlink" title="Encryption Algorithm"></a>Encryption Algorithm</h4><img src="/2024/06/12/secure-boot/image-20240614134840559.png" class="">
-
-
-
-<h4 id="Encryption-OTP-Keys"><a href="#Encryption-OTP-Keys" class="headerlink" title="Encryption OTP Keys"></a>Encryption OTP Keys</h4><img src="/2024/06/12/secure-boot/image-20240614135113981.png" class="">
-
-
-
-<h4 id="OTP-Algorithm-Selection-Field"><a href="#OTP-Algorithm-Selection-Field" class="headerlink" title="OTP Algorithm Selection Field"></a>OTP Algorithm Selection Field</h4><img src="/2024/06/12/secure-boot/image-20240614135258415.png" class="">
-
-
-
-<h3 id="eHSM-Image-Format"><a href="#eHSM-Image-Format" class="headerlink" title="eHSM Image Format"></a>eHSM Image Format</h3><h4 id="eHSM-Image-Format-1"><a href="#eHSM-Image-Format-1" class="headerlink" title="eHSM Image Format"></a>eHSM Image Format</h4><p>The eHSM image includes code image and upgrade image</p>
-<img src="/2024/06/12/secure-boot/image-20240614135539302.png" class="">
-
-
-
-<h4 id="eHSM-Image-Fields-Definition"><a href="#eHSM-Image-Fields-Definition" class="headerlink" title="eHSM Image Fields Definition"></a>eHSM Image Fields Definition</h4><ul>
-<li>Code Image Fields Definition</li>
-</ul>
-<img src="/2024/06/12/secure-boot/image-20240614161410855.png" class="">
-
-<blockquote>
-<p>Note:</p>
-<p>•The ”Code_Signature” covers 432+254K bytes, from ”Code_Valid_Flag” to the end of the ”Code”</p>
-</blockquote>
-<ul>
-<li>Upgrade Image Fields Definition</li>
-</ul>
-<img src="/2024/06/12/secure-boot/image-20240614161506218.png" class="">
-
-<blockquote>
-<p>Note:</p>
-<p>•The ”Upgrade_Signature” covers 448+255K bytes data, including the whole upgrade imagefields except ”Upgrade_Signature” and ”Upgrade_Public_Key”.</p>
-<p>•The whole 255K bytes code image is encrypted with ”eHSM_UPGRADE_ENC_KEY”</p>
-</blockquote>
-<h3 id="eHSM-Secure-Boot"><a href="#eHSM-Secure-Boot" class="headerlink" title="eHSM Secure Boot"></a>eHSM Secure Boot</h3><h4 id="Secure-Boot-Flow"><a href="#Secure-Boot-Flow" class="headerlink" title="Secure Boot Flow"></a>Secure Boot Flow</h4><ol>
-<li><p>HW loads OTP information, decrypts OTP keys(Optional) and initializes system before releasingeHSM’s CPU reset</p>
-</li>
-<li><p>FW decryption and verification can be skipped in lifecycle ”TEST_MODE” and ”DEVELOP_MODE”,controlled by OTP control fields</p>
-</li>
-<li><p>eHSM will report error if there is no available FW code to info host and wait host to burn FW code through mailbox</p>
-</li>
-<li><p>eHSM will reports error if secure boot fails to info host and wait for host to debug through mailboxor UART port, including:</p>
-<ol>
-<li>(a)Crypto IP self-test fail</li>
-<li>(b)Key (eHSM FW Verify Key) slot is not available</li>
-<li>(c)Program (NVM code) verification fail</li>
-<li>(d)Version number mismatch (OTP is newer than NVM)</li>
-</ol>
-</li>
-</ol>
-<img src="/2024/06/12/secure-boot/image-20240614162500741.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240614163102775.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240614163132301.png" class="">
-
-
-
-<blockquote>
-<p>Note:</p>
-<ul>
-<li><p>Program verification flow depends on the algorithm, it’s CMAC for symmetric algorithm and Hash &amp; RSA (or SM3 &amp; SM2) for asymmetric algorithm.</p>
-</li>
-<li><p>BOOTDONE_SUCCESS and BOOTDONE_FAIL means:</p>
-<ul>
-<li><p>BOOTDONE_SUCCESS: </p>
-<ul>
-<li><p>BOOTDONE&#x3D;1 and BOOTERR&#x3D;0</p>
-</li>
-<li><p>BOOTDONE_FAIL: BOOTDONE&#x3D;1 and BOOTERR&#x3D;1</p>
-<p>Both BOOTDONE and BOOTERR are register fields in ”SYS_BOOT_STA”, and is routedto eHSM top output pin ”o_ehsm_status”The ”Report Error” is defined in EMU registers, and will be monitored through the eHSM’soutput pin ”o_ehsm_fw_err” by host</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>一些思考&amp;说明：</p>
-<p><font color=red>crypto IP self test是什么意思？</font></p>
-</blockquote>
-<h4 id="Secure-Boot-Related-OTP-Fields"><a href="#Secure-Boot-Related-OTP-Fields" class="headerlink" title="Secure Boot Related OTP Fields"></a>Secure Boot Related OTP Fields</h4><img src="/2024/06/12/secure-boot/image-20240614163634621.png" class="">
-
-
-
-<h3 id="eHSM-Secure-Install"><a href="#eHSM-Secure-Install" class="headerlink" title="eHSM Secure Install"></a>eHSM Secure Install</h3><h4 id="Secure-Install-Related-Keys"><a href="#Secure-Install-Related-Keys" class="headerlink" title="Secure Install Related Keys"></a>Secure Install Related Keys</h4><img src="/2024/06/12/secure-boot/image-20240614135113981.png" class="">
-
-
-
-<h4 id="Secure-Install-Flow"><a href="#Secure-Install-Flow" class="headerlink" title="Secure Install Flow"></a>Secure Install Flow</h4><p>The secure install only contains following three steps:</p>
-<h5 id="step1-Burn-install-FW-image-to-NVM"><a href="#step1-Burn-install-FW-image-to-NVM" class="headerlink" title="step1: Burn install FW image to NVM"></a>step1: Burn install FW image to NVM</h5><p>1.Burn <code>install FW image</code> to NVM</p>
-<p>(a)Host prepares the FW install image and sends an INSTALL command to eHSM to start the FW install</p>
-<p>(b)Once eHSM bootloader receives the INSTALL command, it starts following steps </p>
-<p>​	i.Check the version with version counter in OTP</p>
-<p>​	ii.Verify and decrypt the install image</p>
-<p>​		(a) Verify the image with ”eHSM_UPGRADE_VERIFY_KEY”</p>
-<p>​		(b)- For asymmetric algorithm</p>
-<p>​				(i) Calculate the Hash of the image</p>
-<p>​				(ii) Verify the signature of the image Hash value</p>
-<p>​			- For symmetric algorithm</p>
-<p>​				(i) Verify the signature of the image</p>
-<p>​		(c)Decrypt the image with ”eHSM_UPGRADE_ENC_KEY”</p>
-<p>​	iii.Compare the version counter between code image and upgrade image, report error if they are different</p>
-<p>​	iv.(Optional) If Boot_Alg is symmetric algorithm: Calculate the code image MAC with”eHSM_VERIFY_KEY” and update the ”Code_Signature” field with the 		calculated MAC</p>
-<blockquote>
-<p>Note: This step is only needed when each part has its own ”eHSM_VERIFY_KEY”which is different from others’</p>
-</blockquote>
-<p>​	v.Write image to internal NVM</p>
-<p>​	vi.Return command response with ”UPGRADE_DONE” (or corresponding error code)</p>
-<h5 id="step2-Verify-installed-Program-in-NVM"><a href="#step2-Verify-installed-Program-in-NVM" class="headerlink" title="step2: Verify installed Program in NVM"></a>step2: Verify installed Program in NVM</h5><p>2.Verify installed Program in NVM</p>
-<p>(a)Host sends VERIFY_PROGRAM command to start the program verification</p>
-<p>(b)Once eHSM receives the VERIFY_PROGRAM command, it starts to verify the program inNVM, including</p>
-<p>​	i.Compare the program version with OTP version counter</p>
-<p>​	ii.Verify the program with ”eHSM_VERIFY_KEY”</p>
-<p>​	iii.Return command response with ”REV_MATCH” or expected warning code ”REV_NEW”(Verification pass, but NVM program is newer than or same as OTP version counter)</p>
-<h5 id="step3-Update-OTP-version-counter"><a href="#step3-Update-OTP-version-counter" class="headerlink" title="step3: Update OTP version counter"></a>step3: Update OTP version counter</h5><p>3.Update OTP version counter</p>
-<p>(a)Host resets the eHSM</p>
-<p>(b)Bootloader jumps to the internal NVM after verification</p>
-<p>(c)eHSM runs the new FW.</p>
-<p>(d)eHSM’s new FW always compare the image version with version counter in OTP, and burn the new version to OTP version counter bit filed if image version is newer than OTP versioncounter.</p>
-<img src="/2024/06/12/secure-boot/image-20240614172128526.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240614172219853.png" class="">
-
-
-
-
-
-<blockquote>
-<p>Note:</p>
-<p>•Upgrade algorithm field in OTP and image will be compared in ”Is Upgrade_Alg asymmetric?”step</p>
-</blockquote>
-<img src="/2024/06/12/secure-boot/image-20240614172334022.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240614172349477.png" class="">
-
-
-
-<h3 id="eHSM-Secure-Upgrade"><a href="#eHSM-Secure-Upgrade" class="headerlink" title="eHSM Secure Upgrade"></a>eHSM Secure Upgrade</h3><h4 id="Secure-Upgrade-Related-Keys"><a href="#Secure-Upgrade-Related-Keys" class="headerlink" title="Secure Upgrade Related Keys"></a>Secure Upgrade Related Keys</h4><img src="/2024/06/12/secure-boot/image-20240614135113981.png" class="">
-
-
-
-<h4 id="Secure-Upgrade-Flow"><a href="#Secure-Upgrade-Flow" class="headerlink" title="Secure Upgrade Flow"></a>Secure Upgrade Flow</h4><p>In order to avoid stopping eHSM secure service during upgrade, the upgrade image will be split into several segments, e.g., 4KB for each segment, and eHSM will verify, decrypt and encrypt eachsegment individually with Crypto IPs in interleave mode. The secure upgrade contains following three steps</p>
-<h5 id="step1-Burn-Upgrade-FW-image-to-NVM"><a href="#step1-Burn-Upgrade-FW-image-to-NVM" class="headerlink" title="step1:Burn Upgrade FW image to NVM"></a>step1:Burn Upgrade FW image to NVM</h5><img src="/2024/06/12/secure-boot/image-20240614173335395.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240614173459441.png" class="">
-
-
-
-<h5 id="step2-Verify-Upgrade-Program-in-NVM"><a href="#step2-Verify-Upgrade-Program-in-NVM" class="headerlink" title="step2:Verify Upgrade Program in NVM"></a>step2:Verify Upgrade Program in NVM</h5><img src="/2024/06/12/secure-boot/image-20240614174827334.png" class="">
-
-<img src="/2024/06/12/secure-boot/image-20240614174907336.png" class="">
-
-
-
-<h5 id="step3-Update-OTP-version-counter-1"><a href="#step3-Update-OTP-version-counter-1" class="headerlink" title="step3:Update OTP version counter"></a>step3:Update OTP version counter</h5><p>Same as secure install</p>
-<img src="/2024/06/12/secure-boot/image-20240614172349477.png" class="">
-
-
-
-
-
-<h3 id="SoC-Secure-Boot-Install-Upgrade"><a href="#SoC-Secure-Boot-Install-Upgrade" class="headerlink" title="SoC Secure Boot, Install &amp; Upgrade"></a>SoC Secure Boot, Install &amp; Upgrade</h3><h4 id="SoC-Secure-Boot-Install-Upgrade-Keys"><a href="#SoC-Secure-Boot-Install-Upgrade-Keys" class="headerlink" title="SoC Secure Boot, Install &amp; Upgrade Keys"></a>SoC Secure Boot, Install &amp; Upgrade Keys</h4><p>Similar to eHSM secure boot, image installation and upgrade, corresponding keys are needed forSoC secure boot, image installation and upgrade, including：</p>
-<ul>
-<li>SOC_ENC_KEY</li>
-<li>SOC_VERIFY_KEY</li>
-<li>SOC_UPGRADE_ENC_KEY</li>
-<li>SOC_UPGRADE_VERIFY_KEY</li>
-</ul>
-<h4 id="SoC-Sequential-Parallel-Secure-Boot"><a href="#SoC-Sequential-Parallel-Secure-Boot" class="headerlink" title="SoC Sequential &amp; Parallel Secure Boot"></a>SoC Sequential &amp; Parallel Secure Boot</h4><p>There are two secure boot Strategies for SoC’s secure boot:</p>
-<p>1.Sequential secure boot</p>
-<ul>
-<li>eHSM bootloader (ROM) verifies eHSM firmware</li>
-<li>eHSM firmware verifies SoC bootloader</li>
-<li>SoC bootloader calls eHSM’s secure service (e.g. by a specify command) to verify SoCfirmware</li>
-</ul>
-<p>2.Parallel secure boot</p>
-<ul>
-<li>eHSM bootloader (ROM) verifies eHSM firmware</li>
-<li>SoC bootloader (ROM) calls eHSM’s secure service to verify SoC firmware</li>
-</ul>
-<blockquote>
-<p>区别在于SoC的bootloader是否需要验证</p>
-</blockquote>
-<img src="/2024/06/12/secure-boot/image-20240617133007752.png" class="">
-
-
-
-
-
-<p>The SoC boot strategy (sequential or parallel boot) is defined by the OTP field ”SocBootType”. </p>
-<p>The boot and upgrade algorithms are also defined in OTP control fields.</p>
-<p>eHSM first reads the configuration in OTP. If in sequential boot, eHSM firmware will verify the host directly. Otherwise, it waits for host to call interface to verify.</p>
-<p>eHSM first reads the configuration in OTP. If in sequential boot, eHSM firmware will verify the hostdirectly. Otherwise, it waits for host to call interface to verify. No matter the verification is passed ornot, eHSM firmware just runs and offers the services. <font color=blue>The only difference is that soc_boot_erris setor not.</font></p>
-<h4 id="SoC-Secure-Install-Upgrade"><a href="#SoC-Secure-Install-Upgrade" class="headerlink" title="SoC Secure Install &amp; Upgrade"></a>SoC Secure Install &amp; Upgrade</h4><p>The secure install &amp; upgrade for SoC bootloader or firmware could be very similar to the secureupgrade for eHSM firmware. The SoC’s bootloader or firmware image will be splinted into severalpieces and each will call corresponding eHSM mailbox commands (reuse eHSM upgrade commandsor new commands) to <font color=blue>decrypt, verify and encrypt</font> these image pieces to combine as the final encrypted code image for SoC.</p>
-<blockquote>
-<p>思考：</p>
-<p>image为什么需要加密解密？</p>
-<p>开发者如果想要开发程序，然后在SOTA升级的时候，为防止别人截获程序，需要使用密文传输，然后再进行解密，最后写到flash中。</p>
-</blockquote>
-<h3 id="eHsm-Single-Bank-Upgrade"><a href="#eHsm-Single-Bank-Upgrade" class="headerlink" title="eHsm Single Bank Upgrade"></a>eHsm Single Bank Upgrade</h3><p>Single Bank Upgrade Flow</p>
-<img src="/2024/06/12/secure-boot/image-20240617151247080.png" class="">
-
-
-
-
-
-<h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><p><font color=blue>Secure Boot install &amp; update有什么区别？</font></p>
-<p>没什么太多的区别，install主要是一开始flash中没有数据；update主要是，flash中有数据之后，再进行更新</p>
-<h1 id="secure-boot仿真build"><a href="#secure-boot仿真build" class="headerlink" title="secure boot仿真build"></a>secure boot仿真build</h1><p>更新OTP和FW</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">flash SOTA设计</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-06-12 09:11:03 / 修改时间：10:25:30" itemprop="dateCreated datePublished" datetime="2024-06-12T09:11:03+08:00">2024-06-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>flash的SOTA设计是一种在线升级方案，这里简述下其工作机制。</p>
-<p>SOTA即软件在线升级（Software updates Over The Air），是指在不连接烧写器的情况下，通过CAN、UART或其它通讯方式，实现应用程序的更新。</p>
-</blockquote>
-<h1 id="SOTA实现机制"><a href="#SOTA实现机制" class="headerlink" title="SOTA实现机制"></a>SOTA实现机制</h1><h2 id="常规实现方法"><a href="#常规实现方法" class="headerlink" title="常规实现方法"></a>常规实现方法</h2><p>在进行SOTA时，需要把旧的应用程序擦除，把新的应用程序写入。</p>
-<p>常规的实现方式需要分别开发BootLoader程序和APP程序，MCU上电先运行BootLoader，BootLoader根据情况选择是否跳转到APP和是否进行程序更新。</p>
-<p>具体来说有以下几种方式：</p>
-<ul>
-<li><p>方案一：更新程序时，由APP接收更新数据并暂存于Flash，再更改APP更新标志位；MCU重启时，BootLoader检查更新标志位，如有效，则擦除旧的APP，再将暂存于Flash的新APP数据写入APP运行地址处。<br>该方案的优点是更新数据的接收由APP完成，BootLoader不需要通讯协议栈，代码量更小，且数据传输中断时，原有APP不损坏。<br>缺点是需要额外的Flash空间暂存更新数据。</p>
-</li>
-<li><p>方案二：BootLoader中内置通讯协议栈，更新时，先向MCU发送指令使其跳转到BootLoader，之后先擦除旧APP，在接收新APP的同时直接将其写入Flash的APP运行地址处。<br>该方案的优点是不需要额外的Flash暂存数据。<br>缺点是BootLoader代码更复杂，且如果数据传输发生中断，旧的APP将不能被恢复。该方案更适合Flash容量较小的MCU。</p>
-</li>
-<li><p>方案三：将方案一和方案二相结合，即在BootLoader程序中内置通讯协议栈，更新时，先向MCU发送指令使其跳转到BootLoader，之后接收更新数据的时候，采用方案一的方法，先将数据暂存于Flash，待数据全部接收完成后再擦除旧的APP，写入新的APP。<br>该方案结合了方案一和方案二的优点，且能在没有APP或APP损坏的状态下实现程序更新。<br>缺点是BootLoader代码量更大，Flash空间占用更大。</p>
-</li>
-<li><p>方案四：在Flash中划分出两块相同大小的区域，分为A区和B区，都用来存放APP，但同一时间下只有一个区的APP是有效的，分别设置一个标志位标识其有效性。初始状态下先将APP写入A区，更新的时候，将新的APP写入B区，再把A区的APP擦除，同时更新两个区的有效性标志位状态。BootLoader中判断哪个区的APP有效，就跳转到哪个区运行。<br>这种方法优点不需要重复拷贝APP数据，但最大的一个缺点是AB区的APP程序运行地址不同，需要分别编译，从而使得可应用性大大降低。</p>
-</li>
-</ul>
-<p>经过上面的分析，可以看出来每种方案都有其优缺点，对于Flash容量较小的MCU，通常采用方案二，因为没有过多的空间暂存APP更新数据。但对于MCU的Flash容量很大的，通常要先把APP暂存下来再进行更新，防止数据传输中断导致APP不可用。上面的方案一、三、四都能实现，但并不完美。</p>
-<p><font color=blue>如果实现的SOTA机制更类似于方案四，且Flash支持两种地址映射方式，从而使得APP编译时不需要区分AB区，使用相同的地址即可，从而避免了方案四的硬伤，就可以提供一种最佳的SOTA方案，下面描述的就是此种实现方法</font></p>
-<h2 id="项目实现方法"><a href="#项目实现方法" class="headerlink" title="项目实现方法"></a>项目实现方法</h2><p>程序上不用对地址做改动，硬件做地址映射</p>
-<img src="/2024/06/12/flash-SOTA%E8%AE%BE%E8%AE%A1/image-20240612095815405.png" class="">
-
-<p>在升级的时候（假设当前程序运行在bank0，<code>bank0处于0x0020_000,bank1处于0x0040_0000</code>）：</p>
-<p>1、先擦除bank1的内容</p>
-<p>2、更新新的APP到bank1</p>
-<p>3、更新SOTA swap参数</p>
-<p>4、复位，对SOTA swap参数解析，rom code跳转到bank1（<code>bank1处于0x0020_0000,bank0处于0x0040_0000</code>）执行</p>
-<hr>
-<p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014157109/article/details/121006232">SOTA机制详解</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/11/3-AMBA-AHB-APB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/11/3-AMBA-AHB-APB/" class="post-title-link" itemprop="url">3 AMBA/AHB/APB（1）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-06-11 21:26:50" itemprop="dateCreated datePublished" datetime="2024-06-11T21:26:50+08:00">2024-06-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-12 10:15:42" itemprop="dateModified" datetime="2024-07-12T10:15:42+08:00">2024-07-12</time>
+                <time title="修改时间：2024-07-01 21:29:54" itemprop="dateModified" datetime="2024-07-01T21:29:54+08:00">2024-07-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -769,8 +214,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/06/11/3-AMBA-AHB-APB/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/11/3-AMBA-AHB-APB/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/06/28/Debug-integration-with-Cortex-M-processor-systems%EF%BC%881%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/28/Debug-integration-with-Cortex-M-processor-systems%EF%BC%881%EF%BC%89/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -785,120 +230,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="What-is-AMBA"><a href="#What-is-AMBA" class="headerlink" title="What is AMBA?"></a>What is AMBA?</h1><h2 id="Introduction-to-Advanced-Microcontroller-Bus-Architecture"><a href="#Introduction-to-Advanced-Microcontroller-Bus-Architecture" class="headerlink" title="Introduction to Advanced Microcontroller Bus Architecture"></a>Introduction to Advanced Microcontroller Bus Architecture</h2><h2 id="History-of-AMBA"><a href="#History-of-AMBA" class="headerlink" title="History of AMBA"></a>History of AMBA</h2><h2 id="Various-versions-of-AMBA-specification"><a href="#Various-versions-of-AMBA-specification" class="headerlink" title="Various versions of AMBA specification"></a>Various versions of AMBA specification</h2><h1 id="Overview-of-AHB"><a href="#Overview-of-AHB" class="headerlink" title="Overview of AHB"></a>Overview of AHB</h1><h2 id="Various-versions-of-AHB"><a href="#Various-versions-of-AHB" class="headerlink" title="Various versions of AHB"></a>Various versions of AHB</h2><h2 id="AHB-signals"><a href="#AHB-signals" class="headerlink" title="AHB signals"></a>AHB signals</h2><h2 id="Basic-operations"><a href="#Basic-operations" class="headerlink" title="Basic operations"></a>Basic operations</h2><hr>
-<p>&#x3D;&#x3D;》 组件的连接</p>
-<p>在单Master和多Slave的简单设计中，AHB总线系统可以按照下图设计：</p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611215804055.png" class="">
-
-<p><font color=red>1、data phase mux control?什么意思？怎么实现？</font></p>
-<p><font color=red>2、一般接触到的hready应该是将所有的hreadyout信号进行与操作实现</font></p>
-<p><font color=red>这两种方式均可</font></p>
-<p>如果遵循<code>AMBA 5 AHB</code>规范，可以按照如下方式连接：</p>
+          <h1 id="Overview-of-debug-and-trace-features"><a href="#Overview-of-debug-and-trace-features" class="headerlink" title="Overview of debug and trace features"></a>Overview of debug and trace features</h1><p>大多数的Cortex-M系统，都会集成debug和trace特性，不仅方便软件开发做调试，也对flash program调试和诊断数据的生成很有用。</p>
+<p>debug功能有如下特性：</p>
 <ul>
-<li>多个<code>AHB Master</code>共享一个bus，需要使用<code>Master Multiplexer</code>和<code>Master arbiter</code>，arbiter仲裁之后产生选通信号，通过Multiplexer选通，占用总线</li>
-<li>多个<code>AHB Slave</code>返回的data和response信号需要使用<code>Slave Multiplexer</code> feedback to <code>AHB Master</code>，其中Slave Multiplexer通过Decoder产生的信号进行选通</li>
+<li>访问memory space。处理器正在运行的时候，debug也能访问</li>
+<li>断点事件可以用于halt处理器<ul>
+<li>硬件断点：使用的是硬件比较器去比较PC和断点地址，硬件断点的数量是有限的；</li>
+<li>软件断点：使用BKPT指令去触发断点中断，然后通过debug monitor进行捕获；</li>
 </ul>
-<hr>
-<p>&#x3D;&#x3D;》信号基本时序</p>
-<p>信号可以被划分为<code>address phase singals </code>和<code>data phase singals  </code>：</p>
-<p><code>address phase</code> signals include:</p>
-<ul>
-<li>HADDR, HTRANS, HSEL, HWRITE, HSIZE.</li>
-<li>Optional: HPROT, HBURST, HMASTLOCK, HEXCL, HAUSER</li>
-</ul>
-<p><code>data phase</code> signals include:</p>
-<ul>
-<li><p>HWDATA, HRDATA, HRESP, HREADY (and HREADYOUT).</p>
-</li>
-<li><p>Optional: HEXOKAY, HWUSER, HRUSER.</p>
 </li>
 </ul>
-<p><font color=blue>每一个transfer都是有address phase和data phase</font></p>
-<p><font color=blue>transfer是pipelined，意味着当前transfer的address phase可以和上一次transfer的data phase overlap</font></p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611221656976.png" class="">
-
-<hr>
-<p>&#x3D;&#x3D;》data phase select control生成</p>
 <blockquote>
-<p>Each phase is terminated by the assertion of HREADYOUT (HREADY) from <code>the currently activated AHB slave in the data phase</code>. </p>
-<p>The HREADYOUT from the AHB slaves are multiplexed by the slave multiplexer, forming the system-wide HREADY signal.</p>
-<p> The multiplexer is operating at the data phase of each transfer. Control of the multiplexer can be generated from the AHB decoder, or the HSEL<br>signals and the HREADY signal.  </p>
+<p>思考：</p>
+<p><font color=red>软件断点的工作机制？</font></p>
 </blockquote>
-<p>结合上面的波形图，来理解这段话：</p>
-<blockquote>
-<p>如果当前看的是Address Phase N，则当前有效的ahb slave data phase 就是上图的data phase(N-1)；</p>
-<p>hreadyout通过slave multiplexer形成了系统范围的HREADY信号；</p>
-<p>slave multiplexer在一个transfer的data phase进行mux，现在问题就是如何生成slave multiplexer的控制信号data phase select？</p>
-<p>&#x3D;&#x3D;》通过HSEL以及HREADY信号</p>
-</blockquote>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240611223909464.png" class="">
-
-
-
-<blockquote>
-<p>If an AHB slave is not currently selected, its HREADYOUT should be high to indicate it is ready.<br>However, it can only accept a transfer from the bus master when the previous transfer is completed,<br>indicated by a high level in the system-wide HREADY.   </p>
-<p>注意两个词语，结合下面的波形图理解：</p>
-<p>(Address  phase)  AHB Slave A selected</p>
-<p>(Data pahse       )  AHB Slave A active</p>
-<p>以Slave B为例，如果开始时，Slave B未被选中进行transfer，那么下次Slave B的transfer需要等到系统范围的HREADY HIGH才可以进行；</p>
-</blockquote>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240612222936437.png" class="">
-
-
-
-<h2 id="Minimal-AHB-systems"><a href="#Minimal-AHB-systems" class="headerlink" title="Minimal AHB systems"></a>Minimal AHB systems</h2><p>最小的AHB system有一个bus master，多个bus slave以及接下来的AHB 组件：</p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240612225507780.png" class="">
-
-
-
-<p>address decoder应根据系统的memory map进行设计，HSEL是一个地址阶段的信号，由HADDR通过组合逻辑产生，其不应该有复杂的decode逻辑，否则综合的时候timing会受到影响；</p>
-<p>AHB slave multiplexer会更加通用一点，而且能够在各种ARM AHB IP bundles中找到。不同的AHB Slave有着不同的read data outputs和response outputs，因此需要一个Slave Multiplexer 在current active slave阶段返回data和response；</p>
-<p>AHB Slave multiplexer是被一个<code>data phase版本的HSEL信号</code>控制(对address phase的HSEL做一级pipelline)。具体的实现方法是，利用系统范围的HREADY信号做使能，然后对HSEL寄存一拍（可以参考前文的原理图）；<font color=blue>大多数情况下，HSEL的寄存行为是在AHB Slave Muxplexer中做的，所以Designer可以直接将地址阶段的HSEL信号连接到AHB Slave Multiplexer即可；</font></p>
-<p>AHB system中可能由多个decoder和AHB Slave Multiplexer。AHB system有多个AHB subsystem，各自包含了一块地址空间。在这样的场景下，子系统的decoder可能就要考虑到顶层decoder的HSEL信号，如下图所示：</p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240613230353912.png" class="">
-
-
-
-<h2 id="Handling-of-multiple-bus-masters"><a href="#Handling-of-multiple-bus-masters" class="headerlink" title="Handling of multiple bus masters"></a>Handling of multiple bus masters</h2><hr>
-<p>&#x3D;&#x3D;》如果是基于AMBA2规范的AHB协议，多个AHB Master和AHB Slave之间的连接关系如下图所示：</p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240613230916059.png" class="">
-
-<blockquote>
-<p>多个AHB Master通过Master multiplexer共享同一个总线，由master arbiter仲裁产生控制信号；</p>
-<p>read data和response通过Slave multiplexer返回，由decoder产生控制信号；</p>
-<p>在Master发出transfer之前，首先通过<code>HBUSREQ (Bus Request) </code>以及<code>HGRANT (Bus Granted)  </code>信号和Master arbiter进行handshaking</p>
-<ol>
-<li>A bus master must first assert a bus request (HBUSREQ) to the arbiter, then</li>
-<li>After arbitration, the arbiter returns the bus granted signal (HGRANT) to one of the bus masters, then</li>
-<li>The bus master can then generate transfers on the bus.</li>
-<li>If the HGRANT signal is de-asserted, the bus master must stop issuing new transfers.</li>
-</ol>
-</blockquote>
-<hr>
-<p>&#x3D;&#x3D;》<font color=blue>简单的AHB系统可以根据这种规则进行工作，但是如果是复杂的场景，BUS带宽就会受到限制，因为BUS上同时只能有一个Master和一个Slave进行通信；</font></p>
-<p><font color=blue><code>AMBA Design Kit (ADK) </code>产品有了一种新的技术（<code>multi-layer AHB</code>）去支持多个AHB Master同时使用总线的场景；</font></p>
-<p>ADK的<code>BusMatrix IP</code>是一个<code>AHB interconnect</code>组件（使用的是multi-layer AHB技术）,即支持多个Master和多个Slave互联；</p>
-<p>如果有多个AHB Slave需要连接到总线，但是总线资源有限的情况下，可以在BusMatrix外面使用额外的Slave Muxplexer进行扩展；</p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240613234213952.png" class="">
-
-<p>可以看到，BusMatrix IP<font color=blue>为了解决多个bus master去访问同一个bus slave时的冲突</font>，每个master port（connects to bus slave）都有一个arbiter；</p>
-<p>如果某一个bus masterA想要传输数据到某个bus slave，但是此bus slave正在被另外一个bus masterB访问，那么bus masterA的transfer会保存到input stage的buffer中；在这种情形下，HBUSREQ 和HGRANT 就不再需要了；</p>
-<blockquote>
-<p>一些思考：</p>
-<p>1，原来的HBUSREQ 和HGRANT是为了解决多个bus master去访问同一个bus slave的场景；</p>
-<p>现在使用input stage之后，transfer会被缓存到input stage中；就不会造成冲突，因此就不需要HBUSREQ 和HGRANT</p>
-<p>2，文中只说明了一个bus masterB已经访问了bus slave，然后在访问期间，另外一个bus masterA有来访问bus slave的情况；如果是两个bus Master同时访问同一个bus Slave，处理的情况也是类似的；都会经过arbiter仲裁，然后有一个bus master transfer会被缓存到input stage；</p>
-<p>3，如果bus masterA的transfer的被缓存到input stage中，此时slave port（connect to bus masterA）hreadyout应该是拉低的，此时bus masterA会hold<font color=red>这一步transfer吗?如果会的话，为什么要缓存？直接返回hreadyout，然bus MasterA一直hold不可以吗？</font></p>
-</blockquote>
-<p><font color=blue>bus matrix的这种设计允许不同的master同时访问不同的slave，增强了系统带宽的处理能力</font></p>
-<p>bus matrix IP可以在<code>AMBA Design Kit(ADK)</code>以及<code>Cortex-M System Design Kit(CMSDK)</code>中配置使用；AHB BusMatrix IP是<code>Corstone foundation IP</code> &#x2F; <code>CoreLink SDK (System Design Kit)  </code>的一部分。</p>
-<hr>
-<p>针对系统带宽要求不高的场景，可以使用类似于AMBA 2 AHB的架构，如下图所示，其利用了一个重新设计的AHB Master Multiplexer, 内部包括了<code>internal input state以及internal arbiter(可以看成是Bus Matrix，只不过只有一个slave，因此不需要internel address decoder)</code></p>
-<img src="/2024/06/11/3-AMBA-AHB-APB/image-20240615234302205.png" class="">
-
-
-
-<p><font color=red>需要研究下AHB组件 Slave Mux IP 的HSEL信号一级HREADYOUTx，HREADY实现</font></p>
 
       
     </div>
@@ -918,7 +263,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/11/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/26/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -932,7 +277,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/06/11/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">python基础语法</a>
+            <a href="/2024/06/26/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">C语言的变量存储位置</a>
         </h2>
 
         <div class="post-meta">
@@ -942,14 +287,793 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-06-11 15:01:33" itemprop="dateCreated datePublished" datetime="2024-06-11T15:01:33+08:00">2024-06-11</time>
+              <time title="创建时间：2024-06-26 15:01:41" itemprop="dateCreated datePublished" datetime="2024-06-26T15:01:41+08:00">2024-06-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-18 21:31:53" itemprop="dateModified" datetime="2025-02-18T21:31:53+08:00">2025-02-18</time>
+                <time title="修改时间：2025-03-07 09:52:35" itemprop="dateModified" datetime="2025-03-07T09:52:35+08:00">2025-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式C程序</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5/" itemprop="url" rel="index"><span itemprop="name">编译链接</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/26/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/26/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>嵌入式软件通常会涉及到程序变量的分配位置，此处做一个总结；</p>
+</blockquote>
+<p>C程序中的数据分为：</p>
+<ul>
+<li>变量<ul>
+<li>栈区：由编译器自动分配释放</li>
+<li>堆区： 一般由程序员使用malloc函数分配释放，若程序员不释放，程序结束时可能由OS回收</li>
+<li>全局&#x2F;静态变量存储区：存储全局变量以及静态变量（会对全局&#x2F;静态变量做初始化的和未初始化的区分）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>在 ARM Cortex-M 处理器上，局部变量的存储位置取决于 <strong>变量的生命周期、大小和编译器优化</strong>。</p>
+<p>ARM-M 处理器采用 <strong>通用寄存器和堆栈（Stack）</strong> 来存储局部变量</p>
+</blockquote>
+<ul>
+<li>常量（字面常量）<ul>
+<li>常量存储器：存放字面常量</li>
+</ul>
+</li>
+</ul>
+<p><font color=blue>程序会将变量搬运到SRAM区域；</font></p>
+<p><font color=blue>常量仍然会在Flash或者ROM等NVM介质中；</font></p>
+<hr>
+<p>举例说明1：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 已初始化的全局变量（会存入 .data 段）</span></span><br><span class="line"><span class="type">int</span> global_var = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 已初始化的静态变量（会存入 .data 段）</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> static_var = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 未初始化的全局变量（存入 .bss 段，不会进入 .data）</span></span><br><span class="line"><span class="type">int</span> global_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 未初始化的静态变量（存入 .bss 段，不会进入 .data）</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> static_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 5. 只读常量数据（存入 .rodata 段）</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span> *msg = <span class="string">&quot;Hello, World!&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test_function</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 6. 局部变量（存入通用寄存器或者栈，不会进入 .data）</span></span><br><span class="line">    <span class="type">int</span> local_var = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;global_var = %d\n&quot;</span>, global_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;static_var = %d\n&quot;</span>, static_var);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;local_var = %d\n&quot;</span>, local_var);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    test_function();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>举例说明2：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;   <span class="comment">// a 可能存入寄存器</span></span><br><span class="line">    <span class="type">int</span> b = <span class="number">10</span>;  <span class="comment">// b 可能存入寄存器</span></span><br><span class="line">    <span class="type">int</span> c = a + b;</span><br><span class="line">&#125;</span><br><span class="line">编译之后==》</span><br><span class="line">    MOV r0, #<span class="number">5</span>    <span class="comment">// 把 a 存入 r0 寄存器</span></span><br><span class="line">    MOV r1, #<span class="number">10</span>   <span class="comment">// 把 b 存入 r1 寄存器</span></span><br><span class="line">    ADD r2, r0, r1  <span class="comment">// c = a + b，r2 保存结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//=============================================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> func() &#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">100</span>;</span><br><span class="line">    <span class="type">int</span> y = <span class="number">200</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>];  <span class="comment">// 数组无法放入寄存器</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">编译之后==》</span><br><span class="line">    SUB sp, sp, #<span class="number">44</span>   <span class="comment">// 在栈上分配 44 字节（用于局部变量）</span></span><br><span class="line">    STR r0, [sp, #<span class="number">0</span>]  <span class="comment">// 存储 x</span></span><br><span class="line">    STR r1, [sp, #<span class="number">4</span>]  <span class="comment">// 存储 y</span></span><br><span class="line">    ADD r2, sp, #<span class="number">8</span>    <span class="comment">// arr[0] 的地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//=============================================================================================</span></span><br><span class="line">局部变量 优先存入寄存器，但如果变量过多或太大，就会存入栈。</span><br><span class="line">数组、结构体、指针等数据类型一般存入栈，因为它们无法完全放入寄存器</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+<p>参考博客：</p>
+<p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/zy13270867781/article/details/78266675">c中各个变量存储的位置</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">4 Building simple bus systems for Cortex-M processors（1）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-25 17:44:15" itemprop="dateCreated datePublished" datetime="2024-06-25T17:44:15+08:00">2024-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 10:17:46" itemprop="dateModified" datetime="2024-07-12T10:17:46+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>研究怎样基于Cortex-M处理器构建bus system：</p>
+<p>Cortex-M0, Cortex-M0+,<br>Cortex-M1, and Cortex-M3&#x2F;M4   </p>
+</blockquote>
+<h1 id="Introduction-to-the-basics-of-bus-design"><a href="#Introduction-to-the-basics-of-bus-design" class="headerlink" title="Introduction to the basics of bus design"></a>Introduction to the basics of bus design</h1><p>system bus有几个基本的设计原则：</p>
+<ul>
+<li>如果是哈佛结构，bus系统需要保证指令和数据的同时访问；</li>
+<li>使用default slave IP去处理违法地址的访问；</li>
+<li>很多Cortex-M处理器，其中断向量表的起始地址在0x0000_0000，因此需要保证程序被加载到这个地址；</li>
+<li>访问mem的wait state数量要尽可能少，尤其是对于没有cache的处理器，访问mem的wait state会影响性能，功耗以及中断响应延时；</li>
+<li>尽量保证主系统bus有尽可能少的slave；</li>
+</ul>
+<p>system bus和peripheral bus分开的好处：</p>
+<ul>
+<li>降低对system bus的max clock frequency的影响；</li>
+<li>外设bus和system bus可以跑在不同的频率；</li>
+<li>外设协议更简单；</li>
+</ul>
+<blockquote>
+<p>NOTE:</p>
+<p>most of the peripherals that do not need low latency accesses (e.g., SPI, I2C, UART) can be placed in separated peripheral buses. Some peripherals like GPIO can gain the benefit of lower access latency, so some GPIO blocks are placed system AHB or single-cycle I&#x2F;O port interface (available on<br>Cortex-M0+ and Cortex-M23 processors).  </p>
+</blockquote>
+<h1 id="Building-a-simple-Cortex-M0-system"><a href="#Building-a-simple-Cortex-M0-system" class="headerlink" title="Building a simple Cortex-M0 system"></a>Building a simple Cortex-M0 system</h1><img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625175846130.png" class="">
+
+
+
+
+
+<h1 id="Building-a-simple-Cortex-M0-system-1"><a href="#Building-a-simple-Cortex-M0-system-1" class="headerlink" title="Building a simple Cortex-M0+ system"></a>Building a simple Cortex-M0+ system</h1><img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625180447010.png" class="">
+
+
+
+<p><font color=blue>和Cortex-M0系统非常类似，在如下方面有所不同：</font></p>
+<ul>
+<li><font color=blue>Optional single-cycle I&#x2F;O port (IOP) interface for low latency peripheral register accesses;  </font></li>
+<li><font color=blue>Optional Micro Trace Buffer (MTB).  </font></li>
+</ul>
+<blockquote>
+<p>NOTE：</p>
+<p>&#x3D;&#x3D;&gt;IOP</p>
+<p>1、如果想要使用single-cycle I&#x2F;O port interface  ，需要调整对应的外设时序；</p>
+<p>2、需要有一个简单的IOP decoder，去告诉CPU哪些地址通过IOP访问，哪些地址通过AHB-Lite访问；</p>
+<p>&#x3D;&#x3D;&gt;MTB</p>
+<p>1、用于提供低成本的指令trace；在AHB和SRAM中间；</p>
+<p>norm情况下，就可以看成是一个AHB2SRAM的bridge；</p>
+<p>在进行指令trace的时候，debugger会program MTB从SRAM中划分一块空间用于存储数据；</p>
+<p>2、MTB有一个和处理器连接的trace 接口，用于接收处理器trace数据，以及生成debug事件（halting request）到处理器；</p>
+<p>3、一般来说MTB可以配置成环形buffer从而保存最近执行的指令数据；</p>
+</blockquote>
+<ul>
+<li><font color=blue>Cortex-M0+支持特权级访问和非特权级访问；系统集成者也可以考虑配置MPU去支持特权&#x2F;非特权访问；</font></li>
+</ul>
+<blockquote>
+<p>这样就能够阻止非特权级别的代码去访问特权级别的memory；</p>
+<p>从功能安全级别的角度考虑：</p>
+<ul>
+<li>用于系统控制的外设寄存器应该设置为特权级别访问；</li>
+<li>非特权级别的AHB access 特权级别的device，地址decoder应该select default slave去产生bus error；</li>
+</ul>
+</blockquote>
+<h1 id="Building-a-simple-Cortex-M1-system"><a href="#Building-a-simple-Cortex-M1-system" class="headerlink" title="Building a simple Cortex-M1 system"></a>Building a simple Cortex-M1 system</h1><p>Cortex-M1和Cortex-M0的类似的features：</p>
+<ul>
+<li>不支持特权&#x2F;非特权级别的操作；</li>
+<li>仅仅只有一个AHB接口；</li>
+</ul>
+<p>Cortex-M1和Cortex-M0的不同的features：</p>
+<ul>
+<li>Cortex-M1支持ITCM和DTCM；</li>
+<li>没有sleep mode；</li>
+</ul>
+<p><font color=blue>Cortex-M1一般用作FPGA的开发；</font></p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625203309033.png" class="">
+
+
+
+<h1 id="Building-a-simple-Cortex-M3-Cortex-M4-system"><a href="#Building-a-simple-Cortex-M3-Cortex-M4-system" class="headerlink" title="Building a simple Cortex-M3&#x2F;Cortex-M4 system"></a>Building a simple Cortex-M3&#x2F;Cortex-M4 system</h1><p>Cortex-M3&#x2F;Cortex-M4处理器采用哈佛架构，而且有3个AHB总线接口以及一个APB总线接口；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625204223785.png" class="">
+
+
+
+<p><font color=blue>一个典型的Cortex-M3&#x2F;M4 system design ：</font></p>
+<ul>
+<li><font color=blue>program image 被放在CODE区域；</font></li>
+<li><font color=blue>sram和外设通过系统总线连接；通常地址0x2000_0000分配SRAM，0x4000_0000分配外设；因为方便软件开发者使用side-band特性；</font></li>
+</ul>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210218086.png" class="">
+
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210337572.png" class="">
+
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240625210426184.png" class="">
+
+<h2 id="I-CODE和D-CODE的处理方式1：无系统cache"><a href="#I-CODE和D-CODE的处理方式1：无系统cache" class="headerlink" title="I-CODE和D-CODE的处理方式1：无系统cache"></a>I-CODE和D-CODE的处理方式1：无系统cache</h2><p><font color=blue>将I-CODE和D-CODE分开的目的，添加一个常量数据cache，当指令访问flash，由于wait state而等待的时候，常量数据仍然可以从cache中read；</font></p>
+<p><font color=blue>解释如下：</font></p>
+<p><font color=blue>&#x3D;&#x3D;》首先只有一个总线的方案</font></p>
+<ul>
+<li>一般来说，flash的速度为30MHz-50MHz，远小于处理器的速度(超过100MHz)。</li>
+<li>通常会选择位宽更大以及有prefetch buffer的flash，<font color=blue>顺序执行的指令会被prefetch</font>，处理器更多时候会从prefetch buffer中读取指令，从而提供性能；</li>
+</ul>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626201216548.png" class="">
+
+<p>但是程序中还有很多常量，这些常量的访问往往是非顺序的，因此prefetch的性能会大大降低；</p>
+<p>往极端的方向思考：如果在prefetch刚开始的时候，发生了读常量的操作，需要等待的时间很更久；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626223223336.png" class="">
+
+<p><font color=blue>&#x3D;&#x3D;》过渡到两个总线的方案</font></p>
+<p><font color=blue>为了解决上述的问题，一种解决方案是，将数据访问和指令访问分开，然后在数据访问总线上添加一个小的data cache；</font></p>
+<blockquote>
+<p>数据访问一开始的时候会将变量搬运到SRAM中；</p>
+<p>之后程序的运行，即访问常量的时候，会通过D-CODE访问；</p>
+</blockquote>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626224644608.png" class="">
+
+<blockquote>
+<p>这是将一条程序总线分成I-CODE和D-CODE两条总线的初衷；</p>
+</blockquote>
+<h2 id="I-CODE和D-CODE的处理方式2：有系统cache"><a href="#I-CODE和D-CODE的处理方式2：有系统cache" class="headerlink" title="I-CODE和D-CODE的处理方式2：有系统cache"></a>I-CODE和D-CODE的处理方式2：有系统cache</h2><p><font color=blue>上述方案没有考虑系统级别的cache，如果有系统级别的cache，指令访问就不会因为flash的速度低而等待很久，因此可以不需要上述flash访问加速的机制，</font></p>
+<ul>
+<li>flash的prefetch机制</li>
+<li>常量cache机制</li>
+</ul>
+<p><font color=blue>可以考虑直接将I-CODE和D-CODE总线进行merge</font></p>
+<p>为了进行merge，Cortex-M3和Cortex-M4的产品交付包中包含两个组件：</p>
+<h3 id="Code-mux-component"><a href="#Code-mux-component" class="headerlink" title="Code mux component"></a>Code mux component</h3><p>门数量非常少，为了使用这个组件，I-CODE和D-CODE只能同时有一个active，通过配置DNOTITRANS  输入端口需要为1</p>
+<p>（防止在D-CODE进行transfer的时候，I-CODE再生成transfer）；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626231517758.png" class="">
+
+<h3 id="Flash-mux-component"><a href="#Flash-mux-component" class="headerlink" title="Flash mux component"></a>Flash mux component</h3><p>这个组件内部有仲裁机制；这个组件在CODE region还有其他slave组件的时候，非常有用，因为I-CODE和D-CODE可以同时发出访问；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626233511046.png" class="">
+
+
+
+<p><font color=blue>有系统cache和上述组件的时候，如果CODE区域没有其他组件，架构可以考虑如下：</font></p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240626234311838.png" class="">
+
+<blockquote>
+<p>对于上述系统架构，I-CODE和D-CODE都是访问flash，在有系统cache的情况下，将I-CODE和D-CODE分开之后的收益不是很大了；</p>
+<p>假设CODE区域没有其他Slave组件，其将I-CODE和D-CODE分开的初衷是，防止指令访问的wait state也阻碍了数据访问，大大降低系统性能；</p>
+<p>但是现在有cache的情况下，指令访问不会有太多的wait state，因此就可以不用分开；</p>
+<p>新一代的处理器，例如M33和M35P，I-CODE和D-CODE已经merge了，用于降低系统集成的复杂度以及low power。</p>
+</blockquote>
+<p><font color=blue>cpu cache VS flash cache：</font></p>
+<ul>
+<li>cache如果放在cpu门口，那么只能CPU使用，其他master无法使用；</li>
+<li>cache放在flash附近，其和flash的接口可以使用更大的数据位宽；</li>
+<li>cache放在flash附近，cpu访问的时候就需要经过总线；</li>
+</ul>
+<p><font color=blue>NOTE：</font></p>
+<ul>
+<li><p>在Cortex-M3&#x2F;M4处理器中，通过S-BUS取指令，需要寄存一拍才能送到instruction fetch interface  ；通过I-BUS获取指令，不需要寄存，可以直接送到instruction fetch interface ，因此如果使用S-BUS执行指令的时候，性能会下降；</p>
+</li>
+<li><p>系统外设一般系统通过S-BUS访问，而不是PPB；</p>
+<ul>
+<li>PPB只能特权级别访问；</li>
+<li>永远是小端模式；</li>
+<li>访问行为是Strongly Ordered (no other data memory access can start until the current data access finished);  </li>
+<li>没有bit-band特性；</li>
+<li>只支持32bits访问，非对齐访问会出现未知结果；</li>
+<li>仅仅只有Core能访问；</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>思考：</p>
+<p><font color=red>什么是Strongly Ordered？难道AHB不是strongly Ordered？</font></p>
+<p>Strongly Ordered是一种存储器的访问模型；</p>
+</blockquote>
+<h1 id="Handling-multiple-bus-masters"><a href="#Handling-multiple-bus-masters" class="headerlink" title="Handling multiple bus masters"></a>Handling multiple bus masters</h1><p>&#x3D;&#x3D;》在很多的微处理器中，其实会有多个Master，例如：</p>
+<ul>
+<li>DMA</li>
+<li>高速外设：USB controller，Ethernet interface等等</li>
+</ul>
+<p>这些模块有master interface，能主动发起transfer；也有slave interface，为了配置其工作参数；</p>
+<p>&#x3D;&#x3D;》为了处理器多个Master的情况，ARM提供了不同的IP</p>
+<ul>
+<li>Simple AHB master multiplexers  ，多个Master只能有一个占用总线，考虑到带宽的问题，通常只能支持2-3个master</li>
+<li>Configurable AHB Bus Matrix components（ 支持多个Master并发访问）</li>
+</ul>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627212730972.png" class="">
+
+<blockquote>
+<p>这种设计适合对系统带宽要求不高的场景；</p>
+<p>如果对系统带宽有着严格的要求，可以采用如下的设计；</p>
+</blockquote>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627212849347.png" class="">
+
+<p><font color=blue>Bus Matrix支持稀疏的配置，内部有default slave，灵活性很高，但是在进行Master间切换的时候，会引入latency。</font></p>
+<p>可以通过 减少arbiter切换master 来对latency进行优化：</p>
+<ul>
+<li>定制化逻辑，例如定义默认选择的master</li>
+<li>当bus idle的时候，强制将地址设置为特定的值</li>
+</ul>
+<blockquote>
+<p>NOTE:</p>
+<p><font color=red>上面说的两种优化方式都不太懂，BusMatrix组件需要好好的研究下！！！</font></p>
+</blockquote>
+<p>&#x3D;&#x3D;》从安全的角度来考虑，例如DMA这种Master的Slave 接口，通常要保证特权级别访问；</p>
+<p>不然非特权级别的程序可能会利用DMA，bypass memory protect</p>
+<h1 id="Exclusive-access-support"><a href="#Exclusive-access-support" class="headerlink" title="Exclusive access support"></a>Exclusive access support</h1><p>Armv7-M 和 Armv8-M  架构的处理器都支持互斥访问操作。</p>
+<hr>
+<p>&#x3D;&#x3D;》多核系统</p>
+<p><font color=blue>如果多核系统要支持互斥访问操作，需要集成global exclusive access monitors ；</font></p>
+<p>global exclusive access monitors需要放在bus matrix或者AHB master multiplexer 的下游；</p>
+<p>总线组件也需要提供HMASTER，让global exclusive access monitor  知道是哪一个Master产生了transfer；</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240627220026567.png" class="">
+
+<p><font color=blue>符合如下情况，需要添加global exclusive access monitors：</font></p>
+<p>1、可能存放信号量数据；</p>
+<p>2、可能被多核互斥访问；</p>
+<p>只有在多核系统中才需要global exclusive access monitors；</p>
+<hr>
+<p>&#x3D;&#x3D;》单核系统</p>
+<p>单核系统中，即使有多个Master，软件也可以控制不会同时发生多个Master访问信号量数据的情况，因此不需要global exclusive access monitors</p>
+<p><font color=blue>单核系统中，如果使用的是M3&#x2F;M4&#x2F;M7，其会有专有的互斥访问handshake信号(EXREQ and EXRESP)  ：</font></p>
+<ul>
+<li>总线上如果有SRAM，就需要将EXRESP tie low，不然OS系统的信号量功能会一直返回fail</li>
+<li>总线上如果只有NVM，或者外设，此时可以将EXRESP tie high ，表示不支持互斥访问；</li>
+</ul>
+<p><font color=blue>单核系统中，如果使用的是M23&#x2F;M33&#x2F;M35P，使用的是标准AMBA5 AHB互斥访问信号，(HEXCL and HEXOKAY)  ：</font></p>
+<ul>
+<li>如果总线包含SRAM，需要对HEXOKAY做简单的glue逻辑；</li>
+<li>如果总线上如果只有NVM，或者外设，可以将HEXOKAY tie low，表示不支持互斥访问；</li>
+</ul>
+<h1 id="Address-remap"><a href="#Address-remap" class="headerlink" title="Address remap"></a>Address remap</h1><p>Address remap是基于Cortex-M的MCU中一种常见的system design technique  ；一般用来支持多个boot阶段或者多种boot mode；</p>
+<p>举例说明：</p>
+<p>假设一个基于Cortex-M0的MCU可能需要支持boot loader；</p>
+<p>&#x3D;&#x3D;》address remap需要完成如下动作：</p>
+<p>1、startup阶段将boot loader ROM放到0x0000_0000处；</p>
+<p>2、之后将embedded flash映射到0x0000_0000，用于执行用户程序；</p>
+<p>&#x3D;&#x3D;》为了支持address remap，需要寄存器去控制系统address decoder的行为</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240628105739745.png" class="">
+
+<p>0、在boot的时候，REMAP是出于active的状态，即ROM会映射到0x0000_0000地址处；</p>
+<p>1、处理器读取的是ROM的中断向量表（按照存放位置是0x0010_0000进行编译），执行的是ROM的reset handler（在0x0010_0000地址处执行）</p>
+<p>2、ROM的reset handler执行结束之后：</p>
+<ul>
+<li>将REMAP disable，（0x0000_0000映射的就是Flash usercode的中断向量表）；</li>
+<li>读取Flash usercode vector table中的MSP并进行配置；</li>
+<li>读取Flash usercode vector table中的reset handler的地址，并进行跳转；</li>
+</ul>
+<p>有如下几点说明：</p>
+<ul>
+<li>Flash在boot阶段的时候，也可以REMAP，这样romcode是可以对Flash中的程序做一些操作的；否则，REMAP之后，Flash的code就不可见；</li>
+<li>remap控制寄存器：<ul>
+<li>仅支持特权级别访问；</li>
+<li>通过power on reset控制，这样在boot的时候，仅执行一次；（例如，debugger在使用SYSRESETREQ field in AIRCR  进行复位的时候，不会再次执行；）</li>
+<li>有些系统中，REMAP只能软件被deactive而不能被active，或者说，bootrom仅仅在boot阶段可见，在REMAP关闭之后，rom就不可见，为了功能安全；</li>
+</ul>
+</li>
+</ul>
+<p>AHB BusMatrix IP是支持REMAP操作的；</p>
+<ul>
+<li><p>但是如果处理器支持VTOR，那么就不需要使用REMAP，因为其可以通过将VTOR指向某块区域；</p>
+</li>
+<li><p>Cortex-M7&#x2F;M23&#x2F;M33处理器支持启动时，中断向量表的位置是可配置的；</p>
+</li>
+</ul>
+<blockquote>
+<p>思考：</p>
+<p>1、VTOR寄存器的作用？</p>
+<p>指定中断向量表的位置；</p>
+<p>2、<font color=red>一般在什么场景中会利用VTOR寄存器？</font></p>
+</blockquote>
+<h1 id="AHB-based-memory-connection-versus-TCM"><a href="#AHB-based-memory-connection-versus-TCM" class="headerlink" title="AHB-based memory connection versus TCM"></a>AHB-based memory connection versus TCM</h1><p><font color=blue>有些处理器可能会使用TCM；如果没有TCM接口，就需要使用AHB去访问系统SRAM；</font></p>
+<p>就性能而言（且不考虑AHB访问时的wait state），TCM接口和AHB接口访问SRAM，在read access上，latency是相同的；</p>
+<p>写访问时间可能会有所不同，如下图所示：</p>
+<img src="/2024/06/25/4-Building-simple-bus-systems-for-Cortex-M-processors%EF%BC%881%EF%BC%89/image-20240628133549414.png" class="">
+
+<p>但是因为处理器的pipeline以及write buffer等技术，write access也可能被优化成一个Cycle完成；</p>
+<p><font color=blue>使用TCM的最大的优点是，不用担心总线的wait states；最大的缺点是只有Core能访问；SRAM资源利用不充分</font></p>
+<p><font color=blue>在有些设计场景中，需要使用TCM去获得一个确定的中断响应时间；</font></p>
+<h1 id="Handling-of-embedded-flash-memories"><a href="#Handling-of-embedded-flash-memories" class="headerlink" title="Handling of embedded flash memories"></a>Handling of embedded flash memories</h1><h2 id="IP-requirements"><a href="#IP-requirements" class="headerlink" title="IP requirements"></a>IP requirements</h2><p>嵌入eflash受限于工艺节点；</p>
+<p>需要eflash controller IP；</p>
+<p>通常也需要system cache IP；</p>
+<h2 id="Flash-programming"><a href="#Flash-programming" class="headerlink" title="Flash programming"></a>Flash programming</h2><p>eflash的memory是以page进行划分，因此eflash的操作也都是以page为单位；</p>
+<p>做flash的program时，并不是直接将debugger和eflash controller连接，而是通过如下方式：</p>
+<ul>
+<li><p>将flash programming algorithm  程序加载到SRAM中</p>
+</li>
+<li><p>将要写入flash中的数据，放到SRAM中；</p>
+</li>
+<li><p>配置flash programming algorithm需要的信息；</p>
+</li>
+<li><p>PC设置到flash programming algorithm进行program；</p>
+</li>
+<li><p>一次program一个page，而且flash programming algorithm   可以对page内容进行verify；</p>
+</li>
+<li><p>debugger重复上述过程，直到完成对flash的编程；</p>
+</li>
+</ul>
+<h2 id="Bringing-up-a-new-device-without-a-valid-program-image"><a href="#Bringing-up-a-new-device-without-a-valid-program-image" class="headerlink" title="Bringing up a new device without a valid program image"></a>Bringing up a new device without a valid program image</h2><p>如果eflash中没有任何程序，怎么启动Cortex-M MCU？</p>
+<p>1、power on上电，此时flash中是空程序，会先发生hardfault，然后再lockup；</p>
+<p>2、即使MCU处于lockup的状态，debugger仍然能够和MCU建立连接；</p>
+<p>3、此时调试器可以使能reset vector catch  ，然后写AIRCR 寄存器进行软复位；处理捕获到reset release之后，进入halt状态；</p>
+<p>4、debugger下载flash program algorithm以及程序镜像数据到SRAM，然后设置PC去启动flash program algorithm</p>
+<p>5、当所有的flash程序program完毕之后，再次复位开始执行flash usercode；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/" class="post-title-link" itemprop="url">3 AMBA/AHB/APB（3）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-20 23:49:32" itemprop="dateCreated datePublished" datetime="2024-06-20T23:49:32+08:00">2024-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 10:15:58" itemprop="dateModified" datetime="2024-07-12T10:15:58+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Exclusive-access-operations"><a href="#Exclusive-access-operations" class="headerlink" title="Exclusive access operations"></a>Exclusive access operations</h1><h2 id="Introduction-to-exclusive-accesses"><a href="#Introduction-to-exclusive-accesses" class="headerlink" title="Introduction to exclusive accesses"></a>Introduction to exclusive accesses</h2><p><font color=blue>互斥访问对OS系统的的信号量操作至关重要，因为互斥访问能够检测出来RWM的访问冲突</font></p>
+<blockquote>
+<p>RWM的访问冲突能够在很多场景中出现：</p>
+<ul>
+<li>OS在RMW的中间发生时间片轮转&#x2F;中断 ,从而对进程进行切换</li>
+<li>多处理器系统中，多个处理器同时执行RMW对同一个地址进行访问</li>
+</ul>
+</blockquote>
+<p><font color=blue>为了能够对互斥访问进行处理，需要从如下几个方面考虑：</font></p>
+<ol>
+<li><font color=blue>互斥访问指令，Cortex处理器有LDREX以及STREX等互斥访问指令</font></li>
+<li><font color=blue>bus接口需要有互斥访问信号，互斥访问信号在AMBA5 AHB才被正式引进，之前的Cortex-M处理器（M3&#x2F;M4&#x2F;M7）使用的是非标准的互斥访问sideband信号</font></li>
+<li><font color=blue>系统级的monitor，对于多处理器系统，需要一个bus级别的全局互斥访问monitor，用来检测多个master之间的互斥访问冲突；多个global互斥访问monitor可以用来检测不同范围的互斥访问操作；</font></li>
+</ol>
+<blockquote>
+<p>一些思考&amp;困惑：</p>
+<p>1、互斥访问指令的设计意图是什么？和正常的读写指令有什么不一样？</p>
+<p>我理解互斥访问指令，其目的就是告诉处理器这是一个RMW sequence，中间不能被打断；</p>
+<p>执行这种指令的时候，需要互斥访问的sideband信号协同工作；</p>
+</blockquote>
+<p>&#x3D;&#x3D;》首先看下访问冲突的问题</p>
+<p>信号量在操作系统中被用于资源管理，可以利用信号量确保同一时刻某一个硬件资源只能够被一个进程使用；</p>
+<p>具体来说，OS使用一个内存变量（信号量）去追踪资源分配情况（系统资源是否已经被占用），应用程序通过调用API接口去互斥的访问该信号量；</p>
+<blockquote>
+<p>假设没有互斥访问操作，就会出现访问冲突，具体可看如下例子：</p>
+<p>1、OS对进程切换的例子</p>
+<p>。。。</p>
+<p>2、多进程访问的具体例子</p>
+<p>。。。</p>
+</blockquote>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211132897.png" class="">
+
+
+
+<p>&#x3D;&#x3D;》互斥访问操作的引入</p>
+<p>为了解决这个问题，传统的处理器，例如Arm7TDMI   使用lock transfer确保总线在进行RMW操作的时候，不会被打断；但是lock传输在读写通道分离的高速传输总线协议上无法实现，因此互斥访问操作在Armv6架构被引入；</p>
+<p>简单的互斥访问序列如下：</p>
+<p>1、Processor X read semaphore data P with an exclusive load instruction;  </p>
+<p>2、If the value of P is 0, Processor X write 1 to P with an exclusive store instruction;  </p>
+<p>3、The exclusive store instruction returns a success or fail status. </p>
+<ul>
+<li>If the status is success, then the application task can continue the operation.<ul>
+<li>If the status is fail, then it means there is a potential access conflict, and it needs to restart the RMW sequence. The store operation is blocked if the<br>exclusive store returns fail status.</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211247944.png" class="">
+
+
+
+<p>为了确定返回状态，系统包含了两个互斥访问monitor：</p>
+<p>1、Local exclusive access monitor – This hardware is inside the processor, and it triggers exclusive fail if there has been a context switch (including exception entry&#x2F;exit);  </p>
+<p>2、Global exclusive access monitor – This hardware is at the bus level, and it triggers exclusive fail if another bus master has access to the address which is marked for exclusive access (when exclusive load is made).  </p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211343345.png" class="">
+
+
+
+<p>当处理器执行互斥访问操作的时候：</p>
+<ul>
+<li>If the local exclusive access monitor returns fail status – the exclusive store is blocked before it gets<br>to the bus interface level, so it won’t be carried out.</li>
+<li>If the global exclusive access monitor returns fail status - the exclusive store is blocked by the global<br>exclusive store monitor, so the memory won’t get updated.</li>
+<li>If either local or global exclusive access monitor return fail status, the write operation will not be<br>carried out, and the processor should retry the RMW sequence.</li>
+</ul>
+<h2 id="AHB5-exclusive-access-support"><a href="#AHB5-exclusive-access-support" class="headerlink" title="AHB5 exclusive access support"></a>AHB5 exclusive access support</h2><p>global exclusive access monitor除了标准的AMBA3 AHB-Lite信号之后，还需要</p>
+<ul>
+<li>HEXCL</li>
+<li>HEXOKAY</li>
+<li>HMASTER</li>
+</ul>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211454371.png" class="">
+
+
+
+
+
+<p>The address tag in the monitor does not necessarily record all bits of the address value. Typically, the<br>monitor can drop the lowest bits of the address as the exclusive fail information can be speculative:</p>
+<ul>
+<li>The data might be written with the same value.</li>
+<li>Nearby data could have been accessed by a different bus master.</li>
+</ul>
+<blockquote>
+<p>这段话不是很理解，需要结合具体的global monitor design才能理解</p>
+</blockquote>
+<p>互斥访问失败之后，不会有任何的系统性错误风险，最多只会牺牲点时间重新运行；</p>
+<p>Exclusive Reservation Granule (ERG)  用来记录不同的master信息，通过HMASTER以及HADDR信号；</p>
+<h2 id="Mapping-of-Cortex-M3-M4-M7-exclusive-access-signals-to-AHB5"><a href="#Mapping-of-Cortex-M3-M4-M7-exclusive-access-signals-to-AHB5" class="headerlink" title="Mapping of Cortex-M3&#x2F;M4&#x2F;M7 exclusive access signals to AHB5"></a>Mapping of Cortex-M3&#x2F;M4&#x2F;M7 exclusive access signals to AHB5</h2><p>Cortex-M3, Cortex-M4 and Cortex-M7  支持互斥访问指令，但是这些处理器在AMBA5 AHB之前release，因此他们使用的是非标准的互斥访问信号：</p>
+<ul>
+<li>EXREQ – same as HEXCL, an address phase signal to indicate exclusive load&#x2F;store accesses.  </li>
+<li>EXRESP – exclusive fail status in the data phase (assert at the end of the data phase - opposite<br>polarity compared to HEXOKAY).</li>
+</ul>
+<p>因此在将这些处理器集成到AHB5 系统的时候，需要添加一些glue逻辑；</p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211736465.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623211823114.png" class="">
+
+<blockquote>
+<p>思考：</p>
+<p><font color=red>exclusive所需要的sideband控制信号EXREQ以及EXRESP和masterlock信号是不是功能上重复了？？</font></p>
+<p>masterlock的使用场景也是防止RMW造成的冲突，但是这个功能exclusive指令已经完成了</p>
+</blockquote>
+<h1 id="AHB5-TrustZone-support"><a href="#AHB5-TrustZone-support" class="headerlink" title="AHB5 TrustZone support"></a>AHB5 TrustZone support</h1><p><font color=blue>AMBA 5 AHB的一个关键特性是支持TrustZone，使用一个地址阶段的信号HNONSEC来表示security transfer属性</font></p>
+<ul>
+<li>If HNONSEC is 1 (Non-secure), the bus interconnect must block the transfer if the address of the<br>transfer is pointing to a Secure location.</li>
+<li>If HNONSEC is 0 (Secure), the bus master has Secure access privilege</li>
+</ul>
+<blockquote>
+<p>in Armv8-M, when a processor is in Secure state, access to Non-secure address is indicated as Non-secure (HNONSEC&#x3D;&#x3D;1).  </p>
+</blockquote>
+<p>A TrustZone capable Cortex-M23&#x2F;M33 processor system should have:</p>
+<ul>
+<li>Secure and Non-secure program spaces.</li>
+<li>Secure and Non-secure RAM spaces.</li>
+<li>Secure and Non-secure peripherals.</li>
+</ul>
+<p>The definitions of Secure and Non-secure address ranges are handled by a Security Attribution Unit<br>(SAU) inside the processor and Implementation Defined Attribution Unit (IDAU) which is tightly<br>coupled to the processor(s). SAU is programmable, and IDAU is system-specific, in some cases, even<br>the IDAU could be programmable.  </p>
+<p>To enable a high level of flexibility, Arm Corstone foundation IP &#x2F; CoreLink SDK-200 included several<br>bus components for TrustZone security management:</p>
+<ul>
+<li>Memory Protection Controller (MPC): for the partitioning of a memory block into Secure and Nonsecure address spaces.</li>
+<li>Peripheral Protection Controller (PPC): for assigning bus peripherals into Secure and Non-secure domains.</li>
+<li>Master security controller: An AHB5 bus wrapper for legacy bus masters that do not support TrustZone. This handles the blocking of Non-secure transfers to Secure addresses and generation of correct HNONSEC signals.</li>
+</ul>
+<blockquote>
+<p>总结：</p>
+<p>Trust zone特性需要处理器支持，也需要BUS支持；</p>
+</blockquote>
+<h1 id="Overview-of-APB"><a href="#Overview-of-APB" class="headerlink" title="Overview of  APB"></a>Overview of  APB</h1><h2 id="Introduction-to-the-APB-bus-system"><a href="#Introduction-to-the-APB-bus-system" class="headerlink" title="Introduction to the APB bus system"></a>Introduction to the APB bus system</h2><p>APB是一个简单的总线，其主要目的是为了连接外设。在AMBA2 中被引进，AMBA 3和AMBA 4中扩展了特性，允许wait states, error responses and additional transfer attributes (including TrustZone support)  。</p>
+<p>将外设直接连接到APB而不是AHB有如下好处：</p>
+<p>1、SoC中有很多外设，如果直接连接到AHB总线，由于信号的高扇出以及复杂的总线译码逻辑，总线频率可能会被降低，外设连接到APB上就可以降低对AHB的影响；</p>
+<p>2、外设系统可以运行在不同的时钟频率，降低功耗；</p>
+<p>3、外设使用APB接口可以简化设计复杂度；</p>
+<p>4、大部分传统外设使用的是APB接口；</p>
+<p>PRESETn相对于PCLK应该是异步复位同步释放的；</p>
+<h2 id="APB-signals-and-connection"><a href="#APB-signals-and-connection" class="headerlink" title="APB signals and connection"></a>APB signals and connection</h2><img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623220801138.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240623220455386.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162045548.png" class="">
+
+<p><font color=blue>APB不是pipeline协议</font></p>
+<p><font color=blue>AMBA2 APB的transfer必须是2T，因为没有pready信号</font></p>
+<ul>
+<li><p><font color=blue>对读操作，rdata必须在第二个时钟周期有效；</font></p>
+</li>
+<li><p><font color=blue>对写操作，wdata必须在2T时间里一直有效；（因为APB Slave的写传输实际可能在第一T，也可能在第二T，由具体的实现所定义）</font></p>
+</li>
+</ul>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162445025.png" class="">
+
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625162505870.png" class="">
+
+<p><font color=blue>AMBA3 APB引入PREADY以及PSLVERR</font></p>
+<p>因为APB不是pipeline的协议，所以第一个阶段不需要看pready信号！！！只在第二个阶段看pready信号；AHB如果第一个阶段不看hready信号，会造成协议冲突</p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625171242828.png" class="">
+
+<blockquote>
+<p>read transfer至少两个cycle，而且结尾是通过pready assert标明；</p>
+<p>pready信号在transfer的第一个cycle被忽略；</p>
+</blockquote>
+<h2 id="Additional-signals-in-APB-protocol-v2-0"><a href="#Additional-signals-in-APB-protocol-v2-0" class="headerlink" title="Additional signals in APB protocol v2.0"></a>Additional signals in APB protocol v2.0</h2><p><font color=blue>The APB v2 in AMBA 4 added the PPROT and PSTRB signals </font></p>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625172653938.png" class=""> 
+
+<blockquote>
+<p>Please note, unlike AHB5, the TrustZone security attribute is part of PPROT instead of a separate signal.  </p>
+</blockquote>
+<img src="/2024/06/20/3-AMBA-AHB-APB%EF%BC%883%EF%BC%89/image-20240625172821510.png" class=""> 
+
+<blockquote>
+<p>The PSTRB signal is active high and is used for write-operations only. </p>
+<p>During read operations, the PSTRB signal is ignored by the bus slave, and the whole 32-bit word is read.  </p>
+</blockquote>
+<h2 id="Data-values-on-APB"><a href="#Data-values-on-APB" class="headerlink" title="Data values on APB"></a>Data values on APB</h2><p>如果APB是32bits的话，地址传输需要word对齐；</p>
+<p>write transfer的时候，wdata在整个传输周期有效；</p>
+<p>read transfer的时候，rdata最少要在transfer的last cycle有效；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/18/python%E8%84%9A%E6%9C%AC%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/18/python%E8%84%9A%E6%9C%AC%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0/" class="post-title-link" itemprop="url">python脚本传递参数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-18 13:35:00" itemprop="dateCreated datePublished" datetime="2024-06-18T13:35:00+08:00">2024-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-21 09:34:35" itemprop="dateModified" datetime="2024-06-21T09:34:35+08:00">2024-06-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -974,8 +1098,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/06/11/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/11/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/06/18/python%E8%84%9A%E6%9C%AC%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/18/python%E8%84%9A%E6%9C%AC%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -990,11 +1114,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> condition1:</span><br><span class="line">    <span class="comment"># statement1</span></span><br><span class="line"><span class="keyword">elif</span> condition2:</span><br><span class="line">    <span class="comment"># statement2</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment">#statement3</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="打印变量和文本"><a href="#打印变量和文本" class="headerlink" title="打印变量和文本"></a>打印变量和文本</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">current_path = os.getcwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\033[1;36m current_path=%s \033[0m&quot;</span>%current_path)</span><br><span class="line">output_file_path = os.path.join(current_path, <span class="string">&#x27;data_info.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(output_file_path, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> data_info_f: //如果文件不存在会自动创建</span><br><span class="line">    <span class="keyword">for</span> section <span class="keyword">in</span> sectionlist:</span><br><span class="line">        <span class="comment"># print(&quot;\033[1;36m section=%s \033[0m\n&quot;%section)</span></span><br><span class="line">        <span class="keyword">if</span> section == <span class="string">&quot;.riscv.attributes&quot;</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> section == <span class="string">&quot;.tohost&quot;</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> section == <span class="string">&quot;.fromhost&quot;</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        cmd1 = <span class="string">&quot;readelf -x &quot;</span> + section + <span class="string">&quot; &quot;</span> + elffile</span><br><span class="line">        <span class="comment"># print(cmd1)</span></span><br><span class="line"></span><br><span class="line">        data_info = subprocess.check_output(cmd1, shell=<span class="literal">True</span>).decode()</span><br><span class="line">        <span class="comment"># print(&quot;\033[1;36m data_info=%s \033[0m&quot;%data_info)</span></span><br><span class="line">        <span class="comment"># print(data_info, file=data_info_f)</span></span><br><span class="line">        data_info_f.write(data_info + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        getData(data_info, section)</span><br><span class="line">data_info_f.close()</span><br></pre></td></tr></table></figure>
-
-<h1 id="获取当前路径"><a href="#获取当前路径" class="headerlink" title="获取当前路径"></a>获取当前路径</h1><p>current_path &#x3D; os.getcwd()</p>
+          <blockquote>
+<p>在执行python脚本的时候，有时候想要传递几个参数，给脚本中的变量进行赋值；</p>
+<p>例如input_file, output file等等</p>
+</blockquote>
 
       
     </div>
@@ -1014,7 +1137,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/07/verilog%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/17/SMIC-eflash-controller-design%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -1028,7 +1151,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/06/07/verilog%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/" class="post-title-link" itemprop="url">verilog条件编译</a>
+            <a href="/2024/06/17/SMIC-eflash-controller-design%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">SMIC auto eflash controller design学习</a>
         </h2>
 
         <div class="post-meta">
@@ -1037,23 +1160,21 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-06-07 11:38:37" itemprop="dateCreated datePublished" datetime="2024-06-07T11:38:37+08:00">2024-06-07</time>
+              <time title="创建时间：2024-06-17 14:32:49 / 修改时间：15:05:31" itemprop="dateCreated datePublished" datetime="2024-06-17T14:32:49+08:00">2024-06-17</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-29 19:51:14" itemprop="dateModified" datetime="2025-05-29T19:51:14+08:00">2025-05-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/verilog%E8%AF%AD%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">verilog语法</span></a>
+                  <a href="/categories/eflash/" itemprop="url" rel="index"><span itemprop="name">eflash</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eflash/eflash-controller/" itemprop="url" rel="index"><span itemprop="name">eflash controller</span></a>
                 </span>
             </span>
 
@@ -1066,8 +1187,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/06/07/verilog%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/07/verilog%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/06/17/SMIC-eflash-controller-design%E5%AD%A6%E4%B9%A0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/17/SMIC-eflash-controller-design%E5%AD%A6%E4%B9%A0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1082,10 +1203,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="keyword">ifdef</span> MODE_A</span></span><br><span class="line">  <span class="comment">// 编译 MODE_A 的内容</span></span><br><span class="line"><span class="meta">`<span class="keyword">elsif</span> MODE_B</span></span><br><span class="line">  <span class="comment">// 编译 MODE_B 的内容</span></span><br><span class="line"><span class="meta">`<span class="keyword">else</span></span></span><br><span class="line">  <span class="comment">// 默认编译内容</span></span><br><span class="line"><span class="meta">`<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-
-
+          <blockquote>
+<p>saisai smic auto eflash controller design review study</p>
+</blockquote>
+<p>page erase</p>
+<p>share 同一颗charge pump的Flash IP，不能同时擦写；</p>
+<p>flash controller 掉电</p>
+<p>flash macro掉电</p>
 
       
     </div>
@@ -1105,7 +1229,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/17/C%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
@@ -1119,7 +1243,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/" class="post-title-link" itemprop="url">车规MCU bootrom 验证</a>
+            <a href="/2024/06/17/C%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/" class="post-title-link" itemprop="url">C条件编译</a>
         </h2>
 
         <div class="post-meta">
@@ -1129,15 +1253,392 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-06-07 10:36:27" itemprop="dateCreated datePublished" datetime="2024-06-07T10:36:27+08:00">2024-06-07</time>
+              <time title="创建时间：2024-06-17 10:20:36" itemprop="dateCreated datePublished" datetime="2024-06-17T10:20:36+08:00">2024-06-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-11 14:41:04" itemprop="dateModified" datetime="2024-06-11T14:41:04+08:00">2024-06-11</time>
+                <time title="修改时间：2024-06-26 10:53:03" itemprop="dateModified" datetime="2024-06-26T10:53:03+08:00">2024-06-26</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式C程序</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/C-C-%E8%AF%AD%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">C/C++语法</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/17/C%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/17/C%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C语言条件编译宏定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> xxx</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> xxx</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考文档：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Jason_from_China/article/details/137441684">C语言–条件编译（常见的编译指令）</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/" class="post-title-link" itemprop="url">3 AMBA/AHB/APB（2）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-15 23:54:36" itemprop="dateCreated datePublished" datetime="2024-06-15T23:54:36+08:00">2024-06-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 10:15:52" itemprop="dateModified" datetime="2024-07-12T10:15:52+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E4%BA%8ECortex-M%E7%9A%84SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">基于Cortex-M的SoC设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>AHB中，可以将传输分成</p>
+<p>transfer：单次传输或者burst传输</p>
+<p>beat：单次传输或者burst的一次传输</p>
+</blockquote>
+<h1 id="More-details-on-the-AHB-protocol"><a href="#More-details-on-the-AHB-protocol" class="headerlink" title="More details on the AHB protocol"></a>More details on the AHB protocol</h1><h2 id="Address-phase-signals"><a href="#Address-phase-signals" class="headerlink" title="Address phase signals"></a>Address phase signals</h2><h3 id="essential-transfer-control-signals"><a href="#essential-transfer-control-signals" class="headerlink" title="essential transfer control signals"></a>essential transfer control signals</h3><p>地址阶段有几个非常重要的控制信号，HTRANS，HADDR，HWRITE，HSIZE。</p>
+<hr>
+<h4 id="HTRANS"><a href="#HTRANS" class="headerlink" title="HTRANS"></a>HTRANS</h4><p>HTRANS用于表明传输类型。大部分的AHB系统其实并不需要一直进行数据传输，Master此时可以发出idle transfer。HTRANS就是用来表明什么时候是active transfer，什么时候是idle state；</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616165415891.png" class="">
+
+<p>当正真需要传输数据的时候，Master会生成NSEQ或者SEQ的transfer类型；</p>
+<blockquote>
+<p>NSEQ的传输类型用于正常的数据传输（非burst传输），或者burst传输的第一笔transfer</p>
+<p>SEQ就用于burst传输的剩余transfer，表明当前transfer是上一笔transaction的延续；</p>
+</blockquote>
+<p>IDLE和BUSY都是non-active传输，即不会传输实际的数据。BUSY类型的transfer类型仅在如下场景使用：</p>
+<blockquote>
+<p>master发起一次burst transaction，但是在burst发送的过程中，master没有准备好处理下一笔data transfer，那么此时就会发出busy的transfer，以保持burst传输的连续性，并在master ready的时候继续burst传输。</p>
+</blockquote>
+<p>IDLE类型的transfer前面已经说过了，就是Master不需要transaction的时候</p>
+<hr>
+<h4 id="HADDR"><a href="#HADDR" class="headerlink" title="HADDR"></a>HADDR</h4><p>HADDR用32bits表示，用于指定传输的地址；</p>
+<h4 id="HWRITE"><a href="#HWRITE" class="headerlink" title="HWRITE"></a>HWRITE</h4><p>HWRITE用于表明当前是write transfer还是read transfer</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616172147763.png" class="">
+
+<h4 id="HSIZE"><a href="#HSIZE" class="headerlink" title="HSIZE"></a>HSIZE</h4><p>HSIZE信号是3bits位宽，用于表明一次transfer的data size。大多数的AHB系统仅仅用到了低2bits。</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616172322146.png" class="">
+
+
+
+<p><font color=blue>当一个bus的master发起传输的时候，bus master要去确保数据是transfer对其的，即word传输，地址就要是4Byte对齐；half-word传输，地址就要是2Byte对齐</font></p>
+<p><font color=blue>AHB interface不支持unaligned transfer；如果master需要进行unaligned 访问，那么就需要拆分成多个align transfer；</font></p>
+<blockquote>
+<p>说明：</p>
+<p>Cortex-M处理器的AHB接口能够发出byte&#x2F;half-word&#x2F;word size的读写访问</p>
+</blockquote>
+<hr>
+<h3 id="optional-sideband-signals"><a href="#optional-sideband-signals" class="headerlink" title="optional sideband signals"></a>optional sideband signals</h3><p>除了上面几个关键的AHB信号，还有一些可选的sideband信号，他们可以提供一些有用的信息，例如特权级信息，以及支持的burst类型信息；</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616174912975.png" class="">
+
+<hr>
+<h4 id="HPROT"><a href="#HPROT" class="headerlink" title="HPROT"></a>HPROT</h4><p>AMBA 2 AHB以及AHB-Lite协议中，HPROT信号的每个bit有不同的作用：</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175218009.png" class="">
+
+<p>当访问normal memories（sram等）时候，HPROT[3:2]可以用来表示cache types</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175631251.png" class="">
+
+
+
+<p>AMBA 5 AHB协议中，HPROT信号的每个bit有不同的作用：</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175828205.png" class="">
+
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616175901131.png" class="">
+
+<blockquote>
+<p>思考：</p>
+<p>cache types??</p>
+<p><font color=red>没懂啥意思？？这个属性是不是MPU发出的？？</font></p>
+<p>说明：</p>
+<p>1、Cortex-M0处理器没有user access level  ，HPROT[1] is always 1  ；</p>
+<p>2、Cortex-M0&#x2F;M0+&#x2F;M3&#x2F;M4&#x2F;M23&#x2F;M33 处理器不支持内部cache, 因此cacheable的一些控制信号一般不会用到</p>
+</blockquote>
+<h4 id="HBURST"><a href="#HBURST" class="headerlink" title="HBURST"></a>HBURST</h4><p><font color=blue>HBURST信号表明burst传输的类型。当mem device针对顺序访问做了优化时，burst传输就能够优化系统性能。</font></p>
+<blockquote>
+<p>思考：</p>
+<p>&#x3D;&#x3D;》burst传输时怎样优化传输带宽的？</p>
+<p>Burst传输可以提高系统性能主要有两个关键原因：减少开销和最大化内存带宽利用。</p>
+<p><strong>减少开销：</strong> 在处理器或主设备发起内存访问时，通常会涉及到设置和完成每个单独事务的开销。这包括地址传输、命令传输以及连续访问之间的延迟。在burst传输中，可以在初始设置后以较少的开销发起多个数据访问。一旦burst序列开始，后续的数据传输在burst长度内需要的开销较少，因为地址和其他控制信号通常是预先建立或由硬件递增管理。</p>
+<p><strong>最大化内存带宽利用：</strong> 内存设备（如DRAM）通常具有优化连续数据访问的内部机制（如DRAM中的页面打开策略）。Burst传输利用这些机制，连续地访问burst长度内的内存位置。这减少了每个访问之间的时间间隙，有效地最大化了内存带宽的利用率。因此，与非burst（单周期）传输相比，数据传输的整体吞吐量增加。</p>
+<p><strong>例子说明：</strong> 假设一个处理器需要读取存储在内存中的大块顺序数据。如果没有burst传输，处理器将为每个内存位置单独发起读取命令，这将导致大量的地址设置、命令传输以及每个访问之间的延迟开销。</p>
+<p>然而，使用burst传输时，处理器可以发起一个单一命令，指示burst传输模式并指定起始地址。内存控制器随后连续从连续的内存位置中检索数据字，通常不需要为burst长度内的每个访问重新发起地址。这减少了发起每个访问的时间开销，从而提高了数据检索的效率和速度。</p>
+<p>总之，burst传输通过减少开销和最大化内存带宽利用来优化系统性能，特别适用于需要顺序数据访问或大数据传输的场景。</p>
+<p>&#x3D;&#x3D;》 AHB协议中 Burst的意义何在，为何要有这种feature?</p>
+<p>(1) ”只发首地址，后续地址不用发“用于降低功耗之类 肯定是不对的。因为AHB协议明确规定收地址发出后，接下来的地址一个也不能少。</p>
+<p>(2) 对于从机来说，不同之处在于，从机可以提前知道”主机的访问计划“，进而提早做准备，对于特定的从机来说，能够显著提高效率。</p>
+<p>   举个例子: 对于单周期访问，零时延的SRAM&#x2F;寄存器来说，burst没有起到作用。但是对于一些慢速的从机，例如DDR，就可以提前知道主机的访问，然后以pipeline的方式访问某个打开的row，提高效率，如此。</p>
+</blockquote>
+<p>AHB 支持如下几种burst  transfer：</p>
+<ul>
+<li><p>Single. (Not burst transfer. Each transfer is separated from each other.)  </p>
+</li>
+<li><p>Incrementing burst transfer. (The address is incremented by the size of the transfer.)  </p>
+</li>
+<li><p>Wrapping burst transfer. For each transfer, the address increments as in an incrementing burst<br>except when the address reaches the block size boundary of the burst. In this case, the address<br>wraps round to the beginning of the block size boundary. The block size of the burst can be<br>determined from the number of beats times the size of each transfer.</p>
+</li>
+</ul>
+<p><font color=blue>Burst transfer是由多个beats组成，每个beat的地址都和相邻beat有关</font>。burst transfer中，每个beat的控制信号都是相同的。Both incrementing and wrapping bursts are supported for 4-beats, 8-beats, and 16-beats transfers. Incremental bursts can also be of unspecified length.  </p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616184400696.png" class="">
+
+<p><font color=blue>wrap burst在cache controller设计中有用</font>。例如，处理器想要访问0x1008，cache controller的cache line是4 words，那就需要取0x1000, 0x1004, 0x1008 and 0x100C到cache memory中，这种情况下，可以从0x1000地址使用4拍递增burst传输，也可以从0x1008使用wrap burst传输。</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240616211837581.png" class="">
+
+<blockquote>
+<p> 第一种和第二种情况，虽然传输的数据相同，但是wrap会先传输处理器所需要的数据，减少处理器的等待时间。</p>
+<p>第三种情况，increment burst就不会获取0x1000和0x1004的数据，cache line的数据就不完整；</p>
+</blockquote>
+<p><font color=blue>burst transfer可以用不同的data size进行传输，但是其传输的过程中，有一个限制，那就是不能够超过1KB地址边界。</font></p>
+<blockquote>
+<p>协议上这么规定是有两个好处:</p>
+<p>1、内部计数器和高级地址生成：为了优化burst传输的性能，AHB主设备和从设备可能需要内部计数器来监控burst操作，并可能提前产生地址。通过将burst传输限制到1KB Size，10bits的计数器就足够访问所有的burst transfer；</p>
+<p>2、防止burst transfer跨越多个AHB Slave：如果burst transfer跨device 边界访问，那么跨边界的第二个device可能有一个开头是SEQ的burst transfer，违反了AHB协议；</p>
+<p>（ARM对AHB burst这样设计的目的是在于，<font color=blue>SLAVE的地址访问空间基本都是以1KB为单位的</font>，设定burst不超过1KB是为了让一个单独的BURST不能访问多个slave，从而违反AHB协议；）</p>
+<p>3、若需要跨1KB边界时，需要重新initial一个新的传输。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">例如：访问如下地址</span><br><span class="line">0x3F00 x3F40 x3F80 x3FC0 x4000 x4040 x4080</span><br><span class="line">1KB地址边界传输就需要按照如下规则访问：</span><br><span class="line">NSEQ SEQ SEQ SEQ NSEQ SEQ SEQ</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="HMASTERLOCK"><a href="#HMASTERLOCK" class="headerlink" title="HMASTERLOCK"></a>HMASTERLOCK</h4><p><font color=blue>对于atomic access sequence ，通常使用HMASTLOCK 表示总线的所有权是否被锁定，通常用于信号量操作</font></p>
+<p>HMASTLOCK被设置为1的时候，总线部件（例如arbiter）不能够切换总线的所有权。针对信号量的操作，即有一个地址空间（lock flag）被用来表明某一个资源是否被进程或者处理器锁定，当处理器需要锁定某一个source的时候，需要执行locked transfer sequence（reads the lock flag and then<br>updates it  ）。使用HMASTLOCK，read-modify-write transfers are locked (atomic)  ，其他bus master在此期间就无法修改lock flag，防止竞争的情况发生。</p>
+<blockquote>
+<p>说明：</p>
+<p>除了Cortex-M3以及Cortex-M4处理器，大多数的Cortex-M处理器不需要使用HMASTERLOCK信号</p>
+</blockquote>
+<h4 id="HMASTER"><a href="#HMASTER" class="headerlink" title="HMASTER"></a>HMASTER</h4><p>在多bus master的AHB系统中，Arbiter或者Master Multiplexer 可能会输出一个HMASTER信号，用于表明是哪一个AHB Master。</p>
+<p>在某些场景中，AHB Slave可能需要对不同的AHB Master访问有不同的行为。例如MPU就可能对Cortex-M，debugger，DMA以及其他Master做出不同的行为。</p>
+<blockquote>
+<p>在Cortex-M处理器中，通常会使用HMASTER信号来表明当前的transfer是Cortex-M发出还是Debugger发出</p>
+</blockquote>
+<blockquote>
+<p>传输类型</p>
+<p>burst类型</p>
+<p>beat传输数据大小</p>
+</blockquote>
+<h2 id="Data-phase-signals"><a href="#Data-phase-signals" class="headerlink" title="Data phase signals"></a>Data phase signals</h2><img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620225155600.png" class="">
+
+
+
+
+
+<h3 id="HRDATA-and-HWDATA"><a href="#HRDATA-and-HWDATA" class="headerlink" title="HRDATA and HWDATA"></a>HRDATA and HWDATA</h3><p><font color=blue>传输的数据在总线上的位置取决于transfer size</font></p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620194927328.png" class="">
+
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620194939436.png" class="">
+
+<p>For word transfers, the whole 32-bit is used  .</p>
+<p><font color=blue>不管是哪种AHB协议，仅支持对齐传输&#x3D;&#x3D;》地址是传输size的整数倍</font></p>
+<p>例如，word传输，地址是4的倍数；</p>
+<p>half-word传输，地址是2的倍数；</p>
+<p>byte传输，地址是1的倍数，也就是永远对齐；</p>
+<h3 id="HRESP"><a href="#HRESP" class="headerlink" title="HRESP"></a>HRESP</h3><p><font color=blue>AMBA2 AHB协议中，response包括，OKAY，ERROR,RETRY,SPLIT四种类型，因此HRESP有2bit；</font></p>
+<p><font color=blue>但是在AMBA 3 AHB LITE以及AMBA5 AHB中，仅仅只有OKAY和ERROR两种信号，因此HRESP只需要1bit</font></p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620200157299.png" class="">
+
+<p><font color=blue>只有OK response在一拍内完成，其他类型的response需要两拍完成；</font></p>
+<blockquote>
+<p>NOTE:</p>
+<p>例如返回ERROR</p>
+<ul>
+<li>第一拍 HREADY low + ERROR：</li>
+</ul>
+<p>这一拍是给master留出反应时间，让其可以停止再发送下一次tranfer的有效地址，防止已经发生错误了，但是仍然还进行访问的操作；</p>
+<ul>
+<li>第二排 HREADY high+ERROR：</li>
+</ul>
+<p>实际的ERROR response</p>
+</blockquote>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620201916174.png" class="">
+
+<blockquote>
+<p>NOTE:</p>
+<p>1、如上图所示，response也是可以插入wait status（HREADYOUT high，response OK）；</p>
+<p>2、error response的第一拍（HREADYOUT low，response ERROR），master能够选择继续发送下一笔还是取消发送下一笔，然后发送IDLE状态；</p>
+<p>不同的Cortex-M系列的处理器，其行为不一样；</p>
+</blockquote>
+<p><font color=blue>HTRANS是IDLE或者BUSY，又或者HSEL是not active，AHB Slave必须要返回OKAY；</font></p>
+<p><font color=blue>RETRY和SPLIT信号和ERROR response的时序相同，他们的使用场景是，如果AHB Slave在短时间内无法完成传输的时候，他们会让AHB Master暂时放弃当前的传输；在多AHB Master的系统中，通过这种做法，就能让其他AHB Master有机会占用总线，防止带宽被浪费</font></p>
+<p><font color=blue>AHB Master对RETRY和SPLIT信号的处理方式是不同的</font></p>
+<ul>
+<li>RETRY：AHB Master接收到第一个RETRY response cycle的时候，会通过发送一个IDLE来取消当前传输，然后再去retry未完成的传输；</li>
+<li>SPLIT：AHB Master接收到第一个SPLITresponse cycle的时候，会通过发送一个IDLE来取消当前传输，同时会放弃总线所有权，等AHB Slave ready的时候再通过HSPLIT sideband信号恢复总线所有权；</li>
+</ul>
+<blockquote>
+<p>由于复杂的机制，SPLIT以及HSPLIT基本很少使用；</p>
+<p>从2001年的multi-layer AHB开始，SPLIT以及HSPLIT就被淘汰了，因为他能够有效的阻止单次传输降低系统性能的问题，能够提供更高的系统带宽；</p>
+<p>有些Cortex-M processors 例如M3,M4有两bit的 HRESP信号，是因为其release时间比AMBA3 AHB-Lite release时间早；</p>
+</blockquote>
+<h3 id="HEXOKAY"><a href="#HEXOKAY" class="headerlink" title="HEXOKAY"></a>HEXOKAY</h3><p> <font color=blue>HEXOKAY信号用于支持互斥访问，在AMBA5 AHB中被引入，是由global exlcusive access monitor生成</font></p>
+<p><font color=blue>互斥访问操作序列包括对同一个数据的<code>exclusive load</code>以及<code>exclusive store</code>，monitor将会检测在一个master的互斥访问序列中，其操作的数据是否会被其他Master进行修改，如果发现两个master访问冲突，将会通过HEXOKAY信号返回错误状态</font></p>
+<p>在exclusive store发生，并且没有access conflit的时候，HEXOKAY和HREADY在同一个Cycle assert；其他的case，HEXOKAY维持low；</p>
+<p>HEXOKAY不能和HRESP在同一个cycle assert；</p>
+<h2 id="Legacy-arbiter-handshake-signals"><a href="#Legacy-arbiter-handshake-signals" class="headerlink" title="Legacy arbiter handshake signals"></a>Legacy arbiter handshake signals</h2><p>如果使用的是AMBA2 AHB协议，就需要考虑arbiter的handshake信号（但是一般来说，multi-layer AHB的性能更好，而且兼容AMBA2 AHB）；</p>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620232339504.png" class="">
+
+<blockquote>
+<p>需要请求信号HBUSREQ，HGRANT授权信号；授权信号HLOCK表示进行一次locked transfer （可选）</p>
+<p>仲裁阶段在地址阶段前，如果地址阶段有多个周期，仲裁结果也会随之不断更新</p>
+</blockquote>
+<img src="/2024/06/15/3-AMBA-AHB-APB%EF%BC%882%EF%BC%89/image-20240620234744237.png" class="">
+
+
+
+<p>参考博客：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://blog.eetop.cn/blog-910906-5755032.html">AHB burst功能理解</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/550883187">AHB协议-HREADY信号和1KB边界</a></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/secure-debug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/12/secure-debug/" class="post-title-link" itemprop="url">secure debug</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-12 10:35:31 / 修改时间：10:36:11" itemprop="dateCreated datePublished" datetime="2024-06-12T10:35:31+08:00">2024-06-12</time>
+            </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1157,8 +1658,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/06/12/secure-debug/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/secure-debug/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1173,518 +1674,104 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <blockquote>
-<p>车规MCU需要HSM信息安全，其实现方式有可能会利用到host bootrom</p>
-<p>一个不懂的东西，怎么去快速了解上手？</p>
-<p>1、需要自己看看已有的资料有一定的认知；</p>
-<p>2、私下问下同事，询问不懂的问题；</p>
-<p>2、开会和其他同事同步，进一步加深理解；</p>
-<p>3、总结思考实践–&gt;有自己的认知；</p>
-</blockquote>
-<h1 id="host-bootrom功能描述"><a href="#host-bootrom功能描述" class="headerlink" title="host bootrom功能描述"></a>host bootrom功能描述</h1><p>主要提供normal boot和secure boot的功能</p>
-<p>BootRom需要使用GPIO，Uart，HSM message box等模块。</p>
-<h1 id="测试流程"><a href="#测试流程" class="headerlink" title="测试流程"></a>测试流程</h1><p>&#x3D;&#x3D;》load config只是从flash info区域读取数据，不care OTP区域；</p>
-<p><font color=blue>hsm enable以及secure boot是通过读取寄存器</font>？也不用care OTP区域；</p>
-<p><font color=red>读取寄存器？读取什么寄存器？</font></p>
-<p>&#x3D;&#x3D;》init debug表明是否需要打印log（optional，默认disable）</p>
-<p>要打印log就初始化UART串口；不需要打印log就不初始化UART串口；</p>
-<p>&#x3D;&#x3D;》rom code的执行是否需要切换成系统时钟（optional，默认enable）</p>
-<p>切换成PLL提供的系统时钟，处理速度就比较快，加速启动时间</p>
-<p>启动PLL也就是初始化PLL大概需要100us的时间</p>
-<p><font color=red>系统时钟：从什么时钟切换到PLL时钟？？？</font></p>
-<h2 id="non-security-boot"><a href="#non-security-boot" class="headerlink" title="non-security boot"></a>non-security boot</h2><p>&#x3D;&#x3D;》两个secure boot check？</p>
-<p>security boot分成两部分：一个是启动校验，一个是等待校验结果</p>
-<p>所以流程图上有两个security boot check框</p>
-<p>&#x3D;&#x3D;》Restore debug and clock(Optional)</p>
-<p>关闭UART以及将系统时钟切回去</p>
-<p>&#x3D;&#x3D;》jump to user code</p>
-<p>跳转到pflash的user code（default是0x20_0000）</p>
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">SOTA + secure boot方案</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-12 09:53:14 / 修改时间：10:36:39" itemprop="dateCreated datePublished" datetime="2024-06-12T09:53:14+08:00">2024-06-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E8%A7%84MCU/" itemprop="url" rel="index"><span itemprop="name">车规MCU</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>主要有如下几个部分：</p>
 <ul>
-<li><p>user code可以配置从pflash的info区域执行；</p>
+<li><p>bank0 《&#x3D;&#x3D;》bank0校验参数页</p>
 </li>
-<li><p>user code可以配置从pflash的main区域执行；</p>
+<li><p>bank1 《&#x3D;&#x3D;》bank1校验参数页</p>
+</li>
+<li><p>SOTA swap配置页</p>
 </li>
 </ul>
-<p>执行user code</p>
-<h2 id="security-boot"><a href="#security-boot" class="headerlink" title="security boot"></a>security boot</h2><p>&#x3D;&#x3D;》 security boot需要很多的配置信息，首先需要确认配置信息是否正确（主要是对地址以及size的有效性进行检查）</p>
-<p>&#x3D;&#x3D;》等待HSM ready</p>
-<p>&#x3D;&#x3D;》执行check code（<font color=blue>校验用户代码的代码</font>），通过发命令到HSM，（主要是校验地址，校验size以及校验算法），让其开始校验<font color=blue>用户代码</font></p>
-<p>&#x3D;&#x3D;》等待check结果（done，pass&#x2F;fail）</p>
-<p>正确就继续执行下面的流程，即走启动用户代码的流程；</p>
-<p>错误就执行while 1 （default的行为），也可配置成system reset，通过watch dog进行复位；</p>
-<p>吴奎那边有现成的工具可以做对应的测试；</p>
-<h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><p>&#x3D;&#x3D;》什么时候出现check error</p>
-<p>将需要校验的代码，手动修改成错误数据</p>
-<blockquote>
-<p>校验算法是通过OTP配置好的</p>
-<p>校验的地址和size都是在info区域配置的</p>
-</blockquote>
-<p>&#x3D;&#x3D;》standby boot</p>
-<p>pflash user code进入standby模式之后，默认还会执行security boot校验（optional可配置）</p>
-<p>&#x3D;&#x3D;》用户代码和被校验的代码</p>
-<p>安全启动的时候就是被校验的代码</p>
-<p>没有安全启动的时候就是未被校验的代码，即用户代码</p>
-<p>&#x3D;&#x3D;》默认是不swap的</p>
-<p>swap之后，如下图这些配置起始地址就会从0x01004800–&gt;0x01005000，offset不变</p>
-<img src="/2024/06/07/%E8%BD%A6%E8%A7%84MCU-bootrom-%E9%AA%8C%E8%AF%81/image-20240611113255222.png" class="">
+<p>其中：</p>
+<ul>
+<li>bank0，bank1会做硬件swap；</li>
+<li>bank0校验参数页，bank1校验参数页没做硬件swap，由romcode根据SOTA swap配置去读取相应的校验参数页</li>
+</ul>
+<img src="/2024/06/12/SOTA-secure-boot%E6%96%B9%E6%A1%88/image-20240612102802897.png" class="">
 
 
-
-<p>&#x3D;&#x3D;》security boot的参数比较多</p>
-<p>hsm security boot的各个参数是绑定到一起的，通常来说错一个都会导致HSM check error</p>
-<p>&#x3D;&#x3D;》SOTA功能测试</p>
-<p>有两个配置区域，一个是正确的配置，一个是错误的配置；</p>
-<p>通过配置SOTA enable还是disable可以进行不同的测试；</p>
-<p>&#x3D;&#x3D;》HSM安全启动测试</p>
-<p>不同的校验算法都校验成功；</p>
-<p>根据hsm的算法，去校验什么东西，然后做对应的配置；</p>
-<p>询问HSM的人，怎么把算法用起来；</p>
-<p>例如：key需要配置什么东西，验签signature需要设置什么东西和算法相关，使用什么算法，就需要根据对应的算法做相应的配置</p>
-<h2 id="pflash-info-HSM-security-boot各项配置参数的含义"><a href="#pflash-info-HSM-security-boot各项配置参数的含义" class="headerlink" title="pflash info:HSM security boot各项配置参数的含义"></a>pflash info:HSM security boot各项配置参数的含义</h2><h2 id="dflash-info-OTP各项配置参数的含义"><a href="#dflash-info-OTP各项配置参数的含义" class="headerlink" title="dflash info:OTP各项配置参数的含义"></a>dflash info:OTP各项配置参数的含义</h2><h2 id="SOTA机制"><a href="#SOTA机制" class="headerlink" title="SOTA机制"></a>SOTA机制</h2><h2 id="boot-flow-数据流"><a href="#boot-flow-数据流" class="headerlink" title="boot flow&#x2F;数据流"></a>boot flow&#x2F;数据流</h2><p>例如，host core先动起来，执行host romcode代码，然后加载pflash info区域的值；</p>
-<p>然后判断是否为security boot，如果是的话，发送command，去调动hsm做校验；</p>
-<p><font color=red>hsm根据OTP的value去使用相应的算法做校验？？？具体的流程是什么样？</font></p>
-<h2 id="测试item"><a href="#测试item" class="headerlink" title="测试item"></a>测试item</h2><p>配置选项&#x2F;输入条件</p>
-<p>check point？</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/07/apb-sync-unit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/07/apb-sync-unit/" class="post-title-link" itemprop="url">apb_sync_unit</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-06-07 09:27:24" itemprop="dateCreated datePublished" datetime="2024-06-07T09:27:24+08:00">2024-06-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-07 13:53:34" itemprop="dateModified" datetime="2025-08-07T13:53:34+08:00">2025-08-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/07/apb-sync-unit/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/07/apb-sync-unit/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>项目中可能需要对APB协议进行CDC的设计，简单的方法是通过使用ready信号反压来实现；</p>
-</blockquote>
-<h1 id="RTL代码实现"><a href="#RTL代码实现" class="headerlink" title="RTL代码实现"></a>RTL代码实现</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> apb_sync_unit(</span><br><span class="line">  <span class="keyword">input</span>  psel       ,</span><br><span class="line">  <span class="keyword">input</span>  pwrite     ,</span><br><span class="line">  <span class="keyword">input</span>  pclk       ,</span><br><span class="line">  <span class="keyword">input</span>  fclk       ,</span><br><span class="line">  <span class="keyword">input</span>  prst_b     ,</span><br><span class="line">  <span class="keyword">input</span>  frst_b     ,</span><br><span class="line">  <span class="keyword">output</span> psel_sync  ,</span><br><span class="line">  <span class="keyword">output</span> pready     </span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line"><span class="comment">//apb valid from pclk</span></span><br><span class="line"><span class="keyword">reg</span> psel_d;</span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> pclk <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">  <span class="keyword">if</span>(!prst_b)</span><br><span class="line">    psel_d &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    psel_d &lt;= psel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> psel_pos = (!psel_d) &amp; psel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> ptrans;</span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> pclk <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">  <span class="keyword">if</span>(!prst_b)</span><br><span class="line">    ptrans &lt;= <span class="number">1&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (psel_pos)</span><br><span class="line">    ptrans &lt;= ~ptrans;</span><br><span class="line"></span><br><span class="line"><span class="comment">//ptrans sync to fclk domain</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] ptrans_sync;</span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> fclk <span class="keyword">or</span> <span class="keyword">negedge</span> frst_b)</span><br><span class="line">  <span class="keyword">if</span>(!frst_b)</span><br><span class="line">    ptrans_sync &lt;= <span class="number">3&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    ptrans_sync &lt;=&#123;ptrans_sync[<span class="number">1</span>:<span class="number">0</span>],ptrans&#125;;</span><br><span class="line"><span class="keyword">assign</span> psel_sync = ptrans_sync[<span class="number">2</span>] ^ ptrans_sync[<span class="number">1</span>];<span class="comment">//both trigger</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//ptrans sync back to pclk</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] ptrans_sync_pclk;</span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> pclk <span class="keyword">or</span> <span class="keyword">negedge</span> prst_b)</span><br><span class="line">  <span class="keyword">if</span>(!prst_b)</span><br><span class="line">    ptrans_sync_pclk &lt;= <span class="number">3&#x27;b0</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    ptrans_sync_pclk &lt;=&#123;ptrans_sync_pclk[<span class="number">1</span>:<span class="number">0</span>],ptrans_sync[<span class="number">2</span>]&#125;;</span><br><span class="line"><span class="keyword">wire</span> pready_comb  = ptrans_sync_pclk[<span class="number">2</span>] ^ ptrans_sync_pclk[<span class="number">1</span>];<span class="comment">//bothedge trigger</span></span><br><span class="line"><span class="keyword">assign</span> pready = psel ? pready_comb : <span class="number">1&#x27;b1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="电路解析"><a href="#电路解析" class="headerlink" title="电路解析"></a>电路解析</h1><img src="/2024/06/07/apb-sync-unit/image-20240607093602194.png" class="">
-
-
-
-<h1 id="使用限制"><a href="#使用限制" class="headerlink" title="使用限制"></a>使用限制</h1><blockquote>
-<p>apb_sync_unit只使用了psel信号，  通过检测其上升沿从而进行同步，使用时需要保证连续的apb transaction之间，psel信号不会一直为高；</p>
-<p>（之前的项目中，外设APB接口协议实现的可能不标准，没有penable，因此sync电路只用了psel进行实现）；</p>
-</blockquote>
-<p>&#x3D;&#x3D;》如果连续多比apb transaction过程中psel一直为高，会导致pready信号一直拉低，如下图所示是一个先写后读的时序：</p>
-<p>错误分析：第一笔写操作，能够回pready；</p>
-<p>​             	  第二笔读操作，sync电路检测由于psel&#x3D;1’b1是连续的，检测不到pos，因此当前读操作得不到处理，会导致pready一直拉低</p>
-<img src="/2024/06/07/apb-sync-unit/image-20240607093744708.png" class="">
-
-
-
-<p><font color=blue>为了处理 连续的apb transaction，psel一直为高  可以参考如下几种做法</font></p>
-<h2 id="改进方式1"><a href="#改进方式1" class="headerlink" title="改进方式1"></a>改进方式1</h2><blockquote>
-<p>APB接口有penable信号，不改动apb_sync_unit</p>
-</blockquote>
-<img src="/2024/06/07/apb-sync-unit/image-20240607094323521.png" class="">
-
-<img src="/2024/06/07/apb-sync-unit/image-20240607094352996.png" class="">
-
-
-
-
-
-<h2 id="改进方式2"><a href="#改进方式2" class="headerlink" title="改进方式2"></a>改进方式2</h2><blockquote>
-<p>APB接口有penable信号，  改动apb_sync_unit</p>
-</blockquote>
-<img src="/2024/06/07/apb-sync-unit/image-20240607094437852.png" class="">
-
-<img src="/2024/06/07/apb-sync-unit/image-20240607094442804.png" class="">
-
-
-
-<h2 id="改进方式3"><a href="#改进方式3" class="headerlink" title="改进方式3"></a>改进方式3</h2><blockquote>
-<p>APB接口没有penable信号， 改动apb_sync_unit</p>
-</blockquote>
-<img src="/2024/06/07/apb-sync-unit/image-20240607094502525.png" class="">
-
-<img src="/2024/06/07/apb-sync-unit/image-20240607094506574.png" class="">
-
-
-
-<h1 id="时序约束"><a href="#时序约束" class="headerlink" title="时序约束"></a>时序约束</h1><blockquote>
-<p>APB同步：根据同步之后的psel信号，去抓address phase的控制信号。</p>
-<p>如果时钟频率很快，T&#x3D;2ns，假设psel经过2拍同步，那么会经过4ns的时间，从clock domain1 到clock domain 2,；</p>
-<p>假设psel sync之后，其他的控制信号例如pwrite，padd等，还没有到达clock domain2（绕线之后，可能有多达到10ns的delay）。那么就会出现错误状态！！！</p>
-<p>可能出现在高制程，频率很快的设计中；例如BUS内部的信号可能走线会很远，导致这种情况的发生！</p>
-</blockquote>
-<img src="/2024/06/07/apb-sync-unit/image-20240607095127922.png" class="">
-
-
-
-<h1 id="致命问题"><a href="#致命问题" class="headerlink" title="致命问题"></a>致命问题</h1><img src="/2024/06/07/apb-sync-unit/image-20250807133930899.png" class="">
-
-<blockquote>
-<p>当一笔transaction发生时，pready信号通过psel 然后mux为pready_comb；<br>pready_comb是边沿检测逻辑；<br>如果在sync过程中发生复位，psel信号是power-on-reset控制仍然为高，但是pready_comb会检测不到边沿，从而pready信号一直拉低；</p>
-</blockquote>
-<p>##解决方法</p>
-<p><font color=blue>在复位的时候，可以使用reset信号控制pready信号为高；或者psel信号为低；</font></p>
-<p><font color=blue>警示：对于同步逻辑，一定要注意reset domain 带来的影响</font></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">MCU关电上电流程及其时序分析</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-06-05 12:17:32 / 修改时间：17:27:23" itemprop="dateCreated datePublished" datetime="2024-06-05T12:17:32+08:00">2024-06-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">低功耗设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/05/MCU%E5%85%B3%E7%94%B5%E4%B8%8A%E7%94%B5%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="关电和上电顺序"><a href="#关电和上电顺序" class="headerlink" title="关电和上电顺序"></a>关电和上电顺序</h1><p>关电的顺序：<br>1、关闭时钟–》PWR_CLKEN<br>2、拉住reset<br>3、打开ISO–》PWR_ISOON<br>4、关闭Power–》PWR_ON<br>上电的顺序：<br>反过来</p>
-<hr>
-<p>1、PMU&#x2F;SPM模块enable WIC</p>
-<p>2、core执行WFI进入deepsleep mode，此时会自动gating core clock</p>
-<p>3、spm wait cache idle（7843 特殊flow）</p>
-<p>4、spm走休眠，发出sleep request，wait ACK（就是cache idle以及外设sleep ACK）</p>
-<p>5、关闭时钟–》PWR_CLKEN（spm CORE_CLK_EN）</p>
-<p>6、<font color=red>拉住reset–》STDBY_PWR_RSTON</font></p>
-<p>7、打开ISO–》PWR_ISOON<br>8、关闭Power–》PWR_ON</p>
-<p>sleepdeep_gatclk ？ 1’b1 :  (~cm4_sleepdeep) ;</p>
-<hr>
-<p>正确的case(保存波形，_s1)</p>
-<p>复现spm问题(保存波形，_s2)1’吧</p>
-<p>修改代码</p>
-<p>重新运行</p>
-<blockquote>
-<p>问题：进不去standby mode，spm 发出sleep request ，等待ACK超时，进入standby失败，CPU自动退出低功耗模式；</p>
-</blockquote>
-<p><img src="D:\blog\wzjsdyx.github.io\source_posts\2024-06-05-MCU关电上电流程及其时序分析\image-20240605172723153.png" alt="image-20240605172723153"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">项目实践-debugger无法连接</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-06-05 12:16:16" itemprop="dateCreated datePublished" datetime="2024-06-05T12:16:16+08:00">2024-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-14 16:46:22" itemprop="dateModified" datetime="2025-03-14T16:46:22+08:00">2025-03-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ARM/CoreSight/" itemprop="url" rel="index"><span itemprop="name">CoreSight</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/05/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5-debugger%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>问题：外部调试器无法连接芯片</p>
-<p>现象：debugger read id之后，power up状态不对</p>
-</blockquote>
-<h1 id="外部debugger和芯片的连接顺序"><a href="#外部debugger和芯片的连接顺序" class="headerlink" title="外部debugger和芯片的连接顺序"></a>外部debugger和芯片的连接顺序</h1><h2 id="SWJ-DP-TAP-reset"><a href="#SWJ-DP-TAP-reset" class="headerlink" title="SWJ-DP TAP reset"></a>SWJ-DP TAP reset</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" class="post-title-link" itemprop="url">2024年度计划</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-06-02 10:40:32 / 修改时间：11:08:10" itemprop="dateCreated datePublished" datetime="2024-06-02T10:40:32+08:00">2024-06-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">年度计划</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          Here's something encrypted, password is required to continue reading.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/06/02/2024%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
@@ -1702,7 +1789,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1770,20 +1857,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-count">235</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">165</span>
+        <span class="site-state-item-count">167</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1810,7 +1897,7 @@
 <div class="copyright">
   
   &copy; 2024 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

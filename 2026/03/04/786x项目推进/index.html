@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/animal_toy_cute_doll_teddy_72.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wzjsdyx.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="项目基本信息说明： 项目代号： 786x  step1：项目specstep2：IP评估和架构设计Core IP 评估 20260302拿到IP包 20260303开始根据IP文档build本地环境  目标：主要评估M7和M85的处理器选型在features&#x2F;PPA&#x2F;集成实现上进行比较 TBD  IP包PDF文档下载 JTAG相关sub_system  Cortex-M7配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="786x项目推进">
+<meta property="og:url" content="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/index.html">
+<meta property="og:site_name" content="芯青年">
+<meta property="og:description" content="项目基本信息说明： 项目代号： 786x  step1：项目specstep2：IP评估和架构设计Core IP 评估 20260302拿到IP包 20260303开始根据IP文档build本地环境  目标：主要评估M7和M85的处理器选型在features&#x2F;PPA&#x2F;集成实现上进行比较 TBD  IP包PDF文档下载 JTAG相关sub_system  Cortex-M7配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151808499.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151833257.png">
+<meta property="og:image" content="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151736328.png">
+<meta property="article:published_time" content="2026-03-04T05:39:36.000Z">
+<meta property="article:modified_time" content="2026-03-11T01:41:13.612Z">
+<meta property="article:author" content="Youngster">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151808499.png">
+
+<link rel="canonical" href="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>786x项目推进 | 芯青年</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">芯青年</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          786x项目推进
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-03-04 13:39:36" itemprop="dateCreated datePublished" datetime="2026-03-04T13:39:36+08:00">2026-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-03-11 09:41:13" itemprop="dateModified" datetime="2026-03-11T09:41:13+08:00">2026-03-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%B0%E5%8F%91%E7%A7%91%E6%8A%80/" itemprop="url" rel="index"><span itemprop="name">杰发科技</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%B0%E5%8F%91%E7%A7%91%E6%8A%80/786x%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">786x项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>项目基本信息说明：</p>
+<p>项目代号： 786x</p>
+</blockquote>
+<h1 id="step1：项目spec"><a href="#step1：项目spec" class="headerlink" title="step1：项目spec"></a>step1：项目spec</h1><h1 id="step2：IP评估和架构设计"><a href="#step2：IP评估和架构设计" class="headerlink" title="step2：IP评估和架构设计"></a>step2：IP评估和架构设计</h1><h2 id="Core-IP-评估"><a href="#Core-IP-评估" class="headerlink" title="Core IP 评估"></a>Core IP 评估</h2><blockquote>
+<p>20260302拿到IP包</p>
+<p>20260303开始根据IP文档build本地环境</p>
+</blockquote>
+<h3 id="目标：主要评估M7和M85的处理器选型"><a href="#目标：主要评估M7和M85的处理器选型" class="headerlink" title="目标：主要评估M7和M85的处理器选型"></a>目标：主要评估M7和M85的处理器选型</h3><p>在features&#x2F;PPA&#x2F;集成实现上进行比较</p>
+<p><font color=red>TBD</font></p>
+<blockquote>
+<p>IP包PDF文档下载</p>
+<p>JTAG相关sub_system</p>
+</blockquote>
+<h3 id="Cortex-M7配置"><a href="#Cortex-M7配置" class="headerlink" title="Cortex-M7配置"></a>Cortex-M7配置</h3><blockquote>
+<p>guide line:</p>
+<p>1、配置选项</p>
+<p>2、接口&#x2F;features&#x2F;机制</p>
+</blockquote>
+<p><font color=red>red</font></p>
+<p><font color=blue>blue</font></p>
+<p><font color=green>green</font></p>
+<h4 id="merge-package-–-done-20260305"><a href="#merge-package-–-done-20260305" class="headerlink" title="merge package – done 20260305"></a>merge package – done 20260305</h4><h4 id="read-IIM文档，熟悉集成级别和配置level"><a href="#read-IIM文档，熟悉集成级别和配置level" class="headerlink" title="read IIM文档，熟悉集成级别和配置level"></a>read IIM文档，熟悉集成级别和配置level</h4><p><font color=red>rom table的作用？</font></p>
+<p><font color=red>TBD: memory interface 梳理和 memory map</font></p>
+<h4 id="接口梳理"><a href="#接口梳理" class="headerlink" title="接口梳理"></a>接口梳理</h4><h5 id="memory-interface梳理"><a href="#memory-interface梳理" class="headerlink" title="memory interface梳理"></a>memory interface梳理</h5><h4 id="相关机制理解"><a href="#相关机制理解" class="headerlink" title="相关机制理解"></a>相关机制理解</h4><blockquote>
+<p><font color=green>输出文档：</font></p>
+<p>file:&#x2F;&#x2F;&#x2F;D:\proj\学习资料\ARM\CM7\CM7_Configuration_NOTE.xlsx – features&amp;机制理解</p>
+</blockquote>
+<p><font color=blue>AXIM接口的属性配置</font></p>
+<p><font color=blue>关于AXI协议的几个理解：</font></p>
+<ul>
+<li><p>outstanding，<strong>Outstanding 指主设备在未收到之前某个事务的响应之前</strong>，可以继续发出的新事务的数量；当前的transaction可以不用等之前的transaction就可以发送；</p>
+</li>
+<li><p>out-of-order，<strong>主设备可以同时发出多个不同 ID 的事务，从设备可以按任意顺序返回它们，但要求 <strong>相同 ID 的事务必须按顺序完成</strong>（以保证同一条流内的顺序性）。不同 ID 之间可以乱序</strong>；</p>
+</li>
+</ul>
+<blockquote>
+<p>如果transaction有着不同的ID，那么不同顺序的transaction可以不按照不同顺序返回;</p>
+<p>如果transaction有着相同的ID，那么相同顺序的transaction需要按照发送顺序返回;</p>
+<p>例如：先不考虑interleaving 这个features，如果我发送读请求，按照先后顺序，先trasA-ID0,然后transB-ID1,最后transC-ID1,那么返回的时候，会有几种可能的情况？只要保证transB再transC之前就行，因为都是ID1；因此约束条件是：<strong>事务B必须在事务C之前返回</strong>，而事务A（ID0）可以与它们任意穿插。</p>
+<p>可能的返回顺序（不考虑交织，即每个事务的数据连续返回）共有以下3种：</p>
+<ol>
+<li><strong>A, B, C</strong>：完全按发起顺序返回。</li>
+<li><strong>B, A, C</strong>：ID1的B先返回，然后ID0的A返回，最后ID1的C返回。</li>
+<li><strong>B, C, A</strong>：ID1的两个连续返回，然后ID0的A返回。</li>
+</ol>
+</blockquote>
+<ul>
+<li>interleaving，<strong>Interleaving 指在同一个从设备返回的多个读事务中</strong>，数据可以以 <strong>更细的粒度（数据节拍）</strong> 交叉传输。即，不同事务的数据节拍可以交替出现在读数据总线上。</li>
+</ul>
+<blockquote>
+<p>AXI3支持读和写interleaving；</p>
+<p>AXI4和AXI5不支持写interleaving；</p>
+</blockquote>
+<h3 id="Cortex-M85配置"><a href="#Cortex-M85配置" class="headerlink" title="Cortex-M85配置"></a>Cortex-M85配置</h3><blockquote>
+<p>guide line:</p>
+<p>1、配置选项</p>
+<p>2、接口&#x2F;features&#x2F;机制</p>
+</blockquote>
+<hr>
+<p>参考文档：</p>
+<p>arm_cortex_m85_at640_r1p1-00rel0_release_note_109379_1_0.pdf</p>
+<p>arm_cortex_m85_processor_iim_101925_0101_07_en.pdf</p>
+<hr>
+<p>1、merge package</p>
+<p>2、getting start</p>
+<blockquote>
+<p>根据IIM文档getting start章节先进行配置，<font color=blue>具体的配置细节可以先不管</font></p>
+</blockquote>
+<p>3、demo仿真环境</p>
+<p>4、梳理相关配置</p>
+<p>5、梳理接口信号</p>
+<p>5、集成到SoC</p>
+<h3 id="阶段性成果输出"><a href="#阶段性成果输出" class="headerlink" title="阶段性成果输出"></a>阶段性成果输出</h3><p><font color=green>阶段性成果：处理器选型比较文档</font></p>
+<img src="/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151808499.png" class="">
+
+<img src="/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151833257.png" class="">
+
+<img src="/2026/03/04/786x%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B/image-20260304151736328.png" class="">
+
+
+
+
+
+
+
+<h2 id="BUS-IP评估"><a href="#BUS-IP评估" class="headerlink" title="BUS IP评估"></a>BUS IP评估</h2><p>NIC-450</p>
+<p>FlexNoC</p>
+<p>性能</p>
+<p>时序</p>
+<p>接口兼容性</p>
+<p>功能安全等级</p>
+<h2 id="总线架构设计"><a href="#总线架构设计" class="headerlink" title="总线架构设计"></a>总线架构设计</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/03/04/hexo%E5%8D%9A%E5%AE%A2%E6%92%B0%E5%86%99-%E5%8D%9A%E5%AE%A2%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/" rel="prev" title="hexo博客撰写-博客访问方式">
+      <i class="fa fa-chevron-left"></i> hexo博客撰写-博客访问方式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/03/21/system-verilog%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="next" title="system_verilog基础语法">
+      system_verilog基础语法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#step1%EF%BC%9A%E9%A1%B9%E7%9B%AEspec"><span class="nav-number">1.</span> <span class="nav-text">step1：项目spec</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#step2%EF%BC%9AIP%E8%AF%84%E4%BC%B0%E5%92%8C%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">step2：IP评估和架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Core-IP-%E8%AF%84%E4%BC%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Core IP 评估</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%9A%E4%B8%BB%E8%A6%81%E8%AF%84%E4%BC%B0M7%E5%92%8CM85%E7%9A%84%E5%A4%84%E7%90%86%E5%99%A8%E9%80%89%E5%9E%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">目标：主要评估M7和M85的处理器选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cortex-M7%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.2.</span> <span class="nav-text">Cortex-M7配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#merge-package-%E2%80%93-done-20260305"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">merge package – done 20260305</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#read-IIM%E6%96%87%E6%A1%A3%EF%BC%8C%E7%86%9F%E6%82%89%E9%9B%86%E6%88%90%E7%BA%A7%E5%88%AB%E5%92%8C%E9%85%8D%E7%BD%AElevel"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">read IIM文档，熟悉集成级别和配置level</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E6%A2%B3%E7%90%86"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">接口梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#memory-interface%E6%A2%B3%E7%90%86"><span class="nav-number">2.1.2.3.1.</span> <span class="nav-text">memory interface梳理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%9C%BA%E5%88%B6%E7%90%86%E8%A7%A3"><span class="nav-number">2.1.2.4.</span> <span class="nav-text">相关机制理解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cortex-M85%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.3.</span> <span class="nav-text">Cortex-M85配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E6%80%A7%E6%88%90%E6%9E%9C%E8%BE%93%E5%87%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">阶段性成果输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUS-IP%E8%AF%84%E4%BC%B0"><span class="nav-number">2.2.</span> <span class="nav-text">BUS IP评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BA%BF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.3.</span> <span class="nav-text">总线架构设计</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Youngster"
+      src="/images/animal_toy_cute_doll_teddy_256.png">
+  <p class="site-author-name" itemprop="name">Youngster</p>
+  <div class="site-description" itemprop="description">show me bug</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">235</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">167</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Youngster</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '3qPpN2UkBU7Q1vhWnH1WdrQZ-gzGzoHsz',
+      appKey     : 'LAapaVzfFkIj1knpaWSWCNDo',
+      placeholder: "Looking forward to communication.",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
