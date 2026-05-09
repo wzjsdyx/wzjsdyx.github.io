@@ -6,6 +6,7 @@ categories:
 - 处理器性能指标和计算单元
 tags:
 - TBD
+- benchmark
 ---
 
 ---

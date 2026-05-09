@@ -1,11 +1,13 @@
 ---
-title: ARM coremark
+title: ARM Coremark
 date: 2025-03-06 13:41:01
 categories:
 - ISA和处理器
 - 处理器性能指标和计算单元
 tags:
 - TBD
+- benchmark
+- Coremark
 ---
 
 # CoreMark简介
