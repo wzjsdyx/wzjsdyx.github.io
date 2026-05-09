@@ -162,6 +162,452 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/" class="post-title-link" itemprop="url">常见问题debug_1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-01-04 20:44:49 / 修改时间：21:14:55" itemprop="dateCreated datePublished" datetime="2026-01-04T20:44:49+08:00">2026-01-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/Cortex-R52/" itemprop="url" rel="index"><span itemprop="name">Cortex-R52</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Prefetch-Abort"><a href="#Prefetch-Abort" class="headerlink" title="Prefetch Abort"></a>Prefetch Abort</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KITE_0.g_dcls_cpu_container.g_near_cpu_group[0].u_cpu.u_noram.u_kite_dpu.u_ctl.u_exception.expt_prefetch_abort</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Case1"><a href="#Case1" class="headerlink" title="Case1"></a>Case1</h2><h3 id="tarmac-log"><a href="#tarmac-log" class="headerlink" title="tarmac.log"></a>tarmac.log</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">7269979 tic ES  (10028a00:e1500001) A svc_ns:         CMP      r0,r1</span><br><span class="line">7269979 tic ES  (10028a04:1afffff2) A svc_ns:         BNE      &#123;pc&#125;-0x30 ; 0x100289d4</span><br><span class="line">                R CPSR 20000193</span><br><span class="line">7269982 tic ES  (100289d4:e1a04000) A svc_ns:         MOV      r4,r0</span><br><span class="line">                R R4 000003ff</span><br><span class="line">7269984 tic ES  (100289d8:f1080080) A svc_ns:         CPSIE    i</span><br><span class="line">                R CPSR 20000113</span><br><span class="line">7269987 tic ES  (100289dc:e59f10a0) A svc_ns:         LDR      r1,&#123;pc&#125;+0xa8 ; 0x10028a84</span><br><span class="line">                LD 10028a80 ........ ........ 04000000 ........   NS:0010028a80    NM NSH IWBRWA OWBRWA</span><br><span class="line">                R R1 04000000</span><br><span class="line">7270054 tic ES  (100289e0:e7911100) A svc_ns:         LDR      r1,[r1,r0,LSL #2]</span><br><span class="line">                LD 04000ff0 00000000 ........ ........ ........   NS:0004000ff0    NM NSH IWBRWA OWBRWA</span><br><span class="line">                R R1 00000000</span><br><span class="line">7270057 tic ES  (100289e4:e12fff31) A svc_ns:         BLX      r1</span><br><span class="line">                R LR_SVC 100289e8</span><br><span class="line">                R CPSR 20000113</span><br><span class="line">7270145 tic ES  (00000000:--------) A svc_ns:</span><br><span class="line">                EXC [0x0c] Prefetch Abort</span><br><span class="line">                R IFSR_NS 00000210</span><br><span class="line">                R IFAR_NS 00000000</span><br><span class="line">                R CPSR 20000197</span><br><span class="line">                R SPSR_ABT 20000113</span><br><span class="line">                R LR_ABT 00000004</span><br></pre></td></tr></table></figure>
+
+<h3 id="相关debug寄存器状态"><a href="#相关debug寄存器状态" class="headerlink" title="相关debug寄存器状态"></a>相关debug寄存器状态</h3><p><code>IFAR</code></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The IFAR holds the faulting address that caused a synchronous Prefetch Abort exception</span><br></pre></td></tr></table></figure>
+
+<p><code>IFSR</code></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The IFSR holds status information about the last instruction fault</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/image-20260104210157531.png" class="">
+
+<p><code>AIFSR</code></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The AIFSR provides fault status information for Prefetch Abort exceptions taken to EL1 modes.</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/image-20260104210059394.png" class="">
+
+
+
+<h3 id="波形"><a href="#波形" class="headerlink" title="波形"></a>波形</h3><img src="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/image-20260104205858002.png" class="">
+
+
+
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><img src="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/image-20260104210808070.png" class="">
+
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SPURIOUSID配置有问题导致的vectable访问越界：</span><br><span class="line">1、如果CPU没有需要处理的中断，read ICC_IAR寄存器会返回1023到R0（对应你的79行）</span><br><span class="line">2、根据你的图片代码，SPURIOUSID 设置为0x2FF; compare R0 != SPURIOUSID 之后会进入中断</span><br><span class="line">3、入口地址是vectortable + 1023 * 4；--&gt;中断向量表不可能有1023多项，越界--》prefetch abort</span><br></pre></td></tr></table></figure>
+
+<img src="/2026/01/04/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98debug-1/image-20260104211006987.png" class="">
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/12/02/%E9%93%BE%E6%8E%A5%E5%99%A8%E5%92%8C%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/02/%E9%93%BE%E6%8E%A5%E5%99%A8%E5%92%8C%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">链接器和链接脚本</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-02 13:47:48 / 修改时间：17:18:45" itemprop="dateCreated datePublished" datetime="2025-12-02T13:47:48+08:00">2025-12-02</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/12/02/%E9%93%BE%E6%8E%A5%E5%99%A8%E5%92%8C%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/12/02/%E9%93%BE%E6%8E%A5%E5%99%A8%E5%92%8C%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/11/27/%E5%90%8C%E6%AD%A5%E5%BC%82%E5%B8%B8%E5%92%8C%E5%BC%82%E6%AD%A5%E5%BC%82%E5%B8%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/11/27/%E5%90%8C%E6%AD%A5%E5%BC%82%E5%B8%B8%E5%92%8C%E5%BC%82%E6%AD%A5%E5%BC%82%E5%B8%B8/" class="post-title-link" itemprop="url">同步异常和异步异常</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-11-27 14:36:13 / 修改时间：14:38:15" itemprop="dateCreated datePublished" datetime="2025-11-27T14:36:13+08:00">2025-11-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/" itemprop="url" rel="index"><span itemprop="name">ARM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARM/ARMv8-A%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">ARMv8-A架构</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/11/27/%E5%90%8C%E6%AD%A5%E5%BC%82%E5%B8%B8%E5%92%8C%E5%BC%82%E6%AD%A5%E5%BC%82%E5%B8%B8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/11/27/%E5%90%8C%E6%AD%A5%E5%BC%82%E5%B8%B8%E5%92%8C%E5%BC%82%E6%AD%A5%E5%BC%82%E5%B8%B8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="🔍-同步异常-vs-异步异常-——-为什么影响不同？"><a href="#🔍-同步异常-vs-异步异常-——-为什么影响不同？" class="headerlink" title="🔍 同步异常 vs 异步异常 —— 为什么影响不同？"></a>🔍 同步异常 vs 异步异常 —— 为什么影响不同？</h2><h3 id="🟢-同步异常（如：除0、访问非法地址、指令未定义）"><a href="#🟢-同步异常（如：除0、访问非法地址、指令未定义）" class="headerlink" title="🟢 同步异常（如：除0、访问非法地址、指令未定义）"></a>🟢 同步异常（如：除0、访问非法地址、指令未定义）</h3><ul>
+<li>异常<strong>一定是由当前指令触发</strong></li>
+<li>触发点 <strong>精确对齐某条指令</strong></li>
+<li>因此 CPU 必须把状态 <strong>整理成“这条指令之前全部完成，这条指令之后全部未执行”</strong></li>
+</ul>
+<p>👉 所以在同步异常发生前：</p>
+<ul>
+<li>CPU 会强制<strong>清空写缓冲</strong></li>
+<li><strong>完成必要的 cache 写回</strong></li>
+<li><strong>禁止乱序对外可见的影响</strong></li>
+<li>最终达到 <strong>精确异常（precise exception）语义</strong></li>
+</ul>
+<p>所以虽然内部有乱序 &#x2F; 缓冲 &#x2F; cache，但 CPU 会为了精确异常而把状态整理干净，然后<strong>异常可恢复</strong>。</p>
+<hr>
+<h3 id="🔴-异步异常（如：外部中断、DMA报警、定时器）"><a href="#🔴-异步异常（如：外部中断、DMA报警、定时器）" class="headerlink" title="🔴 异步异常（如：外部中断、DMA报警、定时器）"></a>🔴 异步异常（如：外部中断、DMA报警、定时器）</h3><ul>
+<li>异常<strong>不是由当前指令触发</strong></li>
+<li>触发点<strong>和正在执行的指令无关系</strong></li>
+<li>CPU <strong>不能提前预测在哪里需要保存状态</strong></li>
+</ul>
+<p>👉 异步异常发生时可能出现：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>同步异常</th>
+<th>异步异常</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>重排已完成？</td>
+<td>会等到完成</td>
+<td>可能未完成</td>
+</tr>
+<tr>
+<td>写缓冲是否已清空？</td>
+<td>会强制清空</td>
+<td>可能还积累</td>
+</tr>
+<tr>
+<td>cache 脏数据是否写回？</td>
+<td>必须写回</td>
+<td>可能未写回</td>
+</tr>
+<tr>
+<td>程序可恢复性</td>
+<td>高</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<p>因此，异步异常发生时，系统可能看到：</p>
+<ul>
+<li>有的内存写已完成，有的未完成</li>
+<li>顺序不符合程序语义</li>
+<li>甚至可能回滚掉 cache 写入的值（write-back 冲刷）</li>
+</ul>
+<p>继续执行会产生<strong>不可预测错误</strong>，因此异步异常通常<strong>不可恢复</strong>，处理方式往往是：</p>
+<ul>
+<li>调度到中断服务程序，</li>
+<li>不直接返回到引发点（除非架构定义了精确中断机制，例如 ARM GIC 支持 IRQ&#x2F;FIQ 的异常返回）</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/11/25/bin2hex%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/11/25/bin2hex%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">bin2hex处理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-11-25 10:36:27 / 修改时间：10:54:26" itemprop="dateCreated datePublished" datetime="2025-11-25T10:36:27+08:00">2025-11-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式C程序</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FC%E7%A8%8B%E5%BA%8F/%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">可执行文件</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/11/25/bin2hex%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/11/25/bin2hex%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="bin文件格式"><a href="#bin文件格式" class="headerlink" title="bin文件格式"></a>bin文件格式</h1><p>使用ELF文件生成的bin文件</p>
+<p><font color=blue>每行16-Byte</font></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0bfecf20: 0000 0000 0000 0000 0000 0000 0000 0000  ................</span><br><span class="line">0bfecf30: 0000 0000 0000 0000 0000 0000 0000 0000  ................</span><br><span class="line">0bfecf40: 0000 0000 0000 0000 0a                   .........</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/10/11/ECC%E7%AE%97%E6%B3%95%E5%8F%8A%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -193,7 +639,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-01-13 23:21:15" itemprop="dateModified" datetime="2026-01-13T23:21:15+08:00">2026-01-13</time>
+                <time title="修改时间：2026-04-09 13:54:59" itemprop="dateModified" datetime="2026-04-09T13:54:59+08:00">2026-04-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,7 +727,10 @@
 <p>2、发生多bit错误，但是，校验子全为0——概率极低</p>
 <p>3、发生多bit错误，但是，校验子不是全为0，但是指向一个实际错误的地址——概率低</p>
 </blockquote>
-<h2 id="RTL-Code"><a href="#RTL-Code" class="headerlink" title="RTL Code"></a>RTL Code</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> ECC: SECDED(Single Error Correction, Double Error Detection)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">module</span> ecc_a0d64_8(</span><br><span class="line">    <span class="comment">// encode</span></span><br><span class="line">    <span class="keyword">input</span>       [<span class="number">63</span>:<span class="number">0</span>]  enc_in      ,</span><br><span class="line">    <span class="keyword">output</span>      [<span class="number">71</span>:<span class="number">0</span>]  enc_out     ,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// decode</span></span><br><span class="line">    <span class="keyword">input</span>       [<span class="number">71</span>:<span class="number">0</span>]  dec_in      ,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span>  [<span class="number">63</span>:<span class="number">0</span>]  dec_out     ,</span><br><span class="line">    <span class="comment">// control bits</span></span><br><span class="line">    <span class="keyword">input</span>               dec_bypass  ,</span><br><span class="line">    <span class="keyword">input</span>               rd_en       ,</span><br><span class="line">    <span class="comment">// error status</span></span><br><span class="line">    <span class="keyword">output</span>      [<span class="number">2</span>:<span class="number">0</span>]   ecc_err_stus</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">parameter</span>  P1   = <span class="number">64&#x27;hAB55555556AAAD5B</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P2   = <span class="number">64&#x27;hCD9999999B33366D</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P4   = <span class="number">64&#x27;hF1E1E1E1E3C3C78E</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P8   = <span class="number">64&#x27;h01FE01FE03FC07F0</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P16  = <span class="number">64&#x27;h01FFFE0003FFF800</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P32  = <span class="number">64&#x27;h01FFFFFFFC000000</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P64  = <span class="number">64&#x27;hFE00000000000000</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"><span class="comment">//          encode </span></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">6</span>:<span class="number">0</span>] hamming_check_code;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">    hamming_check_code[<span class="number">0</span>] = (^(enc_in &amp; P1 ));</span><br><span class="line">    hamming_check_code[<span class="number">1</span>] = (^(enc_in &amp; P2 ));</span><br><span class="line">    hamming_check_code[<span class="number">2</span>] = (^(enc_in &amp; P4 ));</span><br><span class="line">    hamming_check_code[<span class="number">3</span>] = (^(enc_in &amp; P8 ));</span><br><span class="line">    hamming_check_code[<span class="number">4</span>] = (^(enc_in &amp; P16));</span><br><span class="line">    hamming_check_code[<span class="number">5</span>] = (^(enc_in &amp; P32));</span><br><span class="line">    hamming_check_code[<span class="number">6</span>] = (^(enc_in &amp; P64));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> enc_out[<span class="number">63</span>:<span class="number">0</span> ]   = enc_in[<span class="number">63</span>:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">assign</span> enc_out[<span class="number">70</span>:<span class="number">64</span>]   = hamming_check_code[<span class="number">6</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> enc_out[<span class="number">71</span>] = ^(enc_out[<span class="number">70</span>:<span class="number">0</span>]); <span class="comment">// overall parity check bit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"><span class="comment">//          decode </span></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">6</span>:<span class="number">0</span>] hamming_syndrome;</span><br><span class="line"><span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">    hamming_syndrome[<span class="number">0</span>] = (^&#123;dec_in[<span class="number">64</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P1 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">1</span>] = (^&#123;dec_in[<span class="number">65</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P2 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">2</span>] = (^&#123;dec_in[<span class="number">66</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P4 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">3</span>] = (^&#123;dec_in[<span class="number">67</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P8 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">4</span>] = (^&#123;dec_in[<span class="number">68</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P16)&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">5</span>] = (^&#123;dec_in[<span class="number">69</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P32)&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">6</span>] = (^&#123;dec_in[<span class="number">70</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P64)&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> parity_check = (^(dec_in[<span class="number">71</span>:<span class="number">0</span>])) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line"></span><br><span class="line"><span class="comment">// error status</span></span><br><span class="line"><span class="keyword">wire</span> abnormal_status; <span class="comment">// Transmit have error ,but exceeding the detection capability of hamming code </span></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] err_stus;</span><br><span class="line"><span class="keyword">assign</span> abnormal_status = hamming_syndrome[<span class="number">6</span>:<span class="number">0</span>] &gt; <span class="number">7&#x27;d71</span>; <span class="comment">// hamming code just only point H1-H71</span></span><br><span class="line"><span class="keyword">assign</span> err_stus[<span class="number">2</span>:<span class="number">0</span>] = &#123;abnormal_status,parity_check,|hamming_syndrome&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1 bit correct and decode data out</span></span><br><span class="line"><span class="keyword">wire</span> err_1bit;</span><br><span class="line"><span class="keyword">assign</span> err_1bit = (~abnormal_status) &amp; parity_check &amp; (|hamming_syndrome);</span><br><span class="line"><span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(err_1bit)<span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">case</span>(hamming_syndrome[<span class="number">6</span>:<span class="number">0</span>])</span><br><span class="line">            <span class="number">7&#x27;d3</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">1</span>], ~dec_in[  <span class="number">0</span>]                 &#125;;</span><br><span class="line">            <span class="number">7&#x27;d5</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">2</span>], ~dec_in[  <span class="number">1</span>], dec_in[  <span class="number">0</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d6</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">3</span>], ~dec_in[  <span class="number">2</span>], dec_in[  <span class="number">1</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d7</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">4</span>], ~dec_in[  <span class="number">3</span>], dec_in[  <span class="number">2</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d9</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">5</span>], ~dec_in[  <span class="number">4</span>], dec_in[  <span class="number">3</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d10</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">6</span>], ~dec_in[  <span class="number">5</span>], dec_in[  <span class="number">4</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d11</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">7</span>], ~dec_in[  <span class="number">6</span>], dec_in[  <span class="number">5</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d12</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">8</span>], ~dec_in[  <span class="number">7</span>], dec_in[  <span class="number">6</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d13</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">9</span>], ~dec_in[  <span class="number">8</span>], dec_in[  <span class="number">7</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d14</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">10</span>], ~dec_in[  <span class="number">9</span>], dec_in[  <span class="number">8</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d15</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">11</span>], ~dec_in[ <span class="number">10</span>], dec_in[  <span class="number">9</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d17</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">12</span>], ~dec_in[ <span class="number">11</span>], dec_in[ <span class="number">10</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d18</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">13</span>], ~dec_in[ <span class="number">12</span>], dec_in[ <span class="number">11</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d19</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">14</span>], ~dec_in[ <span class="number">13</span>], dec_in[ <span class="number">12</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d20</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">15</span>], ~dec_in[ <span class="number">14</span>], dec_in[ <span class="number">13</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d21</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">16</span>], ~dec_in[ <span class="number">15</span>], dec_in[ <span class="number">14</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d22</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">17</span>], ~dec_in[ <span class="number">16</span>], dec_in[ <span class="number">15</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d23</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">18</span>], ~dec_in[ <span class="number">17</span>], dec_in[ <span class="number">16</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d24</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">19</span>], ~dec_in[ <span class="number">18</span>], dec_in[ <span class="number">17</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d25</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">20</span>], ~dec_in[ <span class="number">19</span>], dec_in[ <span class="number">18</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d26</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">21</span>], ~dec_in[ <span class="number">20</span>], dec_in[ <span class="number">19</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d27</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">22</span>], ~dec_in[ <span class="number">21</span>], dec_in[ <span class="number">20</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d28</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">23</span>], ~dec_in[ <span class="number">22</span>], dec_in[ <span class="number">21</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d29</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">24</span>], ~dec_in[ <span class="number">23</span>], dec_in[ <span class="number">22</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d30</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">25</span>], ~dec_in[ <span class="number">24</span>], dec_in[ <span class="number">23</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d31</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">26</span>], ~dec_in[ <span class="number">25</span>], dec_in[ <span class="number">24</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d33</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">27</span>], ~dec_in[ <span class="number">26</span>], dec_in[ <span class="number">25</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d34</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">28</span>], ~dec_in[ <span class="number">27</span>], dec_in[ <span class="number">26</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d35</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">29</span>], ~dec_in[ <span class="number">28</span>], dec_in[ <span class="number">27</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d36</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">30</span>], ~dec_in[ <span class="number">29</span>], dec_in[ <span class="number">28</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d37</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">31</span>], ~dec_in[ <span class="number">30</span>], dec_in[ <span class="number">29</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d38</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">32</span>], ~dec_in[ <span class="number">31</span>], dec_in[ <span class="number">30</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d39</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">33</span>], ~dec_in[ <span class="number">32</span>], dec_in[ <span class="number">31</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d40</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">34</span>], ~dec_in[ <span class="number">33</span>], dec_in[ <span class="number">32</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d41</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">35</span>], ~dec_in[ <span class="number">34</span>], dec_in[ <span class="number">33</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d42</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">36</span>], ~dec_in[ <span class="number">35</span>], dec_in[ <span class="number">34</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d43</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">37</span>], ~dec_in[ <span class="number">36</span>], dec_in[ <span class="number">35</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d44</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">38</span>], ~dec_in[ <span class="number">37</span>], dec_in[ <span class="number">36</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d45</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">39</span>], ~dec_in[ <span class="number">38</span>], dec_in[ <span class="number">37</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d46</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">40</span>], ~dec_in[ <span class="number">39</span>], dec_in[ <span class="number">38</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d47</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">41</span>], ~dec_in[ <span class="number">40</span>], dec_in[ <span class="number">39</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d48</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">42</span>], ~dec_in[ <span class="number">41</span>], dec_in[ <span class="number">40</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d49</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">43</span>], ~dec_in[ <span class="number">42</span>], dec_in[ <span class="number">41</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d50</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">44</span>], ~dec_in[ <span class="number">43</span>], dec_in[ <span class="number">42</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d51</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">45</span>], ~dec_in[ <span class="number">44</span>], dec_in[ <span class="number">43</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d52</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">46</span>], ~dec_in[ <span class="number">45</span>], dec_in[ <span class="number">44</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d53</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">47</span>], ~dec_in[ <span class="number">46</span>], dec_in[ <span class="number">45</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d54</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">48</span>], ~dec_in[ <span class="number">47</span>], dec_in[ <span class="number">46</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d55</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">49</span>], ~dec_in[ <span class="number">48</span>], dec_in[ <span class="number">47</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d56</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">50</span>], ~dec_in[ <span class="number">49</span>], dec_in[ <span class="number">48</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d57</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">51</span>], ~dec_in[ <span class="number">50</span>], dec_in[ <span class="number">49</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d58</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">52</span>], ~dec_in[ <span class="number">51</span>], dec_in[ <span class="number">50</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d59</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">53</span>], ~dec_in[ <span class="number">52</span>], dec_in[ <span class="number">51</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d60</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">54</span>], ~dec_in[ <span class="number">53</span>], dec_in[ <span class="number">52</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d61</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">55</span>], ~dec_in[ <span class="number">54</span>], dec_in[ <span class="number">53</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d62</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">56</span>], ~dec_in[ <span class="number">55</span>], dec_in[ <span class="number">54</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d63</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">57</span>], ~dec_in[ <span class="number">56</span>], dec_in[ <span class="number">55</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d65</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">58</span>], ~dec_in[ <span class="number">57</span>], dec_in[ <span class="number">56</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d66</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">59</span>], ~dec_in[ <span class="number">58</span>], dec_in[ <span class="number">57</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d67</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">60</span>], ~dec_in[ <span class="number">59</span>], dec_in[ <span class="number">58</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d68</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">61</span>], ~dec_in[ <span class="number">60</span>], dec_in[ <span class="number">59</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d69</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">62</span>], ~dec_in[ <span class="number">61</span>], dec_in[ <span class="number">60</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d70</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">63</span>], ~dec_in[ <span class="number">62</span>], dec_in[ <span class="number">61</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d71</span> : dec_out = &#123;                 ~dec_in[ <span class="number">63</span>], dec_in[ <span class="number">62</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                 dec_out = dec_in[<span class="number">63</span>:<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">endcase</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">        dec_out = dec_in[<span class="number">63</span>:<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="DED"><a href="#DED" class="headerlink" title="DED"></a>DED</h1><p>DED（Double Error Detection）码：<code>双错误检测</code></p>
+<h2 id="1bit检测"><a href="#1bit检测" class="headerlink" title="1bit检测"></a>1bit检测</h2><p>相比于SECDED，只检测不纠错；</p>
+<h2 id="2bit检测-1"><a href="#2bit检测-1" class="headerlink" title="2bit检测"></a>2bit检测</h2><p>和SECDED相同；</p>
+<h1 id="RTL实现"><a href="#RTL实现" class="headerlink" title="RTL实现"></a>RTL实现</h1><h2 id="32-bit-RTL-Code-DED"><a href="#32-bit-RTL-Code-DED" class="headerlink" title="32-bit RTL Code-DED"></a>32-bit RTL Code-DED</h2><h2 id="64-bit-RTL-Code"><a href="#64-bit-RTL-Code" class="headerlink" title="64-bit RTL Code"></a>64-bit RTL Code</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> ECC: SECDED(Single Error Correction, Double Error Detection)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">module</span> ecc_a0d64_8(</span><br><span class="line">    <span class="comment">// encode</span></span><br><span class="line">    <span class="keyword">input</span>       [<span class="number">63</span>:<span class="number">0</span>]  enc_in      ,</span><br><span class="line">    <span class="keyword">output</span>      [<span class="number">71</span>:<span class="number">0</span>]  enc_out     ,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// decode</span></span><br><span class="line">    <span class="keyword">input</span>       [<span class="number">71</span>:<span class="number">0</span>]  dec_in      ,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span>  [<span class="number">63</span>:<span class="number">0</span>]  dec_out     ,</span><br><span class="line">    <span class="comment">// control bits</span></span><br><span class="line">    <span class="keyword">input</span>               dec_bypass  ,</span><br><span class="line">    <span class="keyword">input</span>               rd_en       ,</span><br><span class="line">    <span class="comment">// error status</span></span><br><span class="line">    <span class="keyword">output</span>      [<span class="number">2</span>:<span class="number">0</span>]   ecc_err_stus</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">parameter</span>  P1   = <span class="number">64&#x27;hAB55555556AAAD5B</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P2   = <span class="number">64&#x27;hCD9999999B33366D</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P4   = <span class="number">64&#x27;hF1E1E1E1E3C3C78E</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P8   = <span class="number">64&#x27;h01FE01FE03FC07F0</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P16  = <span class="number">64&#x27;h01FFFE0003FFF800</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P32  = <span class="number">64&#x27;h01FFFFFFFC000000</span>;</span><br><span class="line"><span class="keyword">parameter</span>  P64  = <span class="number">64&#x27;hFE00000000000000</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"><span class="comment">//          encode </span></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">6</span>:<span class="number">0</span>] hamming_check_code;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">    hamming_check_code[<span class="number">0</span>] = (^(enc_in &amp; P1 ));</span><br><span class="line">    hamming_check_code[<span class="number">1</span>] = (^(enc_in &amp; P2 ));</span><br><span class="line">    hamming_check_code[<span class="number">2</span>] = (^(enc_in &amp; P4 ));</span><br><span class="line">    hamming_check_code[<span class="number">3</span>] = (^(enc_in &amp; P8 ));</span><br><span class="line">    hamming_check_code[<span class="number">4</span>] = (^(enc_in &amp; P16));</span><br><span class="line">    hamming_check_code[<span class="number">5</span>] = (^(enc_in &amp; P32));</span><br><span class="line">    hamming_check_code[<span class="number">6</span>] = (^(enc_in &amp; P64));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> enc_out[<span class="number">63</span>:<span class="number">0</span> ]   = enc_in[<span class="number">63</span>:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">assign</span> enc_out[<span class="number">70</span>:<span class="number">64</span>]   = hamming_check_code[<span class="number">6</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> enc_out[<span class="number">71</span>] = ^(enc_out[<span class="number">70</span>:<span class="number">0</span>]); <span class="comment">// overall parity check bit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"><span class="comment">//          decode </span></span><br><span class="line"><span class="comment">//***************************************</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">6</span>:<span class="number">0</span>] hamming_syndrome;</span><br><span class="line"><span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">    hamming_syndrome[<span class="number">0</span>] = (^&#123;dec_in[<span class="number">64</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P1 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">1</span>] = (^&#123;dec_in[<span class="number">65</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P2 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">2</span>] = (^&#123;dec_in[<span class="number">66</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P4 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">3</span>] = (^&#123;dec_in[<span class="number">67</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P8 )&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">4</span>] = (^&#123;dec_in[<span class="number">68</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P16)&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">5</span>] = (^&#123;dec_in[<span class="number">69</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P32)&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line">    hamming_syndrome[<span class="number">6</span>] = (^&#123;dec_in[<span class="number">70</span>],(dec_in[<span class="number">63</span>:<span class="number">0</span>] &amp; P64)&#125;) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> parity_check = (^(dec_in[<span class="number">71</span>:<span class="number">0</span>])) &amp; rd_en &amp; (~dec_bypass);</span><br><span class="line"></span><br><span class="line"><span class="comment">// error status</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    Beyond the detection capability, there is no need to consider it</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// wire abnormal_status; // Transmit have error ,but exceeding the detection capability of hamming code </span></span><br><span class="line"><span class="comment">// wire [2:0] err_stus;</span></span><br><span class="line"><span class="comment">// assign abnormal_status = hamming_syndrome[6:0] &gt; 7&#x27;d71; // hamming code just only point H1-H71</span></span><br><span class="line"><span class="comment">// assign err_stus[2:0] = &#123;abnormal_status,parity_check,|hamming_syndrome&#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> err_0bit = ~parity_check &amp; ~(|hamming_syndrome);</span><br><span class="line"><span class="keyword">assign</span> err_1bit = parity_check &amp; (|hamming_syndrome);</span><br><span class="line"><span class="keyword">assign</span> err_2bit = ~parity_check &amp; (|hamming_syndrome);</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> err_stus[<span class="number">2</span>:<span class="number">0</span>] = &#123;err_2bit,err_1bit,err_0bit&#125;;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 1 bit correct and decode data out</span></span><br><span class="line"><span class="keyword">wire</span> err_1bit;</span><br><span class="line"><span class="keyword">assign</span> err_1bit = (~abnormal_status) &amp; parity_check &amp; (|hamming_syndrome);</span><br><span class="line"><span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(err_1bit)<span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">case</span>(hamming_syndrome[<span class="number">6</span>:<span class="number">0</span>])</span><br><span class="line">            <span class="number">7&#x27;d3</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">1</span>], ~dec_in[  <span class="number">0</span>]                 &#125;;</span><br><span class="line">            <span class="number">7&#x27;d5</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">2</span>], ~dec_in[  <span class="number">1</span>], dec_in[  <span class="number">0</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d6</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">3</span>], ~dec_in[  <span class="number">2</span>], dec_in[  <span class="number">1</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d7</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">4</span>], ~dec_in[  <span class="number">3</span>], dec_in[  <span class="number">2</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d9</span>  : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">5</span>], ~dec_in[  <span class="number">4</span>], dec_in[  <span class="number">3</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d10</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">6</span>], ~dec_in[  <span class="number">5</span>], dec_in[  <span class="number">4</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d11</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">7</span>], ~dec_in[  <span class="number">6</span>], dec_in[  <span class="number">5</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d12</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">8</span>], ~dec_in[  <span class="number">7</span>], dec_in[  <span class="number">6</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d13</span> : dec_out = &#123;dec_in[ <span class="number">63</span>:  <span class="number">9</span>], ~dec_in[  <span class="number">8</span>], dec_in[  <span class="number">7</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d14</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">10</span>], ~dec_in[  <span class="number">9</span>], dec_in[  <span class="number">8</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d15</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">11</span>], ~dec_in[ <span class="number">10</span>], dec_in[  <span class="number">9</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d17</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">12</span>], ~dec_in[ <span class="number">11</span>], dec_in[ <span class="number">10</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d18</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">13</span>], ~dec_in[ <span class="number">12</span>], dec_in[ <span class="number">11</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d19</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">14</span>], ~dec_in[ <span class="number">13</span>], dec_in[ <span class="number">12</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d20</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">15</span>], ~dec_in[ <span class="number">14</span>], dec_in[ <span class="number">13</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d21</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">16</span>], ~dec_in[ <span class="number">15</span>], dec_in[ <span class="number">14</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d22</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">17</span>], ~dec_in[ <span class="number">16</span>], dec_in[ <span class="number">15</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d23</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">18</span>], ~dec_in[ <span class="number">17</span>], dec_in[ <span class="number">16</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d24</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">19</span>], ~dec_in[ <span class="number">18</span>], dec_in[ <span class="number">17</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d25</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">20</span>], ~dec_in[ <span class="number">19</span>], dec_in[ <span class="number">18</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d26</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">21</span>], ~dec_in[ <span class="number">20</span>], dec_in[ <span class="number">19</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d27</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">22</span>], ~dec_in[ <span class="number">21</span>], dec_in[ <span class="number">20</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d28</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">23</span>], ~dec_in[ <span class="number">22</span>], dec_in[ <span class="number">21</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d29</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">24</span>], ~dec_in[ <span class="number">23</span>], dec_in[ <span class="number">22</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d30</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">25</span>], ~dec_in[ <span class="number">24</span>], dec_in[ <span class="number">23</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d31</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">26</span>], ~dec_in[ <span class="number">25</span>], dec_in[ <span class="number">24</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d33</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">27</span>], ~dec_in[ <span class="number">26</span>], dec_in[ <span class="number">25</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d34</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">28</span>], ~dec_in[ <span class="number">27</span>], dec_in[ <span class="number">26</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d35</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">29</span>], ~dec_in[ <span class="number">28</span>], dec_in[ <span class="number">27</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d36</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">30</span>], ~dec_in[ <span class="number">29</span>], dec_in[ <span class="number">28</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d37</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">31</span>], ~dec_in[ <span class="number">30</span>], dec_in[ <span class="number">29</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d38</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">32</span>], ~dec_in[ <span class="number">31</span>], dec_in[ <span class="number">30</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d39</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">33</span>], ~dec_in[ <span class="number">32</span>], dec_in[ <span class="number">31</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d40</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">34</span>], ~dec_in[ <span class="number">33</span>], dec_in[ <span class="number">32</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d41</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">35</span>], ~dec_in[ <span class="number">34</span>], dec_in[ <span class="number">33</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d42</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">36</span>], ~dec_in[ <span class="number">35</span>], dec_in[ <span class="number">34</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d43</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">37</span>], ~dec_in[ <span class="number">36</span>], dec_in[ <span class="number">35</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d44</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">38</span>], ~dec_in[ <span class="number">37</span>], dec_in[ <span class="number">36</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d45</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">39</span>], ~dec_in[ <span class="number">38</span>], dec_in[ <span class="number">37</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d46</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">40</span>], ~dec_in[ <span class="number">39</span>], dec_in[ <span class="number">38</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d47</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">41</span>], ~dec_in[ <span class="number">40</span>], dec_in[ <span class="number">39</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d48</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">42</span>], ~dec_in[ <span class="number">41</span>], dec_in[ <span class="number">40</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d49</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">43</span>], ~dec_in[ <span class="number">42</span>], dec_in[ <span class="number">41</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d50</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">44</span>], ~dec_in[ <span class="number">43</span>], dec_in[ <span class="number">42</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d51</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">45</span>], ~dec_in[ <span class="number">44</span>], dec_in[ <span class="number">43</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d52</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">46</span>], ~dec_in[ <span class="number">45</span>], dec_in[ <span class="number">44</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d53</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">47</span>], ~dec_in[ <span class="number">46</span>], dec_in[ <span class="number">45</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d54</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">48</span>], ~dec_in[ <span class="number">47</span>], dec_in[ <span class="number">46</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d55</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">49</span>], ~dec_in[ <span class="number">48</span>], dec_in[ <span class="number">47</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d56</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">50</span>], ~dec_in[ <span class="number">49</span>], dec_in[ <span class="number">48</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d57</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">51</span>], ~dec_in[ <span class="number">50</span>], dec_in[ <span class="number">49</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d58</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">52</span>], ~dec_in[ <span class="number">51</span>], dec_in[ <span class="number">50</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d59</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">53</span>], ~dec_in[ <span class="number">52</span>], dec_in[ <span class="number">51</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d60</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">54</span>], ~dec_in[ <span class="number">53</span>], dec_in[ <span class="number">52</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d61</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">55</span>], ~dec_in[ <span class="number">54</span>], dec_in[ <span class="number">53</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d62</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">56</span>], ~dec_in[ <span class="number">55</span>], dec_in[ <span class="number">54</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d63</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">57</span>], ~dec_in[ <span class="number">56</span>], dec_in[ <span class="number">55</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d65</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">58</span>], ~dec_in[ <span class="number">57</span>], dec_in[ <span class="number">56</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d66</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">59</span>], ~dec_in[ <span class="number">58</span>], dec_in[ <span class="number">57</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d67</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">60</span>], ~dec_in[ <span class="number">59</span>], dec_in[ <span class="number">58</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d68</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">61</span>], ~dec_in[ <span class="number">60</span>], dec_in[ <span class="number">59</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d69</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">62</span>], ~dec_in[ <span class="number">61</span>], dec_in[ <span class="number">60</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d70</span> : dec_out = &#123;dec_in[ <span class="number">63</span>: <span class="number">63</span>], ~dec_in[ <span class="number">62</span>], dec_in[ <span class="number">61</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="number">7&#x27;d71</span> : dec_out = &#123;                 ~dec_in[ <span class="number">63</span>], dec_in[ <span class="number">62</span>:  <span class="number">0</span>]&#125;;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                 dec_out = dec_in[<span class="number">63</span>:<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">endcase</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">        dec_out = dec_in[<span class="number">63</span>:<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -1189,387 +1638,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/" class="post-title-link" itemprop="url">排序和查找</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-08-21 17:40:07 / 修改时间：20:35:59" itemprop="dateCreated datePublished" datetime="2025-08-21T17:40:07+08:00">2025-08-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/E%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">E阶段</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="快速排序算法"><a href="#快速排序算法" class="headerlink" title="快速排序算法"></a>快速排序算法</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #define LEN 8</span></span><br><span class="line"><span class="comment">// int a[LEN] = &#123; 5, 2, 4, 7, 1, 3, 2, 6 &#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #define LEN 3</span></span><br><span class="line"><span class="comment">// int a[LEN] = &#123; 5, 2, 4&#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #define LEN 5</span></span><br><span class="line"><span class="comment">// int a[LEN] = &#123; 5, 2, 4, 7, 1 &#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LEN 7</span></span><br><span class="line"><span class="type">int</span> a[LEN] = &#123; <span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">partition</span><span class="params">(<span class="type">int</span> start, <span class="type">int</span> end)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> pivot;</span><br><span class="line">    <span class="type">int</span> temp_less[LEN];</span><br><span class="line">    <span class="type">int</span> temp_more[LEN];</span><br><span class="line">    <span class="type">int</span> mid;</span><br><span class="line">    <span class="type">int</span> num_less = <span class="number">0</span>,num_more = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> i,j,k;</span><br><span class="line">    pivot = a[start];</span><br><span class="line">    <span class="keyword">for</span> (i = start;i &lt;= end;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i]&lt;pivot)&#123;</span><br><span class="line">            temp_less[num_less++] = a[i];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            temp_more[num_more++] = a[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mid = num_less;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">0</span>;j &lt; num_less;j++)&#123;</span><br><span class="line">        a[start+j] = temp_less[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(k = <span class="number">0</span>;k &lt; num_more;k++)&#123;</span><br><span class="line">        a[mid+k] = temp_more[k];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// printf(&quot;mid = %d,num_less = %d,num_more = %d\n&quot;,mid,num_less,num_more);</span></span><br><span class="line">    <span class="comment">// printf(&quot;temp_less %d %d %d %d %d %d %d %d\n&quot;,temp_less[0], temp_less[1], temp_less[2], temp_less[3], \</span></span><br><span class="line"><span class="comment">    //  temp_less[4], temp_less[5], temp_less[6], temp_less[7]);</span></span><br><span class="line">    <span class="comment">// printf(&quot;temp_more %d %d %d %d %d %d %d %d\n&quot;,temp_more[0], temp_more[1], temp_more[2], temp_more[3], \</span></span><br><span class="line"><span class="comment">    //  temp_more[4], temp_more[5], temp_more[6], temp_more[7]);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// printf(&quot;a         %d %d %d %d %d %d %d %d\n&quot;,a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);</span></span><br><span class="line">	<span class="keyword">return</span> mid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">quicksort</span><span class="params">(<span class="type">int</span> start, <span class="type">int</span> end)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> mid;</span><br><span class="line">	<span class="keyword">if</span> (end &gt; start) &#123;</span><br><span class="line">		mid = partition(start, end);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;mid (%d-%d, %d-%d) %d %d %d %d %d %d %d %d\n&quot;</span>, </span><br><span class="line">		       start, mid, mid+<span class="number">1</span>, end, </span><br><span class="line">		       a[<span class="number">0</span>], a[<span class="number">1</span>], a[<span class="number">2</span>], a[<span class="number">3</span>], a[<span class="number">4</span>], a[<span class="number">5</span>], a[<span class="number">6</span>], a[<span class="number">7</span>]);</span><br><span class="line">		quicksort(start, mid<span class="number">-1</span>);</span><br><span class="line">		quicksort(mid+<span class="number">1</span>, end);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;quicksort (%d-%d, %d-%d) %d %d %d %d %d %d %d %d\n&quot;</span>, </span><br><span class="line">		       start, mid, mid+<span class="number">1</span>, end, </span><br><span class="line">		       a[<span class="number">0</span>], a[<span class="number">1</span>], a[<span class="number">2</span>], a[<span class="number">3</span>], a[<span class="number">4</span>], a[<span class="number">5</span>], a[<span class="number">6</span>], a[<span class="number">7</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    quicksort(<span class="number">0</span>,LEN<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/" class="post-title-link" itemprop="url">普通编码器和优先编码器</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-08-18 14:02:27 / 修改时间：14:30:25" itemprop="dateCreated datePublished" datetime="2025-08-18T14:02:27+08:00">2025-08-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>最小项表达式及其化简</p>
-</blockquote>
-<h1 id="普通编码器"><a href="#普通编码器" class="headerlink" title="普通编码器"></a>普通编码器</h1><blockquote>
-<p>以普通4-2编码器举例，说明最小项表达式的化简</p>
-</blockquote>
-<img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818140936213.png" class="">
-
-<h2 id="step1：最小项表达式"><a href="#step1：最小项表达式" class="headerlink" title="step1：最小项表达式"></a>step1：最小项表达式</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141116068.png" class="">
-
-
-
-<h2 id="step2：利用独热码（输入约束）做化简"><a href="#step2：利用独热码（输入约束）做化简" class="headerlink" title="step2：利用独热码（输入约束）做化简"></a>step2：利用独热码（输入约束）做化简</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141415447.png" class="">
-
-
-
-<img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141428082.png" class="">
-
-
-
-
-
-<h1 id="优先编码器"><a href="#优先编码器" class="headerlink" title="优先编码器"></a>优先编码器</h1><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141705835.png" class="">
-
-
-
-<p>I3的优先级最高，I0的优先级最低；</p>
-<h2 id="step1：最小项表达式-1"><a href="#step1：最小项表达式-1" class="headerlink" title="step1：最小项表达式"></a>step1：最小项表达式</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818142418295.png" class="">
-
-<h2 id="step2：利用公式做化简"><a href="#step2：利用公式做化简" class="headerlink" title="step2：利用公式做化简"></a>step2：利用公式做化简</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818142428872.png" class="">
-
-<h1 id="思考题："><a href="#思考题：" class="headerlink" title="思考题："></a>思考题：</h1><h2 id="Q1-电路如何体现优先级"><a href="#Q1-电路如何体现优先级" class="headerlink" title="Q1:电路如何体现优先级?"></a>Q1:电路如何体现优先级?</h2><p>使用与门和非门去实现<code>优先级</code></p>
-<h2 id="Q2-编码器级联以及优先编码器级联"><a href="#Q2-编码器级联以及优先编码器级联" class="headerlink" title="Q2:编码器级联以及优先编码器级联"></a>Q2:编码器级联以及优先编码器级联</h2><p>参考博客：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/567133476">专题2-2：编码器</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">布尔逻辑运算</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-08-18 14:01:57 / 修改时间：14:05:27" itemprop="dateCreated datePublished" datetime="2025-08-18T14:01:57+08:00">2025-08-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/" class="post-title-link" itemprop="url">IMC收集覆盖率</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-08-14 09:37:18 / 修改时间：17:28:00" itemprop="dateCreated datePublished" datetime="2025-08-14T09:37:18+08:00">2025-08-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>工具各种概念介绍：</p>
-<p>思维导图：<a target="_blank" rel="noopener" href="https://mm.edrawsoft.cn/app/editor/AkMhC8bj89NkWZHBsMjbgkdFFXUT0GZY">https://mm.edrawsoft.cn/app/editor/AkMhC8bj89NkWZHBsMjbgkdFFXUT0GZY</a></p>
-<p>userguide文档：&#x2F;atctools&#x2F;Cadence&#x2F;Vman&#x2F;2024.03.001&#x2F;doc&#x2F;imcuser&#x2F;</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1641,14 +1709,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">235</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

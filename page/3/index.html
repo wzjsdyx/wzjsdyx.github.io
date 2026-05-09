@@ -162,6 +162,387 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/" class="post-title-link" itemprop="url">排序和查找</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-21 17:40:07 / 修改时间：20:35:59" itemprop="dateCreated datePublished" datetime="2025-08-21T17:40:07+08:00">2025-08-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/E%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">E阶段</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/21/%E6%8E%92%E5%BA%8F%E5%92%8C%E6%9F%A5%E6%89%BE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="快速排序算法"><a href="#快速排序算法" class="headerlink" title="快速排序算法"></a>快速排序算法</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #define LEN 8</span></span><br><span class="line"><span class="comment">// int a[LEN] = &#123; 5, 2, 4, 7, 1, 3, 2, 6 &#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #define LEN 3</span></span><br><span class="line"><span class="comment">// int a[LEN] = &#123; 5, 2, 4&#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// #define LEN 5</span></span><br><span class="line"><span class="comment">// int a[LEN] = &#123; 5, 2, 4, 7, 1 &#125;;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LEN 7</span></span><br><span class="line"><span class="type">int</span> a[LEN] = &#123; <span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">partition</span><span class="params">(<span class="type">int</span> start, <span class="type">int</span> end)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> pivot;</span><br><span class="line">    <span class="type">int</span> temp_less[LEN];</span><br><span class="line">    <span class="type">int</span> temp_more[LEN];</span><br><span class="line">    <span class="type">int</span> mid;</span><br><span class="line">    <span class="type">int</span> num_less = <span class="number">0</span>,num_more = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> i,j,k;</span><br><span class="line">    pivot = a[start];</span><br><span class="line">    <span class="keyword">for</span> (i = start;i &lt;= end;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i]&lt;pivot)&#123;</span><br><span class="line">            temp_less[num_less++] = a[i];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            temp_more[num_more++] = a[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mid = num_less;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">0</span>;j &lt; num_less;j++)&#123;</span><br><span class="line">        a[start+j] = temp_less[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(k = <span class="number">0</span>;k &lt; num_more;k++)&#123;</span><br><span class="line">        a[mid+k] = temp_more[k];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// printf(&quot;mid = %d,num_less = %d,num_more = %d\n&quot;,mid,num_less,num_more);</span></span><br><span class="line">    <span class="comment">// printf(&quot;temp_less %d %d %d %d %d %d %d %d\n&quot;,temp_less[0], temp_less[1], temp_less[2], temp_less[3], \</span></span><br><span class="line"><span class="comment">    //  temp_less[4], temp_less[5], temp_less[6], temp_less[7]);</span></span><br><span class="line">    <span class="comment">// printf(&quot;temp_more %d %d %d %d %d %d %d %d\n&quot;,temp_more[0], temp_more[1], temp_more[2], temp_more[3], \</span></span><br><span class="line"><span class="comment">    //  temp_more[4], temp_more[5], temp_more[6], temp_more[7]);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// printf(&quot;a         %d %d %d %d %d %d %d %d\n&quot;,a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);</span></span><br><span class="line">	<span class="keyword">return</span> mid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">quicksort</span><span class="params">(<span class="type">int</span> start, <span class="type">int</span> end)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> mid;</span><br><span class="line">	<span class="keyword">if</span> (end &gt; start) &#123;</span><br><span class="line">		mid = partition(start, end);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;mid (%d-%d, %d-%d) %d %d %d %d %d %d %d %d\n&quot;</span>, </span><br><span class="line">		       start, mid, mid+<span class="number">1</span>, end, </span><br><span class="line">		       a[<span class="number">0</span>], a[<span class="number">1</span>], a[<span class="number">2</span>], a[<span class="number">3</span>], a[<span class="number">4</span>], a[<span class="number">5</span>], a[<span class="number">6</span>], a[<span class="number">7</span>]);</span><br><span class="line">		quicksort(start, mid<span class="number">-1</span>);</span><br><span class="line">		quicksort(mid+<span class="number">1</span>, end);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;quicksort (%d-%d, %d-%d) %d %d %d %d %d %d %d %d\n&quot;</span>, </span><br><span class="line">		       start, mid, mid+<span class="number">1</span>, end, </span><br><span class="line">		       a[<span class="number">0</span>], a[<span class="number">1</span>], a[<span class="number">2</span>], a[<span class="number">3</span>], a[<span class="number">4</span>], a[<span class="number">5</span>], a[<span class="number">6</span>], a[<span class="number">7</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    quicksort(<span class="number">0</span>,LEN<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/" class="post-title-link" itemprop="url">普通编码器和优先编码器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-18 14:02:27 / 修改时间：14:30:25" itemprop="dateCreated datePublished" datetime="2025-08-18T14:02:27+08:00">2025-08-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>最小项表达式及其化简</p>
+</blockquote>
+<h1 id="普通编码器"><a href="#普通编码器" class="headerlink" title="普通编码器"></a>普通编码器</h1><blockquote>
+<p>以普通4-2编码器举例，说明最小项表达式的化简</p>
+</blockquote>
+<img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818140936213.png" class="">
+
+<h2 id="step1：最小项表达式"><a href="#step1：最小项表达式" class="headerlink" title="step1：最小项表达式"></a>step1：最小项表达式</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141116068.png" class="">
+
+
+
+<h2 id="step2：利用独热码（输入约束）做化简"><a href="#step2：利用独热码（输入约束）做化简" class="headerlink" title="step2：利用独热码（输入约束）做化简"></a>step2：利用独热码（输入约束）做化简</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141415447.png" class="">
+
+
+
+<img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141428082.png" class="">
+
+
+
+
+
+<h1 id="优先编码器"><a href="#优先编码器" class="headerlink" title="优先编码器"></a>优先编码器</h1><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818141705835.png" class="">
+
+
+
+<p>I3的优先级最高，I0的优先级最低；</p>
+<h2 id="step1：最小项表达式-1"><a href="#step1：最小项表达式-1" class="headerlink" title="step1：最小项表达式"></a>step1：最小项表达式</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818142418295.png" class="">
+
+<h2 id="step2：利用公式做化简"><a href="#step2：利用公式做化简" class="headerlink" title="step2：利用公式做化简"></a>step2：利用公式做化简</h2><img src="/2025/08/18/%E6%99%AE%E9%80%9A%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E4%BC%98%E5%85%88%E7%BC%96%E7%A0%81%E5%99%A8/image-20250818142428872.png" class="">
+
+<h1 id="思考题："><a href="#思考题：" class="headerlink" title="思考题："></a>思考题：</h1><h2 id="Q1-电路如何体现优先级"><a href="#Q1-电路如何体现优先级" class="headerlink" title="Q1:电路如何体现优先级?"></a>Q1:电路如何体现优先级?</h2><p>使用与门和非门去实现<code>优先级</code></p>
+<h2 id="Q2-编码器级联以及优先编码器级联"><a href="#Q2-编码器级联以及优先编码器级联" class="headerlink" title="Q2:编码器级联以及优先编码器级联"></a>Q2:编码器级联以及优先编码器级联</h2><p>参考博客：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/567133476">专题2-2：编码器</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">布尔逻辑运算</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-18 14:01:57 / 修改时间：14:05:27" itemprop="dateCreated datePublished" datetime="2025-08-18T14:01:57+08:00">2025-08-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/18/%E5%B8%83%E5%B0%94%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
+      <meta itemprop="name" content="Youngster">
+      <meta itemprop="description" content="show me bug">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="芯青年">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/" class="post-title-link" itemprop="url">IMC收集覆盖率</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-14 09:37:18 / 修改时间：17:28:00" itemprop="dateCreated datePublished" datetime="2025-08-14T09:37:18+08:00">2025-08-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">ip开发环境搭建</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ip%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/EDA%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">EDA工具使用</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/14/IMC%E6%94%B6%E9%9B%86%E8%A6%86%E7%9B%96%E7%8E%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>工具各种概念介绍：</p>
+<p>思维导图：<a target="_blank" rel="noopener" href="https://mm.edrawsoft.cn/app/editor/AkMhC8bj89NkWZHBsMjbgkdFFXUT0GZY">https://mm.edrawsoft.cn/app/editor/AkMhC8bj89NkWZHBsMjbgkdFFXUT0GZY</a></p>
+<p>userguide文档：&#x2F;atctools&#x2F;Cadence&#x2F;Vman&#x2F;2024.03.001&#x2F;doc&#x2F;imcuser&#x2F;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/11/%E9%94%81%E5%AD%98%E5%99%A8%E5%92%8C%E8%A7%A6%E5%8F%91%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -788,447 +1169,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/08/04/%E5%BC%82%E6%AD%A5fifo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/" class="post-title-link" itemprop="url">异步fifo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-08-04 11:02:46 / 修改时间：11:11:05" itemprop="dateCreated datePublished" datetime="2025-08-04T11:02:46+08:00">2025-08-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/FIFO%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">FIFO设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Version1"><a href="#Version1" class="headerlink" title="Version1"></a>Version1</h1><img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804110542890.png" class="">
-
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    version:1.0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> msc_async_fifo#(</span><br><span class="line">    <span class="keyword">parameter</span>   DEPTH   =   <span class="number">16</span>,</span><br><span class="line">    <span class="keyword">parameter</span>   WIDTH   =   <span class="number">8</span></span><br><span class="line">)(</span><br><span class="line">    <span class="keyword">input</span>                   wr_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_en   ,</span><br><span class="line">    <span class="keyword">input</span>       [WIDTH-<span class="number">1</span>:<span class="number">0</span>] wr_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">input</span>                   rd_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_en   ,</span><br><span class="line">    <span class="keyword">output</span>  <span class="keyword">reg</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] rd_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">output</span>                  rempty   ,</span><br><span class="line">    <span class="keyword">output</span>                  wfull    </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                              internal vars         </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [WIDTH-<span class="number">1</span>:<span class="number">0</span>] fifo_ram    [DEPTH-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d2;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] wr_addr;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] rd_addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wr_ptr &amp;&amp; rd_ptr       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        wr_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        wr_ptr &lt;= wr_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        rd_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_ptr &lt;= rd_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wfull &amp;&amp; rempty       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">assign</span> wr_ptr_g = (wr_ptr &gt;&gt; <span class="number">1</span>) ^ wr_ptr;</span><br><span class="line"><span class="keyword">assign</span> rd_ptr_g = (rd_ptr &gt;&gt; <span class="number">1</span>) ^ rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn )<span class="keyword">begin</span><span class="comment">//write_ptr_g sync to read domain</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= &#123;wr_ptr_g_d1,wr_ptr_g&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span><span class="comment">//read_ptr_g sync to write domain</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= &#123;rd_ptr_g_d1,rd_ptr_g&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> rempty = (rd_ptr_g == wr_ptr_g_d2);</span><br><span class="line"><span class="keyword">assign</span> wfull = wr_ptr_g == &#123;~rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH):<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>],rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">2</span>:<span class="number">0</span>]&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             write &amp;&amp; read       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> wr_addr = wr_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">assign</span> rd_addr = rd_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk)</span><br><span class="line">    <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        fifo_ram[wr_addr] &lt;= wr_data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk)</span><br><span class="line">    <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_data &lt;= fifo_ram[rd_addr];</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="version2改进版本"><a href="#version2改进版本" class="headerlink" title="version2改进版本"></a>version2改进版本</h1><h2 id="设计改动"><a href="#设计改动" class="headerlink" title="设计改动"></a>设计改动</h2><img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804110700011.png" class="">
-
-<p>1、跨时钟域数据同步的时候，一定要REG_clka &lt;-&gt; REG_clkb，不然会有毛刺，可能会导致芯片功能出现问题<br>具体解释，参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331">https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331</a><br>2.3和2.4节 空满指针跨时钟域处理，为什么要使用Gray信号进行同步</p>
-<img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804110851358.png" class="">
-
-
-
-<h2 id="添加时序约束"><a href="#添加时序约束" class="headerlink" title="添加时序约束"></a>添加时序约束</h2><p>2、由于格雷码，convergence汇聚问题不会造成影响；<br>具体解释，参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331">https://blog.csdn.net/qq_34686440/article/details/129661168?spm=1011.2415.3001.5331</a><br>2.2节 空满指针跨时钟域处理，为什么要使用Gray信号进行同步</p>
-<img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804111006100.png" class="">
-
-
-
-<p>3、异步FIFO约束；<br>格雷码生效的前提是 REG_clkA-&gt;REG_clkB是同时到达，即skew要相同；</p>
-<img src="/2025/08/04/%E5%BC%82%E6%AD%A5fifo/image-20250804111048063.png" class="">
-
-
-
-<p>参考博客：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/iNostory/article/details/143173003">https://blog.csdn.net/iNostory/article/details/143173003</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43433724/article/details/137956386">https://blog.csdn.net/qq_43433724/article/details/137956386</a></p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    version:2.0</span></span><br><span class="line"><span class="comment">    fix CDC problem:2024/02/1</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> msc_async_fifo#(</span><br><span class="line">    <span class="keyword">parameter</span>   DEPTH   =   <span class="number">16</span>,</span><br><span class="line">    <span class="keyword">parameter</span>   WIDTH   =   <span class="number">8</span></span><br><span class="line">)(</span><br><span class="line">    <span class="keyword">input</span>                   wr_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   wr_en   ,</span><br><span class="line">    <span class="keyword">input</span>       [WIDTH-<span class="number">1</span>:<span class="number">0</span>] wr_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">input</span>                   rd_clk  ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_rstn ,</span><br><span class="line">    <span class="keyword">input</span>                   rd_en   ,</span><br><span class="line">    <span class="keyword">output</span>  <span class="keyword">reg</span> [WIDTH-<span class="number">1</span>:<span class="number">0</span>] rd_data ,</span><br><span class="line"></span><br><span class="line">    <span class="keyword">output</span>                  rempty   ,</span><br><span class="line">    <span class="keyword">output</span>                  wfull    </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                              internal vars         </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [WIDTH-<span class="number">1</span>:<span class="number">0</span>] fifo_ram    [DEPTH-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d1;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_d2;</span><br><span class="line"><span class="keyword">reg</span>     [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_d2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] wr_addr;</span><br><span class="line"><span class="keyword">wire</span>    [<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>] rd_addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wr_ptr &amp;&amp; rd_ptr       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        wr_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        wr_ptr &lt;= wr_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        rd_ptr &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_ptr &lt;= rd_ptr + <span class="number">1&#x27;b1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             wfull &amp;&amp; rempty       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">assign</span> wr_ptr_g = (wr_ptr &gt;&gt; <span class="number">1</span>) ^ wr_ptr;</span><br><span class="line"><span class="keyword">assign</span> rd_ptr_g = (rd_ptr &gt;&gt; <span class="number">1</span>) ^ rd_ptr;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             fix CDC Problem</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] wr_ptr_g_reg;</span><br><span class="line"><span class="keyword">reg</span> [<span class="built_in">$clog2</span>(DEPTH):<span class="number">0</span>] rd_ptr_g_reg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn )<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">      rd_ptr_g_reg    &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      rd_ptr_g_reg    &lt;= rd_ptr_g;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">      wr_ptr_g_reg &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      wr_ptr_g_reg &lt;= wr_ptr_g;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk <span class="keyword">or</span> <span class="keyword">negedge</span> rd_rstn )<span class="keyword">begin</span><span class="comment">//write_ptr_g sync to read domain</span></span><br><span class="line">    <span class="keyword">if</span>(!rd_rstn)</span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;wr_ptr_g_d2,wr_ptr_g_d1&#125; &lt;= &#123;wr_ptr_g_d1,wr_ptr_g_reg&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk <span class="keyword">or</span> <span class="keyword">negedge</span> wr_rstn)<span class="keyword">begin</span><span class="comment">//read_ptr_g sync to write domain</span></span><br><span class="line">    <span class="keyword">if</span>(!wr_rstn)</span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        &#123;rd_ptr_g_d2,rd_ptr_g_d1&#125; &lt;= &#123;rd_ptr_g_d1,rd_ptr_g_reg&#125;;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> rempty = (rd_ptr_g == wr_ptr_g_d2);</span><br><span class="line"><span class="keyword">assign</span> wfull = wr_ptr_g == &#123;~rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH):<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>],rd_ptr_g_d2[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">2</span>:<span class="number">0</span>]&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">//                             write &amp;&amp; read       </span></span><br><span class="line"><span class="comment">//------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> wr_addr = wr_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"><span class="keyword">assign</span> rd_addr = rd_ptr[<span class="built_in">$clog2</span>(DEPTH)-<span class="number">1</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> wr_clk)</span><br><span class="line">    <span class="keyword">if</span>(wr_en &amp;&amp; !wfull)</span><br><span class="line">        fifo_ram[wr_addr] &lt;= wr_data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> rd_clk)</span><br><span class="line">    <span class="keyword">if</span>(rd_en &amp;&amp; !rempty)</span><br><span class="line">        rd_data &lt;= fifo_ram[rd_addr];</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/" class="post-title-link" itemprop="url">PMOS和NMOS晶体管</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-07-31 22:33:52" itemprop="dateCreated datePublished" datetime="2025-07-31T22:33:52+08:00">2025-07-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-04 10:55:48" itemprop="dateModified" datetime="2025-08-04T10:55:48+08:00">2025-08-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">一生一芯计划</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%80%E7%94%9F%E4%B8%80%E8%8A%AF%E8%AE%A1%E5%88%92/F%E9%98%B6%E6%AE%B5/" itemprop="url" rel="index"><span itemprop="name">F阶段</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/07/31/PMOS%E5%92%8CNMOS%E6%99%B6%E4%BD%93%E7%AE%A1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="NMOS和PMOS晶体管"><a href="#NMOS和PMOS晶体管" class="headerlink" title="NMOS和PMOS晶体管"></a>NMOS和PMOS晶体管</h1><p>载流子的方向都是从S到D：</p>
-<p>因此</p>
-<p>对于NMOS，载流子（电子）是S-&gt;D，电流则是D-&gt;S</p>
-<p>对于PMOS，载流子（空穴对）是S-&gt;D，电流是S-&gt;D</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_25814297/article/details/128163680">NMOS和PMOS管</a></li>
-</ol>
-<h1 id="CMOS技术及门电路搭建"><a href="#CMOS技术及门电路搭建" class="headerlink" title="CMOS技术及门电路搭建"></a>CMOS技术及门电路搭建</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://ysyx.oscc.cc/docs/2407/f/3.html#%E5%BC%82%E6%88%96%E9%97%A8">使用晶体管搭建门电路</a></li>
-</ol>
-<h2 id="或门对比总结："><a href="#或门对比总结：" class="headerlink" title="或门对比总结："></a>或门对比总结：</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>条件</th>
-<th>输出为1的情况</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>异或 XOR</td>
-<td>A ≠ B</td>
-<td>01、10</td>
-</tr>
-<tr>
-<td>同或 XNOR</td>
-<td>A &#x3D; B</td>
-<td>00、11</td>
-</tr>
-<tr>
-<td>相容或</td>
-<td>A、B 不冲突（常用于三值逻辑）</td>
-<td>通常为 0&#x2F;1、1&#x2F;X、X&#x2F;0 等</td>
-</tr>
-<tr>
-<td>相斥或</td>
-<td>A∧B&#x3D;0（不可同时为1）</td>
-<td>00、01、10</td>
-</tr>
-<tr>
-<td>或门 OR</td>
-<td>A 或 B 为1</td>
-<td>01、10、11</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/07/22/verilog-task%E5%92%8Cfunction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/07/22/verilog-task%E5%92%8Cfunction/" class="post-title-link" itemprop="url">verilog task和function</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-07-22 19:36:59 / 修改时间：19:42:54" itemprop="dateCreated datePublished" datetime="2025-07-22T19:36:59+08:00">2025-07-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/verilog%E8%AF%AD%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">verilog语法</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/07/22/verilog-task%E5%92%8Cfunction/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/07/22/verilog-task%E5%92%8Cfunction/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="function"><a href="#function" class="headerlink" title="function"></a>function</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> [<span class="number">4</span>:<span class="number">0</span>] crc5_serial;</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] crc;</span><br><span class="line">    <span class="keyword">input</span> data;</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        crc5_serial[<span class="number">0</span>] = crc[<span class="number">4</span>] ^ data;</span><br><span class="line">        crc5_serial[<span class="number">1</span>] = crc[<span class="number">0</span>];</span><br><span class="line">        crc5_serial[<span class="number">2</span>] = crc[<span class="number">1</span>] ^ crc[<span class="number">4</span>] ^ data;</span><br><span class="line">        crc5_serial[<span class="number">3</span>] = crc[<span class="number">2</span>];</span><br><span class="line">        crc5_serial[<span class="number">4</span>] = crc[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">endfunction</span></span><br></pre></td></tr></table></figure>
-
-<p>关键点：Verilog 函数用于描述组合逻辑，通过<strong>对函数名赋值</strong>返回结果，适合实现数学运算或状态转换（如 CRC、加密算法等）</p>
-<h1 id="task"><a href="#task" class="headerlink" title="task"></a>task</h1><blockquote>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wzjsdyx.github.io/2025/07/16/CRC%E7%94%B5%E8%B7%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/animal_toy_cute_doll_teddy_256.png">
-      <meta itemprop="name" content="Youngster">
-      <meta itemprop="description" content="show me bug">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="芯青年">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/07/16/CRC%E7%94%B5%E8%B7%AF/" class="post-title-link" itemprop="url">CRC电路</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-07-16 13:55:13" itemprop="dateCreated datePublished" datetime="2025-07-16T13:55:13+08:00">2025-07-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-07-21 16:39:42" itemprop="dateModified" datetime="2025-07-21T16:39:42+08:00">2025-07-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SoC%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">SoC设计</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2025/07/16/CRC%E7%94%B5%E8%B7%AF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2025/07/16/CRC%E7%94%B5%E8%B7%AF/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>注意点：</p>
-<blockquote>
-<p>和LFSR的计数器电路不同，CRC初始化种子可以为0；</p>
-</blockquote>
-<p>参考博客：</p>
-<ol start="0">
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/606665024">并行CRC的硬件实现</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612115347">并行CRC的硬件实现(续)</a></p>
-</li>
-</ol>
-<p>1.<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51487301/article/details/124270017">模2运算 &#x2F; 模2算法（模2加法、模2减法、模2乘法、模2除法）</a></p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fucong59/article/details/89536075">LFSR和CRC串行实现移位寄存器结构,并行CRC时序实现</a></li>
-<li><a target="_blank" rel="noopener" href="https://polaris-chn.github.io/2022/06/12/Verilog-practice-8/#lfsr%E5%8E%9F%E7%90%86">Verilog编程-8. 线性反馈移位寄存器 LFSR</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yp421R7D4?spm_id_from=333.788.videopod.sections&vd_source=c76cab13994e90aef30da628f94d99e8">FPGA CRC 冗余校验原理_异或计算法</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1dd4y1H7uT?spm_id_from=333.788.videopod.sections&vd_source=c76cab13994e90aef30da628f94d99e8">第15章 CRC编码</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lum250/article/details/124375678">循环冗余校验码CRC原理与LFSR循环码编码器原理</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c8ff4478453d">用于CRC计算的LFSR电路理解</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1300,14 +1240,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">235</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
