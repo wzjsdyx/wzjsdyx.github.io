@@ -221,7 +221,7 @@ Write Buffer 只是产生非精确错误的必要背景之一，不代表只要�
 STR r0, [r1]
 ```
 
-<font color=blue>如果总线很快返回错误，而 CPU 仍能把错误关联到这条 `STR`，可能仍报告imprecise error：</font>
+<font color=blue>如果总线很快返回错误，而 CPU 仍能把错误关联到这条 `STR`，可能仍报告precise error：</font>
 
 ```
 PRECISERR = 1
