@@ -2,10 +2,9 @@
 title: eflash controller Q&A
 date: 2024-08-07 14:16:15
 categories:
-- eflash
-- tsmc auot eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- eflash controller
 - TBD
 ---
 

@@ -2,10 +2,9 @@
 title: tsmc auto eflash test chip
 date: 2024-07-15 13:32:28
 categories:
-- eflash
-- tsmc auot eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- eflash controller
 - TBD
 ---
 

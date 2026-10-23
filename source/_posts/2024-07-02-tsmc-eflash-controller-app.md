@@ -2,10 +2,9 @@
 title: eflash controller-应用文档
 date: 2024-07-16 09:54:50
 categories:
-- eflash
-- tsmc auot eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- eflash controller
 - TBD
 ---
 

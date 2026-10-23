@@ -2,7 +2,8 @@
 title: 项目实践-special timing
 date: 2024-04-06 15:58:39
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - 时序约束
 - special timing

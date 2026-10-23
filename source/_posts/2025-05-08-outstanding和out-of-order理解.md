@@ -3,11 +3,11 @@ title: outstanding和out-of-order理解
 date: 2025-05-08 11:22:40
 categories:
 - ARM
-- AMBA
-- AXI
+- AMBA-AXI
 tags:
 - outstanding
 - out-of-order
+- TBD
 ---
 
 

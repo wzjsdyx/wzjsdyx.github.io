@@ -2,7 +2,8 @@
 title: DC synthesis Q&A
 date: 2024-02-16 23:44:10
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - DC
 - synthesis

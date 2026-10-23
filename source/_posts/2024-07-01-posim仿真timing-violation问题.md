@@ -2,8 +2,8 @@
 title: posim仿真timing violation问题
 date: 2024-07-01 23:41:58
 categories:
-- IC设计流程
-- posim
+- SoC设计
+- 前端-仿真-posim
 tags:
 - posim
 - timing violation

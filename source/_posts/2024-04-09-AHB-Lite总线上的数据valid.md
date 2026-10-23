@@ -3,8 +3,7 @@ title: AHB-Lite总线上的数据valid
 date: 2024-04-09 08:49:25
 categories:
 - ARM
-- AMBA
-- AHB-Lite
+- AMBA-AHB-Lite
 tags:
 - AHB-Lite data valid
 ---

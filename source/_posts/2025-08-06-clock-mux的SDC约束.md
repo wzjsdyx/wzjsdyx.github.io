@@ -2,7 +2,8 @@
 title: clock mux的SDC约束
 date: 2025-08-06 20:16:36
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - 时序约束
 - PAD

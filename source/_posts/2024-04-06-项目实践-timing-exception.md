@@ -2,7 +2,8 @@
 title: 项目实践-timing exception
 date: 2024-04-06 16:07:36
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - 时序约束
 - timing exception

@@ -3,8 +3,9 @@ title: apb_sync_unit
 date: 2024-06-07 09:27:24
 categories:
 - SoC设计
+- 前端-设计-同步电路
 tags:
-- apb协议同步
+- TBD
 ---
 
 > 项目中可能需要对APB协议进行CDC的设计，简单的方法是通过使用ready信号反压来实现；

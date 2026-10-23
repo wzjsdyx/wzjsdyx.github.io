@@ -2,10 +2,9 @@
 title: eFlash controller学习路线
 date: 2024-08-15 09:21:22
 categories:
-- eflash
-- tsmc auot eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- eflash controller
 - TBD
 ---
 

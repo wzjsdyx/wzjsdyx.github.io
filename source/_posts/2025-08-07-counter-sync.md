@@ -3,7 +3,9 @@ title: counter sync
 date: 2025-08-07 14:19:52
 categories:
 - SoC设计
+- 前端-设计-同步电路
 tags:
+- TBD
 ---
 
 

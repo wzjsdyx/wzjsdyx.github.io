@@ -3,8 +3,7 @@ title: ahb-lite slave response
 date: 2024-05-07 20:48:32
 categories:
 - ARM
-- AMBA
-- AHB-Lite
+- AMBA-AHB-Lite
 tags:
 - response
 ---

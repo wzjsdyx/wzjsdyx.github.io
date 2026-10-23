@@ -3,8 +3,7 @@ title: AHB-Lite lock传输
 date: 2024-12-09 10:46:52
 categories:
 - ARM
-- AMBA
-- AHB-Lite
+- AMBA-AHB-Lite
 tags:
 - lock传输
 - TBD

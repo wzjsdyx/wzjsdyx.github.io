@@ -3,7 +3,7 @@ title: cache system
 date: 2024-08-30 20:08:48
 categories:
 - SoC设计
-- cache设计
+- 前端-设计-Cache
 tags:
 - cache基础知识
 - TBD

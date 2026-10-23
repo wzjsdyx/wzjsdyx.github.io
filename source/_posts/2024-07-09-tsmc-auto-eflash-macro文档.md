@@ -2,10 +2,9 @@
 title: tsmc auto eflash macro文档
 date: 2024-07-09 20:38:57
 categories:
-- eflash
-- tsmc auot eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- eflash controller
 - TBD
 ---
 

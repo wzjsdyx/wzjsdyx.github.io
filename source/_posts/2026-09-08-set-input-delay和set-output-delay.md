@@ -2,7 +2,8 @@
 title: set_input_delay和set_output_delay
 date: 2026-09-08 21:26:48
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - TBD
 ---

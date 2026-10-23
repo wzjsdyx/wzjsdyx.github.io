@@ -2,10 +2,10 @@
 title: smic auto eflash bist
 date: 2024-05-28 13:36:38
 categories:
-- eflash
-- eflash bist
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- smic auto eflash bist
+- TBD
 ---
 
 

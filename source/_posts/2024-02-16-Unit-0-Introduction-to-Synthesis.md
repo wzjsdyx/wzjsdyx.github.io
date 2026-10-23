@@ -2,7 +2,8 @@
 title: 'Unit 0: Introduction to Synthesis'
 date: 2024-02-16 14:28:58
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - DC
 - synthesis

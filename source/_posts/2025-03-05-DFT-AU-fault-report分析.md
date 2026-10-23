@@ -2,7 +2,8 @@
 title: DFT AU fault report分析
 date: 2025-03-05 09:42:13
 categories:
-- IC设计流程
+- SoC设计
+- 中端-DFT
 tags:
 - DFT
 - FT

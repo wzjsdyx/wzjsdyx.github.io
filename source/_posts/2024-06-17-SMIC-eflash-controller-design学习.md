@@ -2,10 +2,10 @@
 title: SMIC auto eflash controller design学习
 date: 2024-06-17 14:32:49
 categories:
-- eflash
-- eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- smic auto eflash controller
+- TBD
 ---
 
 

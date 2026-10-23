@@ -3,7 +3,9 @@ title: pulse sync
 date: 2025-08-07 13:19:33
 categories:
 - SoC设计
+- 前端-设计-同步电路
 tags:
+- TBD
 ---
 
 # sync_pu(不带busy)

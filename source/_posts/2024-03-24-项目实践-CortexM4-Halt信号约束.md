@@ -2,7 +2,8 @@
 title: 项目实践-CortexM4 Halt信号约束
 date: 2024-03-24 15:58:15
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - 时序约束
 - HALTED信号约束

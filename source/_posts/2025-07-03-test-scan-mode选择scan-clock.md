@@ -2,7 +2,8 @@
 title: test_scan_mode选择scan clock
 date: 2025-07-03 19:53:34
 categories:
-- DFT可测性设计
+- SoC设计
+- 中端-DFT
 tags:
 - DFT
 - TBD
@@ -59,5 +60,4 @@ tags:
 > 顺序为：test mode-》IJTAG-》TDR寄存器-》test_scan_mode在整个ATPG阶段一直为高电平；
 >
 > 5、test scan mode信号一般由DFT logic 生成
-
 

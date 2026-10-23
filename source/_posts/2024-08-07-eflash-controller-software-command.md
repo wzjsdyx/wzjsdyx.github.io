@@ -2,10 +2,9 @@
 title: eflash controller software command
 date: 2024-08-07 09:47:09
 categories:
-- eflash
-- tsmc auot eflash controller
+- SoC设计
+- 前端-设计-eFlash
 tags:
-- eflash controller
 - TBD
 ---
 

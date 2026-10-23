@@ -3,7 +3,7 @@ title: cache_controller设计（1）-理论基础
 date: 2024-02-19 23:27:52
 categories:
 - SoC设计
-- cache设计
+- 前端-设计-Cache
 tags:
 - cache基础知识
 ---

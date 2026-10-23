@@ -2,7 +2,8 @@
 title: 项目实践-CortexM4 WIC约束
 date: 2024-03-19 23:46:58
 categories:
-- DC synthesis
+- SoC设计
+- 中端-综合
 tags:
 - 时序约束
 - WIC约束
