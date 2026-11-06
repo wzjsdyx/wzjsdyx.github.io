@@ -3,7 +3,7 @@ title: glitch free clock mux
 date: 2025-08-07 14:27:26
 categories:
 - SoC设计
-- 前端-设计-commencell
+- 前端-设计-时钟
 tags:
 - TBD
 ---
