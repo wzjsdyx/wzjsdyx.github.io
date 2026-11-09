@@ -9,7 +9,21 @@ tags:
 ---
 
 > 介绍Cortex-M4内部的debug寄存器
+>
+> 参考架构文档：C1.6 Debug system registers  
+
+
+
+{%  asset_img image-20261109144416619.png  %}
 
 
 
 <font color=red>TBD：待补充</font>
+
+
+
+
+
+参考博客：
+
+- hexo ->ARM->Cortex-M4->Cortex-M4内部关键信号
