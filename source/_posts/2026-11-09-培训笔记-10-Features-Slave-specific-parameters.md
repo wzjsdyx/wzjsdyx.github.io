@@ -1,6 +1,6 @@
 ---
 title: 培训笔记-10-Features-Slave specific parameters
-date: 2026-11-09 20:31:23
+date: 2026-11-09 10:28:51
 categories:
 - ARM
 - CoreLink-NIC
