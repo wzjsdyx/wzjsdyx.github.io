@@ -4,6 +4,7 @@ date: 2024-04-02 23:13:24
 categories:
 - ARM
 - CoreSight
+- DAP
 tags:
 - debug组件
 - trace组件
