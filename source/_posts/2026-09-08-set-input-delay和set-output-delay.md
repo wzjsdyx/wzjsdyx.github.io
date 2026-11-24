@@ -86,3 +86,5 @@ set_output_delay中：
 参考博客
 
 1. [set_input_delay如何使用？](https://zhuanlan.zhihu.com/p/561936760)
+
+2. [ic基础|时序篇06：输入约束set_input_delay与输出约束set_output_delay详解](https://zhuanlan.zhihu.com/p/687404728)
